@@ -1,0 +1,17 @@
+# Hugo
+/public/
+/resources/_gen/
+/.hugo_build.lock
+/.cache/
+hugo_stats.json
+
+# Hugo Modules（vendor する場合のみコミットする）
+/_vendor/
+
+# Node / wrangler
+/node_modules/
+/.wrangler/
+
+# OS / editor
+.DS_Store
+*.swp

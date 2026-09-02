@@ -1,0 +1,29 @@
+{
+  // Cloudflare Workers (Static Assets) 設定。
+  // Pages は使わない（レガシー扱いのため）。
+  "$schema": "./node_modules/wrangler/config-schema.json",
+
+  "name": "kurabebako",
+  "compatibility_date": "2026-09-02",
+
+  // `main` は意図的に置かない。
+  // main を持たない = Worker 側の JS を一切実行しない静的配信専用構成となり、
+  // アセット配信だけならリクエストが Worker 実行回数を消費しない。
+  // 動的処理が必要になった場合のみ main を追加し、理由をここに明記すること。
+
+  // `wrangler deploy` はデプロイ前にこの build.command を実行する。
+  // ツール版の固定は build.sh 側に集約している。
+  "build": {
+    "command": "chmod a+x build.sh && ./build.sh"
+  },
+
+  "assets": {
+    // Hugo の既定出力先
+    "directory": "./public",
+    // 未マッチのパスは Hugo が生成する /404.html を 404 で返す。
+    // SPA ではないので "single-page-application" は使わない。
+    "not_found_handling": "404-page"
+    // html_handling は既定の "auto-trailing-slash" のまま。
+    // Hugo は /posts/foo/index.html 形式で出力するため既定が正しい。
+  }
+}

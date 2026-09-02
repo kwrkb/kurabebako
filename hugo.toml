@@ -1,0 +1,38 @@
+baseURL = 'https://kurabebako.com/'
+title = 'kurabebako'
+
+locale = 'ja-jp'
+defaultContentLanguage = 'ja'
+
+enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 20
+
+# テーマは Hugo Modules で管理する（git submodule は使わない）。
+# 更新は `npm run mod:update`（= hugo mod get -u ./... && hugo mod tidy）。
+[module]
+  [[module.imports]]
+    path = 'github.com/adityatelange/hugo-PaperMod'
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[outputs]
+  home = ['html', 'rss']
+
+[params]
+  env = 'production'
+  description = 'AIツール・開発環境・CLI・SaaS・サーバーの比較まとめ'
+  defaultTheme = 'auto'
+  ShowReadingTime = true
+  ShowBreadCrumbs = true
+  ShowToc = true
+  ShowCodeCopyButtons = true
+
+[menu]
+  [[menu.main]]
+    identifier = 'posts'
+    name = '比較記事'
+    url = '/posts/'
+    weight = 10

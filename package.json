@@ -1,0 +1,20 @@
+{
+  "name": "kurabebako",
+  "version": "0.1.0",
+  "description": "AIツール・開発環境・CLI・SaaS・サーバーの比較まとめサイト",
+  "scripts": {
+    "dev": "hugo server --buildDrafts --buildFuture",
+    "build": "hugo --gc --minify",
+    "preview": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "mod:update": "hugo mod get -u ./... && hugo mod tidy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwrkb/kurabebako.git"
+  },
+  "devDependencies": {
+    "wrangler": "^4.128.0"
+  },
+  "private": true
+}
