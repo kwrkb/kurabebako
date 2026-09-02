@@ -40,7 +40,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 
 型に沿って記事を投入し、技術面の問題を切り分ける。
 
-- [ ] 1本目を型どおりに書き、型の不足を直す
+- [x] 1本目を型どおりに書き、型の不足を直す（2026-09-02 `static-site-hosting-free-tier`。archetype の変更は不要だった）
 - [ ] Search Console 登録、sitemap 送信
 - [ ] インデックス数とクロール状況の観測
 
