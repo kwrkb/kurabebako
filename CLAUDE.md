@@ -79,6 +79,20 @@ main へ push
 - テーマの上書きは `layouts/` に同名ファイルを置く。テーマ本体（モジュールキャッシュ）は編集しない
 - 記事は `content/posts/` 配下。front matter は `title` / `date` / `draft` / `summary` を必須とする
   （`hugo new content posts/<slug>.md` で4キーとも生成される）
+- **URL に載る値はすべて英語**（小文字・ハイフン区切り）。対象はファイル名（＝slug）、
+  `tags`、`categories`、セクション名。日本語を混ぜると percent-encode されて
+  共有時に読めない長いURLになる。
+  表示名を日本語にしたい場合は、タクソノミ用のページで `title` を与える:
+
+  ```
+  content/tags/ai-tools/_index.md
+  +++
+  title = 'AIツール'
+  +++
+  ```
+
+  これで URL は `/tags/ai-tools/`、リンクの表示は「AIツール」になる。
+  記事側の front matter には英語のスラッグ（`tags = ['ai-tools']`）を書く
 - **`date` を未来日時にしない。** Hugo は既定で未来日付の記事をビルド対象から外すため、
   エラーも警告も出ないまま記事がサイトから消える。予約投稿したい場合のみ意図的に使い、
   `npm run dev`（`--buildFuture` 付き）で表示を確認する

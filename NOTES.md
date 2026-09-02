@@ -31,8 +31,9 @@ hugo config mounts | grep -o '"dir": "[^"]*adityatelange[^"]*"'
 ## 出力の形
 
 - 記事は `public/posts/<slug>/index.html`（末尾スラッシュ前提）
-- タクソノミは `public/tags/<名前>/`、`public/categories/<名前>/`
-  日本語タグはディレクトリ名も日本語のまま。URL では percent-encode される
+- タクソノミは `public/tags/<slug>/`、`public/categories/<slug>/`
+  slug は英語で書く規約（`CLAUDE.md` 参照）。表示名は `content/tags/<slug>/_index.md` の
+  `title` で与える。この2つは独立していて、URL を変えずに表示名だけ直せる
 - `404.html` はテーマの `layouts/404.html` から生成される。
   これが無いと配信側の 404 設定が効かない
 - ページネーションは1ページ目も `page/1/` を生成する（エイリアス扱い）
