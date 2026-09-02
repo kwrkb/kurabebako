@@ -6,63 +6,67 @@ AIツール・開発環境・CLI・SaaS・サーバーの比較まとめサイ�
 - 静的サイトジェネレータ: [Hugo](https://gohugo.io/)（extended 0.165.0）
 - ホスティング: Cloudflare Workers (Static Assets)　※ Cloudflare Pages は使わない
 
-## セットアップ（WSL2 / Ubuntu）
+## セットアップ（Windows 11 ネイティブ / PowerShell）
 
-リポジトリは **Linux ファイルシステム側**（`~/code/...`）に置くこと。
-`/mnt/c/...` に置くとビルドとファイル監視が極端に遅くなる。
+WSL は使わない。リポジトリは `%USERPROFILE%\Code\kurabebako` に置く
+（作業机リポジトリ `kurabebako-desk` を同じ親ディレクトリに並べる前提）。
+以下はすべて PowerShell で実行する。
 
-### 1. Hugo (extended) の確認
+### 1. Git for Windows の確認
 
-```bash
+`build.sh` は Git for Windows 同梱の bash（`C:\Program Files\Git\bin\bash.exe`）で実行される。
+`build.js` がこのパスを探すので、Git は既定の場所に入れておく。
+
+```powershell
+git --version
+```
+
+### 2. Hugo (extended) の確認
+
+```powershell
 hugo version
-# => hugo v0.165.0-... +extended linux/amd64  ならOK
+# => hugo v0.165.0-... +extended windows/amd64  ならOK
 ```
 
 `+extended` が付いていること、`build.sh` の `HUGO_VERSION` と一致していることの2点を確認する。
+未インストール、または standard 版・別バージョンだった場合は winget で版を固定して入れる。
 
-未インストール、または standard 版・別バージョンだった場合は次の手順で入れ直す。
-
-```bash
-HUGO_VERSION=0.165.0
-cd "$(mktemp -d)"
-curl -sSLO "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
-curl -sSLO "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_checksums.txt"
-
-# 改ざん検知（OK と出ることを確認）
-grep "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz" "hugo_${HUGO_VERSION}_checksums.txt" | sha256sum -c -
-
-tar xzf "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz" hugo
-install -m 755 hugo ~/.local/bin/hugo
-hugo version
+```powershell
+winget install --id Hugo.Hugo.Extended --version 0.165.0 --exact
 ```
 
-`~/.local/bin` が PATH に無い場合は通しておくこと。
+> **`Hugo.Hugo`（standard 版）は使わない。** Sass / WebP を使う構成で詰まる。
+> 版を上げるときは `build.sh` の `HUGO_VERSION` と、この winget の `--version` を揃える。
 
-> **apt の `hugo` は使わない。** バージョンが古いうえ extended 版ではないため、
-> Sass / WebP を使う構成で詰まる。
+### 3. Go の確認
 
-### 2. Go の確認
+Hugo Modules の解決に Go が必要。winget の `GoLang.Go` で入れる。
 
-Hugo Modules の解決に Go が必要。
-
-```bash
+```powershell
 go version   # 1.23.0 以上
 ```
 
-未インストールなら公式 tarball（`/usr/local/go`）で入れる。apt 版は使わない。
+### 4. Node 依存
 
-### 3. Node 依存
+Node は fnm で入れる（`fnm install --lts` → `fnm default lts-latest`）。
+PowerShell のプロファイルに `fnm env --use-on-cd | Out-String | Invoke-Expression` が
+入っていないと `npm` が見つからないので注意。
 
-```bash
+```powershell
 npm ci   # wrangler のみ
 ```
 
-### 4. 動作確認
+### 5. 動作確認
 
-```bash
+```powershell
 npm run build     # public/ が生成される
 npm run preview   # http://localhost:8787 で Workers 配信を再現
 ```
+
+### 改行コードについて
+
+`build.sh` は `.gitattributes` で LF 固定にしている。`core.autocrlf=true` の環境で CRLF に
+変換されると bash が行末の `\r` を構文エラーにするため。`build.sh` を編集するときも LF を保つ。
 
 ## コマンド
 
@@ -91,9 +95,15 @@ npm run preview   # http://localhost:8787 で Workers 配信を再現
 
 ```jsonc
 "build": {
-  "command": "chmod a+x build.sh && ./build.sh"
+  "command": "node build.js"
 }
 ```
+
+`build.js` は OS に応じた bash で `build.sh` を起動するだけの薄いラッパー。
+Cloudflare 公式の例は `chmod a+x build.sh && ./build.sh` だが、Windows では
+`build.command` が cmd.exe で実行されるため `chmod` が無く、PATH 上の `bash` も
+WSL に解決される。そのため node 経由で Git for Windows の bash を明示して呼んでいる。
+ビルド手順そのものは `build.sh` に集約しており、`build.js` には書かない。
 
 ダッシュボード側の Build command にも同じものを入れると **ビルドが2回走る**ため空欄にする。
 ビルド手順をリポジトリ内に閉じ込められる（＝ダッシュボードとコードに設定が分散しない）利点もある。
@@ -102,7 +112,7 @@ npm run preview   # http://localhost:8787 で Workers 配信を再現
 **代わりに `wrangler.jsonc` の `build` ブロックを削除する**こと。
 
 ```
-chmod a+x build.sh && ./build.sh
+node build.js
 ```
 
 ただし `build` ブロックを消すと `wrangler dev` / `wrangler deploy` がビルドを実行しなくなるため、
@@ -141,6 +151,7 @@ Go はイメージ同梱のものをそのまま使う。`go.mod` の `go` デ�
 ## 構成
 
 ```
+build.js         build.sh を OS に応じた bash で起動するラッパー（wrangler の build.command）
 build.sh         Cloudflare / ローカル共通のビルドスクリプト（ツール版を固定）
 wrangler.jsonc   Workers Static Assets の設定
 hugo.toml        Hugo 設定（テーマは module.imports で読み込む）

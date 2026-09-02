@@ -18,8 +18,14 @@ HUGO_VERSION=0.165.0
 # ビルド時のタイムゾーン（日付の表示揺れを防ぐ）
 export TZ=Asia/Tokyo
 
-# Hugo Modules のキャッシュ先。Cloudflare のビルドキャッシュに乗せる
-export HUGO_CACHEDIR="${PWD}/.cache/hugo"
+# Hugo Modules のキャッシュ先。Cloudflare のビルドキャッシュに乗せる。
+# Windows の Git Bash では $PWD が /c/Users/... 形式になり、Windows ネイティブの
+# Hugo はそれを C:\c\Users\... と解釈してしまうため、cygpath で Windows 形式に直す
+if command -v cygpath &>/dev/null; then
+  export HUGO_CACHEDIR="$(cygpath -m "${PWD}")/.cache/hugo"
+else
+  export HUGO_CACHEDIR="${PWD}/.cache/hugo"
+fi
 
 build_temp_dir=""
 cleanup() {
@@ -35,6 +41,11 @@ main() {
   # ローカル実行時に既に同じ版の Hugo があればダウンロードを省く
   if command -v hugo &>/dev/null && hugo version | grep -q "v${HUGO_VERSION}.*+extended"; then
     echo "Hugo ${HUGO_VERSION} (extended) は導入済み。ダウンロードを省略します。"
+  elif [[ "$(uname -s)" == MINGW* || "$(uname -s)" == MSYS* || "$(uname -s)" == CYGWIN* ]]; then
+    # 以下の自動導入は Linux 用 tarball 固定なので、Windows では winget に任せる
+    echo "Hugo ${HUGO_VERSION} (extended) が見つかりません。次で導入してください:" >&2
+    echo "  winget install --id Hugo.Hugo.Extended --version ${HUGO_VERSION} --exact" >&2
+    exit 1
   else
     echo "Installing Hugo ${HUGO_VERSION} (extended)..."
     curl -sfL --output-dir "${build_temp_dir}" -O \

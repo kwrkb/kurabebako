@@ -1,0 +1,4 @@
+# build.sh は Cloudflare（Linux）と Windows の Git Bash の両方で bash が実行する。
+# core.autocrlf=true の Windows で CRLF に変換されると、bash が行末の \r を
+# 構文エラーとして扱い動かなくなるため、シェルスクリプトは常に LF で checkout する。
+*.sh text eol=lf

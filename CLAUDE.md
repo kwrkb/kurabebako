@@ -22,15 +22,17 @@ main へ push
  └→ Cloudflare Workers Builds が起動
      ├ npm clean-install              package.json（wrangler をピン留め）
      └ npx wrangler deploy            ダッシュボードの Deploy command
-        ├→ wrangler.jsonc の build.command
-        │   └→ build.sh               Hugo extended を固定版でDL → hugo build → public/
+        ├→ wrangler.jsonc の build.command（= node build.js）
+        │   └→ build.js → build.sh    OS に応じた bash で build.sh を起動。
+        │                             build.sh が Hugo extended を固定版でDL → hugo build → public/
         └→ public/ を Static Assets としてアップロード
 ```
 
 | ファイル | 役割 |
 | --- | --- |
 | `wrangler.jsonc` | 配信設定。`main` なし＝Worker JS なし。`assets.directory=./public`、`not_found_handling=404-page`（Hugo が出す `404.html` を使う）、`workers_dev`/`preview_urls` は `false` |
-| `build.sh` | **ツール版の唯一の真実**。Hugo の版はここだけで決まる。ローカル実行時は同版が既にあればDLを省く |
+| `build.js` | `build.sh` の起動ラッパー。Windows では Git for Windows の bash、Linux では PATH の bash を使う。ビルド手順は書かない |
+| `build.sh` | **ツール版の唯一の真実**。Hugo の版はここだけで決まる。ローカル実行時は同版が既にあればDLを省く（Windows では未導入なら winget を案内して止まる） |
 | `hugo.toml` | `module.imports` でテーマを読む。`themes/` は空のまま使わない |
 | `go.mod` | Hugo Modules の依存解決用。Go 自体は Cloudflare イメージ同梱のものを使う |
 
@@ -39,6 +41,9 @@ main へ push
 
 `main` への push が本番デプロイに直結する。プレビュー環境はないので、
 確認は `npm run preview`（ローカルで Workers 配信を再現）で行う。
+
+開発環境は **Windows 11 ネイティブ（PowerShell）**。WSL は使わない。
+Hugo は winget（`Hugo.Hugo.Extended`）、Node は fnm で入れる（手順は `README.md`）。
 
 ## 配信ドメイン
 
@@ -156,10 +161,11 @@ main へ push
 ## 作業机リポジトリ
 
 記事のバックログ・記事ごとの調査メモ・観測データ（Search Console、PV、収益）・ASP の申請状況・
-生成画像の作業場は、このリポジトリではなく `~/code/kurabebako-desk`（`kwrkb/kurabebako-desk`、private）に置く。
+生成画像の作業場は、このリポジトリではなく `%USERPROFILE%\Code\kurabebako-desk`（`kwrkb/kurabebako-desk`、private）に置く。
 本番に出ない運用データを、デプロイされるリポジトリに混ぜないため。
 記事を書く前に desk の `backlog.md` で線引きを判定し、調査の生素材を `research/<slug>/` に残す。
-Claude Code からは `claude --add-dir ~/code/kurabebako-desk` で参照する。
+Claude Code からは `claude --add-dir $HOME\Code\kurabebako-desk` で参照する
+（PowerShell では `~` がネイティブコマンドの引数に展開されないため `$HOME` を使う）。
 
 ## 秘匿事項
 

@@ -68,7 +68,7 @@ Hugo は無いディレクトリを無視するのでビルドには影響しな
 正常時は以下が1回ずつ出る。2回出ていたらビルドが二重に走っている。
 
 ```
-[custom build] Running: chmod a+x build.sh && ./build.sh
+[custom build] Running: node build.js
 [custom build] Installing Hugo <version> (extended)...
 ```
 
