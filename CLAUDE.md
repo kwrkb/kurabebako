@@ -82,8 +82,11 @@ Hugo は winget（`Hugo.Hugo.Extended`）、Node は fnm で入れる（手順�
 - Hugo の設定キーは `hugo.toml` に集約する。環境変数での分岐は増やさない
 - 追加の npm パッケージは原則入れない。`devDependencies` は wrangler のみ
 - テーマの上書きは `layouts/` に同名ファイルを置く。テーマ本体（モジュールキャッシュ）は編集しない
-- 記事は `content/posts/` 配下。front matter は `title` / `date` / `draft` / `summary` を必須とする
-  （`hugo new content posts/<slug>.md` で4キーとも生成される）
+- 記事は `content/posts/` 配下。front matter は `title` / `date` / `draft` / `summary` / `lastmod` を必須とする
+  （`hugo new content posts/<slug>.md` で5キーとも生成される）。
+  `lastmod` は「記事の内容を最後に確認した日」で、ヘッダーに「最終確認」として出る。
+  出典節の確認日・実行検証の最終日のうち最新のものと揃え、料金改定などで再検証したら更新する。
+  文言だけの修正では動かさない（git の更新日時は使わない設定にしてある）
 - **URL に載る値はすべて英語**（小文字・ハイフン区切り）。対象はファイル名（＝slug）、
   `tags`、`categories`、セクション名。日本語を混ぜると percent-encode されて
   共有時に読めない長いURLになる。
@@ -156,6 +159,8 @@ Hugo は winget（`Hugo.Hugo.Extended`）、Node は fnm で入れる（手順�
 1 を満たさない対象は載せない。2 を満たさない対象（有料のみ・法人限定・実機や店舗が要る）は
 比較表に検証区分「仕様」で載せてよいが、記事の主役（タイトルに出す対象・結論で推す対象）にはしない。
 検証区分は対象ごとに必ず書く: **実行** = AI が実際に動かして確認した / **仕様** = 公式ドキュメントで確認したのみ。
+表のセルと「比較の前提」の凡例には文字ではなく `{{< verified run >}}` / `{{< verified spec >}}` を書く
+（バッジで表示される。run / spec 以外を渡すとビルドが止まる）。
 
 ### PR 表記とアフィリエイトリンク
 

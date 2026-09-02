@@ -6,6 +6,12 @@ defaultContentLanguage = 'ja'
 
 enableRobotsTXT = true
 
+# 記事の日付は front matter で決める。git の更新日時は使わない
+# （文言修正のコミットで「最終確認日」が動いてしまうため）。
+# lastmod を書かない記事は date が最終確認日になる
+[frontmatter]
+  lastmod = ['lastmod', 'date']
+
 [pagination]
   pagerSize = 20
 
@@ -31,6 +37,18 @@ enableRobotsTXT = true
   # 比較記事は節を行き来するので、目次は開いた状態で始める
   TocOpen = true
   ShowCodeCopyButtons = true
+
+  # トップの冒頭に「何を、どう比べるサイトか」を出す。
+  # 記事一覧だけだと About まで読まないと趣旨が伝わらないため。Content は Markdown
+  [params.homeInfoParams]
+    Title = '技術サービスを、同じ物差しで比べる'
+    Content = '''
+AI ツール・開発環境・CLI・SaaS・サーバーの料金・仕様・制約を、公式の一次情報と実行結果から比較します。
+
+- 出典は公式の料金ページ・ドキュメントのみ。まとめ記事や SNS は使いません
+- AI が実際に動かして確認した「実行」と、文書で確認しただけの「仕様」を区別します
+- 記事ごとに最終確認日を載せます。料金は改定されるので、日付を見てから判断してください
+'''
 
 [menu]
   [[menu.main]]

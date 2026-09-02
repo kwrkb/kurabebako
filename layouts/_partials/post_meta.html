@@ -1,0 +1,32 @@
+{{- /* PaperMod の post_meta.html を上書きし、公開日の隣に「最終確認日」を出す。
+       料金・無料枠の比較では、公開日より「いつ確認した情報か」の方が読者の判断に効くため。
+       .Lastmod は hugo.toml の [frontmatter] で front matter の lastmod → date の順に決まる
+       （git の更新日時は使わない。文言修正のコミットで確認日が動いてしまうため）。
+       記事一覧のフッターでも同じ partial が使われる */ -}}
+{{- $scratch := newScratch }}
+
+{{- if not .Date.IsZero -}}
+    {{- $scratch.Add "meta" (slice (printf "<span title='公開日 %s'>公開 %s</span>" (.Date) (.Date | time.Format (default ":date_long" site.Params.DateFormat)))) }}
+{{- end }}
+
+{{- if and (eq .Section "posts") (not .Lastmod.IsZero) -}}
+    {{- $scratch.Add "meta" (slice (printf "<span class='post-lastmod' title='記事の内容を最後に確認した日'>最終確認 %s</span>" (.Lastmod | time.Format (default ":date_long" site.Params.DateFormat)))) }}
+{{- end }}
+
+{{- if (.Param "ShowReadingTime") -}}
+    {{- $scratch.Add "meta" (slice (printf "<span>%s</span>" (i18n "read_time" .ReadingTime | default (printf "%d min" .ReadingTime)))) }}
+{{- end }}
+
+{{- if (.Param "ShowWordCount") -}}
+    {{- $scratch.Add "meta" (slice (printf "<span>%s</span>" (i18n "words" .WordCount | default (printf "%d words" .WordCount)))) }}
+{{- end }}
+
+{{- if not (.Param "hideAuthor") -}}
+    {{- with (partial "author.html" .) }}
+        {{- $scratch.Add "meta" (slice (printf "<span>%s</span>" .)) }}
+    {{- end }}
+{{- end }}
+
+{{- with ($scratch.Get "meta") }}
+    {{- delimit . "&nbsp;·&nbsp;" | safeHTML -}}
+{{- end -}}

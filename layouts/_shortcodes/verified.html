@@ -1,0 +1,14 @@
+{{- /* 比較表の「検証区分」列に置くバッジ。
+       {{< verified run >}}  → 実行（AI が実際に動かして確認した）
+       {{< verified spec >}} → 仕様（公式ドキュメントで確認したのみ）
+       文字だけだと表の中で埋もれるので、サイトの特徴である区分を一目で分かる形にする。
+       表のセル内に書くため、出力は改行を含めない（改行が入ると Markdown の表が壊れる）。
+       run / spec 以外を渡したらビルドを止める（表記ゆれを防ぐ） */ -}}
+{{- $kind := .Get 0 -}}
+{{- $labels := dict "run" "実行" "spec" "仕様" -}}
+{{- $label := index $labels $kind -}}
+{{- if not $label -}}
+  {{- errorf "verified: 引数は run か spec のみ（%q が渡された）: %s" $kind .Position -}}
+{{- end -}}
+<span class="verified verified-{{ $kind }}">{{ $label }}</span>
+{{- /* 末尾の改行を出さない */ -}}

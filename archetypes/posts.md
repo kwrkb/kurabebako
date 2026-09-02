@@ -1,6 +1,8 @@
 +++
 title = '{{ replace .File.ContentBaseName "-" " " | title }}'
 date = '{{ .Date }}'
+# 最終確認日。出典の確認日・実行検証の最終日と揃え、再検証したら更新する（ヘッダーに出る）
+lastmod = '{{ .Date }}'
 draft = true
 summary = ''
 # tags / categories は URL に載るため英語（小文字・ハイフン区切り）で書く
