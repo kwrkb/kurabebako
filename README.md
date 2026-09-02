@@ -146,7 +146,9 @@ wrangler.jsonc   Workers Static Assets の設定
 hugo.toml        Hugo 設定（テーマは module.imports で読み込む）
 go.mod           Hugo Modules の依存
 content/         記事
-layouts/         テーマ上書き用（現在は空）
+archetypes/      `hugo new` の雛形（posts.md が比較記事の骨組み）
+data/            アフィリエイト案件の台帳
+layouts/         テーマ上書き・shortcode（pr / cta / ranking）
 assets/ static/  アセット
 ```
 

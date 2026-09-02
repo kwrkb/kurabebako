@@ -1,0 +1,13 @@
+{{- /* テーマが本文の直後に呼ぶ拡張点。本文のレンダリング後に呼ばれるので、
+       shortcode が Store に残した印をここで検査できる */ -}}
+
+{{- /* PR 表記だけあってアフィリエイトリンクが無い記事は、読者に嘘を言うことになるので止める */ -}}
+{{- if and (.Store.Get "prDeclared") (not (.Store.Get "hasAffiliate")) -}}
+  {{- errorf "{{< pr >}} があるのに cta / ranking がありません。PR 表記を外してください: %s" .File.Path -}}
+{{- end -}}
+
+{{- /* archetype の指示コメントは HTML コメントで書いてある。消し忘れるとそのまま公開 HTML に
+       出るので止める。記事で HTML コメントを使う理由は他に無い */ -}}
+{{- if findRE `<!--` .RawContent -}}
+  {{- errorf "本文に HTML コメントが残っています。archetype の指示コメントを消してください: %s" .File.Path -}}
+{{- end -}}

@@ -11,6 +11,10 @@
 | ビルドツールの版 | `build.sh` 冒頭の `HUGO_VERSION`（唯一の定義箇所） |
 | 配信の挙動（404・末尾スラッシュ・ドメイン） | `wrangler.jsonc` の `assets` と `workers_dev` |
 | サイト設定・テーマ読み込み | `hugo.toml` |
+| 記事の骨組み | `archetypes/posts.md`（`hugo new content posts/<slug>.md` が使う） |
+| アフィリエイト案件の台帳 | `data/affiliates.toml`（id → 表示名・URL） |
+| PR 表記・リンクボタン・ランキング | `layouts/_shortcodes/{pr,cta,ranking}.html`、見た目は `assets/css/extended/affiliate.css` |
+| 記事の規約違反をビルドで止める仕組み | `layouts/_partials/extend_post_content.html`（本文描画後の検査）と各 shortcode の `errorf` |
 | なぜその構成なのか | `LESSONS.md`、各設定ファイルのコメント |
 
 ## テーマの実体の場所
@@ -38,9 +42,23 @@ hugo config mounts | grep -o '"dir": "[^"]*adityatelange[^"]*"'
   これが無いと配信側の 404 設定が効かない
 - ページネーションは1ページ目も `page/1/` を生成する（エイリアス扱い）
 
+## 記事の検査の流れ
+
+shortcode は本文中の出現順に処理され、`.Page.Store` に印を残す。
+`pr` が `prDeclared`、`cta` / `ranking` が `hasAffiliate` を立てる。
+`cta` / `ranking` は `prDeclared` が無ければその場で `errorf`（＝PR 表記より先にリンクが出るのを防ぐ）。
+本文描画後にテーマが呼ぶ `extend_post_content.html` で、`prDeclared` だけ立っている記事と
+HTML コメントが残っている記事を `errorf` で止める。
+
+`errorf` はビルドを失敗にするが、その場でテンプレートの実行を止めない。
+後続が nil で落ちて本命のエラーが埋もれないよう、`affiliate.html` は未登録 id でも仮の値を返す。
+
+shortcode を連続する行に書くと、Markdown 側で1つの段落として扱われ `<p>` の中に
+`<div>` が入る。前後を空行で区切ると解消する。
+
 ## 空のまま置いているディレクトリ
 
-`assets/` `data/` `i18n/` `layouts/` `static/` `themes/`
+`i18n/` `static/` `themes/`
 
 git は空ディレクトリを追跡しないため、clone 直後には存在しない。
 Hugo は無いディレクトリを無視するのでビルドには影響しない。

@@ -1,0 +1,8 @@
+{{- /* PR 表記。アフィリエイトリンク（cta / ranking）を含む記事では本文の先頭に置く。
+       cta / ranking はこの shortcode より後でないとビルドエラーになる。
+       読者がリンクに触れる前に表記が目に入る位置を、運用ではなく仕組みで保証する */ -}}
+{{- .Page.Store.Set "prDeclared" true -}}
+<div class="pr-notice" role="note">
+  <strong>PR</strong>
+  この記事にはアフィリエイトリンクが含まれます。リンク経由の申込みで当サイトに報酬が入ることがありますが、掲載順や比較内容には影響しません。
+</div>

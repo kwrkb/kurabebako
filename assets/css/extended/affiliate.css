@@ -1,0 +1,48 @@
+/* テーマの色変数（--primary / --theme / --border / --entry / --secondary）に乗せて、
+   ダーク・ライト両方で破綻しないようにする。固定色は使わない */
+.pr-notice {
+  margin: 0 0 1.5rem;
+  padding: .6rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--entry);
+  color: var(--secondary);
+  font-size: .9rem;
+}
+.pr-notice strong {
+  margin-right: .5rem;
+  padding: .1rem .45rem;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font-size: .8rem;
+  letter-spacing: .05em;
+}
+.cta { margin: 1rem 0; }
+.cta-button {
+  display: inline-block;
+  padding: .6rem 1.2rem;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--theme);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: none;
+}
+.cta-button:hover { opacity: .85; }
+.ranking { list-style: none; padding: 0; margin: 1.5rem 0; counter-reset: none; }
+.ranking-item {
+  margin: 0 0 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--entry);
+}
+.ranking-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .4rem; }
+.ranking-rank {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.8rem; height: 1.8rem; border-radius: 50%;
+  background: var(--primary); color: var(--theme); font-weight: 700;
+}
+.ranking-name { font-size: 1.1rem; font-weight: 700; }
+.ranking-reason { color: var(--secondary); }
+.ranking-item .cta { margin: .6rem 0 0; }

@@ -1,0 +1,10 @@
+{{- /* 案件 id を data/affiliates.toml から引く。
+       未登録なら警告ではなくビルドを止める。案件終了で台帳から消したとき、
+       参照が残った記事をリンク切れのまま本番に出さないため。
+       errorf は実行を止めないので、呼び出し側が nil で落ちないよう仮の値を返す */ -}}
+{{- $a := index (site.Data.affiliates | default dict) .id -}}
+{{- if not $a -}}
+  {{- errorf "案件ID %q は data/affiliates.toml に登録されていません: %s" .id .position -}}
+  {{- $a = dict "name" .id "url" "#" -}}
+{{- end -}}
+{{- return $a -}}
