@@ -41,10 +41,14 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 型に沿って記事を投入し、技術面の問題を切り分ける。
 
 - [x] 1本目を型どおりに書き、型の不足を直す（2026-09-02 `static-site-hosting-free-tier`。archetype の変更は不要だった）
+- [x] 検証用 VPS の経路を作る（2026-09-02 ConoHa VPS 3.0 を Terraform + 1Password で作成〜実測〜削除まで AI が自走。構成と結果は desk の `lab/conoha/`、`research/vps-japan/`）
+- [ ] 2本目: 国内 VPS 比較（主役は ConoHa を「実行」区分で。他社は「仕様」区分、実測できたものから「実行」に置き換える）
+- [ ] ASP 審査の前提を揃える（プライバシーポリシー、問い合わせ手段）。A8.net の申請は記事 5 本を目安に
 - [ ] Search Console 登録、sitemap 送信
 - [ ] インデックス数とクロール状況の観測
 
-**判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う
+**判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う。
+収益経路（ASP 承認と案件台帳）が無いまま Phase 3 に入らない
 
 ---
 
@@ -56,7 +60,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 
 ## Phase 4 — 収益の検証（〜12ヶ月）
 
-**判断ポイント**: コスト回収（年約1,600円）＋ CV1件以上で継続。
+**判断ポイント**: コスト回収（ドメイン代 ＋ 検証用 VPS の時間課金分。額は `VISION.md` の最低ライン）＋ CV1件以上で継続。
 ゼロなら仮説そのものを検証する。
 
 ---
