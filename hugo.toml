@@ -36,3 +36,8 @@ enableRobotsTXT = true
     name = '比較記事'
     url = '/posts/'
     weight = 10
+  [[menu.main]]
+    identifier = 'about'
+    name = 'このサイトについて'
+    url = '/about/'
+    weight = 20
