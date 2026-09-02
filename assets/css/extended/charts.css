@@ -1,0 +1,69 @@
+/* bars / svg shortcode の見た目。色はテーマ（PaperMod）の変数を使い、ダークモードに追従させる */
+
+.bars {
+  margin: 1.5rem 0;
+}
+
+.bars-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 16rem) 1fr auto;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.35rem 0;
+  font-size: 0.9rem;
+}
+
+.bars-label {
+  text-align: right;
+}
+
+.bars-track {
+  display: block;
+  height: 1.1rem;
+  border-radius: 4px;
+  background: var(--code-bg);
+  overflow: hidden;
+}
+
+.bars-fill {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  opacity: 0.8;
+}
+
+.bars-value {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bars figcaption,
+.figure-svg figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--secondary);
+  text-align: center;
+}
+
+.figure-svg {
+  margin: 1.5rem 0;
+}
+
+.figure-svg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--content);
+}
+
+/* スマホでは棒を 1 列にする（ラベルの上に棒が来る） */
+@media (max-width: 500px) {
+  .bars-row {
+    grid-template-columns: 1fr auto;
+    gap: 0.2rem 0.6rem;
+  }
+  .bars-label {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+}

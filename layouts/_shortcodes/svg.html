@@ -1,0 +1,16 @@
+{{- /* assets/figures/ に置いた SVG を本文にインラインで埋め込む。
+       <img> ではなくインラインにするのは、線と文字の色を currentColor にして
+       ダークモードに追従させるため（<img> 経由だとページの CSS が届かない）。
+       {{< svg src="vps-japan-minimum-plan-flow.svg" alt="用途別の判断フロー" caption="図: …" >}} */ -}}
+{{- $src := .Get "src" -}}
+{{- $r := resources.Get (printf "figures/%s" $src) -}}
+{{- if not $r -}}
+  {{- errorf "svg: assets/figures/%s が見つかりません: %s" $src .Position -}}
+{{- else -}}
+<figure class="figure-svg" role="img" aria-label="{{ .Get "alt" }}">
+  {{ $r.Content | safeHTML }}
+  {{- with .Get "caption" }}
+  <figcaption>{{ . }}</figcaption>
+  {{- end }}
+</figure>
+{{- end -}}

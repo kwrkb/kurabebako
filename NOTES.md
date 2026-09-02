@@ -14,6 +14,8 @@
 | 記事の骨組み | `archetypes/posts.md`（`hugo new content posts/<slug>.md` が使う） |
 | アフィリエイト案件の台帳 | `data/affiliates.toml`（id → 表示名・URL） |
 | PR 表記・リンクボタン・ランキング | `layouts/_shortcodes/{pr,cta,ranking}.html`、見た目は `assets/css/extended/affiliate.css` |
+| 棒グラフ・SVG 図 | `layouts/_shortcodes/{bars,svg}.html`、見た目は `assets/css/extended/charts.css`。SVG 本体は `assets/figures/` |
+| OGP 画像 | `static/images/og/<slug>.jpg`（記事の `cover.image`、hidden）。生成は desk の `images/gen.sh` |
 | 記事の規約違反をビルドで止める仕組み | `layouts/_partials/extend_post_content.html`（本文描画後の検査）と各 shortcode の `errorf` |
 | なぜその構成なのか | `LESSONS.md`、各設定ファイルのコメント |
 

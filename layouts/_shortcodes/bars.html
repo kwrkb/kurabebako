@@ -1,0 +1,36 @@
+{{- /* 横棒グラフ。数値の横並び（料金・上限・実測値）を表より一目で見せるために使う。
+       1 行 1 件で「ラベル: 数値」と書く。数値は表と同じ出典のものを、カンマ無しで書く。
+       {{< bars unit="円/月" caption="1GB クラスの月上限" >}}
+       WebARENA Indigo 1GB: 449
+       ConoHa 1GB: 1065
+       {{< /bars >}}
+       JS を使わず CSS の幅で描く。色はテーマの変数（assets/css/extended/charts.css） */ -}}
+{{- $unit := .Get "unit" -}}
+{{- $caption := .Get "caption" -}}
+{{- $items := slice -}}
+{{- $max := 0.0 -}}
+{{- range split (trim .Inner "\n ") "\n" -}}
+  {{- $line := trim . " " -}}
+  {{- if $line -}}
+    {{- if not (findRE `^.+:\s*[0-9]+(\.[0-9]+)?\s*$` $line) -}}
+      {{- errorf "bars の各行は「ラベル: 数値」の形式で書いてください（%q）: %s" $line $.Position -}}
+    {{- else -}}
+      {{- $label := replaceRE `:\s*[0-9.]+\s*$` "" $line -}}
+      {{- $v := float (replaceRE `^.*:\s*` "" $line) -}}
+      {{- if gt $v $max }}{{ $max = $v }}{{ end -}}
+      {{- $items = $items | append (dict "label" $label "v" $v) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<figure class="bars">
+{{- range $items }}
+  <div class="bars-row">
+    <span class="bars-label">{{ .label }}</span>
+    <span class="bars-track"><span class="bars-fill" style="width:{{ printf "%.1f" (mul (div .v $max) 100) }}%"></span></span>
+    <span class="bars-value">{{ if eq (float (int .v)) .v }}{{ lang.FormatNumberCustom 0 .v }}{{ else }}{{ .v }}{{ end }}{{ with $unit }} {{ . }}{{ end }}</span>
+  </div>
+{{- end }}
+{{- with $caption }}
+  <figcaption>{{ . }}</figcaption>
+{{- end }}
+</figure>
