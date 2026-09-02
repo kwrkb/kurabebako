@@ -129,6 +129,15 @@ Go はイメージ同梱のものをそのまま使う。`go.mod` の `go` デ�
 ダウンロードが走らない）。**`hugo mod get` はこのディレクティブをローカルの Go 版に書き戻すことがある**ので、
 モジュール更新後は `go.mod` を確認すること。
 
+### 配信ドメイン
+
+本番は **`kurabebako.com`（Custom Domain）のみ**。
+`wrangler.jsonc` で `workers_dev` と `preview_urls` を `false` にしており、
+`*.workers.dev` では配信されない。同一内容が複数ドメインで配信されると
+検索エンジンに重複コンテンツとして扱われるため。
+
+動作確認は本番ドメインか、ローカルの `npm run preview` で行う。
+
 ## 構成
 
 ```

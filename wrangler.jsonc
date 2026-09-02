@@ -6,6 +6,13 @@
   "name": "kurabebako",
   "compatibility_date": "2026-09-02",
 
+  // 本番は kurabebako.com（Custom Domain）のみで配信する。
+  // *.workers.dev と Preview URL を開けたままにすると、同一内容が別ドメインでも
+  // 配信され、検索エンジンに重複コンテンツとしてインデックスされ得るため閉じる。
+  // 動作確認は Custom Domain か `npm run preview`（ローカル）で行う。
+  "workers_dev": false,
+  "preview_urls": false,
+
   // `main` は意図的に置かない。
   // main を持たない = Worker 側の JS を一切実行しない静的配信専用構成となり、
   // アセット配信だけならリクエストが Worker 実行回数を消費しない。
