@@ -153,6 +153,14 @@ main へ push
 - ランキングの順位は本文の比較結果で決め、報酬額で並べ替えない。各行に理由を書く
 - 案件が終了したら台帳から消す。参照している記事がビルドエラーになるので、そこで記事を直す
 
+## 作業机リポジトリ
+
+記事のバックログ・記事ごとの調査メモ・観測データ（Search Console、PV、収益）・ASP の申請状況・
+生成画像の作業場は、このリポジトリではなく `~/code/kurabebako-desk`（`kwrkb/kurabebako-desk`、private）に置く。
+本番に出ない運用データを、デプロイされるリポジトリに混ぜないため。
+記事を書く前に desk の `backlog.md` で線引きを判定し、調査の生素材を `research/<slug>/` に残す。
+Claude Code からは `claude --add-dir ~/code/kurabebako-desk` で参照する。
+
 ## 秘匿事項
 
 README・設定ファイル・コミットメッセージに勤務先が特定される情報を含めない。
