@@ -5,6 +5,12 @@ draft = false
 summary = '国内 VPS 5 サービスの最小プランを、料金・課金単位・お試し・最低利用期間・API の有無で比較。AI やスクリプトから作成〜削除まで自動化するなら ConoHa VPS 3.0、最安で API があるのは WebARENA Indigo。ConoHa は Terraform で実際に作成・計測・削除した結果を載せる。'
 categories = ['hosting']
 tags = ['vps', 'conoha', 'sakura-internet', 'kagoya', 'xserver', 'webarena']
+# OGP 用の画像。本文と一覧には出さない（hidden）。生成は desk の images/gen.sh
+[cover]
+  image = '/images/og/vps-japan-minimum-plan.jpg'
+  alt = '国内 VPS の最小プラン比較'
+  hidden = true
+  hiddenInList = true
 +++
 
 ## 結論

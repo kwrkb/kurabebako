@@ -5,6 +5,12 @@ draft = false
 summary = 'Hugo などで生成した静的サイトを無料で公開できる5サービスを、料金・無料枠・上限・商用利用の可否・前提条件で比較。アフィリエイトや広告を載せる予定があるなら Cloudflare Workers Static Assets が条件を満たす。'
 categories = ['hosting']
 tags = ['static-site', 'cloudflare', 'github-pages', 'netlify', 'vercel']
+# OGP 用の画像。本文と一覧には出さない（hidden）。生成は desk の images/gen.sh
+[cover]
+  image = '/images/og/static-site-hosting-free-tier.jpg'
+  alt = '静的サイトの無料ホスティング比較'
+  hidden = true
+  hiddenInList = true
 +++
 
 ## 結論

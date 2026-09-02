@@ -41,3 +41,13 @@ enableRobotsTXT = true
     name = 'このサイトについて'
     url = '/about/'
     weight = 20
+  [[menu.main]]
+    identifier = 'privacy'
+    name = 'プライバシーポリシー'
+    url = '/privacy/'
+    weight = 30
+  [[menu.main]]
+    identifier = 'contact'
+    name = 'お問い合わせ'
+    url = '/contact/'
+    weight = 40
