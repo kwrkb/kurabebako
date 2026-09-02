@@ -48,6 +48,13 @@ main() {
   echo "Hugo: $(hugo version)"
   command -v go &>/dev/null && echo "Go: $(go version)" || echo "Go: not installed"
 
+  # 出力先を毎回作り直す。
+  # ホスティング側はビルド出力をキャッシュから復元するため、前回の public/ が残る。
+  # Hugo は自分が生成しないファイルを消さないので、削除した記事の HTML が
+  # そのまま再アップロードされ、消したはずのURLが生き続ける。
+  echo "Cleaning output directory..."
+  rm -rf public
+
   echo "Building the project..."
   hugo build --gc --minify
 }
