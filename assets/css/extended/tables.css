@@ -1,0 +1,52 @@
+/* 比較表の見やすさ。
+   テーマは表を横スクロール可能な要素で包むが、狭い画面ではセルが 1〜2 文字幅まで縮んで
+   縦に極端に長くなる。列に最小幅を与えて「縦に伸びる」より「横にスクロールする」を選ぶ。 */
+
+.post-content table {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.post-content table th,
+.post-content table td {
+  min-width: 9rem;
+  vertical-align: top;
+}
+
+/* 料金列は文が長いので、他より広く取って縦に伸びないようにする */
+.post-content table td:nth-child(2),
+.post-content table th:nth-child(2) {
+  min-width: 13rem;
+}
+
+/* 画面が広いときは、表だけ本文の幅（720px）を超えて広げる。
+   7 列の比較表は 720px には収まらず、横スクロールより一覧できる方が読みやすい */
+@media (min-width: 1140px) {
+  .post-content table {
+    width: 1080px;
+    max-width: none;
+    margin-left: calc((100% - 1080px) / 2);
+  }
+}
+
+/* 先頭列（対象名）は折り返さない。検証区分と出典の列は短いので最小幅を外す */
+.post-content table td:first-child,
+.post-content table th:first-child {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.post-content table td:nth-last-child(-n + 2),
+.post-content table th:nth-last-child(-n + 2) {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+/* 本文の行間。日本語はテーマ既定よりやや広い方が読みやすい */
+.post-content {
+  line-height: 1.85;
+}
+
+.post-content li {
+  margin-top: 0.35rem;
+}

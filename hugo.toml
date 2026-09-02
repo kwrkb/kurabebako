@@ -28,6 +28,8 @@ enableRobotsTXT = true
   ShowReadingTime = true
   ShowBreadCrumbs = true
   ShowToc = true
+  # 比較記事は節を行き来するので、目次は開いた状態で始める
+  TocOpen = true
   ShowCodeCopyButtons = true
 
 [menu]

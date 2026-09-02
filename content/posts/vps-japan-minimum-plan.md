@@ -1,5 +1,5 @@
 +++
-title = '国内 VPS の最小プラン比較: ConoHa・さくら・KAGOYA・Xserver・WebARENA Indigo を時間課金と API の有無で選ぶ'
+title = '国内 VPS 5 社の最小プラン比較: 時間課金と API の有無で選ぶ'
 date = '2026-09-02T23:07:57+09:00'
 draft = false
 summary = '国内 VPS 5 サービスの最小プランを、料金・課金単位・お試し・最低利用期間・API の有無で比較。AI やスクリプトから作成〜削除まで自動化するなら ConoHa VPS 3.0、最安で API があるのは WebARENA Indigo。ConoHa は Terraform で実際に作成・計測・削除した結果を載せる。'

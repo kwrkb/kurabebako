@@ -1,5 +1,5 @@
 +++
-title = '静的サイトの無料ホスティング比較: Cloudflare Workers・Cloudflare Pages・GitHub Pages・Netlify・Vercel'
+title = '静的サイトの無料ホスティング 5 社比較: 広告を載せるならどれか'
 date = '2026-09-02T19:43:49+09:00'
 draft = false
 summary = 'Hugo などで生成した静的サイトを無料で公開できる5サービスを、料金・無料枠・上限・商用利用の可否・前提条件で比較。アフィリエイトや広告を載せる予定があるなら Cloudflare Workers Static Assets が条件を満たす。'
