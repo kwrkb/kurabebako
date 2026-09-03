@@ -52,6 +52,16 @@ shortcode は本文中の出現順に処理され、`.Page.Store` に印を残�
 本文描画後にテーマが呼ぶ `extend_post_content.html` で、`prDeclared` だけ立っている記事と
 HTML コメントが残っている記事を `errorf` で止める。
 
+同じ partial で、`content/posts/` の単ページにだけ「記事の型」の検査を掛ける（about / privacy / contact は対象外）。
+見るのは front matter の必須 5 キー（`os.ReadFile` でファイルを読み直す。Hugo が date や summary を補うため
+`.Params` では「書いてあるか」を判定できない）、slug / tags / categories が英小文字・数字・ハイフンであること、
+H2 が型の 6 節と同じ順で並ぶこと、「比較表」節の最初の表が 7 列で各行に `verified` shortcode があること、
+表に `verified run` が 1 つ以上あること。`.RawContent` は CRLF の記事もあるので `\r` を落としてから正規表現を掛ける。
+
+検査の動作確認は、`draft = true` で違反を 1 つ入れた記事を `content/posts/` に置き `hugo -D` を実行する
+（`--quiet` を付けると ERROR 行ごと消えるので付けない）。`date` が現在時刻より後だと記事自体が
+ビルド対象から外れて検査も走らないので、過去の日時にする。確認したら記事を消す。
+
 `errorf` はビルドを失敗にするが、その場でテンプレートの実行を止めない。
 後続が nil で落ちて本命のエラーが埋もれないよう、`affiliate.html` は未登録 id でも仮の値を返す。
 

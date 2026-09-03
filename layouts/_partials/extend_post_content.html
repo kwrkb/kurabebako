@@ -1,5 +1,7 @@
 {{- /* テーマが本文の直後に呼ぶ拡張点。本文のレンダリング後に呼ばれるので、
-       shortcode が Store に残した印をここで検査できる */ -}}
+       shortcode が Store に残した印をここで検査できる。
+       ここで止める理由: 記事は AI が書くため、型の逸脱は「気づいたら直す」では防げない。
+       本番ビルドで機械的に止め、逸脱した記事がデプロイされない状態を仕組みで保証する */ -}}
 
 {{- /* PR 表記だけあってアフィリエイトリンクが無い記事は、読者に嘘を言うことになるので止める */ -}}
 {{- if and (.Store.Get "prDeclared") (not (.Store.Get "hasAffiliate")) -}}
@@ -10,4 +12,75 @@
        出るので止める。記事で HTML コメントを使う理由は他に無い */ -}}
 {{- if findRE `<!--` .RawContent -}}
   {{- errorf "本文に HTML コメントが残っています。archetype の指示コメントを消してください: %s" .File.Path -}}
+{{- end -}}
+
+{{- /* ここから下は比較記事（content/posts/ の単ページ）だけに掛ける「記事の型」の検査。
+       型の正典は CLAUDE.md の「記事の型」と archetypes/posts.md。about / privacy / contact は対象外。
+       Windows で書いた記事は CRLF になり得るので、行末の \r を先に落としてから正規表現を掛ける */ -}}
+{{- if and (eq .Kind "page") (eq .Type "posts") -}}
+  {{- $path := .File.Path -}}
+  {{- $raw := replaceRE "\r" "" .RawContent -}}
+
+  {{- /* 1. front matter の必須 5 キー。Hugo は date や summary を補ってしまうので .Params では
+         「書いてあるか」を判定できない。ファイルを読み直して TOML の行そのものを見る */ -}}
+  {{- $src := replaceRE "\r" "" (os.ReadFile (printf "content/%s" $path)) -}}
+  {{- $fm := "" -}}
+  {{- with findRESubmatch `(?s)^\+\+\+\n(.*?)\n\+\+\+` $src -}}
+    {{- $fm = index (index . 0) 1 -}}
+  {{- else -}}
+    {{- errorf "front matter が +++ で囲まれた TOML になっていません: %s" $path -}}
+  {{- end -}}
+  {{- range $key := slice "title" "date" "lastmod" "draft" "summary" -}}
+    {{- if not (findRE (printf `(?m)^%s\s*=` $key) $fm) -}}
+      {{- errorf "front matter に %s がありません（title / date / lastmod / draft / summary は必須）: %s" $key $path -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if findRE `(?m)^summary\s*=\s*(''|"")\s*$` $fm -}}
+    {{- errorf "summary が空です。一覧と OGP に出る要約を書いてください: %s" $path -}}
+  {{- end -}}
+
+  {{- /* 2. URL に載る値は英小文字・数字・ハイフンのみ（日本語だと percent-encode されて共有時に読めない） */ -}}
+  {{- $slugRE := `^[a-z0-9]+(-[a-z0-9]+)*$` -}}
+  {{- if not (findRE $slugRE .File.ContentBaseName) -}}
+    {{- errorf "ファイル名（slug）は英小文字・数字・ハイフンのみにしてください（%q）: %s" .File.ContentBaseName $path -}}
+  {{- end -}}
+  {{- range $tax := slice "tags" "categories" -}}
+    {{- range $v := (index $.Params $tax) -}}
+      {{- if not (findRE $slugRE (string $v)) -}}
+        {{- errorf "%s の値は英小文字・数字・ハイフンのみにしてください（%q）。表示名は content/%s/<slug>/_index.md の title で与えます: %s" $tax $v $tax $path -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* 3. H2 の構成と順番は固定（節を減らさない・足さない） */ -}}
+  {{- $expected := slice "## 結論" "## 比較表" "## 比較の前提" "## 各対象の詳細" "## 用途別の選び方" "## 出典" -}}
+  {{- $h2 := findRE `(?m)^## .*$` $raw -}}
+  {{- $got := apply $h2 "strings.TrimSpace" "." -}}
+  {{- if ne (delimit $got "\n") (delimit $expected "\n") -}}
+    {{- errorf "H2 の構成が型と違います。期待: [%s] / 実際: [%s]: %s" (delimit $expected " → ") (delimit $got " → ") $path -}}
+  {{- end -}}
+
+  {{- /* 4. 比較表の列と、各行の検証区分。「## 比較表」から「## 比較の前提」までを切り出して見る */ -}}
+  {{- $header := "| 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |" -}}
+  {{- with findRESubmatch `(?s)\n## 比較表\n(.*?)\n## 比較の前提` $raw -}}
+    {{- $seg := index (index . 0) 1 -}}
+    {{- $rows := apply (findRE `(?m)^\|.*$` $seg) "strings.TrimSpace" "." -}}
+    {{- if lt (len $rows) 3 -}}
+      {{- errorf "「比較表」節に表がありません（ヘッダー・区切り・対象 1 行以上が必要）: %s" $path -}}
+    {{- else -}}
+      {{- if ne (index $rows 0) $header -}}
+        {{- errorf "比較表の列が型と違います。期待: %s / 実際: %s: %s" $header (index $rows 0) $path -}}
+      {{- end -}}
+      {{- /* 検証区分は対象ごとに必ず書く。文字ではなく verified shortcode で（表記ゆれを防ぐ） */ -}}
+      {{- range $i, $row := $rows -}}
+        {{- if and (ge $i 2) (not (findRE `\{\{< verified (run|spec) >\}\}` $row)) -}}
+          {{- errorf "比較表の行に検証区分（{{< verified run >}} / {{< verified spec >}}）がありません: %s / 行: %s" $path (substr $row 0 40) -}}
+        {{- end -}}
+      {{- end -}}
+      {{- /* 「AI が実際に動かした対象」がいない記事は、このサイトの差別化を満たさない（CLAUDE.md「扱う対象の線引き」） */ -}}
+      {{- if not (findRE `\{\{< verified run >\}\}` $seg) -}}
+        {{- errorf "比較表に {{< verified run >}} の対象が 1 つもありません。実行区分の主役を置いてください: %s" $path -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}

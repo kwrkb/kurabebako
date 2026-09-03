@@ -147,6 +147,8 @@ Hugo は winget（`Hugo.Hugo.Extended`）、Node は fnm で入れる（手順�
 
 すべての記事は比較記事で、骨組みは `archetypes/posts.md` にある。
 `hugo new content posts/<slug>.md` で生成し、見出しの構成と比較表の列は変えない。節を減らさない。
+型の違反（必須 front matter・見出しの構成と順番・比較表の列・各行の検証区分・実行区分の有無・URL に載る値の英語）は
+ビルドで止まる（`layouts/_partials/extend_post_content.html`）。
 
 - 見出し: 結論 → 比較表 → 比較の前提 → 各対象の詳細 → 用途別の選び方 → 出典
 - 比較表の列: 対象 / 料金 / 無料枠 / 主な制約 / 前提条件 / 検証区分 / 出典
