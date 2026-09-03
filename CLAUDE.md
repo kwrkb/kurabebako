@@ -80,6 +80,10 @@ Hugo は winget（`Hugo.Hugo.Extended`）、Node は fnm で入れる（手順�
 - `main` 以外を push すると Cloudflare Workers Builds が非本番ビルドを走らせることがある。
   成果物は出ずビルド分数だけ消費するので、ブランチを常用し始めたらダッシュボードの Builds 設定で
   非本番ブランチのビルドを止める
+- GitHub Issue は**提案の置き場**で、タスクの正典ではない（フェーズは `PLAN.md`、記事候補は desk の `backlog.md`）。
+  Issue を起点に作業するときも上の運用どおり `main` に直接コミットする。ブランチを切って Draft PR を作る
+  `resolve-gh-issue` の手順はこのリポジトリでは使わない。リポジトリは public なので、報酬額・計測値など
+  desk に置く情報を Issue に書かない
 
 ## 変更してはいけない前提
 
