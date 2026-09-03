@@ -46,7 +46,8 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [ ] 10 本まで投入する（候補と線引きは desk の `backlog.md`。1 本ごとに「実行」区分の主役を置き、収益に近い領域と検索需要が大きい領域を混ぜる）
   - 3 本目: 死活監視の無料枠比較（2026-09-03 `uptime-monitoring-free-tier`。UptimeRobot / Checkly / Uptime Kuma を「実行」区分で。手順は desk の `lab/uptime/`）
 - [ ] ASP 審査の前提を揃える（プライバシーポリシー、問い合わせ手段）。A8.net の申請は記事 5 本を目安に
-- [ ] Search Console 登録、sitemap 送信
+- [x] Search Console 登録（DNS の TXT レコードで所有権を確認済み。2026-09-04 時点でデータはまだ無い）
+- [ ] sitemap 送信（`https://kurabebako.com/sitemap.xml`。送信済みかは Search Console の「サイトマップ」で確認する）
 - [ ] インデックス数とクロール状況の観測
 
 **判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う。
