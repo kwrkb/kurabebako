@@ -44,6 +44,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [x] 検証用 VPS の経路を作る（2026-09-02 ConoHa VPS 3.0 を Terraform + 1Password で作成〜実測〜削除まで AI が自走。構成と結果は desk の `lab/conoha/`、`research/vps-japan/`）
 - [x] 2本目: 国内 VPS 比較（2026-09-02 `vps-japan-minimum-plan`。主役は ConoHa を「実行」区分で。他社は「仕様」区分、実測できたものから「実行」に置き換える）
 - [ ] 10 本まで投入する（候補と線引きは desk の `backlog.md`。1 本ごとに「実行」区分の主役を置き、収益に近い領域と検索需要が大きい領域を混ぜる）
+  - 3 本目: 死活監視の無料枠比較（2026-09-03 `uptime-monitoring-free-tier`。UptimeRobot / Checkly / Uptime Kuma を「実行」区分で。手順は desk の `lab/uptime/`）
 - [ ] ASP 審査の前提を揃える（プライバシーポリシー、問い合わせ手段）。A8.net の申請は記事 5 本を目安に
 - [ ] Search Console 登録、sitemap 送信
 - [ ] インデックス数とクロール状況の観測
