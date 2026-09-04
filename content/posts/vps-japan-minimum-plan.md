@@ -51,7 +51,8 @@ Xserver VPS 2GB（参考）: 1980
   個人が支払い手段を登録すれば申し込める 5 サービスです。各社の最小プランと、Ubuntu 24.04 を動かせる最小プランを載せました
 - 除外したもの: AWS Lightsail・Google Cloud・Vultr などの海外事業者。通貨・税・リージョンの前提が揃わないため、別の記事で扱います。
   レンタルサーバーは root 権限がなく比較軸が異なるため、ConoHa の GPU プランと Windows Server プランは用途が違うため、それぞれ外しました。
-  静的サイトを置くだけなら VPS は要らず、無料ホスティングの比較は[別の記事](/posts/static-site-hosting-free-tier/)にまとめています
+  静的サイトを置くだけなら VPS は要らず、無料ホスティングの比較は[別の記事](/posts/static-site-hosting-free-tier/)にまとめています。
+  root 権限が不要なら、[国内の共用レンタルサーバー比較](/posts/shared-hosting-japan/)のほうが月額を抑えられます
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
 - 料金は各社の公式ページの税込表記をそのまま載せています。キャンペーン価格は含めていません
 

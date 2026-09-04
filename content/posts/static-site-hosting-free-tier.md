@@ -43,7 +43,8 @@ Netlify Free は月のクレジットを使い切るとサイトが止まりま�
 - 除外したもの: Firebase Hosting・Render・Surge など。初回は対象を 5 つに絞ったためで、
   次回以降の更新で追加します。VPS やレンタルサーバーは、無料枠での常時公開を前提にできず
   比較軸（無料枠・用途制限）が揃わないため対象外にしました。
-  サーバーごと借りる場合の国内 VPS の最小プランは、[別の記事](/posts/vps-japan-minimum-plan/)で比べています
+  サーバーごと借りる場合の国内 VPS の最小プランは、[別の記事](/posts/vps-japan-minimum-plan/)で比べています。
+  root 権限は要らないが WordPress やメールも使いたい場合は、[国内の共用レンタルサーバー比較](/posts/shared-hosting-japan/)が対象になります
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
 - 料金は USD 表記の公式価格をそのまま載せ、税と為替は考慮していません
 

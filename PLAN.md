@@ -46,6 +46,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [x] 2本目: 国内 VPS 比較（2026-09-02 `vps-japan-minimum-plan`。主役は ConoHa を「実行」区分で。他社は「仕様」区分、実測できたものから「実行」に置き換える）
 - [ ] 10 本まで投入する（候補と線引きは desk の `backlog.md`。1 本ごとに「実行」区分の主役を置き、収益に近い領域と検索需要が大きい領域を混ぜる）
   - 3 本目: 死活監視の無料枠比較（2026-09-03 `uptime-monitoring-free-tier`。UptimeRobot / Checkly / Uptime Kuma を「実行」区分で。手順は desk の `lab/uptime/`）
+  - 4 本目: 国内の共用レンタルサーバー比較（2026-09-05 `shared-hosting-japan`。エックスサーバーを「実行」区分で。お試し中の API キーで REST API・CLI・MCP を動かした。手順は desk の `lab/xserver/`）
 - [x] 記事どうしの内部リンクを張る（2026-09-04 に既存 3 本を相互リンクにした。4 本目からは `CLAUDE.md`「記事の型」の内部リンクの規約に従い、新記事を出すたびに既存記事側からも足す）
 - [x] 型の検査を 2 つ広げる（2026-09-04。未来日付・expiryDate でビルド対象から外れた記事は `site_checks.html` で、`lastmod` が出典の確認日より古い記事と確認日の無い出典行は `extend_post_content.html` で止める）
 - [x] ASP 審査の前提を揃える（2026-09-02 プライバシーポリシー・問い合わせ・About を公開。本番で応答を確認）
