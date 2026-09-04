@@ -83,4 +83,31 @@
       {{- end -}}
     {{- end -}}
   {{- end -}}
+  {{- /* 5. 出典の各行に確認日があり、lastmod がその最新日より古くないこと。
+         lastmod は「記事の内容を最後に確認した日」で、出典を確認し直したのに lastmod を
+         上げ忘れると、ヘッダーの「最終確認」が本文より古い日付を読者に見せることになる */ -}}
+  {{- with findRESubmatch `(?s)\n## 出典\n(.*)\z` $raw -}}
+    {{- $seg := index (index . 0) 1 -}}
+    {{- $items := apply (findRE `(?m)^\d+\.\s.*$` $seg) "strings.TrimSpace" "." -}}
+    {{- if not $items -}}
+      {{- errorf "「出典」節に番号付きの出典がありません（`1. [ページ名](URL) — YYYY-MM-DD 確認` の形式）: %s" $path -}}
+    {{- end -}}
+    {{- $latest := "" -}}
+    {{- range $item := $items -}}
+      {{- $m := findRESubmatch `— (\d{4}-\d{2}-\d{2}) 確認$` $item -}}
+      {{- if not $m -}}
+        {{- errorf "出典の行末は `— YYYY-MM-DD 確認` で終えてください: %s / 行: %s" $path (substr $item 0 40) -}}
+      {{- else -}}
+        {{- $d := index (index $m 0) 1 -}}
+        {{- if gt $d $latest -}}{{- $latest = $d -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- /* ISO 形式の日付文字列は辞書順が時系列順なので、文字列のまま比べる */ -}}
+    {{- $lastmod := $.Lastmod | time.Format "2006-01-02" -}}
+    {{- if and $latest (lt $lastmod $latest) -}}
+      {{- errorf "lastmod（%s）が出典の最新の確認日（%s）より古いです。再確認した日に揃えてください: %s" $lastmod $latest $path -}}
+    {{- end -}}
+  {{- else -}}
+    {{- errorf "「出典」節が本文の末尾にありません: %s" $path -}}
+  {{- end -}}
 {{- end -}}

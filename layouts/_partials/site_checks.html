@@ -1,0 +1,25 @@
+{{- /* サイト全体に掛ける検査。extend_head.html からトップページの描画時に 1 回だけ呼ばれる。
+
+       Hugo は date が未来の記事と expiryDate を過ぎた記事を、警告もエラーも出さずに
+       ビルド対象から外す（LESSONS「記事の日付を『これから公開する時刻』で入れる」）。
+       ページが無いので extend_post_content.html の検査は走らず、ビルドログのページ数が
+       減ることでしか気づけない。そこで content/posts/ のファイル一覧と、実際に生成された
+       ページ一覧を突き合わせ、draft でないのに生成されていない記事があれば止める。
+       `npm run dev` は --buildFuture 付きなので未来日付でも生成され、この検査は通る。
+       本番ビルド（hugo --gc --minify）で止まる */ -}}
+{{- $built := slice -}}
+{{- range where site.RegularPages "Section" "posts" -}}
+  {{- with .File -}}
+    {{- $built = $built | append (replace .Path "\\" "/") -}}
+  {{- end -}}
+{{- end -}}
+{{- range os.ReadDir "content/posts" -}}
+  {{- if and (not .IsDir) (ne .Name "_index.md") (strings.HasSuffix .Name ".md") -}}
+    {{- $path := printf "posts/%s" .Name -}}
+    {{- $src := replaceRE "\r" "" (os.ReadFile (printf "content/%s" $path)) -}}
+    {{- $isDraft := findRE `(?m)^draft\s*=\s*true\s*$` $src -}}
+    {{- if and (not $isDraft) (not (in $built $path)) -}}
+      {{- errorf "content/%s は draft ではないのにビルド対象に入っていません。date が未来か expiryDate を過ぎています。date を現在以前にしてください" $path -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
