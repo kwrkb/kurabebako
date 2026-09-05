@@ -46,6 +46,15 @@ main() {
     echo "Hugo ${HUGO_VERSION} (extended) が見つかりません。次で導入してください:" >&2
     echo "  winget install --id Hugo.Hugo.Extended --version ${HUGO_VERSION} --exact" >&2
     exit 1
+  elif [[ "$(uname -s)" == Darwin ]]; then
+    # macOS でも Linux 用 tarball を落とすと ~/.local/hugo の Mac 用バイナリを実行不能なもので
+    # 上書きしてしまう（wrangler dev の子プロセスで PATH が通っていないと実際に起きた）。
+    # 公式配布は .pkg のみなので、pkgutil で展開して中のバイナリだけ置く手順を案内して止まる
+    echo "Hugo ${HUGO_VERSION} (extended) が見つかりません。次で導入してください:" >&2
+    echo "  curl -fL -o /tmp/hugo.pkg https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_darwin-universal.pkg" >&2
+    echo "  pkgutil --expand-full /tmp/hugo.pkg /tmp/hugo-pkg && mkdir -p ~/.local/hugo && cp /tmp/hugo-pkg/Payload/hugo ~/.local/hugo/hugo" >&2
+    echo "  そのうえで ~/.local/hugo を PATH に入れる（~/.zshrc）" >&2
+    exit 1
   else
     echo "Installing Hugo ${HUGO_VERSION} (extended)..."
     curl -sfL --output-dir "${build_temp_dir}" -O \

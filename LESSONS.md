@@ -306,3 +306,22 @@ Claude Code から呼んだ agy は `escalate_admin` の権限要求をヘッド
 **覆す条件**
 運営者が agy 側の設定に `escalate_admin` の allow ルールを入れた場合。
 または、図形だけでは表せないモチーフ（写実的な質感など）が必要になった場合。
+
+## macOS の Hugo は brew ではなく、公式 .pkg を展開して build.sh と同版を ~/.local/hugo に置いた
+
+**却下した案**
+`brew install hugo` で入れる。`build.sh` の Linux 用自動導入をそのまま macOS でも走らせる。
+`.pkg` を `installer` で /usr/local に入れる。
+
+**決め手**
+brew の hugo は最新版に追従し、`build.sh` の `HUGO_VERSION=0.165.0` と固定できない（CLAUDE.md の
+「ローカルの hugo version は build.sh と常に一致させる」に反する）。
+`build.sh` の自動導入は `linux-amd64` tarball 固定で、`wrangler dev` の子プロセスに PATH が通っていなかった際に
+実際に走り、`~/.local/hugo/hugo` を `cannot execute binary file` になる Linux バイナリで上書きした。
+v0.165.0 の macOS 向け公式配布は `.pkg` のみ（tar.gz なし）。`pkgutil --expand-full` なら sudo 無しで
+`Payload/hugo` を取り出せ、置き場所を `build.sh` の Linux 時と同じ `~/.local/hugo` に揃えられる。
+これを受けて `build.sh` に Darwin 分岐を足し、未導入なら自動導入せず手順を表示して止まるようにした。
+
+**覆す条件**
+Hugo が macOS 向けに tar.gz 配布を再開し、`build.sh` の自動導入を OS 別に書ける場合。
+または、開発環境が Windows に戻り、macOS の分岐が不要になった場合。

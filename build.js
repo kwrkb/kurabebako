@@ -5,7 +5,8 @@
 // wrangler の build.command は Windows では cmd.exe で実行されるため、
 // `chmod` や `./build.sh` が使えない。さらに Windows の PATH 上の `bash` は
 // WSL の bash（System32）に解決されるので、Git for Windows 同梱の bash を明示して呼ぶ。
-// Cloudflare（Linux）では PATH の bash をそのまま使う。
+// Cloudflare（Linux）と macOS では PATH の bash をそのまま使う。
+// 開発環境は macOS に移ったが、Windows 向けの分岐は動作実績があるので残している。
 //
 // ビルド手順そのものは build.sh に集約している。ここには置かない。
 //------------------------------------------------------------------------------

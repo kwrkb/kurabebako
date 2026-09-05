@@ -6,66 +6,63 @@ AIツール・開発環境・CLI・SaaS・サーバーの比較まとめサイ�
 - 静的サイトジェネレータ: [Hugo](https://gohugo.io/)（extended 0.165.0）
 - ホスティング: Cloudflare Workers (Static Assets)　※ Cloudflare Pages は使わない
 
-## セットアップ（Windows 11 ネイティブ / PowerShell）
+## セットアップ（macOS / zsh）
 
-WSL は使わない。リポジトリは `%USERPROFILE%\Code\kurabebako` に置く
+リポジトリは `~/Code/kurabebako` に置く
 （作業机リポジトリ `kurabebako-desk` を同じ親ディレクトリに並べる前提）。
-以下はすべて PowerShell で実行する。
+以下はすべてターミナル（zsh）で実行する。
 
-### 1. Git for Windows の確認
+### 1. Hugo (extended) の導入
 
-`build.sh` は Git for Windows 同梱の bash（`C:\Program Files\Git\bin\bash.exe`）で実行される。
-`build.js` がこのパスを探すので、Git は既定の場所に入れておく。
+`build.sh` の `HUGO_VERSION` と同じ版を使う。Homebrew の `hugo` は最新版に追従して版を固定できないので使わない。
+公式の macOS 向け配布は `.pkg` のみなので、`pkgutil` で展開してバイナリだけ `~/.local/hugo` に置く（sudo 不要）。
 
-```powershell
-git --version
+```bash
+V=0.165.0
+curl -fL -o /tmp/hugo.pkg "https://github.com/gohugoio/hugo/releases/download/v${V}/hugo_extended_${V}_darwin-universal.pkg"
+pkgutil --expand-full /tmp/hugo.pkg /tmp/hugo-pkg
+mkdir -p ~/.local/hugo && cp /tmp/hugo-pkg/Payload/hugo ~/.local/hugo/hugo && chmod +x ~/.local/hugo/hugo
+echo 'export PATH="$HOME/.local/hugo:$PATH"' >> ~/.zshrc
 ```
 
-### 2. Hugo (extended) の確認
-
-```powershell
+```bash
 hugo version
-# => hugo v0.165.0-... +extended windows/amd64  ならOK
+# => hugo v0.165.0-... +extended darwin/arm64  ならOK
 ```
 
 `+extended` が付いていること、`build.sh` の `HUGO_VERSION` と一致していることの2点を確認する。
-未インストール、または standard 版・別バージョンだった場合は winget で版を固定して入れる。
+版を上げるときは `build.sh` の `HUGO_VERSION` を変え、上の手順で同版を置き直す。
 
-```powershell
-winget install --id Hugo.Hugo.Extended --version 0.165.0 --exact
-```
+> `~/.local/hugo` が PATH に無い状態で `build.sh` を実行すると、macOS では自動導入せず上の手順を表示して止まる。
+> 自動導入は Linux 用 tarball 固定で、そのまま走ると Mac 用バイナリを実行不能なもので上書きするため。
 
-> **`Hugo.Hugo`（standard 版）は使わない。** Sass / WebP を使う構成で詰まる。
-> 版を上げるときは `build.sh` の `HUGO_VERSION` と、この winget の `--version` を揃える。
+### 2. Go の確認
 
-### 3. Go の確認
+Hugo Modules の解決に Go が必要。Homebrew の `go` で入れる。
 
-Hugo Modules の解決に Go が必要。winget の `GoLang.Go` で入れる。
-
-```powershell
+```bash
 go version   # 1.23.0 以上
 ```
 
-### 4. Node 依存
+### 3. Node 依存
 
-Node は fnm で入れる（`fnm install --lts` → `fnm default lts-latest`）。
-PowerShell のプロファイルに `fnm env --use-on-cd | Out-String | Invoke-Expression` が
-入っていないと `npm` が見つからないので注意。
+Node は fnm で入れる（`brew install fnm` → `fnm install --lts` → `fnm default lts-latest`）。
+`~/.zshrc` に `eval "$(fnm env --use-on-cd)"` が入っていないと `npm` が見つからないので注意。
 
-```powershell
+```bash
 npm ci   # wrangler のみ
 ```
 
-### 5. 動作確認
+### 4. 動作確認
 
-```powershell
+```bash
 npm run build     # public/ が生成される
 npm run preview   # http://localhost:8787 で Workers 配信を再現
 ```
 
 ### 改行コードについて
 
-`build.sh` は `.gitattributes` で LF 固定にしている。`core.autocrlf=true` の環境で CRLF に
+`build.sh` は `.gitattributes` で LF 固定にしている。Windows など `core.autocrlf=true` の環境で CRLF に
 変換されると bash が行末の `\r` を構文エラーにするため。`build.sh` を編集するときも LF を保つ。
 
 ## コマンド
@@ -100,9 +97,11 @@ npm run preview   # http://localhost:8787 で Workers 配信を再現
 ```
 
 `build.js` は OS に応じた bash で `build.sh` を起動するだけの薄いラッパー。
+macOS と Cloudflare（Linux）では PATH の bash をそのまま使う。
 Cloudflare 公式の例は `chmod a+x build.sh && ./build.sh` だが、Windows では
 `build.command` が cmd.exe で実行されるため `chmod` が無く、PATH 上の `bash` も
-WSL に解決される。そのため node 経由で Git for Windows の bash を明示して呼んでいる。
+WSL に解決される。そのため node 経由で bash を選んで呼ぶ形にした。Windows で開発していた時期の
+対応で、開発環境が macOS に移った後も残してある。
 ビルド手順そのものは `build.sh` に集約しており、`build.js` には書かない。
 
 ダッシュボード側の Build command にも同じものを入れると **ビルドが2回走る**ため空欄にする。
