@@ -52,7 +52,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [x] ASP 審査の前提を揃える（2026-09-02 プライバシーポリシー・問い合わせ・About を公開。本番で応答を確認）
 - [ ] A8.net に申請する（記事 5 本を目安に。申請前に `content/privacy.md` の ASP の文を未提携の現状に合わせる）
 - [x] Search Console 登録（DNS の TXT レコードで所有権を確認済み。2026-09-04 時点でデータはまだ無い）
-- [ ] sitemap 送信（`https://kurabebako.com/sitemap.xml`。送信済みかは Search Console の「サイトマップ」で確認する）
+- [x] sitemap 送信（`https://kurabebako.com/sitemap.xml`。2026-09-05 に Search Console の「サイトマップ」で設置済みを確認。`robots.txt` からも参照している）
 - [ ] インデックス数とクロール状況の観測
 
 **判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う。
