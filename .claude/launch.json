@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "preview",
-      "runtimeExecutable": "fnm",
-      "runtimeArgs": ["exec", "--using=24", "--", "npm.cmd", "run", "preview"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview"],
       "port": 8787
     }
   ]

@@ -325,3 +325,20 @@ v0.165.0 の macOS 向け公式配布は `.pkg` のみ（tar.gz なし）。`pkg
 **覆す条件**
 Hugo が macOS 向けに tar.gz 配布を再開し、`build.sh` の自動導入を OS 別に書ける場合。
 または、開発環境が Windows に戻り、macOS の分岐が不要になった場合。
+
+## 無料枠の上限を棒グラフにせず、run 相当の注入時間を載せた
+
+**却下した案**
+5 本目（シークレット管理 CLI 比較）の `{{< bars >}}` に、各サービスの無料枠の上限（Bitwarden の machine account 3、
+Infisical の identity 5、Doppler の service token 50 など）を並べる。
+
+**決め手**
+上限の単位が machine account / project / identity / environment / service token とサービスごとに違い、同じ軸に載らない。
+`bars` shortcode は「ラベル: 数値」の 1 系列しか受けず、単位は figure 全体で 1 つ（`unit` 属性）なので、
+単位の違う値を並べると読者に同種の量として見せてしまう。同じ単位で 6 つに揃う実測値は
+「secret 1 件を子プロセスに注入して起動するまでの時間（ms）」だけだったので、それを載せ、上限は表と前提節で文字にした。
+
+**覆す条件**
+`bars` が系列ごとの単位や複数系列を扱えるようになった場合。
+または、6 サービスの無料枠が同じ単位（たとえば「無料で作れる機械向けトークンの数」）で公式に揃った場合。
+
