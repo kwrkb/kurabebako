@@ -29,8 +29,8 @@ Free プランで machine account 3 つ・project 3 つまで持て、`bws run` 
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
-| Bitwarden Secrets Manager | Free（USD 0）。有料は Teams USD 6/ユーザー/月、Enterprise USD 12/ユーザー/月 | ユーザー 2・machine account 3・project 3。secret 数は無制限 | project の 4 つ目は 400 で拒否（「maximum number of projects (3) for this plan」）。machine account の権限は project ごとに web vault で付け、CLI からは変えられない。access token は Bitwarden 側に保存されず再表示できない | Bitwarden アカウント（Free）に Free organization を作り、Secrets Manager を有効化。カード要否は料金ページに記載なし。`bws` はバイナリか Docker | {{< verified run >}} | [1][2][4][7][8] |
-| Infisical | Free（USD 0）。有料は Pro USD 20/identity/月（30 日トライアル） | identity 5・environment 3・secret sync 10。project 数は無制限、監査ログの保持なし | environment の 4 つ目は 400 で拒否（「environment limit reached. Upgrade plan」）。project の作成と identity の操作は CLI に無く REST API。identity の token は JWT で、TTL（既定 30 日）と接続元 IP の制限は作成時に決める | Infisical Cloud の Free にサインアップ。無料プランにカードは不要と料金ページに明記。machine identity に Universal Auth か Token Auth を付ける。ソース公開でセルフホスト可 | {{< verified run >}} | [9][10][11][12][13] |
+| Bitwarden Secrets Manager | Free（USD 0）。有料は Teams USD 6/ユーザー/月、Enterprise USD 12/ユーザー/月 | ユーザー 2・machine account 3・project 3。secret 数は無制限 | project の 4 つ目は 400 で拒否（「maximum number of projects (3) for this plan」）。machine account の権限は project ごとに web vault で付け、CLI からは変えられない。access token は Bitwarden 側に保存されず再表示できない | Bitwarden アカウント（Free）に Free organization を作り、Secrets Manager を有効化。料金ページにカード要否の記載は無く、実際の登録ではカード不要だった。`bws` はバイナリか Docker | {{< verified run >}} | [1][2][4][7][8] |
+| Infisical | Free（USD 0）。有料は Pro USD 20/identity/月（30 日トライアル） | identity 5・environment 3・secret sync 10。project 数は無制限、監査ログの保持なし | environment の 4 つ目は 400 で拒否（「environment limit reached. Upgrade plan」）。project の作成と identity の操作は CLI に無く REST API。identity の token は JWT で、TTL（既定 30 日）と接続元 IP の制限は作成時に決める | Infisical Cloud の Free にサインアップ。無料プランにカードは不要と料金ページに明記（実際の登録でも不要）。machine identity に Universal Auth か Token Auth を付ける。ソース公開でセルフホスト可 | {{< verified run >}} | [9][10][11][12][13] |
 | Doppler | Developer（USD 0、3 ユーザーまで。4 人目から USD 8/月）。有料は Team USD 21/ユーザー/月（14 日トライアル） | project 10・environment 4・service token 50・CLI token 5/ユーザー。監査ログは 3 日 | environment の 5 つ目は拒否（「reached its limit of 4 environments. Upgrade to the Team plan」）。service account は Team / Enterprise のみで、Developer で機械向けに使えるのは config 単位の service token のみ | アカウントのみ。サインアップにカード登録は不要（実際に登録して確認）。personal token はダッシュボードで発行し、service token は CLI から作れる | {{< verified run >}} | [14][15][16][17] |
 | 1Password | Individual USD 2.99/月（初年度。以後 3.99）、Families USD 4.49/月（初年度。以後 5.99）。無料プランなし | 14 日トライアルのみ | レート制限が 3 段: トークンあたり write 100/時・read 1,000/時、アカウントあたり 1,000/日（Individual / Families）。超過は 429。拒否された書き込みも write に数えられる。サービスアカウントの権限は vault 単位で作成後に変更不可、Personal / Private vault は対象外 | 有料サブスクリプション。サービスアカウントは web で作成し、CLI からは作れない。`op` はバイナリ | {{< verified run >}} | [18][19][20][21] |
 | HashiCorp Vault Community | 無料（セルフホスト）。HCP Vault Dedicated は組織作成時に USD 500 の trial credit（6 か月） | セルフホストに上限なし | ライセンスは BUSL 1.1（ホスト型で第三者に提供する用途は対象外）。`run` 相当のサブコマンドは無く、Agent の設定ファイルが要る。`-dev` モードは in-memory で本番利用不可。バイナリ 514 MB、dev サーバーの常駐メモリ 148 MB（実測） | バイナリを置いて自分でサーバーを起動する。アカウント・カードとも不要 | {{< verified run >}} | [22][23][24][25][26] |
@@ -74,7 +74,7 @@ Free の organization に machine account を 3 つまで置け、そのトー�
   Free の上限はユーザー 2・machine account 3・project 3 で、secret の数に上限はありません [1][2]
 - **制約**: machine account の権限は project ごとに「Can read」か「Can read, write」を web vault で選びます。CLI から権限を変える手段はありません [7]。
   access token は Bitwarden 側に保存されず再表示できません。有効期限は作成時に決め、既定は無期限です [8]。Free organization はコレクションが 2 つまでです [6]
-- **前提条件**: Bitwarden アカウント（Free）と Free organization、そこで Secrets Manager を有効にします。カード登録の要否は料金ページに記載がありません [1]。
+- **前提条件**: Bitwarden アカウント（Free）と Free organization、そこで Secrets Manager を有効にします。カード登録の要否は料金ページに記載がありませんが、2026-09-05 の実際の登録では Free organization の作成まで求められませんでした [1]。
   `bws` はバイナリ（12 MB）か Docker イメージで配布され、認証は環境変数 `BWS_ACCESS_TOKEN` だけです [4]
 - **検証した内容**: 2026-09-05 に bws 2.1.0 で実行しました。認証は machine account の access token（94 文字）だけで、`bws project list` が 0.5 秒で返ります。
 
@@ -100,7 +100,7 @@ CLI と REST API の両方が公開されていて、identity（機械向けの�
 - **制約**: environment の 4 つ目を作ると 400「Failed to create environment due to environment limit reached. Upgrade plan」で止まります。
   project の作成と identity の操作は CLI に無く、REST API を使います。identity の access token は JWT で、TTL（既定 30 日）・最大使用回数・接続元 IP（既定 0.0.0.0/0）は Token Auth の設定で決めます [12][13]。
   `secrets delete` は `--type` の既定が `personal` のため、identity のトークンでは `--type shared` を付けないと 400「Must be user to delete personal secret」になります [11]
-- **前提条件**: Infisical Cloud の Free にサインアップし、machine identity に Universal Auth（client id / secret）か Token Auth を付けます。
+- **前提条件**: Infisical Cloud の Free にサインアップし、machine identity に Universal Auth（client id / secret）か Token Auth を付けます。サインアップにカード登録は求められませんでした（2026-09-05 に実際に登録）。
   `infisical` はバイナリ（122 MB）で、`--token` か環境変数 `INFISICAL_TOKEN` で認証します [10][12]。ソースが公開されていてセルフホストもできます [9]
 - **検証した内容**: 2026-09-05 に infisical 0.43.129 と REST API で実行しました。identity は Token Auth（TTL 30 日、IP 制限有効）です。
 
