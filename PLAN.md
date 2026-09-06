@@ -58,7 +58,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
   - 初回 2026-09-07（Search Console の「検索パフォーマンス」を 2026-09-06 にエクスポート。データは 09-02〜09-04 の 3 日分。生データは desk の `metrics/2026-09-search-console/`）。
     表示 10 回・クリック 1 回。表示されたのは記事 2 本（`static-site-hosting-free-tier`、`vps-japan-minimum-plan`）とタグページ 6 つ。
     `http://kurabebako.com/` が https と別 URL として表示されている。平文 http が 301 を返さず 200 で本文を返しているため。
-    Cloudflare の SSL/TLS → Edge Certificates の「Always Use HTTPS」を有効にする（ダッシュボード操作）
+    2026-09-07 に Cloudflare の SSL/TLS → Edge Certificates の「Always Use HTTPS」を有効化し、ルート・パス付き・クエリ付きの平文 http が 301 で https に飛ぶことを確認した
 
 **判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う。
 収益経路（ASP 承認と案件台帳）が無いまま Phase 3 に入らない
