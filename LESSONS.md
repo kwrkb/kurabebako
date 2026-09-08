@@ -342,3 +342,19 @@ Infisical の identity 5、Doppler の service token 50 など）を並べる。
 `bars` が系列ごとの単位や複数系列を扱えるようになった場合。
 または、6 サービスの無料枠が同じ単位（たとえば「無料で作れる機械向けトークンの数」）で公式に揃った場合。
 
+
+## 2026-09-08: メール送信 API 記事で、Resend の日次上限は当てずにレート制限で 429 の形式を確認した
+
+**却下した案**
+6 本目（メール送信 API の無料枠比較）の実行検証で、Resend の Free Tier の日 100 通を実際に送り切り、`daily_quota_exceeded` の応答を記録する。
+
+**決め手**
+Free Tier は日 100 通・月 3,000 通で、宛先に使えるのはアカウントのメールアドレス 1 つだけ（`onboarding@resend.dev` から `example.com` 宛は
+422「Please use our testing email address instead of domains like example.com」）。100 通を送ると同じ日の送信〜`delivered` の確認が塞がり、
+1 つの受信箱に 100 通が届く。一方、レート制限（10 req/s）は `GET /domains` の 25 並列で 429 × 16 と `retry-after: 1` が取れ、
+本文の形式（`statusCode` / `name` / `message`）は errors ページの `daily_quota_exceeded` と同じ 429 系だった。
+記事に要るのは「上限に当たったときに何が返るか」で、それはレート制限で足りた。
+
+**覆す条件**
+`delivered@resend.dev` などのテスト宛先が日次の quota に数えられないと公式に書かれた場合。
+または、Free Tier の日次上限が撤廃されて月次だけになった場合（当てるコストが月 3,000 通に上がるので、その時は当てない判断が固まる）。

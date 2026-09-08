@@ -75,13 +75,21 @@ Mailgun: 100
 - **前提条件**: アカウントのみです。利用規約が Free Tier について「You are not required to provide billing information to use the Free Tier.」と明記しています [2]。
   API キーは `full_access`（「Can create, delete, get, and update any resource」）と `sending_access`（「Can only send emails」）の 2 種で、
   後者は `domain_id` で特定のドメインに限定できます [7]
-- **検証した内容**: 2026-09-08 に REST API（`curl`）で実行しました。
+- **検証した内容**: 2026-09-08 に REST API（`curl`）で実行しました。送信ドメインは `lab.kurabebako.com`（サブドメイン）で、DNS レコードは Cloudflare の API で登録しました。
 
   | 操作 | 結果 |
   | --- | --- |
   | `sending_access` のキーで `GET /domains`、`POST /domains` | **401** `restricted_api_key`「This API key is restricted to only send emails」。ドメインとキーの管理は full access のキーでしか呼べない |
+  | `POST /domains`（`ap-northeast-1`） | 201（0.5 秒）。DNS レコード 3 件（DKIM の TXT、Return-Path 用 `send` サブドメインの MX と TXT）がゾーンからの相対名で返る |
+  | Cloudflare API でレコード 3 件を登録 → `POST /domains/{id}/verify` | 15 秒ごとの `GET /domains/{id}` で 9 回 `pending`、10 回目で `verified`。verify から **155 秒** |
+  | 認証前に自ドメインから `POST /emails` | **403** `validation_error`「The lab.kurabebako.com domain is not verified. Please, add and verify your domain」 |
+  | `onboarding@resend.dev` からアカウントのアドレス宛 / `example.com` 宛 | 200 / **422** `validation_error`「Invalid `to` field. Please use our testing email address instead of domains like `example.com`」 |
+  | `POST /api-keys`（`sending_access`、`domain_id` 付き）→ そのキーで送信 | 201 で発行。自ドメインからの送信は 200（0.4 秒）で、6 秒後の `GET /emails/{id}` は `last_event: delivered`。同じ `Idempotency-Key` で再送すると同じ id が返り二重送信されない |
+  | `GET /domains` を 25 並列 | 200 × 9、**429 × 16**。`ratelimit-remaining: 0`、`retry-after: 1`、本文は `rate_limit_exceeded`「You can only make 10 requests per second」 |
+  | `DELETE /api-keys/{id}` → DNS レコード削除 → `DELETE /domains/{id}` | すべて 200。終了時に `GET /domains` でドメイン 0 件 |
 
-  （full access のキーでのドメイン登録〜削除は実行後に追記）
+  日 100 通の上限（`daily_quota_exceeded`）は当てていません。当てると同じ日の送信確認ができなくなるためで、429 の形式はレート制限で確認しています。
+  検証で作ったドメイン・DNS レコード・送信専用キーはその場で削除しています
 
 ### Postmark
 
