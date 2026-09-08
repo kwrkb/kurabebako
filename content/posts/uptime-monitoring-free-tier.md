@@ -189,6 +189,7 @@ Uptime Kuma（自前サーバー）: 1
 - 5 件以内で最小構成にしたい → Cronitor。公式 CLI と API があり、無料枠にカードは要りません。Terraform は community 版のみです
 
 各サービスの API キーを CI や AI エージェントに渡す手段は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で、無料枠と機械向けトークンの作り方を実際に動かして比べています。
+監視の通知を自前の API からメールで送るなら、[メール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)で無料枠と送信までのゲートを比べています。
 
 ## 出典
 

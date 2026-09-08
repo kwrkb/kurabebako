@@ -1,8 +1,8 @@
 +++
 title = 'メール送信 API 5 つの無料枠比較: 無料で送れるまでのゲート'
-date = '2026-09-08T20:43:23+09:00'
+date = '2026-09-08T21:25:18+09:00'
 lastmod = '2026-09-08'
-draft = true
+draft = false
 summary = 'Resend・Postmark・Brevo・Mailgun・Amazon SES を、無料枠が恒常か、カード登録なしで動かせるか、送信できるまでにどんなゲート（ドメイン認証・アカウント承認・サンドボックス解除）があるかで比較。Resend は AI が API キーだけで送信ドメインの登録から送信・削除まで動かし、無料でカード登録なしに自分のドメインから API で送るなら Resend が条件を満たす。'
 categories = ['developer-tools']
 tags = ['email-api', 'resend', 'postmark', 'brevo', 'mailgun', 'amazon-ses']
