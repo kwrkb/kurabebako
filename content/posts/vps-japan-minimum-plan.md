@@ -1,7 +1,7 @@
 +++
 title = '国内 VPS 5 社の最小プラン比較: 時間課金と API の有無で選ぶ'
 date = '2026-09-02T23:07:57+09:00'
-lastmod = '2026-09-03'
+lastmod = '2026-09-09'
 draft = false
 summary = '国内 VPS 5 サービスの最小プランを、料金・課金単位・お試し・最低利用期間・API の有無で比較。AI やスクリプトから作成〜削除まで自動化するなら ConoHa VPS 3.0、最安で API があるのは WebARENA Indigo。ConoHa は Terraform で実際に作成・計測・削除した結果を載せる。'
 categories = ['hosting']
@@ -28,7 +28,7 @@ API が要らず日単位で使うなら、KAGOYA CLOUD VPS の日額 20 円が�
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
-| ConoHa VPS (Ver.3.0) | 512MB（1 vCPU・SSD 30GB）は 1.3 円/時、月上限 751 円。1GB（2 vCPU・SSD 100GB）は 1.9 円/時、月上限 1,065 円。36 ヶ月前払いの「まとめトク」なら 512MB 293 円/月 | なし | 1 時間単位の課金で月上限あり。まとめトクは途中解約不可。初期費用なし | ConoHa アカウントと支払い手段。公開 API（OpenStack 準拠）、Terraform provider、MCP サーバーが公式。Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13 ほか | {{< verified run >}} | [1][2][3][4][5][6] |
+| ConoHa VPS (Ver.3.0) | 512MB（1 vCPU・SSD 30GB）は 1.3 円/時、月上限 751 円。1GB（2 vCPU・SSD 100GB）は 2.5 円/時、月上限 1,065 円。36 ヶ月前払いの「まとめトク」なら 512MB 293 円/月（更新時は 326 円/月） | なし | 1 時間単位の課金で月上限あり。まとめトクは途中解約不可。初期費用なし | ConoHa アカウントと支払い手段。公開 API（OpenStack 準拠）、Terraform provider、MCP サーバーが公式。Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13 ほか | {{< verified run >}} | [1][2][3][4][5][6] |
 | さくらのVPS | 512MB（1 vCPU・SSD 25GB）は石狩 643 円/月、東京 698 円/月。1GB（2 vCPU・SSD 50GB）は石狩 880 円/月、東京 990 円/月 | クレジットカード払いで 2 週間無料。同時 2 台まで | 月額・年額のみ。最低利用期間 3 ヶ月。お試し期間中に解約しないと自動で本契約。API は電源操作・状態取得などで、サーバー作成・削除は不可。Ubuntu 24.04 は 1GB 以上のプランのみ | さくらインターネット会員 ID と支払い手段。IPv4・IPv6 各 1 個。リージョンは東京・大阪・石狩 | {{< verified spec >}} | [7][8][9][10][11] |
 | KAGOYA CLOUD VPS | 1GB は日額 20 円、月上限 550 円、年額 6,072 円 | なし（アカウント登録は無料） | 日額（月上限あり）または年額。公式マニュアルに API の項目がない。スナップショットと無停止スケールアップあり | KAGOYA アカウントと支払い手段。OS テンプレート 12 種（Ubuntu 24.04 / 26.04 を含む） | {{< verified spec >}} | [12][13][14] |
 | Xserver VPS | 2GB（3 vCPU・NVMe 50GB）は 1 ヶ月契約 2,640 円（更新 1,980 円）、36 ヶ月契約 2,035 円/月（更新 1,265 円/月） | 「無料VPS」（2GB / 4GB、NVMe 30GB、30Mbps）。毎日コントロールパネルから手動で契約更新が必要で、更新の自動化は不正行為 | 月額のみで契約期間分を一括前払い。2GB プランは 2026-09-02 時点で新規受付を一時停止。XServer API はレンタルサーバー向けで、VPS の作成・削除は対象外 | Xserver アカウント。無料VPS もクレジットカード登録が必要。Ubuntu 22.04 / 24.04 / 26.04、Debian 11〜13 ほか | {{< verified spec >}} | [15][16][17][18] |
@@ -64,8 +64,8 @@ Xserver VPS 2GB（参考）: 1980
 人間が触ったのは API ユーザーの発行だけでした。
 
 - **料金体系**: 1 時間単位の課金で、月額上限に達するとそれ以上は課金されません。512MB プランは 1.3 円/時（上限 751 円）、
-  1GB プランは 1.9 円/時（上限 1,065 円）、2GB プランは 3.7 円/時（上限 2,033 円）です。1〜36 ヶ月の前払い「まとめトク」は
-  最大 68% 引きになりますが、途中解約はできません。初期費用はありません [1]
+  1GB プランは 2.5 円/時（上限 1,065 円）、2GB プランは 3.7 円/時（上限 2,033 円）です。1〜36 ヶ月の前払い「まとめトク」は
+  最大 68% 引きになりますが、途中解約はできません。契約更新時の単価は初回より高く、512MB は 326 円/月です。初期費用はありません [1]
 - **制約**: プランに含まれる SSD（512MB で 30GB、1GB 以上で 100GB）がブートボリュームになります [1]。
   OS テンプレートは Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13、AlmaLinux、Rocky Linux、Arch Linux、FreeBSD など。
   Docker、GitLab、Dokku、Jenkins などのアプリケーションテンプレートも 40 種以上あります [6]
@@ -194,7 +194,7 @@ Terraform や API に渡す認証情報を AI にどう持たせるかは、[シ
 
 ## 出典
 
-1. [ConoHa VPS 料金・スペック](https://vps.conoha.jp/pricing/) — 2026-09-02 確認
+1. [ConoHa VPS 料金・スペック](https://vps.conoha.jp/pricing/) — 2026-09-09 確認
 2. [ConoHa VPS API](https://vps.conoha.jp/function/api/) — 2026-09-02 確認
 3. [ConoHa ドキュメント — Terraform ConoHa VPS Provider](https://doc.conoha.jp/reference/terraform/terraform-conoha-vps-provider/) — 2026-09-02 確認
 4. [ConoHa ドキュメント — ConoHa VPS MCP Server](https://doc.conoha.jp/reference/mcp-server/conoha-vps-mcp-server/) — 2026-09-02 確認
