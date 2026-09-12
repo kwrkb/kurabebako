@@ -49,6 +49,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
   - 4 本目: 国内の共用レンタルサーバー比較（2026-09-05 `shared-hosting-japan`。エックスサーバーを「実行」区分で。お試し中の API キーで REST API・CLI・MCP を動かした。手順は desk の `lab/xserver/`）
   - 5 本目: シークレット管理 CLI 比較（2026-09-05 `secret-management-cli`。Bitwarden Secrets Manager を主役に、6 対象すべてを「実行」区分で。同じ 5 手順を流す検証は desk の `lab/secrets/`）
   - 6 本目: メール送信 API の無料枠比較（2026-09-08 `email-api-free-tier`。Resend を「実行」区分で。API キーだけで送信ドメイン登録 → Cloudflare API で DNS → 認証 → 送信 → 削除まで自走。他 4 社は「仕様」区分。手順は desk の `lab/email/`）
+  - 7 本目: スクレイピング API の無料枠比較（2026-09-12 `scraping-api-free-tier`。ScraperAPI を主役に、Firecrawl / ScrapingBee と合わせて 3 社を「実行」区分で。同じ 5 手順を無料枠を使い切らずに流した。Apify / Zyte は「仕様」区分で次回更新に回す。手順は desk の `lab/scraping/`）
 - [x] 記事どうしの内部リンクを張る（2026-09-04 に既存 3 本を相互リンクにした。4 本目からは `CLAUDE.md`「記事の型」の内部リンクの規約に従い、新記事を出すたびに既存記事側からも足す）
 - [x] 型の検査を 2 つ広げる（2026-09-04。未来日付・expiryDate でビルド対象から外れた記事は `site_checks.html` で、`lastmod` が出典の確認日より古い記事と確認日の無い出典行は `extend_post_content.html` で止める）
 - [x] ASP 審査の前提を揃える（2026-09-02 プライバシーポリシー・問い合わせ・About を公開。本番で応答を確認）
