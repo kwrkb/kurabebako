@@ -52,7 +52,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [x] 記事どうしの内部リンクを張る（2026-09-04 に既存 3 本を相互リンクにした。4 本目からは `CLAUDE.md`「記事の型」の内部リンクの規約に従い、新記事を出すたびに既存記事側からも足す）
 - [x] 型の検査を 2 つ広げる（2026-09-04。未来日付・expiryDate でビルド対象から外れた記事は `site_checks.html` で、`lastmod` が出典の確認日より古い記事と確認日の無い出典行は `extend_post_content.html` で止める）
 - [x] ASP 審査の前提を揃える（2026-09-02 プライバシーポリシー・問い合わせ・About を公開。本番で応答を確認）
-- [ ] A8.net に申請する（記事 5 本を目安に。申請前に `content/privacy.md` の ASP の文を未提携の現状に合わせる）
+- [x] A8.net に登録する（2026-09-12 に既存アカウントの副サイトとして `kurabebako.com` を登録。記事 6 本の時点。案件ごとの提携申請と台帳への登録はこれから。台帳は desk の `affiliates/`）
 - [x] Search Console 登録（DNS の TXT レコードで所有権を確認済み。2026-09-04 時点でデータはまだ無い）
 - [x] sitemap 送信（`https://kurabebako.com/sitemap.xml`。2026-09-05 に Search Console の「サイトマップ」で設置済みを確認。`robots.txt` からも参照している）
 - [ ] インデックス数とクロール状況の観測
