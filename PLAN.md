@@ -57,7 +57,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [x] sitemap 送信（`https://kurabebako.com/sitemap.xml`。2026-09-05 に Search Console の「サイトマップ」で設置済みを確認。`robots.txt` からも参照している）
 - [ ] インデックス数とクロール状況の観測
   - 初回 2026-09-07（Search Console の「検索パフォーマンス」を 2026-09-06 にエクスポート。データは 09-02〜09-04 の 3 日分。生データは desk の `metrics/2026-09-search-console/`）。
-    表示 10 回・クリック 1 回。表示されたのは記事 2 本（`static-site-hosting-free-tier`、`vps-japan-minimum-plan`）とタグページ 6 つ。
+    表示・クリックの数値は desk の `metrics/2026-09-search-console/` に置く（計測値は公開リポジトリに書かない）。表示されたのは記事 2 本（`static-site-hosting-free-tier`、`vps-japan-minimum-plan`）とタグページ 6 つ。
     `http://kurabebako.com/` が https と別 URL として表示されている。平文 http が 301 を返さず 200 で本文を返しているため。
     2026-09-07 に Cloudflare の SSL/TLS → Edge Certificates の「Always Use HTTPS」を有効化し、ルート・パス付き・クエリ付きの平文 http が 301 で https に飛ぶことを確認した
   - 2026-09-08 に 6 本目 `email-api-free-tier` を公開し、同日に Search Console の URL 検査からインデックス登録をリクエストした（sitemap 経由の自然なクロールと、リクエストしたこの 1 本の登録速度を次回観測で見比べる）

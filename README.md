@@ -183,3 +183,10 @@ git submodule は使わない（Cloudflare のビルドで詰まりやすいた�
 - [Hugo — Host on Cloudflare](https://gohugo.io/host-and-deploy/host-on-cloudflare/)
 - [Cloudflare Workers — Build image](https://developers.cloudflare.com/workers/ci-cd/builds/build-image/)
 - [Cloudflare Workers — Wrangler configuration](https://developers.cloudflare.com/workers/wrangler/configuration/)
+
+## ライセンス
+
+- 記事・図・画像（`content/`、`assets/figures/`、`static/images/`）は All rights reserved。転載・再配布はできません
+- それ以外のコード（レイアウト・CSS・ビルドスクリプト・設定）は MIT License
+
+詳細は [LICENSE](LICENSE) を参照。
