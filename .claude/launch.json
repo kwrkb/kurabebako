@@ -18,6 +18,17 @@
         "dev"
       ],
       "port": 1313
+    },
+    {
+      "name": "hugo",
+      "runtimeExecutable": "hugo",
+      "runtimeArgs": [
+        "server",
+        "--port",
+        "1314",
+        "--disableFastRender"
+      ],
+      "port": 1314
     }
   ]
 }
