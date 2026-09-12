@@ -11,3 +11,30 @@
 # name = 'Example VPS'            # 表示名（ボタンやランキングに出る）
 # url = 'https://example.com/?a=' # アフィリエイトリンク（計測パラメータ込み）
 # program = ''                    # 経由する ASP / プログラム名。管理用で表示しない
+# text = '固定の文言'             # 任意。ASP の素材が「自由テキスト」でない場合、リンク文言は素材どおりに
+#                                 # しか出せない（A8.net は自由テキスト以外の文言変更を禁止）。
+#                                 # 指定すると cta の text 引数や既定の「〜の公式サイトを見る」より優先される
+# pixel = 'https://.../0.gif?a8mat=' # 任意。ASP がリンクと対で配る 1x1 のインプレッション計測画像。
+#                                 # 成果計測はリンク側で行われるが、配られたコードを崩さないために一緒に出す
+
+# ---- A8.net（2026-09-12 提携）----
+# a8mat はサイト kurabebako.com（websiteId=003）向けに発行したもの。主サイト用と混ぜない。
+
+[conoha-vps]
+name = 'ConoHa VPS'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+52S51E+50+4Z0M6A'
+pixel = 'https://www14.a8.net/0.gif?a8mat=4BC9F6+52S51E+50+4Z0M6A'
+program = 'A8.net s00000000018030（素材 068 自由テキスト）'
+
+[conoha-wing]
+name = 'ConoHa WING'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+4785Z6+50+5SKSCY'
+pixel = 'https://www12.a8.net/0.gif?a8mat=4BC9F6+4785Z6+50+5SKSCY'
+program = 'A8.net s00000000018035（自由テキスト）'
+
+[xserver]
+name = 'エックスサーバー'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+4LIKHU+CO4+609HU'
+pixel = 'https://www15.a8.net/0.gif?a8mat=4BC9F6+4LIKHU+CO4+609HU'
+text = 'エックスサーバー'
+program = 'A8.net s00000001642001（自由テキスト素材が無いため、文言「エックスサーバー」のテキスト素材を使う）'

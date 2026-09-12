@@ -14,6 +14,8 @@ tags = ['vps', 'conoha', 'sakura-internet', 'kagoya', 'xserver', 'webarena']
   hiddenInList = true
 +++
 
+{{< pr >}}
+
 ## 結論
 
 国内の VPS 5 サービスの最小プランを、「AI やスクリプトから作って消せるか」を軸に比べました。
@@ -21,6 +23,8 @@ tags = ['vps', 'conoha', 'sakura-internet', 'kagoya', 'xserver', 'webarena']
 自動化が目的なら、ここで決まります。
 ただ、常時動かして月額を抑えたいなら話は別で、WebARENA Indigo の 1GB が月上限 449 円で最安です。
 API が要らず日単位で使うなら、KAGOYA CLOUD VPS の日額 20 円が条件に合います。
+
+{{< cta "conoha-vps" >}}
 
 ## 比較表
 
@@ -111,6 +115,8 @@ Xserver VPS 2GB（参考）: 1980
   翌日の利用金額画面（月の途中の暫定表示）では、VPS 1GB が「1 Hrs」で 1.65 円、ブートストレージ 100GB は 0 円でした
   （23 分の稼働が 1 時間分に切り上げ）。月末確定後の請求額は、確定次第この記事に追記します。
   削除後に API でサーバー・ボリューム・キーペアが 0 件になったことも確認しています
+
+{{< cta "conoha-vps" >}}
 
 ### さくらのVPS
 

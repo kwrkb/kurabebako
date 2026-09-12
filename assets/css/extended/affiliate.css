@@ -46,3 +46,6 @@
 .ranking-name { font-size: 1.1rem; font-weight: 700; }
 .ranking-reason { color: var(--secondary); }
 .ranking-item .cta { margin: .6rem 0 0; }
+/* ASP のインプレッション計測画像（1x1）。行の高さに影響させない */
+.cta-pixel { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.cta { position: relative; }

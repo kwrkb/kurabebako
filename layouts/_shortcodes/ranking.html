@@ -30,7 +30,7 @@
   <li class="ranking-item">
     <div class="ranking-head"><span class="ranking-rank">{{ add $i 1 }}</span><span class="ranking-name">{{ $it.a.name }}</span></div>
     <div class="ranking-reason">{{ $it.reason | markdownify }}</div>
-    <div class="cta"><a class="cta-button" href="{{ $it.a.url }}" rel="sponsored nofollow noopener" target="_blank">{{ $it.a.name }} の公式サイトを見る</a></div>
+    <div class="cta"><a class="cta-button" href="{{ $it.a.url }}" rel="sponsored nofollow noopener" target="_blank">{{ $it.a.text | default (printf "%s の公式サイトを見る" $it.a.name) }}</a>{{ with $it.a.pixel }}<img class="cta-pixel" src="{{ . }}" width="1" height="1" alt="" loading="lazy">{{ end }}</div>
   </li>
 {{- end }}
 </ol>

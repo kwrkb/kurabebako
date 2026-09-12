@@ -4,9 +4,10 @@
        rel="sponsored" は検索エンジンにアフィリエイトリンクだと伝えるために付ける */ -}}
 {{- $id := cond .IsNamedParams (.Get "id") (.Get 0) -}}
 {{- $text := cond .IsNamedParams (.Get "text") "" -}}
+{{- /* 台帳に text があれば素材の文言なので引数より優先する（ASP の規約で文言を変えられない案件のため） */ -}}
 {{- if not (.Page.Store.Get "prDeclared") -}}
   {{- errorf "cta より前に {{< pr >}} を置いてください（PR 表記がリンクより先に出る必要がある）: %s" .Position -}}
 {{- end -}}
 {{- $a := partial "affiliate.html" (dict "id" $id "position" .Position) -}}
 {{- .Page.Store.Set "hasAffiliate" true -}}
-<div class="cta"><a class="cta-button" href="{{ $a.url }}" rel="sponsored nofollow noopener" target="_blank">{{ $text | default (printf "%s の公式サイトを見る" $a.name) }}</a></div>
+<div class="cta"><a class="cta-button" href="{{ $a.url }}" rel="sponsored nofollow noopener" target="_blank">{{ $a.text | default ($text | default (printf "%s の公式サイトを見る" $a.name)) }}</a>{{ with $a.pixel }}<img class="cta-pixel" src="{{ . }}" width="1" height="1" alt="" loading="lazy">{{ end }}</div>
