@@ -13,7 +13,7 @@
 
 set -euo pipefail
 
-HUGO_VERSION=0.165.0
+HUGO_VERSION=0.166.0
 
 # ビルド時のタイムゾーン（日付の表示揺れを防ぐ）
 export TZ=Asia/Tokyo

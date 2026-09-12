@@ -31,7 +31,7 @@ main へ push
 | ファイル | 役割 |
 | --- | --- |
 | `wrangler.jsonc` | 配信設定。`main` なし＝Worker JS なし。`assets.directory=./public`、`not_found_handling=404-page`（Hugo が出す `404.html` を使う）、`workers_dev`/`preview_urls` は `false` |
-| `build.js` | `build.sh` の起動ラッパー。macOS / Linux では PATH の bash、Windows では Git for Windows の bash を使う（Windows 対応は開発環境が macOS に移った後も残してある）。ビルド手順は書かない |
+| `build.js` | `build.sh` の起動ラッパー。macOS / Linux では PATH の bash、Windows では Git for Windows の bash を使う（開発環境は macOS と Windows を行き来するので両方の分岐を持つ）。ビルド手順は書かない |
 | `build.sh` | **ツール版の唯一の真実**。Hugo の版はここだけで決まる。ローカル実行時は同版が既にあればDLを省く。自動導入は Linux 用 tarball 固定なので、macOS では未導入なら `.pkg` を展開する手順を案内して止まる（Mac 用バイナリを Linux 用で上書きしないため） |
 | `hugo.toml` | `module.imports` でテーマを読む。`themes/` は空のまま使わない |
 | `go.mod` | Hugo Modules の依存解決用。Go 自体は Cloudflare イメージ同梱のものを使う |
@@ -42,9 +42,14 @@ main へ push
 `main` への push が本番デプロイに直結する。プレビュー環境はないので、
 確認は `npm run preview`（ローカルで Workers 配信を再現）で行う。
 
-開発環境は **macOS（Apple Silicon / zsh）**。
-Hugo は公式 `.pkg` を `pkgutil` で展開して `~/.local/hugo` に置く（Homebrew の hugo は版を固定できないので使わない）。
-Node は fnm、Go は Homebrew で入れる（手順は `README.md`）。
+開発環境は **macOS（Apple Silicon / zsh）と Windows 11（PowerShell）を行き来する**。手順は `README.md`。
+
+- macOS: Hugo は公式 `.pkg` を `pkgutil` で展開して `~/.local/hugo` に置く（Homebrew の hugo は版を固定できないので使わない）。
+  Node は fnm、Go は Homebrew
+- Windows: Hugo は `winget install --id Hugo.Hugo.Extended --version <build.sh の版> --exact`。Node は fnm、Go は winget。
+  Claude Code のツールシェルは PowerShell プロファイルを読まないので、`npm` が要る作業は Bash ツール側（`~/.bashrc` で fnm を初期化済み）で行う
+- 改行は `.gitattributes` で全ファイル LF に固定してある。`core.autocrlf` の値に関係なく LF で checkout されるので、
+  Windows でも設定を変えない。CRLF になると `bars` / `ranking` shortcode と型検査の partial が行末の `\r` で止まる
 
 ## 配信ドメイン
 

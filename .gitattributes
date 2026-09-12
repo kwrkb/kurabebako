@@ -1,4 +1,7 @@
-# build.sh は Cloudflare（Linux）と Windows の Git Bash の両方で bash が実行する。
-# core.autocrlf=true の Windows で CRLF に変換されると、bash が行末の \r を
-# 構文エラーとして扱い動かなくなるため、シェルスクリプトは常に LF で checkout する。
+# 改行はリポジトリ全体で LF に固定する。
+# layouts/ の partial と shortcode（bars / ranking）は本文を行単位で正規表現に掛けるため、
+# core.autocrlf=true の Windows で CRLF に変換されると行末の \r が「449\r」のように数値や
+# 行末一致（— YYYY-MM-DD 確認$）に混ざり、ビルドが止まる。
+# build.sh も同じ理由（bash が \r を構文エラーにする）で LF が必要。
+* text=auto eol=lf
 *.sh text eol=lf

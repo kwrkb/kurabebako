@@ -10,7 +10,8 @@
 {{- $items := slice -}}
 {{- $max := 0.0 -}}
 {{- range split (trim .Inner "\n ") "\n" -}}
-  {{- $line := trim . " " -}}
+  {{- /* CRLF の記事では行末に \r が残り float が失敗するので、先に落とす（partial の型検査と同じ扱い） */ -}}
+  {{- $line := trim . " \r" -}}
   {{- if $line -}}
     {{- if not (findRE `^.+:\s*[0-9]+(\.[0-9]+)?\s*$` $line) -}}
       {{- errorf "bars の各行は「ラベル: 数値」の形式で書いてください（%q）: %s" $line $.Position -}}

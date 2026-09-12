@@ -9,7 +9,7 @@
 {{- end -}}
 {{- $items := slice -}}
 {{- range split (trim .Inner "\n ") "\n" -}}
-  {{- $line := trim . " " -}}
+  {{- $line := trim . " \r" -}}
   {{- if $line -}}
     {{- if not (findRE `^[a-z0-9-]+:\s*\S` $line) -}}
       {{- errorf "ranking の各行は「案件id: 理由」の形式で書いてください（%q）: %s" $line $.Position -}}

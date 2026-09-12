@@ -358,3 +358,21 @@ Free Tier は日 100 通・月 3,000 通で、宛先に使えるのはアカウ�
 **覆す条件**
 `delivered@resend.dev` などのテスト宛先が日次の quota に数えられないと公式に書かれた場合。
 または、Free Tier の日次上限が撤廃されて月次だけになった場合（当てるコストが月 3,000 通に上がるので、その時は当てない判断が固まる）。
+
+## 2026-09-12: 改行コードを .gitattributes で全ファイル LF に固定し、autocrlf の設定変更に頼らなかった
+
+**却下した案**
+Windows 側で `git config core.autocrlf=false` にして CRLF 変換を止める。
+または、`bars` / `ranking` shortcode 側で `\r` を落とすだけにして `.gitattributes` は `*.sh` のままにする。
+
+**決め手**
+開発環境が macOS から Windows に戻った直後の `npm run build` が、`bars` shortcode の
+`float` で `unable to cast "449\r" of type string to float64` を出して止まった。`git ls-files --eol` で
+58 ファイルが `w/crlf`（index は全て LF）。型検査の partial（`extend_post_content.html` / `site_checks.html`）は
+以前から `\r` を落としていたが、shortcode は未対応だった。
+`core.autocrlf` はローカル設定でリポジトリに乗らず、次に別の機で clone したときに同じことが起きる。
+`* text=auto eol=lf` はリポジトリに乗り、`core.autocrlf` の値に関係なく LF で checkout される。
+`git add --renormalize .` で index に差分が出なかったので、既存コミットは変えずに済んだ。
+
+**覆す条件**
+Windows で開発しなくなり、かつ CRLF を前提にするツールを入れる必要が出た場合。

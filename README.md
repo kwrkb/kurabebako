@@ -3,22 +3,26 @@
 AIツール・開発環境・CLI・SaaS・サーバーの比較まとめサイト。
 
 - 本番: https://kurabebako.com/
-- 静的サイトジェネレータ: [Hugo](https://gohugo.io/)（extended 0.165.0）
+- 静的サイトジェネレータ: [Hugo](https://gohugo.io/)（extended 0.166.0）
 - ホスティング: Cloudflare Workers (Static Assets)　※ Cloudflare Pages は使わない
 
-## セットアップ（macOS / zsh）
+## セットアップ
 
-リポジトリは `~/Code/kurabebako` に置く
+開発環境は macOS（Apple Silicon / zsh）と Windows 11（PowerShell）を行き来する。
+リポジトリはどちらも `~/Code/kurabebako`（Windows では `C:\Users\<user>\Code\kurabebako`）に置く
 （作業机リポジトリ `kurabebako-desk` を同じ親ディレクトリに並べる前提）。
+
+### macOS / zsh
+
 以下はすべてターミナル（zsh）で実行する。
 
-### 1. Hugo (extended) の導入
+#### 1. Hugo (extended) の導入
 
 `build.sh` の `HUGO_VERSION` と同じ版を使う。Homebrew の `hugo` は最新版に追従して版を固定できないので使わない。
 公式の macOS 向け配布は `.pkg` のみなので、`pkgutil` で展開してバイナリだけ `~/.local/hugo` に置く（sudo 不要）。
 
 ```bash
-V=0.165.0
+V=0.166.0
 curl -fL -o /tmp/hugo.pkg "https://github.com/gohugoio/hugo/releases/download/v${V}/hugo_extended_${V}_darwin-universal.pkg"
 pkgutil --expand-full /tmp/hugo.pkg /tmp/hugo-pkg
 mkdir -p ~/.local/hugo && cp /tmp/hugo-pkg/Payload/hugo ~/.local/hugo/hugo && chmod +x ~/.local/hugo/hugo
@@ -27,7 +31,7 @@ echo 'export PATH="$HOME/.local/hugo:$PATH"' >> ~/.zshrc
 
 ```bash
 hugo version
-# => hugo v0.165.0-... +extended darwin/arm64  ならOK
+# => hugo v0.166.0-... +extended darwin/arm64  ならOK
 ```
 
 `+extended` が付いていること、`build.sh` の `HUGO_VERSION` と一致していることの2点を確認する。
@@ -36,7 +40,7 @@ hugo version
 > `~/.local/hugo` が PATH に無い状態で `build.sh` を実行すると、macOS では自動導入せず上の手順を表示して止まる。
 > 自動導入は Linux 用 tarball 固定で、そのまま走ると Mac 用バイナリを実行不能なもので上書きするため。
 
-### 2. Go の確認
+#### 2. Go の確認
 
 Hugo Modules の解決に Go が必要。Homebrew の `go` で入れる。
 
@@ -44,7 +48,7 @@ Hugo Modules の解決に Go が必要。Homebrew の `go` で入れる。
 go version   # 1.23.0 以上
 ```
 
-### 3. Node 依存
+#### 3. Node 依存
 
 Node は fnm で入れる（`brew install fnm` → `fnm install --lts` → `fnm default lts-latest`）。
 `~/.zshrc` に `eval "$(fnm env --use-on-cd)"` が入っていないと `npm` が見つからないので注意。
@@ -53,7 +57,39 @@ Node は fnm で入れる（`brew install fnm` → `fnm install --lts` → `fnm 
 npm ci   # wrangler のみ
 ```
 
-### 4. 動作確認
+### Windows 11 / PowerShell
+
+Git for Windows（`build.js` が同梱の bash で `build.sh` を動かす）が入っている前提。
+
+#### 1. Hugo (extended) の導入
+
+winget は `--version` で版を固定できるので、`build.sh` の `HUGO_VERSION` と同じ版を明示して入れる。
+`winget upgrade --all` で上がってしまったら、`build.sh` の版を上げるか、同じコマンドで入れ直す。
+
+```powershell
+winget install --id Hugo.Hugo.Extended --version 0.166.0 --exact
+hugo version
+# => hugo v0.166.0-... +extended windows/amd64  ならOK
+```
+
+#### 2. Go の確認
+
+```powershell
+winget install --id GoLang.Go
+go version   # 1.23.0 以上
+```
+
+#### 3. Node 依存
+
+Node は fnm で入れる（`winget install --id Schniz.fnm` → `fnm install --lts` → `fnm default lts-latest`）。
+PowerShell の `$PROFILE` に `fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression` が要る。
+Git Bash から使う場合は `~/.bashrc` に `eval "$(fnm env --shell bash)"` を入れる（Claude Code の Bash ツールはこちらを読む）。
+
+```powershell
+npm ci   # wrangler のみ
+```
+
+### 動作確認（共通）
 
 ```bash
 npm run build     # public/ が生成される
@@ -62,8 +98,11 @@ npm run preview   # http://localhost:8787 で Workers 配信を再現
 
 ### 改行コードについて
 
-`build.sh` は `.gitattributes` で LF 固定にしている。Windows など `core.autocrlf=true` の環境で CRLF に
-変換されると bash が行末の `\r` を構文エラーにするため。`build.sh` を編集するときも LF を保つ。
+`.gitattributes` で**全ファイルを LF 固定**にしている（`* text=auto eol=lf`）。`core.autocrlf` の値に
+関係なく LF で checkout されるので、Windows でも git の設定は変えない。
+CRLF になると `build.sh` は bash が行末の `\r` を構文エラーにし、記事は `bars` / `ranking` shortcode と
+型検査の partial が `\r` 付きの行を数値・行末として読めずにビルドが止まる。
+エディタ側も LF で保存する（`.editorconfig` は置いていないので、エディタが `.gitattributes` を見ない場合は手で設定する）。
 
 ## コマンド
 
@@ -100,8 +139,8 @@ npm run preview   # http://localhost:8787 で Workers 配信を再現
 macOS と Cloudflare（Linux）では PATH の bash をそのまま使う。
 Cloudflare 公式の例は `chmod a+x build.sh && ./build.sh` だが、Windows では
 `build.command` が cmd.exe で実行されるため `chmod` が無く、PATH 上の `bash` も
-WSL に解決される。そのため node 経由で bash を選んで呼ぶ形にした。Windows で開発していた時期の
-対応で、開発環境が macOS に移った後も残してある。
+WSL に解決される。そのため node 経由で bash を選んで呼ぶ形にした。開発環境は macOS と Windows を
+行き来するので、両方の分岐を持つ。
 ビルド手順そのものは `build.sh` に集約しており、`build.js` には書かない。
 
 ダッシュボード側の Build command にも同じものを入れると **ビルドが2回走る**ため空欄にする。
