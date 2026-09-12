@@ -38,3 +38,16 @@ url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+4LIKHU+CO4+609HU'
 pixel = 'https://www15.a8.net/0.gif?a8mat=4BC9F6+4LIKHU+CO4+609HU'
 text = 'エックスサーバー'
 program = 'A8.net s00000001642001（自由テキスト素材が無いため、文言「エックスサーバー」のテキスト素材を使う）'
+
+[lolipop]
+name = 'ロリポップ!'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+6JRPVM+348+6OWUA'
+pixel = 'https://www18.a8.net/0.gif?a8mat=4BC9F6+6JRPVM+348+6OWUA'
+program = 'A8.net s00000000404001（自由テキスト）'
+
+[mixhost]
+name = 'mixhost'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+6KD5HE+3JTE+5YJRM'
+pixel = 'https://www17.a8.net/0.gif?a8mat=4BC9F6+6KD5HE+3JTE+5YJRM'
+text = 'mixhost'
+program = 'A8.net s00000016565001（自由テキスト素材が無いため、文言「mixhost」のテキスト素材を使う）'
