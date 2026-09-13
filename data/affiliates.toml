@@ -61,8 +61,9 @@ name = 'ScraperAPI'
 url = 'https://www.scraperapi.com/signup?fp_ref=ggko43'
 program = 'ScraperAPI アフィリエイト（FirstPromoter 計測。2026-09-13 承認）'
 
-# Dub Partners の短縮リンク。firecrawl.dev/?via=... に 302 で飛ぶ（2026-09-13 確認）
+# Dub Partners の短縮リンク。firecrawl.dev/signin?view=signup&via=... に 302 で飛ぶ（2026-09-13 確認）。
+# トップに飛ぶ KwpzgvW もあるが、cta の文言「Free プランに登録する」に合わせて signup の方を使う
 [firecrawl]
 name = 'Firecrawl'
-url = 'https://firecrawl.link/KwpzgvW'
+url = 'https://firecrawl.link/sRWjj7k'
 program = 'Firecrawl アフィリエイト（Dub Partners 計測。2026-09-13 承認）'
