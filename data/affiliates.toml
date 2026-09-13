@@ -51,3 +51,12 @@ url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+6KD5HE+3JTE+5YJRM'
 pixel = 'https://www17.a8.net/0.gif?a8mat=4BC9F6+6KD5HE+3JTE+5YJRM'
 text = 'mixhost'
 program = 'A8.net s00000016565001（自由テキスト素材が無いため、文言「mixhost」のテキスト素材を使う）'
+
+# ---- 各社の自社プログラム ----
+
+# 参照リンクは fp_ref を付けた 4 種（トップ / pricing / documentation / signup）が配られている。
+# 記事は無料枠を推す文脈なので cta には signup を使う。他 3 種は desk の affiliates/ に控えてある
+[scraperapi]
+name = 'ScraperAPI'
+url = 'https://www.scraperapi.com/signup?fp_ref=ggko43'
+program = 'ScraperAPI アフィリエイト（FirstPromoter 計測。2026-09-13 承認）'

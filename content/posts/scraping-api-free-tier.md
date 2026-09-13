@@ -14,6 +14,8 @@ tags = ['scraping-api', 'scraperapi', 'scrapingbee', 'firecrawl', 'apify', 'zyte
   hiddenInList = true
 +++
 
+{{< pr >}}
+
 ## 結論
 
 URL を渡すと Web ページを取得して返すスクレイピング API 5 つを、「無料枠が毎月戻るか、一回きりか」「カード登録なしで動かせるか」「1 ページの取得が何クレジットに当たるか」の 3 点で比べました。
@@ -21,6 +23,8 @@ URL を渡すと Web ページを取得して返すスクレイピング API 5 �
 LLM に渡す Markdown が欲しく、ブラウザで描画した結果も 1 ページ 1 クレジットのまま数えたいなら Firecrawl です。
 ただ、ScrapingBee と Zyte の無料枠は一回きりで、試す用途には足りますが使い続ける用途には向きません。
 Apify は無料枠が月 USD 5 分の使用量で、取れるページ数が動かす Actor 次第なので、既成のスクレイパーを借りたい場合の選択肢です。
+
+{{< cta id="scraperapi" text="ScraperAPI の無料プランに登録する（カード登録なし）" >}}
 
 ## 比較表
 
@@ -95,6 +99,8 @@ ScraperAPI Hobby: 49
   | 残高の再確認 | 消費 19（1 + 10 + 8）。`creditsLeft` への反映は 1 分ほど遅れた |
 
   先に終わった枠に後続が入るため、同時 5 を超えた分がすべて 429 になるわけではありません。サーバー側に残るものはありません
+
+{{< cta id="scraperapi" text="ScraperAPI の無料プランに登録する（カード登録なし）" >}}
 
 ### ScrapingBee
 
