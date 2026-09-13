@@ -3,6 +3,15 @@
 このリポジトリで作業するエージェント向けの案内。日本語で作業・報告する。
 目的・スコープは `VISION.md`、詳細な編集規約は `CLAUDE.md` が参照先。本ファイルは既存運用を案内し、仕様やフェーズ判断を置き換えない。
 
+## Codex の全体手順
+
+Codex で記事の企画・調査・執筆・図と OGP の制作・検証・採用後の更新を行うときは、
+[kurabebako-workflow](.agents/skills/kurabebako-workflow/SKILL.md) を読む。
+このスキルは Codex 向けの実行手順であり、共通仕様は本ファイルと `CLAUDE.md` 等を参照する。
+Claude 用の設定・スキル・定期処理には組み込まない。
+定期処理では desk の `routines/codex/README.md` と該当プロンプトの専用出力範囲を優先し、
+共有記事への反映は別作業として扱う。
+
 ## 作業開始とドキュメント
 
 1. `git status --short` と `git branch --show-current` で現在地と既存変更を確認する。無関係な変更を巻き戻さない。
