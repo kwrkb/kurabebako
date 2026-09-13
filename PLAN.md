@@ -53,7 +53,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [x] 記事どうしの内部リンクを張る（2026-09-04 に既存 3 本を相互リンクにした。4 本目からは `CLAUDE.md`「記事の型」の内部リンクの規約に従い、新記事を出すたびに既存記事側からも足す）
 - [x] 型の検査を 2 つ広げる（2026-09-04。未来日付・expiryDate でビルド対象から外れた記事は `site_checks.html` で、`lastmod` が出典の確認日より古い記事と確認日の無い出典行は `extend_post_content.html` で止める）
 - [x] ASP 審査の前提を揃える（2026-09-02 プライバシーポリシー・問い合わせ・About を公開。本番で応答を確認）
-- [x] A8.net 登録・収益導線の設置（2026-09-12 に副サイト登録と5案件の提携・台帳登録が完了。共用サーバー・VPS記事に広告リンクとPR表記を掲載済み。公開リンクは `data/affiliates.toml`、申請・条件の詳細は desk の `affiliates/`）
+- [x] A8.net 登録・収益導線の設置（2026-09-12 に副サイト登録と5案件の提携・台帳登録が完了。共用サーバー・VPS記事に広告リンクとPR表記を掲載済み。2026-09-13 に各社の自社プログラム 2 件（ScraperAPI / Firecrawl）も承認され、スクレイピング記事に cta と ranking を設置。公開リンクは `data/affiliates.toml`、申請・条件の詳細は desk の `affiliates/`）
 - [x] Search Console 登録（DNS の TXT レコードで所有権を確認済み。2026-09-04 時点でデータはまだ無い）
 - [x] sitemap 送信（`https://kurabebako.com/sitemap.xml`。2026-09-05 に Search Console の「サイトマップ」で設置済みを確認。`robots.txt` からも参照している）
 - [ ] インデックス数とクロール状況の観測
