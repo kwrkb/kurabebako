@@ -60,3 +60,9 @@ program = 'A8.net s00000016565001（自由テキスト素材が無いため、�
 name = 'ScraperAPI'
 url = 'https://www.scraperapi.com/signup?fp_ref=ggko43'
 program = 'ScraperAPI アフィリエイト（FirstPromoter 計測。2026-09-13 承認）'
+
+# Dub Partners の短縮リンク。firecrawl.dev/?via=... に 302 で飛ぶ（2026-09-13 確認）
+[firecrawl]
+name = 'Firecrawl'
+url = 'https://firecrawl.link/KwpzgvW'
+program = 'Firecrawl アフィリエイト（Dub Partners 計測。2026-09-13 承認）'
