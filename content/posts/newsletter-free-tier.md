@@ -1,8 +1,8 @@
 +++
 title = 'ニュースレター配信サービス 5 つの無料枠比較: API で配信まで届くか'
-date = '2026-09-14T23:54:36+09:00'
+date = '2026-09-15T00:04:33+09:00'
 lastmod = '2026-09-13'
-draft = true
+draft = false
 summary = 'Buttondown・Kit・MailerLite・beehiiv・Brevo を、無料枠の単位が購読者数か配信通数か、カード登録なしで始められるか、無料プランで API から配信まで届くかで比較。Free で API の全機能が使え、購読者の登録から配信・解除・削除まで API だけで閉じたのは Buttondown で、AI や CI に配信を任せるなら Buttondown が条件を満たす。無料で持てる購読者数を最大にするなら Kit。'
 categories = ['developer-tools']
 tags = ['newsletter', 'buttondown', 'kit', 'mailerlite', 'beehiiv', 'brevo']
