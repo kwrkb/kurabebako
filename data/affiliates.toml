@@ -67,3 +67,27 @@ program = 'ScraperAPI アフィリエイト（FirstPromoter 計測。2026-09-13 
 name = 'Firecrawl'
 url = 'https://firecrawl.link/sRWjj7k'
 program = 'Firecrawl アフィリエイト（Dub Partners 計測。2026-09-13 承認）'
+
+# ---- A8.net（2026-09-14 提携。さくらインターネット 2 案件と KAGOYA）----
+# 3 案件とも自由テキスト素材が無いので、記事の対象名と同じ文言のテキスト素材を text で固定する
+
+[sakura-rs]
+name = 'さくらのレンタルサーバ'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+6HZF2A+D8Y+67RK2'
+pixel = 'https://www11.a8.net/0.gif?a8mat=4BC9F6+6HZF2A+D8Y+67RK2'
+text = 'さくらのレンタルサーバ'
+program = 'A8.net s00000001717001（素材 044。自由テキスト素材が無いため文言「さくらのレンタルサーバ」のテキスト素材を使う）'
+
+[sakura-vps]
+name = 'さくらのVPS'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+6W9TKY+D8Y+CATCY'
+pixel = 'https://www18.a8.net/0.gif?a8mat=4BC9F6+6W9TKY+D8Y+CATCY'
+text = 'さくらのVPS'
+program = 'A8.net s00000001717002（素材 066。自由テキスト素材が無いため文言「さくらのVPS」のテキスト素材を使う）'
+
+[kagoya-vps]
+name = 'KAGOYA CLOUD VPS'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+79DCW2+7YE+NX736'
+pixel = 'https://www19.a8.net/0.gif?a8mat=4BC9F6+79DCW2+7YE+NX736'
+text = 'KAGOYA CLOUD VPS'
+program = 'A8.net s00000001031004（素材 018。自由テキスト素材が無いため文言「KAGOYA CLOUD VPS」のテキスト素材を使う）'
