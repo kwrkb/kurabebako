@@ -9,20 +9,27 @@
 
 .post-content table th,
 .post-content table td {
-  min-width: 9rem;
   vertical-align: top;
 }
 
+/* ここから下の列幅・nowrap・幅の拡張は、本文直下にある 7 列の比較表だけに掛ける。
+   「検証した内容」の中の 2 列の表（操作 / 結果）にまで掛かると、2 列とも「末尾 2 列」に当たって
+   結果の文が 1 行に伸び、ページ全体が横にはみ出していた（2026-09-18 に本番で確認） */
+.post-content > table:has(> thead > tr > th:nth-child(7)) th,
+.post-content > table:has(> thead > tr > th:nth-child(7)) td {
+  min-width: 9rem;
+}
+
 /* 料金列は文が長いので、他より広く取って縦に伸びないようにする */
-.post-content table td:nth-child(2),
-.post-content table th:nth-child(2) {
+.post-content > table:has(> thead > tr > th:nth-child(7)) td:nth-child(2),
+.post-content > table:has(> thead > tr > th:nth-child(7)) th:nth-child(2) {
   min-width: 13rem;
 }
 
 /* 画面が広いときは、表だけ本文の幅（720px）を超えて広げる。
    7 列の比較表は 720px には収まらず、横スクロールより一覧できる方が読みやすい */
 @media (min-width: 1140px) {
-  .post-content table {
+  .post-content > table:has(> thead > tr > th:nth-child(7)) {
     width: 1080px;
     max-width: none;
     margin-left: calc((100% - 1080px) / 2);
@@ -30,14 +37,14 @@
 }
 
 /* 先頭列（対象名）は折り返さない。検証区分と出典の列は短いので最小幅を外す */
-.post-content table td:first-child,
-.post-content table th:first-child {
+.post-content > table:has(> thead > tr > th:nth-child(7)) td:first-child,
+.post-content > table:has(> thead > tr > th:nth-child(7)) th:first-child {
   white-space: nowrap;
   font-weight: 600;
 }
 
-.post-content table td:nth-last-child(-n + 2),
-.post-content table th:nth-last-child(-n + 2) {
+.post-content > table:has(> thead > tr > th:nth-child(7)) td:nth-last-child(-n + 2),
+.post-content > table:has(> thead > tr > th:nth-child(7)) th:nth-last-child(-n + 2) {
   min-width: 0;
   white-space: nowrap;
 }
