@@ -1,0 +1,42 @@
+{{- /* Markdown の表の描画を上書きする。出力は Hugo 既定の表と同じで、違いは 1 点だけ:
+       セル内の「][」の間に <wbr>（折り返してよい位置）を入れる。
+       比較表の出典列は「[1][2][3]…」と番号が空白なしで続き、折り返せないと列が 200px 超に広がる。
+       CSS の break-all で折り返すと「[1」「4]」のように番号の途中で割れるので、番号の境目でだけ折り返させる。
+       型の検査（extend_post_content.html）は .RawContent を読むので、この描画の影響を受けない */ -}}
+<table
+  {{- range $k, $v := .Attributes }}
+    {{- if $v }}
+      {{- printf " %s=%q" $k $v | safeHTMLAttr }}
+    {{- end }}
+  {{- end }}>
+  <thead>
+    {{- range .THead }}
+      <tr>
+        {{- range . }}
+          <th
+            {{- with .Alignment }}
+              {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
+            {{- end -}}
+          >
+            {{- .Text -}}
+          </th>
+        {{- end }}
+      </tr>
+    {{- end }}
+  </thead>
+  <tbody>
+    {{- range .TBody }}
+      <tr>
+        {{- range . }}
+          <td
+            {{- with .Alignment }}
+              {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
+            {{- end -}}
+          >
+            {{- replace (string .Text) "][" "]<wbr>[" | safeHTML -}}
+          </td>
+        {{- end }}
+      </tr>
+    {{- end }}
+  </tbody>
+</table>

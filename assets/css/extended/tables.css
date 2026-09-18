@@ -2,9 +2,15 @@
    テーマは表を横スクロール可能な要素で包むが、狭い画面ではセルが 1〜2 文字幅まで縮んで
    縦に極端に長くなる。列に最小幅を与えて「縦に伸びる」より「横にスクロールする」を選ぶ。 */
 
+/* テーマは table に word-break: keep-all を掛けている。英語向けの指定で、日本語では空白の位置でしか
+   折り返せず、セルの最小幅が「空白を含まない最長の文」になる。比較表が 1080px に収まらず
+   デスクトップでも横スクロールになっていたので、表の中だけ日本語の通常の折り返しに戻す。
+   line-break: strict で、行頭に「。」「）」などが来る折り返しは避ける */
 .post-content table {
   font-size: 0.9rem;
   line-height: 1.6;
+  word-break: normal;
+  line-break: strict;
 }
 
 .post-content table th,
@@ -47,6 +53,14 @@
 .post-content > table:has(> thead > tr > th:nth-child(7)) th:nth-last-child(-n + 2) {
   min-width: 0;
   white-space: nowrap;
+}
+
+/* 出典列の本文（[1][2]…）は折り返してよい。折り返し位置は render-table.html が
+   番号の境目に入れる <wbr> だけなので、番号の途中では割れない。
+   nowrap のままだと出典が 10 件ある行で列が 220px になり、表が 1080px に収まらない */
+.post-content > table:has(> thead > tr > th:nth-child(7)) td:last-child {
+  white-space: normal;
+  min-width: 4.5rem;
 }
 
 /* 本文の行間。日本語はテーマ既定よりやや広い方が読みやすい */
