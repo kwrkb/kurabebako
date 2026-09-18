@@ -51,6 +51,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
   - 6 本目: メール送信 API の無料枠比較（2026-09-08 `email-api-free-tier`。Resend を「実行」区分で。API キーだけで送信ドメイン登録 → Cloudflare API で DNS → 認証 → 送信 → 削除まで自走。他 4 社は「仕様」区分。手順は desk の `lab/email/`）
   - 7 本目: スクレイピング API の無料枠比較（2026-09-12 `scraping-api-free-tier`。ScraperAPI を主役に、Firecrawl / ScrapingBee と合わせて 3 社を「実行」区分で。同じ 5 手順を無料枠を使い切らずに流した。Apify / Zyte は「仕様」区分で次回更新に回す。手順は desk の `lab/scraping/`）
   - 8 本目: ニュースレター配信サービスの無料枠比較（2026-09-15 `newsletter-free-tier`。Buttondown を主役に、Kit と合わせて 2 社を「実行」区分で。購読 → 配信 → 解除 → 撤収まで API で流し、到達を受信箱で確認した。Kit は Creator トライアル中の実行なので Free 移行後（2026-09-27 以降）に再確認する。MailerLite / beehiiv / Brevo は「仕様」区分。手順は desk の `lab/newsletter/`）
+  - 9 本目: アクセス解析の無料枠比較（2026-09-18 `analytics-free-tier`。Cloudflare Web Analytics と Umami のセルフホストを「実行」区分で。どちらも API だけでサイトの作成 → 計測 → 集計の取得 → 削除まで流した。GA4 / Umami Cloud / Plausible / Fathom は「仕様」区分。調査でこのサイト自身が Cloudflare Web Analytics の自動挿入で計測されていると分かり、同日にプライバシーポリシーを実態に合わせた。手順は desk の `lab/analytics/`）
 - [x] 記事どうしの内部リンクを張る（2026-09-04 に既存 3 本を相互リンクにした。4 本目からは `CLAUDE.md`「記事の型」の内部リンクの規約に従い、新記事を出すたびに既存記事側からも足す）
 - [x] 型の検査を 2 つ広げる（2026-09-04。未来日付・expiryDate でビルド対象から外れた記事は `site_checks.html` で、`lastmod` が出典の確認日より古い記事と確認日の無い出典行は `extend_post_content.html` で止める）
 - [x] ASP 審査の前提を揃える（2026-09-02 プライバシーポリシー・問い合わせ・About を公開。本番で応答を確認）

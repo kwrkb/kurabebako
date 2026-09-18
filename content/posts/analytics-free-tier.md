@@ -1,8 +1,8 @@
 +++
 title = 'アクセス解析の無料枠比較: 何か月見られ、API で取り出せるか'
-date = '2026-09-18T21:51:08+09:00'
+date = '2026-09-18T22:01:00+09:00'
 lastmod = '2026-09-18'
-draft = true
+draft = false
 summary = 'Cloudflare Web Analytics・Google Analytics 4・Umami・Plausible・Fathom を、無料枠が恒常かトライアルか、無料で何か月さかのぼれるか、無料で API から数字を取り出せるかで比較。無料のまま API でサイトの作成から集計の取得・削除まで閉じたのは Cloudflare Web Analytics と Umami のセルフホスト。Umami Cloud の無料プランは API が使えず、Plausible と Fathom は無料枠が無い。'
 categories = ['monitoring']
 tags = ['web-analytics', 'cloudflare', 'google-analytics', 'umami', 'plausible', 'fathom']

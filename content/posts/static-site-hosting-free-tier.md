@@ -168,6 +168,7 @@ Workers Static Assets と同じ Cloudflare の静的ホスティングで、違�
 
 公開したサイトが落ちていないかを無料枠で見張るなら、[死活監視の無料枠 5 つの比較](/posts/uptime-monitoring-free-tier/)が続きになります。
 監視対象はこのサイト自身で、同じ Cloudflare の構成に対して作成から削除までを確認しています。
+公開したサイトがどれだけ読まれているかを無料で数えるなら、[アクセス解析の無料枠比較](/posts/analytics-free-tier/)が対象になります。
 
 ## 出典
 
