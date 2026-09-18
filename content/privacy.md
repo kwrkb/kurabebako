@@ -8,6 +8,8 @@ ShowBreadCrumbs = false
 
 制定日: 2026-09-02
 
+変更日: 2026-09-18（「アクセス解析」の項を実態に合わせて直しました。Cloudflare の設定により、開設時から Cloudflare Web Analytics の計測スクリプトが自動で挿入されていたためです）
+
 ## 運営者
 
 kwrkb（[kwrkb.com](https://kwrkb.com/)）。連絡先は [お問い合わせ](/contact/) に記載しています。
@@ -27,8 +29,10 @@ Search Console が当サイトに提供するのは集計されたデータの�
 
 ### アクセス解析
 
-2026-09-02 時点で、当サイトはアクセス解析ツールを導入していません。
-導入した場合は、ツール名と取得する情報をこのページに追記します。
+当サイトは Cloudflare Web Analytics を使い、ページごとの表示回数・訪問数・参照元・表示速度を集計しています。
+ページの表示時に Cloudflare の計測スクリプト（`static.cloudflareinsights.com/beacon.min.js`）が読み込まれ、閲覧したページの URL・参照元・国・端末やブラウザの種類・表示にかかった時間などが Cloudflare に送られます。
+Cloudflare は、この計測に Cookie や localStorage を使わず、IP アドレスや User-Agent から個人を識別する処理（フィンガープリント）も行わないと説明しています（[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/)）。
+当サイトが見るのは集計された数字だけで、個々の訪問者を識別する情報は受け取りません。ほかの解析ツールを導入した場合は、ツール名と取得する情報をこのページに追記します。
 
 ## Cookie
 
