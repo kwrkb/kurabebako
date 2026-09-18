@@ -157,6 +157,9 @@ Workers Static Assets と同じ Cloudflare の静的ホスティングで、違�
 
 ## 用途別の選び方
 
+広告を載せるか、DNS を Cloudflare に置けるか、リポジトリを公開できるかの 3 点で、選ぶ対象が分かれます。
+各分岐の根拠は比較表の列に書いています。
+
 - 広告・アフィリエイト・有料サービスの案内を載せる → Cloudflare Workers Static Assets か
   Cloudflare Pages。「主な制約」列のとおり、Vercel Hobby は広告・アフィリエイトを含む商用利用を禁止し、
   GitHub Pages は商取引が主目的のサイトを禁止しています（比較記事に広告を置く程度が該当するかは
