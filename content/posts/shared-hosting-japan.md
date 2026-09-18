@@ -111,11 +111,9 @@ API の対象範囲はエックスサーバーより狭く、MySQL・cron・FTP 
 - **制約**: 公開 API は Personal Access Token（`lp_pat_` で始まる）による Bearer 認証で、`domains:read` や `wordpress:write` のようなスコープを
   発行時に選びます。レート制限はアカウント単位でスタンダード 120 req/分・20,000 req/日、日本時間 9:00 にリセットされます。
   対象外のプランで呼ぶと 403（`plan_not_allowed`）です [11][12]。お試し期間中はメール送信が 24 時間あたり 50 件までです [15]
-- **前提条件**: PAT はユーザー専用ページで発行し、平文は発行時にしか表示されません。MCP サーバーは `https://lolipop.jp/api/v1/mcp` への
-  HTTP 接続で、Claude Code なら `claude mcp add` に URL と Authorization ヘッダーを渡すだけです [12][13]。
+- **前提条件**: PAT はユーザー専用ページで発行し、平文は発行時にしか表示されません。MCP サーバーは `https://lolipop.jp/api/v1/mcp` への HTTP 接続で、Claude Code なら `claude mcp add` に URL と Authorization ヘッダーを渡すだけです [12][13]。
   お試し期間中に PAT を発行できるかは公式ページに記載が無く、この記事では確認していません
-- **検証した内容**: {{< verified spec >}}。公式の API ドキュメント（OpenAPI 3.1）で、エンドポイントが `/me`・`/domains`・`/subdomains`・`/php`・`/mail`・`/ssl`・`/wordpress`・`/server` の
-  8 系統であることを確認しました [12]。別に配布されている「AI エージェント Skills」は、API ではなく SSH（`sshpass`）と Playwright によるブラウザ自動化で
+- **検証した内容**: {{< verified spec >}}。公式の API ドキュメント（OpenAPI 3.1）で、エンドポイントが `/me`・`/domains`・`/subdomains`・`/php`・`/mail`・`/ssl`・`/wordpress`・`/server` の 8 系統であることを確認しました [12]。別に配布されている「AI エージェント Skills」は、API ではなく SSH（`sshpass`）と Playwright によるブラウザ自動化で
   管理画面を操作する構成です。スタンダード以上が必要で、削除と WordPress は対象外です [16][17]
 
 {{< cta "lolipop" >}}

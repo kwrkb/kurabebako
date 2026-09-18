@@ -54,8 +54,7 @@ OpenBao（agent exec）: 2152
   料金の単位（secret 数 × 月、API 呼び出し数）が他と揃いません。HashiCorp のマネージド版 HCP Vault Dedicated は、時間単価が公式の料金ページで取得できなかったため、
   trial credit の記載だけを Vault の行に添えています
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
-- 検証は 6 つに同じ 5 手順を流しました。(1) 非対話でトークンを得る (2) secret を 1 件作る (3) `run` 相当で子プロセスの環境変数に注入する
-  (4) 読み取り専用のトークンで書き込みが拒否される (5) secret とトークンを消す。値は出力せず、長さだけを記録しています
+- 検証は 6 つに同じ 5 手順を流しました。(1) 非対話でトークンを得る (2) secret を 1 件作る (3) `run` 相当で子プロセスの環境変数に注入する (4) 読み取り専用のトークンで書き込みが拒否される (5) secret とトークンを消す。値は出力せず、長さだけを記録しています
 - 「無料枠」列の上限は単位が揃いません。Bitwarden は machine account と project の数、Infisical は identity と environment の数、
   Doppler は environment と service token の数で数えます。棒グラフには載せず、実測した注入時間だけを図にしています
 - Vault は「OSS」と書いていません。ソースは公開されていますがライセンスが BUSL 1.1 で、OSI の定義するオープンソースではないためです。
@@ -222,8 +221,7 @@ Vault 用に書いた CLI 手順と Agent の設定ファイルが、コマン�
 - 無料でカード登録なしに始め、CI や AI エージェントに読み書きまでさせたい。project 3 つ・machine account 3 つで足りる → Bitwarden Secrets Manager。
   「無料枠」列のとおり secret 数に上限が無く、「検証した内容」のとおり machine account のトークンだけで作成から削除まで閉じます。
   ただし「主な制約」列のとおり、権限の付け替えは web vault で行います
-- 読み取り専用の主体を API から作り分けたい。将来セルフホストに移す可能性がある → Infisical。「検証した内容」のとおり identity の作成・ロールの付与・削除が
-  REST API で閉じ、viewer の token では書き込みが 403 になります。environment は 3 つまでです
+- 読み取り専用の主体を API から作り分けたい。将来セルフホストに移す可能性がある → Infisical。「検証した内容」のとおり identity の作成・ロールの付与・削除が REST API で閉じ、viewer の token では書き込みが 403 になります。environment は 3 つまでです
 - CLI の速さとオフラインでの再実行が欲しい。環境は 4 つまでで足りる → Doppler。棒グラフのとおり注入が最も速く、fallback ファイルで 2 回目以降がさらに縮みます。
   「主な制約」列のとおり service account は Team 以上なので、機械向けは service token で運用します
 - すでに 1Password を契約していて、他のツールを増やしたくない → 1Password。`op run` が標準出力の secret を伏せてくれます。

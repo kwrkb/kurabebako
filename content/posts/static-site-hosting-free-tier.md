@@ -61,15 +61,12 @@ Free プランの実行回数の枠を消費しない点が特徴です。
   Worker スクリプトを置かない静的配信専用の構成なら、Free プランの 1 日 10 万リクエストの
   上限を消費しません [1][3]
 - **制約**: 1 バージョンあたりのファイル数は Free 20,000、Paid 100,000。1 ファイル 25 MiB。
-  アカウントあたりの Worker 数は Free 100 です [3]。Git 連携のビルド（Workers Builds）は
-  Free で月 3,000 分、同時 1 本、1 回 20 分で打ち切られます [4]
+  アカウントあたりの Worker 数は Free 100 です [3]。Git 連携のビルド（Workers Builds）は Free で月 3,000 分、同時 1 本、1 回 20 分で打ち切られます [4]
 - **前提条件**: Cloudflare アカウント（Free プランで可）。独自ドメインを Custom Domain として
   付けるには、そのドメインの DNS ゾーンが Cloudflare 上で有効である必要があります。DNS レコードと
   証明書は Cloudflare が自動で作成します [5]。自動ビルドを使うには GitHub か GitLab のリポジトリ
   を接続します [4]
-- **検証した内容**: このサイト自体が本構成で稼働しています。Worker スクリプトを持たない
-  `wrangler.jsonc`（`main` なし、`assets.directory` のみ）で `main` ブランチへの push から
-  Workers Builds が起動し、`wrangler deploy` が `public/` をアップロードします。
+- **検証した内容**: このサイト自体が本構成で稼働しています。Worker スクリプトを持たない `wrangler.jsonc`（`main` なし、`assets.directory` のみ）で `main` ブランチへの push から Workers Builds が起動し、`wrangler deploy` が `public/` をアップロードします。
   2026-09-02 に確認した結果は次のとおりです
 
   ```
@@ -84,19 +81,16 @@ Free プランの実行回数の枠を消費しない点が特徴です。
   34
   ```
 
-  Hugo が出す `404.html` を `not_found_handling = "404-page"` で返す設定が、存在しないパスに
-  404 を返すことも確認しました。ファイル数 34 は上限 20,000 の 0.2% 未満です
+  Hugo が出す `404.html` を `not_found_handling = "404-page"` で返す設定が、存在しないパスに 404 を返すことも確認しました。ファイル数 34 は上限 20,000 の 0.2% 未満です
 
 ### Cloudflare Pages
 
 Workers Static Assets と同じ Cloudflare の静的ホスティングで、違いは主に独自ドメインの扱いにあります。
 
 - **料金体系**: Free プランは無料です。静的ファイルへのリクエストは「Free・Paid ともに無料・無制限」。
-  Pages Functions を使う場合のみ Workers の実行回数として課金され、Free では Workers と
-  1 日 10 万回の枠を共有します [7]
+  Pages Functions を使う場合のみ Workers の実行回数として課金され、Free では Workers と 1 日 10 万回の枠を共有します [7]
 - **制約**: ビルドは Free 月 500 回、同時 1 本、20 分で打ち切り。ファイル数は Free 20,000、
-  有料 100,000。1 ファイル 25 MiB。1 アカウント 100 プロジェクト。カスタムドメインは
-  1 プロジェクト 100 個までです [6]
+  有料 100,000。1 ファイル 25 MiB。1 アカウント 100 プロジェクト。カスタムドメインは 1 プロジェクト 100 個までです [6]
 - **前提条件**: Cloudflare アカウント。Workers と違い、Cloudflare 外の DNS で管理している
   ドメインも Custom Domain にできます [8]。Cloudflare が公開する Workers との機能比較表では、
   Pages が対応し Workers が非対応なのはこの「Cloudflare 外ゾーンの独自ドメイン」1 項目だけです。Early Hints・ブランチデプロイ制御・
@@ -113,8 +107,7 @@ Workers Static Assets と同じ Cloudflare の静的ホスティングで、違�
 - **料金体系**: GitHub Free で公開リポジトリから無料で公開できます。非公開リポジトリから
   公開するには GitHub Pro・Team・Enterprise Cloud・Enterprise Server が必要です [10]
 - **制約**: 公開後のサイト容量 1 GB。転送量は月 100 GB のソフト上限。ビルドは 1 時間 10 回の
-  ソフト上限（独自の GitHub Actions ワークフローで公開する場合は対象外）。デプロイは
-  10 分で打ち切られます [9]。利用規約上、オンラインビジネス・EC サイト・商用 SaaS など
+  ソフト上限（独自の GitHub Actions ワークフローで公開する場合は対象外）。デプロイは 10 分で打ち切られます [9]。利用規約上、オンラインビジネス・EC サイト・商用 SaaS など
   「商取引の促進を主目的とするサイト」の無料ホスティングとしては使えません [9]
 - **前提条件**: GitHub アカウント。URL は `<owner>.github.io` か `<owner>.github.io/<repo>`。
   独自ドメインと HTTPS に対応しています [10]
@@ -160,8 +153,7 @@ Workers Static Assets と同じ Cloudflare の静的ホスティングで、違�
 広告を載せるか、DNS を Cloudflare に置けるか、リポジトリを公開できるかの 3 点で、選ぶ対象が分かれます。
 各分岐の根拠は比較表の列に書いています。
 
-- 広告・アフィリエイト・有料サービスの案内を載せる → Cloudflare Workers Static Assets か
-  Cloudflare Pages。「主な制約」列のとおり、Vercel Hobby は広告・アフィリエイトを含む商用利用を禁止し、
+- 広告・アフィリエイト・有料サービスの案内を載せる → Cloudflare Workers Static Assets か Cloudflare Pages。「主な制約」列のとおり、Vercel Hobby は広告・アフィリエイトを含む商用利用を禁止し、
   GitHub Pages は商取引が主目的のサイトを禁止しています（比較記事に広告を置く程度が該当するかは
   規約文からは判断できません）。Netlify Free は使い切ると停止します。Cloudflare の 2 つは静的リクエストが
   無制限で、料金・上限ページに用途の制限の記載がありません
@@ -169,8 +161,7 @@ Workers Static Assets と同じ Cloudflare の静的ホスティングで、違�
   Workers の Custom Domain は Cloudflare のゾーンが必須ですが、Pages は外部 DNS でも使えます
 - 新規に Cloudflare で始める → Workers Static Assets。機能比較表で Workers のみ対応の項目が多く、
   Workers が非対応で Pages のみ対応なのは外部 DNS のドメインの 1 項目だけです [8]
-- 非商用の個人サイトで、リポジトリが公開でよい → GitHub Pages。「無料枠」列の転送量 100 GB は
-  Vercel Hobby と同水準で、追加のアカウントを作らずに済みます
+- 非商用の個人サイトで、リポジトリが公開でよい → GitHub Pages。「無料枠」列の転送量 100 GB は Vercel Hobby と同水準で、追加のアカウントを作らずに済みます
 - 非公開リポジトリから非商用サイトを無料で出したい → Netlify Free か Vercel Hobby。
   GitHub Pages は GitHub Pro 以上が要ります。Netlify は「無料枠」列の 300 クレジットを
   デプロイ回数と転送量で分け合う点に注意してください

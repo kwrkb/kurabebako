@@ -24,6 +24,15 @@ enableRobotsTXT = true
 [markup.goldmark.renderer]
   unsafe = true
 
+# Markdown の行の途中の改行は、HTML では空白 1 文字として描かれる。
+# 日本語は語の間に空白を置かないので「ファイルへの リクエスト」のように語の途中が割れて見える。
+# 全角文字どうしの間の改行だけを消す（英単語の間の改行は空白のまま残る）。
+# 記事側で 1 文を 1 行に詰め直さなくて済むように、設定で直す
+[markup.goldmark.extensions.cjk]
+  enable = true
+  eastAsianLineBreaks = true
+  eastAsianLineBreaksStyle = 'css3draft'
+
 [outputs]
   home = ['html', 'rss']
 

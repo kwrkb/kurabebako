@@ -76,8 +76,7 @@ Xserver VPS 2GB（参考）: 1980
 - **前提条件**: ConoHa アカウントと支払い手段。API を使うにはコントロールパネルで API ユーザーを発行します。
   公開 API は OpenStack 準拠で、Identity / Compute / Image / Volume / Network の各 API があります [2][5]。
   Terraform provider（`gmo-internet/conohavps`、Ver.3.0 専用、ベータ）[3] と MCP サーバー（OSS 版とリモート版、ベータ）[4] が公式に提供されています
-- **検証した内容**: 2026-09-02 に Terraform provider 0.1.0 を使い、AI が 1GB プラン（flavor `g2l-t-c2m1`）に
-  Ubuntu 24.04 テンプレート（`vmi-ubuntu-24.04-amd64`）で 100GB のブートボリュームを付けてサーバーを作成し、
+- **検証した内容**: 2026-09-02 に Terraform provider 0.1.0 を使い、AI が 1GB プラン（flavor `g2l-t-c2m1`）に Ubuntu 24.04 テンプレート（`vmi-ubuntu-24.04-amd64`）で 100GB のブートボリュームを付けてサーバーを作成し、
   計測後に削除しました。所要時間は次のとおりです。
 
   | 工程 | 所要時間 |
@@ -143,8 +142,7 @@ API がないため、自動化よりはコントロールパネルで手動運�
 
 - **料金体系**: 日額（月上限あり）または年額です。1GB プランは日額 20 円、月上限 550 円、年額 6,072 円。
   月上限に達しても利用は制限されません [12]
-- **制約**: 公式マニュアルの目次（NVMe、Windows Server、KVM、OpenVZ、SSH 接続、ドメイン、SSL、スタートアップガイド）に
-  API の項目がなく、作成・削除はコントロールパネルで行います [14]。スナップショットと無停止のスケールアップに対応しています [13]
+- **制約**: 公式マニュアルの目次（NVMe、Windows Server、KVM、OpenVZ、SSH 接続、ドメイン、SSL、スタートアップガイド）に API の項目がなく、作成・削除はコントロールパネルで行います [14]。スナップショットと無停止のスケールアップに対応しています [13]
 - **前提条件**: KAGOYA アカウント（登録は無料）と支払い手段。OS テンプレートは 12 種で、Ubuntu 24.04 / 26.04 を含みます [13][14]
 - **検証した内容**: 仕様区分です。上記の公式ページ [12]〜[14] を 2026-09-02 に確認しました。
   API がないため、AI 単独での作成・削除は行っていません
@@ -188,8 +186,7 @@ API がないため、自動化よりはコントロールパネルで手動運�
 
 {{< svg src="vps-japan-minimum-plan-flow.svg" alt="用途別の判断フロー。自動化したいなら ConoHa、月額最小なら WebARENA Indigo、日単位なら KAGOYA、無料で試すならさくら、それ以外はスペックかリージョンで Xserver かさくら" caption="図: 用途別の判断フロー" >}}
 
-- API・Terraform・MCP から作成〜削除まで自動化する → ConoHa VPS。「前提条件」列のとおり、サーバー作成を含む公式 API と
-  Terraform provider があるのは ConoHa だけです。Indigo の REST API は英語ドキュメントのみで、さくらの API は作成・削除に対応していません
+- API・Terraform・MCP から作成〜削除まで自動化する → ConoHa VPS。「前提条件」列のとおり、サーバー作成を含む公式 API と Terraform provider があるのは ConoHa だけです。Indigo の REST API は英語ドキュメントのみで、さくらの API は作成・削除に対応していません
 - 1 時間だけ動かして消す検証用途 → ConoHa か WebARENA Indigo。「主な制約」列のとおり、この 2 つだけが時間課金で、
   1 時間の利用は 1〜2 円で済みます。Indigo は停止中も課金される点と、最低利用料 55 円に注意してください
 - 常時稼働で月額を最小にする → WebARENA Indigo の 1GB（449 円）。IPv4 が要らなければ 768MB（319 円）で足ります。
