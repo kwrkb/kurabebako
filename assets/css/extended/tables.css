@@ -63,6 +63,28 @@
   min-width: 4.5rem;
 }
 
+/* 表が本文幅に収まらない画面（1140px 未満）では比較表は横スクロールになる。先頭列（対象名）を
+   固定しないと、右の列を読むときにどの行がどの対象か分からなくなる。
+   固定した列は幅を取りすぎると残りの列が読めないので、ここでは折り返して 8.5rem に揃える
+   （「エックスサーバー」の 8 文字が 1 行に収まる幅。狭いと語の途中で割れる）。
+   背景を塗らないとスクロールした列が透けて重なり、罫線は collapse のため固定列に付いてこないので
+   右端の区切りは影で描く */
+@media (max-width: 1139px) {
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td:first-child,
+  .post-content > table:has(> thead > tr > th:nth-child(7)) th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    /* 表のセルには max-width が効かないので、width と min-width を同じ値にして固定する */
+    min-width: 8.5rem;
+    width: 8.5rem;
+    padding-inline: 8px;
+    white-space: normal;
+    background: var(--theme);
+    box-shadow: inset -1px 0 0 var(--border);
+  }
+}
+
 /* 本文の行間。日本語はテーマ既定よりやや広い方が読みやすい */
 .post-content {
   line-height: 1.85;
