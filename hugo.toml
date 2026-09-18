@@ -36,6 +36,14 @@ enableRobotsTXT = true
 [outputs]
   home = ['html', 'rss']
 
+# GA4 の測定 ID。テーマが <head> で Hugo 組み込みの google_analytics.html を呼ぶので、
+# gtag のスニペットを layouts/ に手で貼らず、ID だけをここに置く。
+# Cloudflare Web Analytics（ダッシュボード側の設定で自動挿入されている）とは別に動く。
+# GA4 は Cookie（_ga）を使うので、外す・足すときは content/privacy.md の「アクセス解析」「Cookie」も揃える。
+# params.env = 'production' のため `npm run dev` でもタグが出る（localhost のヒットは GA4 側のフィルタで除く）
+[services.googleAnalytics]
+  id = 'G-MCLR0RTLCW'
+
 [params]
   env = 'production'
   description = 'AIツール・開発環境・CLI・SaaS・サーバーの比較まとめ'

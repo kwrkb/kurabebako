@@ -10,6 +10,8 @@ ShowBreadCrumbs = false
 
 変更日: 2026-09-18（「アクセス解析」の項を実態に合わせて直しました。Cloudflare の設定により、開設時から Cloudflare Web Analytics の計測スクリプトが自動で挿入されていたためです）
 
+変更日: 2026-09-19（Google Analytics 4 を導入したため、「アクセス解析」と「Cookie」の項に追記しました）
+
 ## 運営者
 
 kwrkb（[kwrkb.com](https://kwrkb.com/)）。連絡先は [お問い合わせ](/contact/) に記載しています。
@@ -32,11 +34,20 @@ Search Console が当サイトに提供するのは集計されたデータの�
 当サイトは Cloudflare Web Analytics を使い、ページごとの表示回数・訪問数・参照元・表示速度を集計しています。
 ページの表示時に Cloudflare の計測スクリプト（`static.cloudflareinsights.com/beacon.min.js`）が読み込まれ、閲覧したページの URL・参照元・国・端末やブラウザの種類・表示にかかった時間などが Cloudflare に送られます。
 Cloudflare は、この計測に Cookie や localStorage を使わず、IP アドレスや User-Agent から個人を識別する処理（フィンガープリント）も行わないと説明しています（[Cloudflare Web Analytics](https://www.cloudflare.com/web-analytics/)）。
-当サイトが見るのは集計された数字だけで、個々の訪問者を識別する情報は受け取りません。ほかの解析ツールを導入した場合は、ツール名と取得する情報をこのページに追記します。
+当サイトが見るのは集計された数字だけで、個々の訪問者を識別する情報は受け取りません。
+
+あわせて、Google が提供する Google Analytics 4 を使い、ページごとの表示回数・訪問数・参照元などを集計しています。
+ページの表示時に Google の計測スクリプト（`www.googletagmanager.com/gtag/js`）が読み込まれ、閲覧したページの URL・参照元・端末やブラウザの種類などが Google に送られます。
+Google Analytics 4 は訪問者を区別するためにファーストパーティ Cookie（`_ga` など）を使います（[Google Analytics の Cookie の使用](https://support.google.com/analytics/answer/11397207?hl=ja)）。
+収集されたデータは Google のプライバシーポリシーに基づいて管理されます。データの扱いは [Google のサービスを使用するサイトやアプリから収集した情報の Google による使用](https://policies.google.com/technologies/partner-sites?hl=ja) で確認できます。
+計測を止めたい場合は、Google が提供する [Google アナリティクス オプトアウト アドオン](https://tools.google.com/dlpage/gaoptout?hl=ja) を使うか、ブラウザの設定で Cookie を無効にしてください。
+
+ほかの解析ツールを導入した場合は、ツール名と取得する情報をこのページに追記します。
 
 ## Cookie
 
-当サイト自身は Cookie を発行していません。Cloudflare が配信のために技術的な Cookie を設定することがあります。
+当サイトは、Google Analytics 4 の計測のためにファーストパーティ Cookie（`_ga` など）を設定します。用途は「アクセス解析」の項のとおりです。
+このほかに、Cloudflare が配信のために技術的な Cookie を設定することがあります。
 Cookie はブラウザの設定で無効にできますが、その場合も当サイトの閲覧に支障はありません。
 
 ## アフィリエイトプログラム
