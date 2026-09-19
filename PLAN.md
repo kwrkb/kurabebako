@@ -67,6 +67,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
   - 2026-09-19 に GA4 を導入し（`hugo.toml` の `services.googleAnalytics`。プライバシーポリシーも同日に追記）、観測を手動エクスポートから API 取得に切り替えた。
     Search Console と GA4 を desk の `metrics/fetch/fetch.py` が読み取り専用のサービスアカウントで取り、月次の集計も同じ経路を使う。
     GA4 のデータは導入日以降だけ。インデックス登録の状況は一覧を返す API が無いので、見るときは管理画面で確認する
+  - 2026-08 集計（desk の `metrics/2026-08-summary.md`）。サイト公開前の月のため、Search Console・GA4 ともデータなし（表示された記事 0 本、タグページ 0 個）。前月比は無し
 
 **判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う。
 収益経路（ASP 承認と案件台帳）が無いまま Phase 3 に入らない
