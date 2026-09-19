@@ -11,6 +11,9 @@
 | ビルドツールの版 | `build.sh` 冒頭の `HUGO_VERSION`（唯一の定義箇所） |
 | 配信の挙動（404・末尾スラッシュ・ドメイン） | `wrangler.jsonc` の `assets` と `workers_dev` |
 | サイト設定・テーマ読み込み | `hugo.toml` |
+| アクセス解析のタグ | GA4 は `hugo.toml` の `services.googleAnalytics`、説明は `content/privacy.md`。Cloudflare Web Analytics は配信側で自動挿入 |
+| GA4・Search Console（GSC）の API 観測 | 2026-09-19 から取得可能。手順は desk の `metrics/README.md`、実装は `metrics/fetch/fetch.py`。GA4 の PV・セッション・ユーザー数と、GSC のクリック・表示回数・CTR・掲載順位を CSV に保存する |
+| 比較表の出典番号の折り返し | `layouts/_markup/render-table.html`（セルの `][` の間に `<wbr>` を挿入） |
 | 記事の骨組み | `archetypes/posts.md`（`hugo new content posts/<slug>.md` が使う） |
 | アフィリエイト案件の台帳 | `data/affiliates.toml`（id → 表示名・URL） |
 | PR 表記・リンクボタン・ランキング | `layouts/_shortcodes/{pr,cta,ranking}.html`、見た目は `assets/css/extended/affiliate.css` |
@@ -77,18 +80,22 @@ shortcode を連続する行に書くと、Markdown 側で1つの段落として
 
 ## 空のまま置いているディレクトリ
 
-`i18n/` `static/` `themes/`
+`i18n/` `themes/`
+
+`static/` には採用済み OGP 画像（`static/images/og/`）がある。
 
 git は空ディレクトリを追跡しないため、clone 直後には存在しない。
 Hugo は無いディレクトリを無視するのでビルドには影響しない。
 
 ## ビルドログの読み方
 
-正常時は以下が1回ずつ出る。2回出ていたらビルドが二重に走っている。
+`node build.js` では、導入済みの Hugo が固定版と一致すればダウンロードを省略し、
+版の表示 → 出力の掃除 → ビルドの順で進む。次の行はそれぞれ 1 回だけ出る。
 
 ```
-[custom build] Running: node build.js
-[custom build] Installing Hugo <version> (extended)...
+Logging tool versions...
+Cleaning output directory...
+Building the project...
 ```
 
 `Pages` の数が前回より減っていたら、記事が除外されている可能性がある
@@ -96,9 +103,11 @@ Hugo は無いディレクトリを無視するのでビルドには影響しな
 
 ## 既知の警告
 
-テーマ内のテンプレートが古い変数名を使っているため、ビルドのたびに
-言語関連の deprecation warning が2件出る。リポジトリ側の設定が原因ではないので、
-テーマの更新を待つ。出所の確認:
+2026-09-19 の `node build.js` は成功し、非推奨警告が 3 件出た。
+`.Language.LanguageDirection` / `.Language.LanguageCode` の 2 件はテーマ内の古い変数名によるもの。
+加えて `.Site.Data` の警告が出る。自前の `layouts/_partials/affiliate.html` にも
+`site.Data.affiliates` の使用箇所があるため、対応時はテーマだけでなくこの partial も確認する。
+言語関連の出所の確認:
 
 ```bash
 grep -rn "LanguageDirection\|LanguageCode" "$(hugo config mounts | grep -o '"dir": "[^"]*adityatelange[^"]*"' | sed 's/"dir": "//; s/"$//')/layouts"

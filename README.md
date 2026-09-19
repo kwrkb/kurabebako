@@ -92,7 +92,7 @@ npm ci   # wrangler のみ
 ### 動作確認（共通）
 
 ```bash
-npm run build     # public/ が生成される
+node build.js     # Hugo の版確認・古い public/ の掃除を含む本番共通ビルド
 npm run preview   # http://localhost:8787 で Workers 配信を再現
 ```
 
@@ -109,9 +109,10 @@ CRLF になると `build.sh` は bash が行末の `\r` を構文エラーにし
 | コマンド | 内容 |
 | --- | --- |
 | `npm run dev` | Hugo 開発サーバー（下書き・未来日付も表示） |
-| `npm run build` | 本番ビルド → `public/` |
-| `npm run preview` | `wrangler dev` でWorkers配信を再現（`build.sh` が自動実行される） |
-| `npm run deploy` | `wrangler deploy`（`build.sh` が自動実行される） |
+| `npm run build` | Hugo 直呼びで `public/` に生成（版確認・古い出力の掃除は含まない） |
+| `node build.js` | 本番共通ビルド（Hugo の版確認・古い出力の掃除 → 生成） |
+| `npm run preview` | `wrangler dev` で Workers 配信を再現（`node build.js` が自動実行される） |
+| `npm run deploy` | `wrangler deploy` で本番反映（`node build.js` が自動実行される） |
 | `npm run mod:update` | テーマ等の Hugo Modules を更新 |
 
 ## Cloudflare の設定
@@ -197,7 +198,7 @@ go.mod           Hugo Modules の依存
 content/         記事
 archetypes/      `hugo new` の雛形（posts.md が比較記事の骨組み）
 data/            アフィリエイト案件の台帳
-layouts/         テーマ上書き・shortcode（pr / cta / ranking）
+layouts/         テーマ上書き・記事検査・shortcode（pr / cta / ranking / verified / bars / svg）
 assets/ static/  アセット
 ```
 
@@ -213,9 +214,9 @@ Worker の実行回数を消費しない。動的処理が必要になった場�
 [PaperMod](https://github.com/adityatelange/hugo-PaperMod) を Hugo Modules で導入している。
 git submodule は使わない（Cloudflare のビルドで詰まりやすいため）。
 
-ビルド時に PaperMod 由来の deprecation warning
-（`.Language.LanguageDirection` / `.Language.LanguageCode`）が出るが、テーマ側の問題であり
-ビルドは成功する。テーマ更新で解消される見込み。
+2026-09-19 の本番共通ビルドは成功し、非推奨警告が 3 件出た
+（`.Language.LanguageDirection` / `.Language.LanguageCode` / `.Site.Data`）。
+言語関連の 2 件は PaperMod 由来。警告の確認先は `NOTES.md` を参照。
 
 ## 参考
 

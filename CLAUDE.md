@@ -61,7 +61,8 @@ main へ push
 | 目的 | コマンド |
 | --- | --- |
 | 開発サーバー | `npm run dev` |
-| 本番ビルド | `npm run build`（= `hugo --gc --minify`） |
+| 内容のビルド検査 | `npm run build`（= `hugo --gc --minify`。版確認・古い出力の掃除は含まない） |
+| 本番共通ビルド | `node build.js`（Hugo の版確認・古い出力の掃除を含む） |
 | Workers配信の再現 | `npm run preview` |
 | デプロイ | `npm run deploy` |
 | モジュール更新 | `npm run mod:update` |
