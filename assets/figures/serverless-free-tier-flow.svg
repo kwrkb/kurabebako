@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 600" font-family="system-ui, -apple-system, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-size="14" fill="currentColor">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g stroke="currentColor" stroke-width="1.5" fill="none">
+    <rect x="20" y="20" width="300" height="64" rx="8"/>
+    <rect x="20" y="150" width="300" height="64" rx="8"/>
+    <rect x="20" y="280" width="300" height="64" rx="8"/>
+    <rect x="20" y="410" width="300" height="64" rx="8"/>
+    <rect x="420" y="20" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="150" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="280" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="410" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="20" y="530" width="720" height="50" rx="8" opacity="0.9"/>
+    <line x1="320" y1="52" x2="418" y2="52" marker-end="url(#arrow)"/>
+    <line x1="320" y1="182" x2="418" y2="182" marker-end="url(#arrow)"/>
+    <line x1="320" y1="312" x2="418" y2="312" marker-end="url(#arrow)"/>
+    <line x1="320" y1="442" x2="418" y2="442" marker-end="url(#arrow)"/>
+    <line x1="170" y1="84" x2="170" y2="148" marker-end="url(#arrow)"/>
+    <line x1="170" y1="214" x2="170" y2="278" marker-end="url(#arrow)"/>
+    <line x1="170" y1="344" x2="170" y2="408" marker-end="url(#arrow)"/>
+    <line x1="170" y1="474" x2="170" y2="528" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12" opacity="0.75">
+    <text x="360" y="46" text-anchor="middle">はい</text>
+    <text x="360" y="176" text-anchor="middle">はい</text>
+    <text x="360" y="306" text-anchor="middle">はい</text>
+    <text x="360" y="436" text-anchor="middle">はい</text>
+    <text x="182" y="120">いいえ</text>
+    <text x="182" y="250">いいえ</text>
+    <text x="182" y="380">いいえ</text>
+    <text x="182" y="506">いいえ</text>
+  </g>
+  <g text-anchor="middle">
+    <text x="170" y="46">計算は数 ms で済み、外部 API の</text>
+    <text x="170" y="68">応答待ちが中心。回数は多い</text>
+    <text x="170" y="176">1 回の呼び出しで秒単位の計算を</text>
+    <text x="170" y="198">する。応答は 100 秒以内に返せる</text>
+    <text x="170" y="306">15 分までの長い処理や 2 GB 超の</text>
+    <text x="170" y="328">メモリが要る。カードを登録してよい</text>
+    <text x="170" y="436">非商用の個人プロジェクトで、</text>
+    <text x="170" y="458">1 回 300 秒・メモリ 2 GB が要る</text>
+  </g>
+  <g text-anchor="middle">
+    <text x="580" y="46" font-weight="600">Cloudflare Workers</text>
+    <text x="580" y="68" font-size="12">1 日 10 万リクエスト。CPU 10 ms、待ち時間は上限なし</text>
+    <text x="580" y="176" font-weight="600">Deno Deploy</text>
+    <text x="580" y="198" font-size="12">月 100 万リクエスト・Active CPU 10 時間</text>
+    <text x="580" y="306" font-weight="600">AWS Lambda</text>
+    <text x="580" y="328" font-size="12">月 100 万リクエスト・40 万 GB 秒。登録に支払い方法が必須</text>
+    <text x="580" y="436" font-weight="600">Vercel Functions（Hobby）</text>
+    <text x="580" y="458" font-size="12">広告の掲載やアフィリエイトが主目的のサイトは不可</text>
+    <text x="380" y="551" font-weight="600">すでに Netlify にサイトがあり、関数を少し足すだけなら Netlify Functions</text>
+    <text x="380" y="571" font-size="12">月 300 クレジットを本番デプロイ（1 回 15）・帯域・リクエストと共有。使い切ると全プロジェクトが停止</text>
+  </g>
+</svg>
