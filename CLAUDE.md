@@ -61,14 +61,15 @@ main へ push
 | 目的 | コマンド |
 | --- | --- |
 | 開発サーバー | `npm run dev` |
-| 内容のビルド検査 | `npm run build`（= `hugo --gc --minify`。版確認・古い出力の掃除は含まない） |
-| 本番共通ビルド | `node build.js`（Hugo の版確認・古い出力の掃除を含む） |
+| ビルド | `npm run build`（= `node build.js`。本番と同じ入口。Hugo の版確認・古い出力の掃除を含む） |
+| 型検査の回帰テスト | `npm run test:checks`（`extend_post_content.html` を触ったら必ず回す） |
 | Workers配信の再現 | `npm run preview` |
 | デプロイ | `npm run deploy` |
 | モジュール更新 | `npm run mod:update` |
 | 記事の新規作成 | `hugo new content posts/<slug>.md`（`archetypes/posts.md` の骨組みで生成） |
 
-テストスイートと linter は無い。動作確認は `npm run build` が通ることと、
+linter は無い。テストは型検査の回帰テスト（`tests/post-checks.js`。`tests/fixtures/valid.md` を 1 か所ずつ壊した記事を
+`content/posts/` に一時的に置いてビルドし、通る / 止まるを確かめる）だけ。動作確認は `npm run build` が通ることと、
 `npm run preview` で該当ページが表示されることで行う。
 
 ## ブランチ運用

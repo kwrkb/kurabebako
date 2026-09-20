@@ -92,7 +92,7 @@ npm ci   # wrangler のみ
 ### 動作確認（共通）
 
 ```bash
-node build.js     # Hugo の版確認・古い public/ の掃除を含む本番共通ビルド
+npm run build     # = node build.js。Hugo の版確認・古い public/ の掃除を含む本番共通ビルド
 npm run preview   # http://localhost:8787 で Workers 配信を再現
 ```
 
@@ -109,8 +109,8 @@ CRLF になると `build.sh` は bash が行末の `\r` を構文エラーにし
 | コマンド | 内容 |
 | --- | --- |
 | `npm run dev` | Hugo 開発サーバー（下書き・未来日付も表示） |
-| `npm run build` | Hugo 直呼びで `public/` に生成（版確認・古い出力の掃除は含まない） |
-| `node build.js` | 本番共通ビルド（Hugo の版確認・古い出力の掃除 → 生成） |
+| `npm run build` | 本番共通ビルド（= `node build.js`。Hugo の版確認・古い出力の掃除 → 生成） |
+| `npm run test:checks` | 記事の型検査の回帰テスト（壊した記事を一時的に置いてビルドし、止まることを確かめる） |
 | `npm run preview` | `wrangler dev` で Workers 配信を再現（`node build.js` が自動実行される） |
 | `npm run deploy` | `wrangler deploy` で本番反映（`node build.js` が自動実行される） |
 | `npm run mod:update` | テーマ等の Hugo Modules を更新 |

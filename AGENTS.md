@@ -93,12 +93,12 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 | --- | --- |
 | 依存復元 | `npm ci`（lockfile に従う）。Hugo Modules には Go が必要 |
 | 編集中の表示 | `npm run dev`（draft・未来日付を含むため公開判定には使わない） |
-| 内容のビルド検査 | `npm run build`（Hugo 直呼び。版確認・古い出力の掃除は含まない） |
-| 本番と共通のビルド | `node build.js`（版確認と `public/` の掃除を含む。作業ディレクトリと出力先を確認して使う） |
+| 本番と共通のビルド | `npm run build`（= `node build.js`。版確認と `public/` の掃除を含む。作業ディレクトリと出力先を確認して使う） |
+| 型検査の回帰テスト | `npm run test:checks`（`content/posts/` に一時ファイルを置いてビルドする。`extend_post_content.html` を変えたら回す） |
 | Workers 配信の再現 | `npm run preview`（共通ビルドも走る。localhost で確認） |
 | 完成した draft の検査 | `hugo --buildDrafts --gc --minify --destination .cache/draft-check`（空の雛形は型検査に失敗する） |
 
-独立した test / lint / 型チェックのスクリプトは無い。実施した検証と未確認事項を区別する。
+独立した lint / 型チェックのスクリプトは無い。テストは上の回帰テストだけ。実施した検証と未確認事項を区別する。
 
 - 記事・テンプレート・設定変更は本番条件のビルドを通す。dev だけの成功で終えない。
 - 描画変更はスマホ幅・明暗テーマで該当ページ・比較表・図・PR を確認する。配信変更は記事・404・末尾スラッシュも確認する。

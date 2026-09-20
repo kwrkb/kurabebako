@@ -4,7 +4,8 @@
   "description": "AIツール・開発環境・CLI・SaaS・サーバーの比較まとめサイト",
   "scripts": {
     "dev": "hugo server --buildDrafts --buildFuture",
-    "build": "hugo --gc --minify",
+    "build": "node build.js",
+    "test:checks": "node tests/post-checks.js",
     "preview": "wrangler dev",
     "deploy": "wrangler deploy",
     "mod:update": "hugo mod get -u ./... && hugo mod tidy"
