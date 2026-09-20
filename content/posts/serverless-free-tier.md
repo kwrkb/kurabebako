@@ -1,8 +1,8 @@
 +++
 title = 'サーバーレス実行環境の無料枠比較: 1 回の呼び出しで何ができるか'
-date = '2026-09-20T17:28:49+09:00'
+date = '2026-09-20T20:12:53+09:00'
 lastmod = '2026-09-20'
-draft = true
+draft = false
 summary = 'Cloudflare Workers・Deno Deploy・Vercel Functions・Netlify Functions・AWS Lambda を、無料枠の単位（回数か CPU 時間かクレジットか）、1 回の呼び出しに許される CPU・待ち時間・メモリ、カードと商用利用の条件で比較。同じ負荷を当てると、Workers の無料プランは CPU を絞る代わりに 300 秒の待ちが通り、Deno Deploy は 24 秒の計算が通る代わりに約 100 秒で応答が切られた。'
 categories = ['hosting']
 tags = ['serverless', 'cloudflare', 'deno-deploy', 'vercel', 'netlify', 'aws-lambda']

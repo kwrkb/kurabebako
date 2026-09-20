@@ -44,7 +44,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [x] 1本目を型どおりに書き、型の不足を直す（2026-09-02 `static-site-hosting-free-tier`。archetype の変更は不要だった）
 - [x] 検証用 VPS の経路を作る（2026-09-02 ConoHa VPS 3.0 を Terraform + 1Password で作成〜実測〜削除まで AI が自走。構成と結果は desk の `lab/conoha/`、`research/vps-japan/`）
 - [x] 2本目: 国内 VPS 比較（2026-09-02 `vps-japan-minimum-plan`。主役は ConoHa を「実行」区分で。他社は「仕様」区分、実測できたものから「実行」に置き換える）
-- [ ] 10 本まで投入する（候補と線引きは desk の `backlog.md`。1 本ごとに「実行」区分の主役を置き、収益に近い領域と検索需要が大きい領域を混ぜる）
+- [x] 10 本まで投入する（2026-09-20 に 10 本目を公開して達成。候補と線引きは desk の `backlog.md`。1 本ごとに「実行」区分の主役を置き、収益に近い領域と検索需要が大きい領域を混ぜる）
   - 3 本目: 死活監視の無料枠比較（2026-09-03 `uptime-monitoring-free-tier`。UptimeRobot / Checkly / Uptime Kuma を「実行」区分で。手順は desk の `lab/uptime/`）
   - 4 本目: 国内の共用レンタルサーバー比較（2026-09-05 `shared-hosting-japan`。エックスサーバーを「実行」区分で。お試し中の API キーで REST API・CLI・MCP を動かした。手順は desk の `lab/xserver/`）
   - 5 本目: シークレット管理 CLI 比較（2026-09-05 `secret-management-cli`。Bitwarden Secrets Manager を主役に、6 対象すべてを「実行」区分で。同じ 5 手順を流す検証は desk の `lab/secrets/`）
@@ -52,6 +52,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
   - 7 本目: スクレイピング API の無料枠比較（2026-09-12 `scraping-api-free-tier`。ScraperAPI を主役に、Firecrawl / ScrapingBee と合わせて 3 社を「実行」区分で。同じ 5 手順を無料枠を使い切らずに流した。Apify / Zyte は「仕様」区分で次回更新に回す。手順は desk の `lab/scraping/`）
   - 8 本目: ニュースレター配信サービスの無料枠比較（2026-09-15 `newsletter-free-tier`。Buttondown を主役に、Kit と合わせて 2 社を「実行」区分で。購読 → 配信 → 解除 → 撤収まで API で流し、到達を受信箱で確認した。Kit は Creator トライアル中の実行なので Free 移行後（2026-09-27 以降）に再確認する。MailerLite / beehiiv / Brevo は「仕様」区分。手順は desk の `lab/newsletter/`）
   - 9 本目: アクセス解析の無料枠比較（2026-09-18 `analytics-free-tier`。Cloudflare Web Analytics と Umami のセルフホストを「実行」区分で。どちらも API だけでサイトの作成 → 計測 → 集計の取得 → 削除まで流した。GA4 / Umami Cloud / Plausible / Fathom は「仕様」区分。調査でこのサイト自身が Cloudflare Web Analytics の自動挿入で計測されていると分かり、同日にプライバシーポリシーを実態に合わせた。手順は desk の `lab/analytics/`）
+  - 10 本目: サーバーレス実行環境の無料枠比較（2026-09-20 `serverless-free-tier`。Cloudflare Workers と Deno Deploy を「実行」区分で。どちらも API トークンと curl だけでデプロイ → 呼び出し → 上限に当てる → 削除まで流し、同じ負荷（CPU の反復・待つだけの呼び出し・サブリクエスト・メモリ）を当てた。Vercel / Netlify / AWS Lambda は「仕様」区分。Vercel の Hobby は広告を載せるサイトを商用扱いにするので実行していない。手順は desk の `lab/serverless/`）
 - [x] 記事どうしの内部リンクを張る（2026-09-04 に既存 3 本を相互リンクにした。4 本目からは `CLAUDE.md`「記事の型」の内部リンクの規約に従い、新記事を出すたびに既存記事側からも足す）
 - [x] 型の検査を 2 つ広げる（2026-09-04。未来日付・expiryDate でビルド対象から外れた記事は `site_checks.html` で、`lastmod` が出典の確認日より古い記事と確認日の無い出典行は `extend_post_content.html` で止める）
 - [x] ASP 審査の前提を揃える（2026-09-02 プライバシーポリシー・問い合わせ・About を公開。本番で応答を確認）
