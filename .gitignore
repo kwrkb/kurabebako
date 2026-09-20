@@ -15,3 +15,6 @@ hugo_stats.json
 # OS / editor
 .DS_Store
 *.swp
+
+# 型検査の回帰テスト（tests/post-checks.js）が一時的に置く記事。強制終了で残っても混ざらないように
+/content/posts/zz-fixture-*.md
