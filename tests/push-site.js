@@ -10,6 +10,8 @@
 // 型検査は構造しか見ておらず、数字が公式ページと合っているか・表示が崩れていないかは、
 // まだ人の preview でしか確かめていないため。公開はユーザーが `git push origin main` で行う。
 //
+// ゲート: 作業ツリー → 公開の有無 → 型検査の回帰テスト → 本番共通ビルド → 内部リンク切れ → backlog の突き合わせ。
+//
 // `git push` を直接打たずにここを通す理由: ゲートの順番と「push 後にデプロイを確認する」を、
 // 手順書ではなくコードで固定するため（push しても Workers Builds が失敗すれば本番は黙って古いまま）。
 //------------------------------------------------------------------------------
@@ -82,6 +84,30 @@ if (run("node", ["tests/post-checks.js"], { stdio: "inherit" }).code !== 0) stop
 step("本番共通ビルド");
 if (run("node", ["build.js"], { stdio: "inherit" }).code !== 0) stop("ビルドが落ちました");
 if (git("status", "--porcelain")) stop("テストかビルドが追跡中のファイルを書き換えました");
+
+step("内部リンク切れ");
+// 未 push のコミットは全部まとめて出る。write-weekly が既存記事から draft の記事へ張った内部リンクが
+// 別の push に相乗りすると、本番にリンク切れが出る（draft は本番ビルドに入らない）。生成物で確かめる
+const pub = path.join(root, "public");
+const broken = [];
+(function walk(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, e.name);
+    if (e.isDirectory()) walk(full);
+    else if (e.name.endsWith(".html")) {
+      const html = fs.readFileSync(full, "utf8");
+      for (const m of html.matchAll(/\shref=["']?(?:https:\/\/kurabebako\.com)?(\/[^"'\s>#?]*)/g)) {
+        const target = path.join(pub, decodeURIComponent(m[1]));
+        const ok = fs.existsSync(target) && (fs.statSync(target).isFile() || fs.existsSync(path.join(target, "index.html")));
+        if (!ok) broken.push(`${path.relative(pub, full)} → ${m[1]}`);
+      }
+    }
+  }
+})(pub);
+if (broken.length) stop(`内部リンクの先がありません（draft の記事へのリンクが混ざっていないか）:
+  ${[...new Set(broken)].slice(0, 20).join("
+  ")}`);
+console.log("ok  内部リンクはすべて生成物の中にあります");
 
 step("backlog とサイトの公開状態");
 if (fs.existsSync(path.join(desk, "check-backlog.py"))) {
