@@ -56,6 +56,7 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 | `layouts/_shortcodes/` | `pr` / `cta` / `ranking` / `verified` / `bars` / `svg` |
 | `data/affiliates.toml` | 公開リンク用の案件 ID、URL、固定文言、計測画像 |
 | `assets/css/extended/` / `assets/figures/` / `static/images/og/` | 拡張 CSS / インライン SVG / 採用済み OGP 画像 |
+| `static/favicon*` / `static/apple-touch-icon.png` / `static/safari-pinned-tab.svg` | テーマの head が決め打ちで参照する favicon 一式。手で編集せず desk の `images/draw-favicon.py` で描き直す |
 
 - Cloudflare Pages へ移さない。`wrangler.jsonc` に Worker JS 用の `main` を追加しない。
 - `workers_dev` / `preview_urls` は `false`、`not_found_handling` は `404-page`。Cloudflare の Build command は空欄。

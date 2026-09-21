@@ -118,6 +118,9 @@ linter は無い。テストは型検査の回帰テスト（`tests/post-checks.
 - Hugo の設定キーは `hugo.toml` に集約する。環境変数での分岐は増やさない
 - 追加の npm パッケージは原則入れない。`devDependencies` は wrangler のみ
 - テーマの上書きは `layouts/` に同名ファイルを置く。テーマ本体（モジュールキャッシュ）は編集しない
+- favicon 一式（`static/` 直下の 5 ファイル）は、テーマの `head.html` が決め打ちで参照する名前のまま置いてある。
+  テーマに参照を止める設定は無く、止めるには `head.html` を丸ごと上書きすることになるため。
+  描き直すときは desk の `images/draw-favicon.py` を直して実行する（手で編集しない）
 - 記事は `content/posts/` 配下。front matter は `title` / `date` / `draft` / `summary` / `lastmod` を必須とする
   （`hugo new content posts/<slug>.md` で5キーとも生成される）。
   `lastmod` は「記事の内容を最後に確認した日」で、ヘッダーに「最終確認」として出る。

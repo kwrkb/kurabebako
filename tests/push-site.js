@@ -96,8 +96,10 @@ const broken = [];
     if (e.isDirectory()) walk(full);
     else if (e.name.endsWith(".html")) {
       const html = fs.readFileSync(full, "utf8");
-      // <a> だけを見る。<link> の favicon 類はテーマが決め打ちで出していて、このサイトには元から無い（別件）
-      for (const m of html.matchAll(/<a\s[^>]*?href=["']?(?:https:\/\/kurabebako\.com)?(\/[^"'\s>#?]*)/g)) {
+      // <a> と <link> を見る。<link> はテーマが決め打ちで出す favicon 類（実物は static/ の直下。
+      // desk の images/draw-favicon.py で描く）と CSS・RSS・canonical。テーマ更新で参照先の名前が
+      // 変わると全ページで 404 になるが、ビルドは通ってしまうので、ここで止める
+      for (const m of html.matchAll(/<(?:a|link)\s[^>]*?href=["']?(?:https:\/\/kurabebako\.com)?(\/[^"'\s>#?]*)/g)) {
         const target = path.join(pub, decodeURIComponent(m[1]));
         const ok = fs.existsSync(target) && (fs.statSync(target).isFile() || fs.existsSync(path.join(target, "index.html")));
         if (!ok) broken.push(`${path.relative(pub, full)} → ${m[1]}`);
