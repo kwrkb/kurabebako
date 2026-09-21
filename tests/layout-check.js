@@ -4,6 +4,7 @@
 // 主要な幅でページが横にはみ出していないかを見る。
 //
 //   npm run build && npm run test:layout
+//   npm run test:layout -- .cache/draft-check   （draft を含めたビルド出力を見るとき）
 //
 // 見るのは「ページ全体の横スクロールが出ているか」の 1 点だけ。このサイトで実際に起きた表示の崩れは、
 // どれもこの形だった（2 列の表に比較表向けの CSS が掛かって 1593px、日本語が折り返せず 1309px など。
@@ -22,7 +23,9 @@ const os = require("node:os");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
-const pub = path.join(root, "public");
+// 引数でビルド出力の場所を渡せる。draft は本番ビルドに入らないので、書いた draft を見るときは
+// hugo --buildDrafts --destination .cache/draft-check の出力を渡す
+const pub = path.resolve(root, process.argv[2] || "public");
 // スマホ / タブレット / 比較表を画面幅に収める境目（1140px）の手前と先
 const WIDTHS = [375, 768, 1100, 1280];
 const TYPES = { ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".ico": "image/x-icon", ".xml": "application/xml", ".json": "application/json", ".webmanifest": "application/manifest+json" };
@@ -125,7 +128,7 @@ const MEASURE = `(() => {
 })()`;
 
 async function main() {
-  if (!fs.existsSync(path.join(pub, "index.html"))) throw new Error("public/ がありません。先に npm run build を実行してください");
+  if (!fs.existsSync(path.join(pub, "index.html"))) throw new Error(`${path.relative(root, pub)}/ にビルド出力がありません。先にビルドしてください`);
   const exe = findBrowser();
   if (!exe) throw new Error("Chrome / Edge が見つかりません。表示の検査ができないので止めます（黙って通さない）");
 
