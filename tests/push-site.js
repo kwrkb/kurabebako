@@ -104,9 +104,10 @@ const broken = [];
     }
   }
 })(pub);
-if (broken.length) stop(`内部リンクの先がありません（draft の記事へのリンクが混ざっていないか）:
-  ${[...new Set(broken)].slice(0, 20).join("
-  ")}`);
+if (broken.length) {
+  const list = [...new Set(broken)].slice(0, 20).map((b) => `  ${b}`).join("\n");
+  stop(`内部リンクの先がありません（draft の記事へのリンクが混ざっていないか）:\n${list}`);
+}
 console.log("ok  内部リンクはすべて生成物の中にあります");
 
 step("backlog とサイトの公開状態");
