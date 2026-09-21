@@ -6,6 +6,7 @@
     "dev": "hugo server --buildDrafts --buildFuture",
     "build": "node build.js",
     "test:checks": "node tests/post-checks.js",
+    "push:site": "node tests/push-site.js",
     "preview": "wrangler dev",
     "deploy": "wrangler deploy",
     "mod:update": "hugo mod get -u ./... && hugo mod tidy"
