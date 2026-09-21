@@ -64,12 +64,14 @@ main へ push
 | ビルド | `npm run build`（= `node build.js`。本番と同じ入口。Hugo の版確認・古い出力の掃除を含む） |
 | 本番へ push | `npm run push:site`（ゲート → push → デプロイの確認。`-- --dry-run` でゲートだけ） |
 | 型検査の回帰テスト | `npm run test:checks`（`extend_post_content.html` を触ったら必ず回す） |
+| 表示の崩れの検査 | `npm run test:layout`（`npm run build` の後に。全記事を 4 つの幅でヘッドレスの Chrome / Edge に開き、横はみ出しを見る。`layouts/` と CSS を触ったら必ず回す） |
 | Workers配信の再現 | `npm run preview` |
 | デプロイ | `npm run deploy` |
 | モジュール更新 | `npm run mod:update` |
 | 記事の新規作成 | `hugo new content posts/<slug>.md`（`archetypes/posts.md` の骨組みで生成） |
 
-linter は無い。テストは型検査の回帰テスト（`tests/post-checks.js`。`tests/fixtures/valid.md` を 1 か所ずつ壊した記事を
+linter は無い。テストは 2 つ。表示の崩れの検査（`tests/layout-check.js`。見るのはページ全体の横はみ出しだけで、
+色・余白・図の見た目は分からない）と、型検査の回帰テスト（`tests/post-checks.js`。`tests/fixtures/valid.md` を 1 か所ずつ壊した記事を
 `content/posts/` に一時的に置いてビルドし、通る / 止まるを確かめる）だけ。動作確認は `npm run build` が通ることと、
 `npm run preview` で該当ページが表示されることで行う。
 
@@ -82,7 +84,7 @@ linter は無い。テストは型検査の回帰テスト（`tests/post-checks.
 
 - **AI が push するときは `npm run push:site` だけを使う**（`tests/push-site.js`。`git push` を直接打たない）。
   ゲートは 作業ツリーが clean → 公開を伴うコミットが無い → 型検査の回帰テスト → 本番共通ビルド → 内部リンク切れ →
-  desk の `check-backlog.py` の順で、通ったら push して Workers Builds の check-run まで見る。
+  表示の崩れ（`tests/layout-check.js`）→ desk の `check-backlog.py` の順で、通ったら push して Workers Builds の check-run まで見る。
   自律で push してよいのは**公開を伴わず、表示にも効かない変更**だけ（2026-09-21 に決めた段階 1）。
   記事の公開（draft を倒す）と、レイアウト・CSS の変更は、ユーザーが preview を見てから `git push origin main` で出す。
   型検査は構造しか見ておらず、数字の正しさと表示の崩れは人の目でしか確かめていないため
@@ -171,7 +173,7 @@ linter は無い。テストは型検査の回帰テスト（`tests/post-checks.
 すべての記事は比較記事で、骨組みは `archetypes/posts.md` にある。
 `hugo new content posts/<slug>.md` で生成し、見出しの構成と比較表の列は変えない。節を減らさない。
 型の違反（必須 front matter・見出しの構成と順番・比較表の列・各行の検証区分・実行区分の有無・URL に載る値の英語・
-出典の確認日の書式・`lastmod` が出典の確認日より古い）はビルドで止まる（`layouts/_partials/extend_post_content.html`）。
+出典の確認日の書式・`lastmod` が出典の確認日より古い・体験や主観を示す表現・扱わない領域の語）はビルドで止まる（`layouts/_partials/extend_post_content.html`）。
 
 - 見出し: 結論 → 比較表 → 比較の前提 → 各対象の詳細 → 用途別の選び方 → 出典
 - 比較表の列: 対象 / 料金 / 無料枠 / 主な制約 / 前提条件 / 検証区分 / 出典

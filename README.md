@@ -110,6 +110,7 @@ CRLF になると `build.sh` は bash が行末の `\r` を構文エラーにし
 | --- | --- |
 | `npm run dev` | Hugo 開発サーバー（下書き・未来日付も表示） |
 | `npm run build` | 本番共通ビルド（= `node build.js`。Hugo の版確認・古い出力の掃除 → 生成） |
+| `npm run test:layout` | 表示の崩れの検査。ビルド済みの `public/` をヘッドレスの Chrome / Edge で開き、全記事を 4 つの幅で横はみ出しが無いか見る |
 | `npm run push:site` | 本番へ push する入口。ゲート（公開の有無・回帰テスト・ビルド・内部リンク切れ・backlog）を通ったら push し、デプロイの成否まで確認する。記事の公開を含むと止まる |
 | `npm run test:checks` | 記事の型検査の回帰テスト（壊した記事を一時的に置いてビルドし、止まることを確かめる） |
 | `npm run preview` | `wrangler dev` で Workers 配信を再現（`node build.js` が自動実行される） |

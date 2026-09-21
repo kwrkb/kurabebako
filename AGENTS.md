@@ -95,6 +95,7 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 | 依存復元 | `npm ci`（lockfile に従う）。Hugo Modules には Go が必要 |
 | 編集中の表示 | `npm run dev`（draft・未来日付を含むため公開判定には使わない） |
 | 本番と共通のビルド | `npm run build`（= `node build.js`。版確認と `public/` の掃除を含む。作業ディレクトリと出力先を確認して使う） |
+| 表示の崩れの検査 | `npm run test:layout`（ビルドの後に。`layouts/` と CSS を変えたら回す。見るのは横はみ出しだけ） |
 | 型検査の回帰テスト | `npm run test:checks`（`content/posts/` に一時ファイルを置いてビルドする。`extend_post_content.html` を変えたら回す） |
 | Workers 配信の再現 | `npm run preview`（共通ビルドも走る。localhost で確認） |
 | 完成した draft の検査 | `hugo --buildDrafts --gc --minify --destination .cache/draft-check`（空の雛形は型検査に失敗する） |
