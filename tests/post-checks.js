@@ -43,6 +43,8 @@ const E_RUN = "の対象が 1 つもありません";
 const E_TABLE = "「比較表」節に表がありません";
 const E_H2 = "H2 の構成が型と違います";
 const E_SEG = "「比較表」節を切り出せません";
+const E_VOICE = "体験や主観を示す表現があります";
+const E_YMYL = "扱わない領域（YMYL）の語があります";
 
 // expect: null = ビルドが通る / 配列 = ビルドが止まり、どの文言もログに出る
 const cases = [
@@ -78,6 +80,23 @@ const cases = [
     make: (s) => swap(noTable(s), "## 比較表\n", ""),
     expect: [E_H2, E_SEG],
   },
+  // 語の一覧による検査。壊した記事は content/posts/ に一時的に置くだけで、本番には出ない
+  {
+    name: "体験表現（本文）",
+    make: (s) => swap(s, "無料です。", "無料です。実際に使ってみたところ快適でした。"),
+    expect: [E_VOICE, "使ってみ"],
+  },
+  {
+    name: "体験表現（summary）",
+    make: (s) => swap(s, "summary = '記事の型の検査", "summary = 'おすすめを紹介します。記事の型の検査"),
+    expect: [E_VOICE, "おすすめ"],
+  },
+  {
+    name: "扱わない領域の語（本文）",
+    make: (s) => swap(s, "試すだけなら → サンプル A。", "試すだけなら → サンプル A。転職を考えている人にも向きます。"),
+    expect: [E_YMYL, "転職"],
+  },
+  { name: "辞書の語に似た語は通る（稼働・クレジットカード）", make: (s) => swap(s, "無料です。", "無料です。常時稼働で、クレジットカードの登録は不要です。"), expect: null },
   {
     name: "見出し末尾に全角スペース",
     make: (s) => swap(s, "## 比較表\n", "## 比較表　\n"),
