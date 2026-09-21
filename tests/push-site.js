@@ -96,7 +96,8 @@ const broken = [];
     if (e.isDirectory()) walk(full);
     else if (e.name.endsWith(".html")) {
       const html = fs.readFileSync(full, "utf8");
-      for (const m of html.matchAll(/\shref=["']?(?:https:\/\/kurabebako\.com)?(\/[^"'\s>#?]*)/g)) {
+      // <a> だけを見る。<link> の favicon 類はテーマが決め打ちで出していて、このサイトには元から無い（別件）
+      for (const m of html.matchAll(/<a\s[^>]*?href=["']?(?:https:\/\/kurabebako\.com)?(\/[^"'\s>#?]*)/g)) {
         const target = path.join(pub, decodeURIComponent(m[1]));
         const ok = fs.existsSync(target) && (fs.statSync(target).isFile() || fs.existsSync(path.join(target, "index.html")));
         if (!ok) broken.push(`${path.relative(pub, full)} → ${m[1]}`);
