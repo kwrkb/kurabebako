@@ -112,5 +112,5 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 - 秘密情報は desk にも保存しない。値は 1Password から `op run` 等で注入し、ログに露出させない。外部環境を扱う前に lab 手順と `teardown.md` を読む。
 - 設定・ドキュメント・コミットメッセージにも勤務先が特定される情報を含めない。
 - 通常は既存の `main` で作業し、ブランチを機械的に作らない。全体に効く複数コミットの変更や公開前レビュー用の例外は `CLAUDE.md` に従う。
-- commit は差分確認後に論理単位で行う。`main` の push と `npm run deploy` は本番反映。単なる調査・編集・ビルドの一部として実行しない。
+- commit は差分確認後に論理単位で行う。`main` の push と `npm run deploy` は本番反映。単なる調査・編集・ビルドの一部として実行しない。push するときは `npm run push:site`（ゲート → push → デプロイ確認）だけを使い、記事の公開とレイアウト・CSS の変更はユーザーの push に任せる（`CLAUDE.md`「ブランチ運用」）。
 - 定期処理は desk の `routines.md` と該当プロンプトを読み、その書き込み範囲・push 制約を守る。

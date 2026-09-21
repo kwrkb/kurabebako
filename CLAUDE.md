@@ -62,6 +62,7 @@ main へ push
 | --- | --- |
 | 開発サーバー | `npm run dev` |
 | ビルド | `npm run build`（= `node build.js`。本番と同じ入口。Hugo の版確認・古い出力の掃除を含む） |
+| 本番へ push | `npm run push:site`（ゲート → push → デプロイの確認。`-- --dry-run` でゲートだけ） |
 | 型検査の回帰テスト | `npm run test:checks`（`extend_post_content.html` を触ったら必ず回す） |
 | Workers配信の再現 | `npm run preview` |
 | デプロイ | `npm run deploy` |
@@ -79,6 +80,12 @@ linter は無い。テストは型検査の回帰テスト（`tests/post-checks.
 プレビュー環境を意図的に閉じているため、ブランチを切っても「描画結果を見てからマージ」は
 できず、確認手段はどのみちローカルの `npm run preview` になる。PR を挟む価値がない。
 
+- **AI が push するときは `npm run push:site` だけを使う**（`tests/push-site.js`。`git push` を直接打たない）。
+  ゲートは 作業ツリーが clean → 公開を伴うコミットが無い → 型検査の回帰テスト → 本番共通ビルド → 内部リンク切れ →
+  desk の `check-backlog.py` の順で、通ったら push して Workers Builds の check-run まで見る。
+  自律で push してよいのは**公開を伴わず、表示にも効かない変更**だけ（2026-09-21 に決めた段階 1）。
+  記事の公開（draft を倒す）と、レイアウト・CSS の変更は、ユーザーが preview を見てから `git push origin main` で出す。
+  型検査は構造しか見ておらず、数字の正しさと表示の崩れは人の目でしか確かめていないため
 - 1 コミット＝デプロイできる状態に保つ。履歴は線形（merge commit を作らない）。壊れたら `git revert` で戻す
 - 書きかけの記事は `draft = true` のまま `main` に置いてよい。本番ビルドは draft を出さない。
   公開はフラグを倒すコミット 1 つで行う
