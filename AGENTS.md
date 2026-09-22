@@ -99,8 +99,9 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 | 型検査の回帰テスト | `npm run test:checks`（`content/posts/` に一時ファイルを置いてビルドする。`extend_post_content.html` を変えたら回す） |
 | Workers 配信の再現 | `npm run preview`（共通ビルドも走る。localhost で確認） |
 | 完成した draft の検査 | `hugo --buildDrafts --gc --minify --destination .cache/draft-check`（空の雛形は型検査に失敗する） |
+| draft の表示検査 | `npm run test:layout -- .cache/draft-check`（上の draft ビルドの後に。通常の `public/` では draft を検査できない） |
 
-独立した lint / 型チェックのスクリプトは無い。テストは上の回帰テストだけ。実施した検証と未確認事項を区別する。
+独立した lint / 型チェックのスクリプトは無い。テストは型検査の回帰テストと表示の横はみ出し検査の2つ。実施した検証と未確認事項を区別する。
 
 - 記事・テンプレート・設定変更は本番条件のビルドを通す。dev だけの成功で終えない。
 - 描画変更はスマホ幅・明暗テーマで該当ページ・比較表・図・PR を確認する。配信変更は記事・404・末尾スラッシュも確認する。
