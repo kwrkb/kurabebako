@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node tests/push-site.js --dry-run:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run test:checks:*)",
+      "Bash(npm run test:layout:*)",
+      "Bash(node build.js:*)",
+      "Bash(hugo version)"
+    ]
+  }
+}
