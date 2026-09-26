@@ -67,7 +67,8 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
   - 2026-09-08 に 6 本目 `email-api-free-tier` を公開し、同日に Search Console の URL 検査からインデックス登録をリクエストした（sitemap 経由の自然なクロールと、リクエストしたこの 1 本の登録速度を次回観測で見比べる）
   - 2026-09-19 に GA4 を導入し（`hugo.toml` の `services.googleAnalytics`。プライバシーポリシーも同日に追記）、観測を手動エクスポートから API 取得に切り替えた。
     Search Console と GA4 を desk の `metrics/fetch/fetch.py` が読み取り専用のサービスアカウントで取り、月次の集計も同じ経路を使う。
-    GA4 のデータは導入日以降だけ。インデックス登録の状況は一覧を返す API が無いので、見るときは管理画面で確認する
+    GA4 のデータは導入日以降だけ。インデックス登録の状況は一覧を返す API が無いので、URL Inspection API を本番の sitemap の URL ごとに当てて数える
+    （desk の `metrics/fetch/fetch_index.py`。2026-09-26 から。断面は desk の `metrics/YYYY-MM-index/`）
   - 2026-08 集計（desk の `metrics/2026-08-summary.md`）。サイト公開前の月のため、Search Console・GA4 ともデータなし（表示された記事 0 本、タグページ 0 個）。前月比は無し
 
 **判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う。
