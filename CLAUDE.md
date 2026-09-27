@@ -99,7 +99,7 @@ linter は無い。テストは 2 つ。表示の崩れの検査（`tests/layout
   非本番ブランチのビルドを止める
 - GitHub Issue は**提案の置き場**で、タスクの正典ではない（フェーズは `PLAN.md`、記事候補は desk の `backlog.md`）。
   Issue を起点に作業するときも上の運用どおり `main` に直接コミットする。ブランチを切って Draft PR を作る
-  `resolve-gh-issue` の手順はこのリポジトリでは使わない。リポジトリは public なので、報酬額・計測値など
+  `resolve-gh-issue-claude` スキルの手順はこのリポジトリでは使わない。リポジトリは public なので、報酬額・計測値など
   desk に置く情報を Issue に書かない
 
 ## 変更してはいけない前提
