@@ -38,8 +38,7 @@
 .bars-fill {
   display: block;
   height: 100%;
-  background: var(--primary);
-  opacity: 0.8;
+  background: var(--accent);
 }
 
 .bars-value {

@@ -18,6 +18,21 @@
   vertical-align: top;
 }
 
+/* ヘッダー行と 1 行おきの塗り。テーマの表は罫線だけで、ヘッダー行が本文と同じ見た目のため、
+   7 列の比較表で横に目を動かすと行を取り違えやすかった。
+   塗りは --cell-bg に入れて background に渡す。スマホで固定する先頭列（下の sticky）も
+   同じ変数を読むので、固定列だけ白く抜けることがない。
+   thead を持つ表だけに掛ける（行番号付きのコードブロックも table だが thead が無い） */
+.post-content table:has(> thead) > thead th {
+  --cell-bg: color-mix(in srgb, var(--accent) 10%, var(--theme));
+  background: var(--cell-bg);
+}
+
+.post-content table:has(> thead) > tbody > tr:nth-child(even) > td {
+  --cell-bg: color-mix(in srgb, var(--primary) 5%, var(--theme));
+  background: var(--cell-bg);
+}
+
 /* ここから下の列幅・nowrap・幅の拡張は、本文直下にある 7 列の比較表だけに掛ける。
    「検証した内容」の中の 2 列の表（操作 / 結果）にまで掛かると、2 列とも「末尾 2 列」に当たって
    結果の文が 1 行に伸び、ページ全体が横にはみ出していた（2026-09-18 に本番で確認） */
@@ -67,7 +82,7 @@
    固定しないと、右の列を読むときにどの行がどの対象か分からなくなる。
    固定した列は幅を取りすぎると残りの列が読めないので、ここでは折り返して 8.5rem に揃える
    （「エックスサーバー」の 8 文字が 1 行に収まる幅。狭いと語の途中で割れる）。
-   背景を塗らないとスクロールした列が透けて重なり、罫線は collapse のため固定列に付いてこないので
+   背景を塗らないとスクロールした列が透けて重なり（塗る色はヘッダー行・偶数行と同じ --cell-bg）、罫線は collapse のため固定列に付いてこないので
    右端の区切りは影で描く */
 @media (max-width: 1139px) {
   .post-content > table:has(> thead > tr > th:nth-child(7)) td:first-child,
@@ -80,7 +95,7 @@
     width: 8.5rem;
     padding-inline: 8px;
     white-space: normal;
-    background: var(--theme);
+    background: var(--cell-bg, var(--theme));
     box-shadow: inset -1px 0 0 var(--border);
   }
 }
