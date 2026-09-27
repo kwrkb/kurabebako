@@ -1,0 +1,14 @@
+/* ヘッダーのメニュー。テーマは .menu を nowrap + overflow-x: auto にしていて、
+   項目が収まらない幅では横スクロールになる。日本語の項目名は長いので、スマホ幅では
+   「プライバシーポ」で切れて残りの項目が見えなかった（2026-09-27 に 375px で確認）。
+   狭い画面では折り返して全項目を見せる。テーマは行の高さを --header-height（60px）で取るので、
+   折り返した行まで 60px にならないよう行の高さも詰める */
+@media (max-width: 768px) {
+  .menu {
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+    padding-bottom: 0.8rem;
+    white-space: normal;
+    line-height: 1.8;
+  }
+}

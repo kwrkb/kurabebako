@@ -1,16 +1,26 @@
 /* bars / svg shortcode の見た目。色はテーマ（PaperMod）の変数を使い、ダークモードに追従させる */
 
+/* 列の幅は figure 側で 1 つだけ決め、各行は subgrid でそれを共有する。
+   行ごとに別のグリッドにすると、値の列（auto）が行の文字数で変わり、「1,065 円/月」の行だけ
+   棒の枠が短くなって、棒の長さが数値の比に合わなくなっていた（2026-09-27 に VPS 記事で確認） */
 .bars {
+  display: grid;
+  grid-template-columns: minmax(8rem, 16rem) 1fr auto;
+  column-gap: 0.6rem;
   margin: 1.5rem 0;
 }
 
 .bars-row {
   display: grid;
-  grid-template-columns: minmax(8rem, 16rem) 1fr auto;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
   align-items: center;
-  gap: 0.6rem;
   margin: 0.35rem 0;
   font-size: 0.9rem;
+}
+
+.bars figcaption {
+  grid-column: 1 / -1;
 }
 
 .bars-label {
@@ -58,9 +68,11 @@
 
 /* スマホでは棒を 1 列にする（ラベルの上に棒が来る） */
 @media (max-width: 500px) {
-  .bars-row {
+  .bars {
     grid-template-columns: 1fr auto;
-    gap: 0.2rem 0.6rem;
+  }
+  .bars-row {
+    row-gap: 0.2rem;
   }
   .bars-label {
     grid-column: 1 / -1;
