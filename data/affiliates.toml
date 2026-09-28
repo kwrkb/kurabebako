@@ -91,3 +91,14 @@ url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+79DCW2+7YE+NX736'
 pixel = 'https://www19.a8.net/0.gif?a8mat=4BC9F6+79DCW2+7YE+NX736'
 text = 'KAGOYA CLOUD VPS'
 program = 'A8.net s00000001031004（素材 018。自由テキスト素材が無いため文言「KAGOYA CLOUD VPS」のテキスト素材を使う）'
+
+# ---- A8.net（2026-09-28 提携。クラウドストレージ比較の国内対象）----
+# a8mat の先頭が上の 16 本（4BC9F6）と違うが、kurabebako.com を選んだ状態で発行し直しても同じ値だった（2026-09-28 ユーザー確認）。
+# 記事 cloud-storage-free-tier（候補）から参照する予定で、参照する記事が出るまでは表示に出ない
+
+[xserver-drive]
+name = 'XServerドライブ'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BCLVX+CAD4SI+CO4+1THW9E'
+pixel = 'https://www12.a8.net/0.gif?a8mat=4BCLVX+CAD4SI+CO4+1THW9E'
+text = 'XServerドライブ'
+program = 'A8.net s00000001642011（配られたテキスト素材の文言「XServerドライブ」で固定する。自由テキスト素材かは未確認）'
