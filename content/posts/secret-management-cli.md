@@ -234,6 +234,7 @@ Vault 用に書いた CLI 手順と Agent の設定ファイルが、コマン�
 AI に API キーを渡す場面がある記事では、この記事で比べた手段のどれかが前提になります。
 たとえば [メール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)では、Resend の API キーを `op run` で注入して送信ドメインの登録から削除まで動かしています。
 [スクレイピング API 5 つの無料枠比較](/posts/scraping-api-free-tier/)でも、3 社の API キーを `op run` で注入して取得から上限の確認まで動かしています。
+[クラウドストレージ 6 つの無料プラン比較](/posts/cloud-storage-free-tier/)では、API キーではなくパスワードとアプリ専用パスワードを `op run` で注入して、WebDAV と REST API を動かしています。
 
 ## 出典
 

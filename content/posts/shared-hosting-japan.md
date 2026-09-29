@@ -202,6 +202,7 @@ mixhost: 公式の自動化手段は無く cPanel で操作しますが、お試
 
 立てたサーバーの死活監視は、[死活監視の無料枠 5 つの比較](/posts/uptime-monitoring-free-tier/)で無料枠を比べています。
 root 権限が要る用途なら、[国内 VPS の最小プラン比較](/posts/vps-japan-minimum-plan/)のほうが条件に合います。
+同じ XServer アカウントで申し込める XServer ドライブのフリープランは、[クラウドストレージ 6 つの無料プラン比較](/posts/cloud-storage-free-tier/)で WebDAV から動かしています。
 
 ## 出典
 
