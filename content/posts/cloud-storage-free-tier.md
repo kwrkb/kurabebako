@@ -1,9 +1,9 @@
 +++
 title = 'クラウドストレージ 6 つの無料プラン比較: WebDAV や API で無料のまま動かせるか'
-date = '2026-09-30T01:10:33+09:00'
+date = '2026-09-30T06:54:12+09:00'
 # 最終確認日。出典の確認日・実行検証の最終日と揃え、再検証したら更新する（ヘッダーに出る）
 lastmod = '2026-09-30'
-draft = true
+draft = false
 summary = 'Koofr・XServer ドライブ・pCloud・MEGA・Icedrive・Internxt の無料プランを、容量ではなく「WebDAV・API・CLI で無料のまま動かせるか」と「スクリプトに渡す認証が本体のパスワードかどうか」で比較。無料で WebDAV と REST API の両方が使え、アプリ専用パスワードで認証できるのは Koofr で、pCloud は WebDAV と rsync が無料プランでも使えると公式に明記されています。'
 # tags / categories は URL に載るため英語（小文字・ハイフン区切り）で書く
 categories = ['storage']
