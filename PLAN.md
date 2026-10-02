@@ -70,6 +70,7 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
     GA4 のデータは導入日以降だけ。インデックス登録の状況は一覧を返す API が無いので、URL Inspection API を本番の sitemap の URL ごとに当てて数える
     （desk の `metrics/fetch/fetch_index.py`。2026-09-26 から。断面は desk の `metrics/YYYY-MM-index/`）
   - 2026-08 集計（desk の `metrics/2026-08-summary.md`）。サイト公開前の月のため、Search Console・GA4 ともデータなし（表示された記事 0 本、タグページ 0 個）。前月比は無し
+  - 2026-09 集計（desk の `metrics/2026-09-summary.md`。Search Console は 09-29 までの暫定で、11 月の回で確定値に置き換える）。表示された記事 10 本（09-30 公開の `cloud-storage-free-tier` 以外の全記事）とタグページ 19 個。GA4 は 09-19 以降のデータあり。Bing とインデックス登録の断面は今回が初回。前月比は desk 参照
 
 **判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う。
 収益経路（ASP 承認と案件台帳）が無いまま Phase 3 に入らない
