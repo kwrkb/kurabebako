@@ -1,7 +1,7 @@
 +++
 title = '死活監視の無料枠 5 つを比較: 最短間隔と API で選ぶ'
 date = '2026-09-03T14:59:52+09:00'
-lastmod = '2026-09-03'
+lastmod = '2026-10-03'
 draft = false
 summary = 'UptimeRobot・Better Stack・Checkly・Cronitor・Uptime Kuma の無料枠を、モニター数・最短間隔・通知手段・公式の自動化手段（API / CLI / Terraform）で比較。無料で 50 件まで API から作成・削除できる UptimeRobot、監視をコードで持つなら Checkly。UptimeRobot・Checkly・Uptime Kuma は実際に監視を作成して確認した結果を載せる。'
 categories = ['monitoring']
@@ -25,14 +25,14 @@ tags = ['uptime-monitoring', 'uptimerobot', 'better-stack', 'checkly', 'cronitor
 
 ## 比較表
 
-2026-09-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。料金は各社の表示通貨（USD）です。
+2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。料金は各社の表示通貨（USD）です。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | UptimeRobot | Free は USD 0。Solo は USD 9/月（年払い。月払いは USD 10）で 60 秒間隔・10 件・保持 12 か月 | 50 モニター、5 分間隔、データ保持 3 か月。ステータスページ 1（独自ドメイン不可） | 通知はメール・Google Chat・Discord・Pushover など。Slack・Teams・Telegram は Solo 以上、Webhook・PagerDuty は Team 以上。API は 10 req/分。5 分より短い間隔は API でも拒否される | アカウントのみ。クレジットカード不要、商用利用可。API v3 と公式 Terraform provider が全プランで使える。CLI はなし | {{< verified run >}} | [1][2][3][4][5][6] |
 | Better Stack（Uptime） | Free は USD 0。追加 50 モニターで USD 25/月（年払い USD 21/月）、30 秒間隔 | 10 モニター + 10 ハートビート、3 分間隔。ステータスページ 1 | 通知はメールと Slack。電話・SMS は有料プランの記載のみ。リージョンは us / eu / as / au | アカウントのみ。クレジットカードの要否は公式に明記なし。REST API v2 と公式 Terraform provider あり。CLI はなし | {{< verified spec >}} | [7][8][9][10][11][12] |
-| Checkly | Hobby は USD 0。Starter は USD 24/月で 50 モニター・1 分間隔・3 ユーザー | アップタイムモニター 10、2 分間隔、地点 6 か所。ブラウザチェック 1,000 回/月、API チェック 10,000 回/月（ハードキャップ）。保持は生データ 7 日 | 通知はメール・Slack・Webhook。SMS・電話は Team 以上。1 ユーザーのみ、プライベートロケーション不可 | アカウントのみ。クレジットカード不要。公式 CLI（`checkly test` / `deploy`）と Terraform provider が Hobby でも使える | {{< verified run >}} | [13][14][15][16][28][29] |
-| Cronitor | Hacker は USD 0。Business は USD 2/月/モニター + USD 5/月/ユーザー（基本料なし、14 日トライアル） | 5 モニター、5 分間隔。ステータスページ 1（基本） | 通知はメールと Slack のみ。地点数と保持期間は無料枠の記載なし。ダッシュボードユーザー 1 | アカウントのみ。クレジットカード不要（トライアルは必要）。Monitor API と公式 CLI あり。Terraform は community 版のみ | {{< verified spec >}} | [17][18][19][20][21] |
+| Checkly | Hobby は USD 0。Starter は USD 24/月（年払い。月払いは USD 29）で 50 モニター・1 分間隔・3 ユーザー | アップタイムモニター 10、2 分間隔、地点 6 か所。ブラウザチェック 1,000 回/月、API チェック 10,000 回/月（ハードキャップ）。保持は生データ 7 日 | 通知はメール・Slack・Webhook。SMS は Starter 以上、電話は Team 以上。1 ユーザーのみ、プライベートロケーション不可 | アカウントのみ。クレジットカード不要。公式 CLI（`checkly test` / `deploy`）と Terraform provider が Hobby でも使える | {{< verified run >}} | [13][14][15][16][28][29] |
+| Cronitor | Hacker は USD 0。Business は USD 2/月/モニター + USD 5/月/ユーザー（基本料なし、14 日トライアル） | 5 モニター、5 分間隔。ステータスページ 1（基本） | 通知はメール・Slack・Discord・Teams・Webhook。SMS とオンコール連携（PagerDuty など）は有料のみ。地点数と保持期間は無料枠の記載なし。ダッシュボードユーザー 1 | アカウントのみ。クレジットカード不要（トライアルは必要）。Monitor API と公式 CLI あり。Terraform は community 版のみ | {{< verified spec >}} | [17][18][19][20][21] |
 | Uptime Kuma（OSS） | USD 0（サーバー代は別） | 無制限（自前サーバー）。最小間隔はコード上 1 秒（UI は 20 秒未満で警告） | セルフホストが要る。公式の管理 API がなく、Socket.IO の内部 API は「サードパーティ向けに非サポート」と明記。SQLite は NFS 不可 | Node.js 20.4 以上または Docker。MIT ライセンス。通知は 90 種以上、ステータスページは複数可 | {{< verified run >}} | [22][23][24][25][26][27][30] |
 
 無料枠で登録できるモニターの数と、無料枠で選べる最短のチェック間隔を並べると、次のようになります。
@@ -115,9 +115,9 @@ Uptime Kuma（自前サーバー）: 1
 「監視をコードで持つ」流れを無料で再現できるのは、5 つの中で Checkly だけです。
 `checkly.config.ts` とチェック定義を書き、`npx checkly test` で試してから `deploy` で配備します。
 
-- **料金体系**: Hobby は無料で、クレジットカードも要りません。Starter は USD 24/月で 50 モニター・1 分間隔・3 ユーザーです [13]
+- **料金体系**: Hobby は無料で、クレジットカードも要りません。Starter は USD 24/月（年払い。月払いは USD 29）で 50 モニター・1 分間隔・3 ユーザーです [13]
 - **制約**: Hobby はアップタイムモニター 10、間隔 2 分、地点 6 か所です。ブラウザチェック 1,000 回/月と API チェック 10,000 回/月はハードキャップで、
-  超えると止まります。保持は生データ 7 日・集計 30 日。通知はメール・Slack・Webhook で、SMS と電話は Team 以上です。
+  超えると止まります。保持は生データ 7 日・集計 30 日。通知はメール・Slack・Webhook で、SMS は Starter 以上、電話は Team 以上です。
   ユーザーは 1 人、プライベートロケーションは使えません [13]
 - **前提条件**: アカウントのみ。CLI は環境変数 `CHECKLY_API_KEY` と `CHECKLY_ACCOUNT_ID` で非対話にログインできます [29]。
   公式 CLI は Hobby でも使えると料金ページに明記されています [13][14]。
@@ -137,10 +137,10 @@ Uptime Kuma（自前サーバー）: 1
 無料枠は 5 件と最も小さいですが、公式の CLI と API で作成・削除ができます。
 少数の監視を軽く持ちたい場合の候補です。
 
-- **料金体系**: Hacker は無料です。Business は USD 2/月/モニター + USD 5/月/ユーザーで、基本料と最低額はありません。14 日のトライアルはクレジットカードが要ります [17]
+- **料金体系**: Hacker は無料です。Business は USD 2/月/モニター + USD 5/月/ユーザーで、基本料と最低額はありません。14 日のトライアルはクレジットカードが要ります [17][31]
 - **制約**: 無料枠は 5 モニター・5 分間隔です（有料は 30 秒）。地点は全体で 11 リージョンですが、無料枠で使える地点数と保持期間は記載がありません。
-  通知はメールと Slack のみで、SMS とプレミアム連携は使えません。ダッシュボードのユーザーは 1 人です [17][18]
-- **前提条件**: アカウントのみ。無料枠にクレジットカードは要りません。Monitor API（`POST/PUT/DELETE /api/monitors`、Basic 認証）と
+  通知はメール・Slack・Discord・Teams・Webhook で、SMS と PagerDuty などのオンコール連携は使えません。ダッシュボードのユーザーは 1 人です [17][18]
+- **前提条件**: アカウントのみ。無料枠にクレジットカードは要りません [31]。Monitor API（`POST/PUT/DELETE /api/monitors`、Basic 認証）と
   公式 CLI `cronitor`（monitors の create / update / delete）があります。Terraform は公式 provider がなく、community 版のみです [19][20][21]
 - **検証した内容**: 仕様区分です。上記の公式ページ [17]〜[21] を 2026-09-03 に確認しました。
   次回の更新で CLI による作成・削除を流して実行区分に置き換える予定です
@@ -154,7 +154,7 @@ Uptime Kuma（自前サーバー）: 1
 - **料金体系**: MIT ライセンスの OSS で無料です。サーバー代は別で、
   国内 VPS の最小プランの比較は [別の記事](/posts/vps-japan-minimum-plan/) にまとめています [22]
 - **制約**: セルフホストが要ります。公式の REST API はモニター管理向けにはなく、Socket.IO の内部 API は
-  「サードパーティ向けに非サポート、予告なく破壊的変更あり」と明記されています [24]。CLI と Terraform は community 版のみです [27]。
+  「サードパーティ向けに非サポート、予告なく破壊的変更あり」と明記されています [24]。CLI は community 版のみで、モニターを管理する Terraform provider は公式の一覧にありません [27]。
   SQLite は POSIX のファイルロックが必須で、NFS 上には置けません [23]。
   最小間隔はコード上 1 秒で、UI は 20 秒未満に警告を出します [30]
 - **前提条件**: Node.js 20.4 以上または Docker [22][23]。通知は Telegram・Discord・Slack・SMTP など 90 種以上、ステータスページは複数作れてドメインごとに出し分けられます [25]
@@ -187,40 +187,41 @@ Uptime Kuma（自前サーバー）: 1
   作成・削除を自動化する用途には向きません。手で登録して運用する前提なら最も自由度が高い選択です
 - 10 件以内・3 分間隔で、通知はメールと Slack で足りる → Better Stack。無料枠で Slack 通知が使えるのは Better Stack と Checkly、Cronitor です。
   電話・SMS が要るなら有料プランになります
-- 5 件以内で最小構成にしたい → Cronitor。公式 CLI と API があり、無料枠にカードは要りません。Terraform は community 版のみです
+- 5 件以内で最小構成にしたい → Cronitor。公式 CLI と API があり、無料枠にカードは要りません。Terraform provider はありません
 
 各サービスの API キーを CI や AI エージェントに渡す手段は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で、無料枠と機械向けトークンの作り方を実際に動かして比べています。
 監視の通知を自前の API からメールで送るなら、[メール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)で無料枠と送信までのゲートを比べています。
 
 ## 出典
 
-1. [UptimeRobot Pricing](https://uptimerobot.com/pricing/) — 2026-09-03 確認
-2. [UptimeRobot Help — Who should use UptimeRobot's free plan](https://help.uptimerobot.com/en/articles/11604710-who-should-use-uptimerobot-s-free-plan) — 2026-09-03 確認
-3. [UptimeRobot Help — Integrations: basic information](https://help.uptimerobot.com/en/articles/11361285-integrations-basic-information) — 2026-09-03 確認
-4. [UptimeRobot API](https://uptimerobot.com/api/) — 2026-09-03 確認
-5. [GitHub — uptimerobot/terraform-provider-uptimerobot](https://github.com/uptimerobot/terraform-provider-uptimerobot) — 2026-09-03 確認
-6. [UptimeRobot Blog — Terraform provider release](https://uptimerobot.com/blog/uptimerobot-terraform-provider-release/) — 2026-09-03 確認
-7. [Better Stack Pricing](https://betterstack.com/pricing) — 2026-09-03 確認
-8. [Better Stack Uptime](https://betterstack.com/uptime) — 2026-09-03 確認
-9. [Better Stack Docs — Check frequency](https://betterstack.com/docs/uptime/check-frequency/) — 2026-09-03 確認
-10. [Better Stack Docs — Create a new monitor (API v2)](https://betterstack.com/docs/uptime/api/create-a-new-monitor/) — 2026-09-03 確認
-11. [Better Stack Docs — Terraform](https://betterstack.com/docs/uptime/terraform/) — 2026-09-03 確認
-12. [GitHub — BetterStackHQ/terraform-provider-better-uptime](https://github.com/BetterStackHQ/terraform-provider-better-uptime) — 2026-09-03 確認
-13. [Checkly Pricing](https://www.checklyhq.com/pricing/) — 2026-09-03 確認
-14. [Checkly Docs — CLI](https://www.checklyhq.com/docs/cli/) — 2026-09-03 確認
-15. [Checkly Docs — Terraform provider](https://www.checklyhq.com/docs/terraform-provider/) — 2026-09-03 確認
-16. [GitHub — checkly/terraform-provider-checkly resources](https://github.com/checkly/terraform-provider-checkly/tree/main/docs/resources) — 2026-09-03 確認
-17. [Cronitor Pricing](https://cronitor.io/pricing) — 2026-09-03 確認
-18. [Cronitor Docs — Uptime monitoring](https://cronitor.io/docs/uptime-monitoring) — 2026-09-03 確認
-19. [Cronitor Docs — Monitors API](https://cronitor.io/docs/monitors-api) — 2026-09-03 確認
-20. [Cronitor Docs — Using Cronitor CLI](https://cronitor.io/docs/using-cronitor-cli) — 2026-09-03 確認
-21. [GitHub — cronitorio/terraform-provider-cronitor（404。公式 provider が存在しないことの確認）](https://github.com/cronitorio/terraform-provider-cronitor) — 2026-09-03 確認
-22. [GitHub — louislam/uptime-kuma](https://github.com/louislam/uptime-kuma) — 2026-09-03 確認
-23. [Uptime Kuma Wiki — How to Install](https://github.com/louislam/uptime-kuma/wiki/%F0%9F%94%A7-How-to-Install) — 2026-09-03 確認
-24. [Uptime Kuma Wiki — Internal API](https://github.com/louislam/uptime-kuma/wiki/Internal-API) — 2026-09-03 確認
-25. [Uptime Kuma Wiki — Status Page](https://github.com/louislam/uptime-kuma/wiki/Status-Page) — 2026-09-03 確認
-26. [Uptime Kuma Wiki — Environment Variables](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables) — 2026-09-03 確認
-27. [Uptime Kuma Wiki — 3rd Party Addons / Apps](https://github.com/louislam/uptime-kuma/wiki/3rd-Party-Addons-Apps) — 2026-09-03 確認
-28. [Checkly Docs — UrlMonitor construct](https://www.checklyhq.com/docs/constructs/url-monitor/) — 2026-09-03 確認
-29. [Checkly Docs — CLI authentication](https://www.checklyhq.com/docs/cli/authentication/) — 2026-09-03 確認
-30. [GitHub — louislam/uptime-kuma 2.5.3 src/util.js（MIN_INTERVAL_SECOND）](https://github.com/louislam/uptime-kuma/blob/2.5.3/src/util.js) — 2026-09-03 確認
+1. [UptimeRobot Pricing](https://uptimerobot.com/pricing/) — 2026-10-03 確認
+2. [UptimeRobot Help — Who should use UptimeRobot's free plan](https://help.uptimerobot.com/en/articles/11604710-who-should-use-uptimerobot-s-free-plan) — 2026-10-03 確認
+3. [UptimeRobot Help — Integrations: basic information](https://help.uptimerobot.com/en/articles/11361285-integrations-basic-information) — 2026-10-03 確認
+4. [UptimeRobot API](https://uptimerobot.com/api/) — 2026-10-03 確認
+5. [GitHub — uptimerobot/terraform-provider-uptimerobot](https://github.com/uptimerobot/terraform-provider-uptimerobot) — 2026-10-03 確認
+6. [UptimeRobot Blog — Terraform provider release](https://uptimerobot.com/blog/uptimerobot-terraform-provider-release/) — 2026-10-03 確認
+7. [Better Stack Pricing](https://betterstack.com/pricing) — 2026-10-03 確認
+8. [Better Stack Uptime](https://betterstack.com/uptime) — 2026-10-03 確認
+9. [Better Stack Docs — Check frequency](https://betterstack.com/docs/uptime/check-frequency/) — 2026-10-03 確認
+10. [Better Stack Docs — Create a new monitor (API v2)](https://betterstack.com/docs/uptime/api/create-a-new-monitor/) — 2026-10-03 確認
+11. [Better Stack Docs — Terraform](https://betterstack.com/docs/uptime/terraform/) — 2026-10-03 確認
+12. [GitHub — BetterStackHQ/terraform-provider-better-uptime](https://github.com/BetterStackHQ/terraform-provider-better-uptime) — 2026-10-03 確認
+13. [Checkly Pricing](https://www.checklyhq.com/pricing/) — 2026-10-03 確認
+14. [Checkly Docs — CLI](https://www.checklyhq.com/docs/cli/) — 2026-10-03 確認
+15. [Checkly Docs — Terraform provider](https://www.checklyhq.com/docs/terraform-provider/) — 2026-10-03 確認
+16. [GitHub — checkly/terraform-provider-checkly resources](https://github.com/checkly/terraform-provider-checkly/tree/main/docs/resources) — 2026-10-03 確認
+17. [Cronitor Pricing](https://cronitor.io/pricing) — 2026-10-03 確認
+18. [Cronitor Docs — Uptime monitoring](https://cronitor.io/docs/uptime-monitoring) — 2026-10-03 確認
+19. [Cronitor Docs — Monitors API](https://cronitor.io/docs/monitors-api) — 2026-10-03 確認
+20. [Cronitor Docs — Using Cronitor CLI](https://cronitor.io/docs/using-cronitor-cli) — 2026-10-03 確認
+21. [GitHub — cronitorio/terraform-provider-cronitor（404。公式 provider が存在しないことの確認）](https://github.com/cronitorio/terraform-provider-cronitor) — 2026-10-03 確認
+22. [GitHub — louislam/uptime-kuma](https://github.com/louislam/uptime-kuma) — 2026-10-03 確認
+23. [Uptime Kuma Wiki — How to Install](https://github.com/louislam/uptime-kuma/wiki/%F0%9F%94%A7-How-to-Install) — 2026-10-03 確認
+24. [Uptime Kuma Wiki — Internal API](https://github.com/louislam/uptime-kuma/wiki/Internal-API) — 2026-10-03 確認
+25. [Uptime Kuma Wiki — Status Page](https://github.com/louislam/uptime-kuma/wiki/Status-Page) — 2026-10-03 確認
+26. [Uptime Kuma Wiki — Environment Variables](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables) — 2026-10-03 確認
+27. [Uptime Kuma Wiki — 3rd Party Addons / Apps](https://github.com/louislam/uptime-kuma/wiki/3rd-Party-Addons-Apps) — 2026-10-03 確認
+28. [Checkly Docs — UrlMonitor construct](https://www.checklyhq.com/docs/constructs/url-monitor/) — 2026-10-03 確認
+29. [Checkly Docs — CLI authentication](https://www.checklyhq.com/docs/cli/authentication/) — 2026-10-03 確認
+30. [GitHub — louislam/uptime-kuma 2.5.3 src/util.js（MIN_INTERVAL_SECOND）](https://github.com/louislam/uptime-kuma/blob/2.5.3/src/util.js) — 2026-10-03 確認
+31. [Cronitor — Sign up](https://cronitor.io/sign-up) — 2026-10-03 確認

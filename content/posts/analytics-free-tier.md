@@ -1,7 +1,7 @@
 +++
 title = 'アクセス解析の無料枠比較: 何か月見られ、API で取り出せるか'
 date = '2026-09-18T22:01:00+09:00'
-lastmod = '2026-09-18'
+lastmod = '2026-10-03'
 draft = false
 summary = 'Cloudflare Web Analytics・Google Analytics 4・Umami・Plausible・Fathom を、無料枠が恒常かトライアルか、無料で何か月さかのぼれるか、無料で API から数字を取り出せるかで比較。無料のまま API でサイトの作成から集計の取得・削除まで閉じたのは Cloudflare Web Analytics と Umami のセルフホスト。Umami Cloud の無料プランは API が使えず、Plausible と Fathom は無料枠が無い。'
 categories = ['monitoring']
@@ -24,17 +24,17 @@ Plausible と Fathom には無料枠が無く、トライアルの後は有料�
 
 ## 比較表
 
-2026-09-18 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小のプランで揃え、金額は月払いの月額（USD）です。Umami は提供形態で条件が変わるので、セルフホストと Cloud を別の行にしています。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Cloudflare Web Analytics | 無料。有料プランは無い | 全プランで利用可。参照できるのは**直近 6 か月** | 非サンプリングのデータは 7 日で、その後は約 10% に集約。サイトはアカウントあたり 10 件のソフト上限（サポートに連絡で変更可） | Cloudflare アカウント。DNS の変更もプロキシも不要で、タグを 1 行置く。API はトークンの権限「Account Settings Write」 | {{< verified run >}} | [1][2][3][4][5][6] |
 | Google Analytics 4 | 標準プロパティは無料。有料は Analytics 360（金額は非公開で問い合わせ） | 保持は **2 か月か 14 か月**を選ぶ。web のイベント名は無制限 | ファーストパーティ Cookie（`_ga`、既定 2 年）を使う。年齢・性別・興味のデータは常に 2 か月。Data API は 1 日 20 万トークン・同時 10 リクエスト | Google アカウント。Data API は Google Cloud のプロジェクトと OAuth かサービスアカウントの準備が要る | {{< verified spec >}} | [7][8][9][10][11][12] |
-| Umami（セルフホスト） | 無料（MIT ライセンス）。サーバーと DB の費用は自分持ち | イベント数・サイト数・保持期間に**上限なし** | API キーは無く、ログインで得たトークンを使う。メールレポートと Streaming API は Cloud 限定 | Node.js 18.18 以上と PostgreSQL 12.14 以上を動かせるサーバー。アカウント・カードとも不要 | {{< verified run >}} | [13][14][15][16][17][18] |
+| Umami（セルフホスト） | 無料（MIT ライセンス）。サーバーと DB の費用は自分持ち | イベント数・サイト数・保持期間に**上限なし** | API キーは v3.4.0 から発行できる（それ以前はログインで得たトークン）。メールレポートと Streaming API は Cloud 限定 | Node.js 18.18 以上と PostgreSQL 12.14 以上を動かせるサーバー。アカウント・カードとも不要 | {{< verified run >}} | [13][14][15][16][17][18] |
 | Umami Cloud | Hobby（USD 0）。有料は Pro USD 20/月（100 万イベント・20 サイト・保持 2 年） | **月 10 万イベント・1 サイト・保持 6 か月** | Hobby は **API・MCP が使えない**（Pro 以上）。イベントは PV に加えてカスタムイベントと保存するプロパティも 1 件ずつ数える | アカウントのみ。有料プランの 14 日トライアルは、終了時に通常料金が請求される | {{< verified spec >}} | [13] |
 | Plausible | Starter USD 9/月（月 1 万 PV・1 サイト・保持 3 年）。無料プランなし | **30 日トライアルのみ**（Business の全機能） | Stats API は Business（USD 19/月から）以上で 600 回/時。トライアルが終わるとダッシュボードがロックされる | アカウントのみ。トライアルにカードは不要で、自動では有料に移らない | {{< verified spec >}} | [19][20][21] |
-| Fathom | USD 15/月（月 10 万 PV・50 サイト込み）。無料プランなし | **7 日トライアルのみ** | カスタムイベントも PV に数える。API は 600 回/時・同時 5 から（API プランを上げると増える） | アカウントのみ。トライアルのカード要否は料金ページに記載なし | {{< verified spec >}} | [22][23][24] |
+| Fathom | USD 15/月（月 10 万 PV・50 サイト込み）。無料プランなし | **7 日トライアルのみ** | カスタムイベントも PV に数える。API は 600 回/時・同時 5 から（API プランを上げると増える） | アカウントとカード。トライアル中は請求されず、課金が始まる前にメールが届く | {{< verified spec >}} | [22][23][24] |
 
 {{< bars unit="か月" caption="無料でさかのぼれる期間の上限。Cloudflare は 7 日を過ぎると約 10% に集約されたデータになる。GA4 は設定で選べる最長の値。Umami のセルフホストは上限が無く、Plausible と Fathom は無料枠が無いため載せていない" >}}
 Cloudflare Web Analytics: 6
@@ -108,7 +108,8 @@ MIT ライセンスで公開されているアクセス解析で、自分のサ�
 件数・サイト数・保持期間を決めるのは自分の DB だけで、5 つのうち無料枠に上限が無いのはこの形だけです。
 
 - **料金体系**: ソフトウェアは無料で、ライセンスは MIT です [18]。サーバーと DB の費用は自分持ちになります。料金ページも「Umami is open-source and can be self-hosted for free」と案内しています [13]
-- **制約**: API キーの仕組みは無く、`POST /api/auth/login` にユーザー名とパスワードを渡して得たトークンを、`Authorization: Bearer` で渡します [15]。
+- **制約**: v3.4.0 から、設定画面（Settings → API keys）で API キーを発行できます。キーに期限は無く、個別に失効でき、表示は 1 度だけです。`Authorization: Bearer` で渡します。
+  `POST /api/auth/login` にユーザー名とパスワードを渡してトークンを得る方式も残っています [15][18]。
   メールレポートと Streaming API は Cloud だけの機能で、セルフホスト版にはありません [13]
 - **前提条件**: Node.js 18.18 以上と PostgreSQL 12.14 以上を動かせるサーバーが要ります。初回のビルドでテーブルが作られ、ユーザー名 `admin`・パスワード `umami` のアカウントができます [14]。
   サイトの作成は `POST /api/websites`（`name` と `domain` が必須）、削除は `DELETE /api/websites/{websiteId}` です [16][17]
@@ -150,13 +151,13 @@ EU でホストされる有料のアクセス解析で、Cookie を使わない�
 ### Fathom
 
 Cookie を使わないことを前面に出した有料のアクセス解析で、1 つの契約に 50 サイトが含まれます。
-無料プランは無く、料金ページの FAQ も「We don't offer a free plan」と明記しています。
+無料プランは無く、料金ページの FAQ も「Do you offer a free plan?」に「Nope」と答えています。
 
 - **料金体系**: 月 10 万 PV まで USD 15/月、20 万 PV まで USD 25/月、50 万 PV まで USD 45/月です。どの段にも 50 サイトが含まれ、追加は 50 サイトごとに USD 10/月です。年払いは 2 か月ぶん無料になります [22]
 - **制約**: カスタムイベントも月間の PV に数えます。上限を大きく超える状態が続くと、アップグレードの依頼がメールで届き、解消しないとダッシュボードと API の利用が制限されることがあります（収集は続きます）[22]。
   API のレート制限は 1 時間 600 回・同時 5 リクエストからで、API のプランを上げると 1 時間 16,000 回・同時 25 まで増えます。超過は 429 と `Retry-After` ヘッダーです [24]
-- **前提条件**: アカウントのみです。トライアルは 7 日で、カード登録の要否は料金ページに記載がありません [22]。API にはサイトの作成と削除のエンドポイントがあります [23]
-- **検証した内容**: 公式の料金ページと API ドキュメントを確認しました。無料枠が無く、トライアルのカード要否も確認できていないため、実行はしていません
+- **前提条件**: アカウントのみです。トライアルは 7 日で、カードの登録が要ります。トライアルが終わるまで請求されず、課金が始まる前にメールが届きます [22]。API にはサイトの作成と削除のエンドポイントがあります [23]
+- **検証した内容**: 公式の料金ページと API ドキュメントを確認しました。無料枠が無く、トライアルにもカードの登録が要るため、実行はしていません
 
 ## 用途別の選び方
 
@@ -176,28 +177,28 @@ Cookie を使わないことを前面に出した有料のアクセス解析で�
 
 ## 出典
 
-1. [Cloudflare Docs — Web Analytics](https://developers.cloudflare.com/web-analytics/) — 2026-09-18 確認
-2. [Cloudflare Docs — Web Analytics FAQ](https://developers.cloudflare.com/web-analytics/faq/) — 2026-09-18 確認
-3. [Cloudflare — Web Analytics](https://www.cloudflare.com/web-analytics/) — 2026-09-18 確認
-4. [Cloudflare API — Create a Web Analytics site](https://developers.cloudflare.com/api/resources/rum/subresources/site_info/methods/create/) — 2026-09-18 確認
-5. [Cloudflare API — Delete a Web Analytics site](https://developers.cloudflare.com/api/resources/rum/subresources/site_info/methods/delete/) — 2026-09-18 確認
-6. [Cloudflare Docs — GraphQL Analytics API](https://developers.cloudflare.com/analytics/graphql-api/) — 2026-09-18 確認
-7. [Google Marketing Platform — Analytics](https://marketingplatform.google.com/about/analytics/) — 2026-09-18 確認
-8. [Analytics Help — Data retention](https://support.google.com/analytics/answer/7667196?hl=en) — 2026-09-18 確認
-9. [Analytics Help — Collection and configuration limits](https://support.google.com/analytics/answer/9267744?hl=en) — 2026-09-18 確認
-10. [Google Analytics Data API — Limits and quotas](https://developers.google.com/analytics/devguides/reporting/data/v1/quotas) — 2026-09-18 確認
-11. [Analytics Help — Cookie usage on websites](https://support.google.com/analytics/answer/11397207?hl=en) — 2026-09-18 確認
-12. [Google Marketing Platform — Analytics 360](https://marketingplatform.google.com/about/analytics-360/) — 2026-09-18 確認
-13. [Umami Pricing](https://umami.is/pricing) — 2026-09-18 確認
-14. [Umami Docs — Install](https://docs.umami.is/docs/install) — 2026-09-18 確認
-15. [Umami Docs — API authentication](https://docs.umami.is/docs/api/authentication) — 2026-09-18 確認
-16. [Umami API Reference — Create a website](https://docs.umami.is/docs/api-reference/create-website) — 2026-09-18 確認
-17. [Umami API Reference — Delete a website](https://docs.umami.is/docs/api-reference/delete-website) — 2026-09-18 確認
-18. [GitHub — umami-software/umami](https://github.com/umami-software/umami) — 2026-09-18 確認
-19. [Plausible — Pricing](https://plausible.io/#pricing) — 2026-09-18 確認
-20. [Plausible Docs — Free trial](https://plausible.io/docs/trial) — 2026-09-18 確認
-21. [Plausible Docs — Stats API](https://plausible.io/docs/stats-api) — 2026-09-18 確認
-22. [Fathom Analytics — Pricing](https://usefathom.com/pricing) — 2026-09-18 確認
-23. [Fathom Analytics — API](https://usefathom.com/api) — 2026-09-18 確認
-24. [Fathom Analytics API — Rate limits and concurrency](https://usefathom.com/api/v1/rate-limits) — 2026-09-18 確認
-25. [GoatCounter](https://www.goatcounter.com/) — 2026-09-18 確認
+1. [Cloudflare Docs — Web Analytics](https://developers.cloudflare.com/web-analytics/) — 2026-10-03 確認
+2. [Cloudflare Docs — Web Analytics FAQ](https://developers.cloudflare.com/web-analytics/faq/) — 2026-10-03 確認
+3. [Cloudflare — Web Analytics](https://www.cloudflare.com/web-analytics/) — 2026-10-03 確認
+4. [Cloudflare API — Create a Web Analytics site](https://developers.cloudflare.com/api/resources/rum/subresources/site_info/methods/create/) — 2026-10-03 確認
+5. [Cloudflare API — Delete a Web Analytics site](https://developers.cloudflare.com/api/resources/rum/subresources/site_info/methods/delete/) — 2026-10-03 確認
+6. [Cloudflare Docs — GraphQL Analytics API](https://developers.cloudflare.com/analytics/graphql-api/) — 2026-10-03 確認
+7. [Google Marketing Platform — Analytics](https://marketingplatform.google.com/about/analytics/) — 2026-10-03 確認
+8. [Analytics Help — Data retention](https://support.google.com/analytics/answer/7667196?hl=en) — 2026-10-03 確認
+9. [Analytics Help — Collection and configuration limits](https://support.google.com/analytics/answer/9267744?hl=en) — 2026-10-03 確認
+10. [Google Analytics Data API — Limits and quotas](https://developers.google.com/analytics/devguides/reporting/data/v1/quotas) — 2026-10-03 確認
+11. [Analytics Help — Cookie usage on websites](https://support.google.com/analytics/answer/11397207?hl=en) — 2026-10-03 確認
+12. [Google Marketing Platform — Analytics 360](https://marketingplatform.google.com/about/analytics-360/) — 2026-10-03 確認
+13. [Umami Pricing](https://umami.is/pricing) — 2026-10-03 確認
+14. [Umami Docs — Install](https://docs.umami.is/docs/install) — 2026-10-03 確認
+15. [Umami Docs — API authentication](https://docs.umami.is/docs/api/authentication) — 2026-10-03 確認
+16. [Umami API Reference — Create a website](https://docs.umami.is/docs/api-reference/create-website) — 2026-10-03 確認
+17. [Umami API Reference — Delete a website](https://docs.umami.is/docs/api-reference/delete-website) — 2026-10-03 確認
+18. [GitHub — umami-software/umami](https://github.com/umami-software/umami) — 2026-10-03 確認
+19. [Plausible — Pricing](https://plausible.io/#pricing) — 2026-10-03 確認
+20. [Plausible Docs — Free trial](https://plausible.io/docs/trial) — 2026-10-03 確認
+21. [Plausible Docs — Stats API](https://plausible.io/docs/stats-api) — 2026-10-03 確認
+22. [Fathom Analytics — Pricing](https://usefathom.com/pricing) — 2026-10-03 確認
+23. [Fathom Analytics — API](https://usefathom.com/api) — 2026-10-03 確認
+24. [Fathom Analytics API — Rate limits and concurrency](https://usefathom.com/api/v1/rate-limits) — 2026-10-03 確認
+25. [GoatCounter](https://www.goatcounter.com/) — 2026-10-03 確認

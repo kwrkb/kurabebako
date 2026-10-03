@@ -1,7 +1,7 @@
 +++
 title = 'メール送信 API 5 つの無料枠比較: 無料で送れるまでのゲート'
 date = '2026-09-08T21:25:18+09:00'
-lastmod = '2026-09-08'
+lastmod = '2026-10-03'
 draft = false
 summary = 'Resend・Postmark・Brevo・Mailgun・Amazon SES を、無料枠が恒常か、カード登録なしで動かせるか、送信できるまでにどんなゲート（ドメイン認証・アカウント承認・サンドボックス解除）があるかで比較。Resend は AI が API キーだけで送信ドメインの登録から送信・削除まで動かし、無料でカード登録なしに自分のドメインから API で送るなら Resend が条件を満たす。'
 categories = ['developer-tools']
@@ -20,11 +20,11 @@ tags = ['email-api', 'resend', 'postmark', 'brevo', 'mailgun', 'amazon-ses']
 無料でカード登録なしに、自分のドメインから API で送りたいなら Resend で決まります。
 Free Tier に期限が無く、送信ドメインの登録から DNS レコードの取得、送信、削除までが API だけで閉じます。
 ただ、開発中のテスト用途で月 100 通あれば足りるなら Postmark、日 300 通まで送りたくマーケティング配信も要るなら Brevo が条件に合います。
-Amazon SES は恒常の無料枠が無く、サンドボックスの解除申請とカード登録が要るため、すでに AWS を使っている場合の選択肢です。
+Amazon SES は恒常の無料枠が無く、送れる相手を広げるにはサンドボックスの解除申請が要るため、すでに AWS を使っている場合の選択肢です。
 
 ## 比較表
 
-2026-09-08 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小のプランで揃え、通貨は各社の料金ページの表記（USD または円）のままです。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
@@ -33,7 +33,7 @@ Amazon SES は恒常の無料枠が無く、サンドボックスの解除申請
 | Postmark | 開発者向けの無料枠（USD 0）。有料は Basic USD 15/月（月 1 万通、超過 USD 1.80/1,000 通）から | **月 100 通**。「never expires or runs out」と明記 | 無料枠での超過送信は不可（「No overages allowed in this plan」）。送信元は確認済みの Sender Signature か認証済みドメインに限られ、未確認だと 422 | アカウントのみ。申込み導線に「No Credit Card Required」。API は `X-Postmark-Server-Token` ヘッダーで認証 | {{< verified spec >}} | [9][10] |
 | Brevo | Free（USD 0）。有料は Starter 月額 1,140 円（年払いで 1,026 円）・月 5,000 通から | **日 300 通**。「Free forever, no credit card needed」 | 送信の解禁に Brevo 側のアカウント承認が挟まる（「Once we approve your account for sending」）。メール末尾の「Sent with Brevo」の除去は有料（Starter で月 1,125 円の追加） | アカウントのみ。カード不要と料金ページと FAQ の両方に明記。承認の基準と所要時間は公式に記載なし | {{< verified spec >}} | [11] |
 | Mailgun | Free（USD 0）。有料は Basic USD 15/月（月 1 万通）から | **日 100 通**、カスタム送信ドメイン 1、API キー 2、inbound route 1 | **ログ保持 1 日**。ドメインは 1 本のみ。Foundation / Scale の「Free for 1 month」は Free プランとは別のトライアル | アカウントのみ。カード要否は料金ページにも FAQ にも記載が無く、公式には確認できない | {{< verified spec >}} | [12] |
-| Amazon SES | 従量。送信 USD 0.10/1,000 通（添付 USD 0.12/GB）、受信 USD 0.10/1,000 通 | 恒常の無料枠は無し。新規アカウント向けに最大 USD 200 のクレジット（Free プランは開設から 6 か月、クレジットは 12 か月で失効） | **サンドボックス**: 検証済みの宛先にしか送れず、24 時間で 200 通・毎秒 1 通。解除には本番アクセス申請（用途と website URL の申告、初回応答 24 時間） | AWS アカウント。開設に支払い方法の登録が要る。送信元のドメインかアドレスの検証が要る | {{< verified spec >}} | [13][14][15] |
+| Amazon SES | 従量。送信 USD 0.10/1,000 通（添付 USD 0.12/GB）、受信 USD 0.10/1,000 通 | 恒常の無料枠は無し。新規アカウント向けに最大 USD 200 のクレジット（Free プランは開設から 6 か月、クレジットは 12 か月で失効） | **サンドボックス**: 検証済みの宛先にしか送れず、24 時間で 200 通・毎秒 1 通。解除には本番アクセス申請（用途と website URL の申告、初回応答 24 時間） | AWS アカウント。新規の多くは開設時に支払い方法の登録が不要（本人確認で求められる場合あり）。送信元のドメインかアドレスの検証が要る | {{< verified spec >}} | [13][14][15][16] |
 
 {{< bars unit="通/日" caption="無料枠の 1 日あたりの送信上限（公式の料金ページに日次の上限があるものだけ。Postmark は月 100 通で日次の上限が無く、Amazon SES は期限付きクレジットのため載せていない）" >}}
 Brevo: 300
@@ -133,8 +133,8 @@ AWS の従量課金のメール送信サービスです。以前あった月次�
   新規アカウントには最大 USD 200 のクレジットが付き、Free プランは開設から 6 か月、クレジットは 12 か月で失効します [13][14]
 - **制約**: 新規アカウントはサンドボックスに置かれ、検証済みのアドレスかドメイン宛にしか送れず、24 時間で 200 通・毎秒 1 通に制限されます。
   解除には本番アクセス申請が要り、用途と website URL の申告、初回応答まで 24 時間とされています [15]
-- **前提条件**: AWS アカウントの開設に支払い方法の登録が要ります。送信元のドメインかメールアドレスの検証が要ります [14][15]
-- **検証した内容**: 公式の料金ページ、無料利用枠のページ、本番アクセス申請の docs を確認しました。カード登録が要るため実行していません
+- **前提条件**: 新規顧客の多くは、AWS アカウントの開設に支払い方法の登録が要りません。ただし本人確認のために求められる場合があります [16]。送信元のドメインかメールアドレスの検証が要ります [15]
+- **検証した内容**: 公式の料金ページ、無料利用枠のページ、本番アクセス申請の docs を確認しました。アカウントの作成が要るため実行していません
 
 ## 用途別の選び方
 
@@ -162,18 +162,19 @@ Brevo は両方に出ますが、あちらは Marketing Platform のキャンペ
 
 ## 出典
 
-1. [Resend Pricing](https://resend.com/pricing) — 2026-09-08 確認
-2. [Resend Terms of Service](https://resend.com/legal/terms-of-service) — 2026-09-06 確認
-3. [Resend Docs — Account quotas and limits](https://resend.com/docs/knowledge-base/account-quotas-and-limits) — 2026-09-08 確認
-4. [Resend Docs — Rate limit](https://resend.com/docs/api-reference/rate-limit) — 2026-09-08 確認
-5. [Resend Docs — Errors](https://resend.com/docs/api-reference/errors) — 2026-09-08 確認
-6. [Resend Docs — Add a domain](https://resend.com/docs/add-a-domain) — 2026-09-08 確認
-7. [Resend Docs — Create API key](https://resend.com/docs/api-reference/api-keys/create-api-key) — 2026-09-08 確認
-8. [Resend Docs — Create domain](https://resend.com/docs/api-reference/domains/create-domain) — 2026-09-08 確認
-9. [Postmark Pricing](https://postmarkapp.com/pricing) — 2026-09-08 確認
-10. [Postmark Developer — Send email with API](https://postmarkapp.com/developer/user-guide/send-email-with-api) — 2026-09-08 確認
-11. [Brevo Pricing](https://www.brevo.com/pricing/) — 2026-09-08 確認
-12. [Mailgun Pricing](https://www.mailgun.com/pricing/) — 2026-09-08 確認
-13. [Amazon SES Pricing](https://aws.amazon.com/ses/pricing/) — 2026-09-08 確認
-14. [AWS Free Tier](https://aws.amazon.com/free/) — 2026-09-08 確認
-15. [Amazon SES Developer Guide — Request production access](https://docs.aws.amazon.com/ses/latest/dg/request-production-access.html) — 2026-09-08 確認
+1. [Resend Pricing](https://resend.com/pricing) — 2026-10-03 確認
+2. [Resend Terms of Service](https://resend.com/legal/terms-of-service) — 2026-10-03 確認
+3. [Resend Docs — Account quotas and limits](https://resend.com/docs/knowledge-base/account-quotas-and-limits) — 2026-10-03 確認
+4. [Resend Docs — Rate limit](https://resend.com/docs/api-reference/rate-limit) — 2026-10-03 確認
+5. [Resend Docs — Errors](https://resend.com/docs/api-reference/errors) — 2026-10-03 確認
+6. [Resend Docs — Add a domain](https://resend.com/docs/add-a-domain) — 2026-10-03 確認
+7. [Resend Docs — Create API key](https://resend.com/docs/api-reference/api-keys/create-api-key) — 2026-10-03 確認
+8. [Resend Docs — Create domain](https://resend.com/docs/api-reference/domains/create-domain) — 2026-10-03 確認
+9. [Postmark Pricing](https://postmarkapp.com/pricing) — 2026-10-03 確認
+10. [Postmark Developer — Send email with API](https://postmarkapp.com/developer/user-guide/send-email-with-api) — 2026-10-03 確認
+11. [Brevo Pricing](https://www.brevo.com/pricing/) — 2026-10-03 確認
+12. [Mailgun Pricing](https://www.mailgun.com/pricing/) — 2026-10-03 確認
+13. [Amazon SES Pricing](https://aws.amazon.com/ses/pricing/) — 2026-10-03 確認
+14. [AWS Free Tier](https://aws.amazon.com/free/) — 2026-10-03 確認
+15. [Amazon SES Developer Guide — Request production access](https://docs.aws.amazon.com/ses/latest/dg/request-production-access.html) — 2026-10-03 確認
+16. [AWS Free Tier FAQs](https://aws.amazon.com/free/free-tier-faqs/) — 2026-10-03 確認

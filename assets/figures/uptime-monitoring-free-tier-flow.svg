@@ -60,6 +60,6 @@
     <text x="580" y="436" font-weight="600">Better Stack（Free）</text>
     <text x="580" y="458" font-size="12">10 件・3 分間隔。電話・SMS 通知は有料プランのみ</text>
     <text x="380" y="551" font-weight="600">5 件以内で足りるなら Cronitor（Free、5 分間隔）。公式 CLI と API で作成・削除できる</text>
-    <text x="380" y="571" font-size="12">通知はメールと Slack のみ。Terraform は公式 provider が無い</text>
+    <text x="380" y="571" font-size="12">通知はメール・Slack・Discord など。Terraform は公式 provider が無い</text>
   </g>
 </svg>

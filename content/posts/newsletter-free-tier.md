@@ -19,7 +19,7 @@ tags = ['newsletter', 'buttondown', 'kit', 'mailerlite', 'beehiiv', 'brevo']
 購読者を集めて定期的にメールを配信するニュースレター配信サービス 5 つを、「無料枠の単位が購読者数か配信通数か」「カード登録なしで始められるか」「無料プランで API から配信まで届くか」の 3 点で比べました。
 AI や CI に購読者の登録から配信・解除まで任せたいなら、Free でも API の全機能が使え、送信前の審査を通れば API だけで一巡が閉じる Buttondown が条件を満たします。
 無料で持てる購読者数を最大にしたいなら、購読者 10,000 まで無料で配信通数も無制限、API キーも全プランで発行できる Kit です。
-ただ、MailerLite は Free だと API から送れず、beehiiv は API キーの発行に本人確認が要り、送信の API は最上位プランに限られます。
+ただ、MailerLite は Free だと API から送れず、beehiiv は API キーの発行に本人確認が要り、送信の API は有料の Pro 以上に限られます。
 Brevo は購読者数ではなく日 300 通の通数制で、送信の解禁に承認が挟まるので、連絡先を多く持ちたい場合の選択肢です。
 
 ## 比較表
@@ -32,13 +32,13 @@ Brevo は購読者数ではなく日 300 通の通数制で、送信の解禁に
 | Buttondown | Free（USD 0）。有料は購読者 100 超で購読者数に応じた従量。タグ・セグメントは +USD 9/月、自動化は +USD 29/月 などのアドオン制 | **購読者 100 まで**。配信通数の上限は無いが、料金は「全購読者への配信が 1 日 1 回まで」を前提に組まれている | API は全体で 600 回/分、購読者の作成は 100 回/日（超過はそれぞれ 429 / 400）。新規アカウントは**送信前に審査**（通常 1〜3 営業日。審査中は下書き可、送信・購読者の収集・公開アーカイブの閲覧は不可）。フッターの「Powered by Buttondown」の除去は有料アドオン | アカウントのみ。登録画面に「No credit card required」。API キーは Free を含む全プランで発行でき、キーごとに `email_access` / `sending_access` を分けられる。API から送るには初回に `X-Buttondown-Live-Dangerously: true` ヘッダーが要る | {{< verified run >}} | [1][2][3][4][5][6] |
 | Kit（旧 ConvertKit） | Newsletter Plan（USD 0）。有料は Creator USD 33/月（購読者 1,000）、Pro USD 66/月から | **購読者 10,000 まで**。配信通数は無制限。フォームとランディングページは無制限、自動化 1 本とシーケンス 1 本 | API キーは 120 回/60 秒（OAuth アプリは 600）。購読者は API で解除できるが削除はできない。フッターの「Built with Kit」の除去は Creator 以上で、運営者住所を設定しないと Kit 社の住所が入る | アカウントのみ。料金ページに「No credit card required」。API キーは全プランで発行でき、ヘッダー `X-Kit-Api-Key` で渡す。送信前の審査は公式ページに記載なし | {{< verified run >}} | [9][10][11][12][13] |
 | MailerLite | Free（USD 0）。有料は Comfort USD 12/月（月間通数は購読者枠の 10 倍）、Power USD 25/月（通数無制限）から | **購読者 250 まで、月 2,500 通**。自動化 3、フォーム 3、ランディングページ 1、サイト 1、ユーザー 2 | Free の API は制限付きで**送信を含まない**（「Email sending via the API and MCP server is available on paid plans」）。API は全体 120 回/分、インポート系 5 回/分。購読者が 250 を超えると API 経由の追加も止まる | アカウントのみ。料金ページに「No credit card required」。登録後 14 日間はプレミアム機能のトライアル。API は Bearer トークン | {{< verified spec >}} | [14][15][16][17] |
-| beehiiv | Launch（USD 0）。有料は Scale USD 43/月、Max USD 96/月から（どちらも購読者 100,000 まで段階制） | **購読者 2,500 まで**。配信通数は無制限。カスタムドメイン可 | API は **Send API を除いて**利用可。Send API と Create post は Max 以上。180 回/分（組織単位） | アカウントのみ（メール認証と電話番号認証）。料金ページに「no credit card required」。**API キーの発行に Stripe Identity での本人確認**と Owner / Admin 権限が要る | {{< verified spec >}} | [18][19][20][21][22][23] |
-| Brevo（Marketing Platform） | Free（USD 0）。有料は Starter 月額 1,140 円から（ロゴ除去は Starter だとアドオン） | **日 300 通**（毎日リセット、繰り越しなし）。連絡先は 100,000 件まで保存でき、自動化に入れる連絡先は 2,000 まで。ユーザー 1 | 送信の解禁に Brevo 側の**アカウント承認**が挟まる。300 通を超えるキャンペーンは残りを翌日以降に再送。Free では「Sent with Brevo」を外せない。承認前のアカウントは API に権限の制限がかかることがある | アカウントのみ。料金ページに「No credit card required」。API キーを `api-key` ヘッダーで渡し、`POST /v3/emailCampaigns` でキャンペーンを作る | {{< verified spec >}} | [24][25][26][27] |
+| beehiiv | Free（USD 0）。有料は Lite USD 49/月、Pro USD 95/月から（年払い時。月払いは 59 / 109。購読者上限は Lite 100,000、Pro 250,000） | **購読者 2,500 まで**。配信通数は無制限。カスタムドメイン可 | API は **Send API を除いて**利用可。Send API と Create post は Pro 以上。Free は 30 回/分（API キー単位） | アカウントのみ（メール認証と電話番号認証）。料金ページに「no credit card required」。**API キーの発行に Stripe Identity での本人確認**と Admin 権限が要る | {{< verified spec >}} | [18][19][20][21][22][23] |
+| Brevo（Marketing Platform） | Free（USD 0）。有料は Starter 月額 1,140 円から（ロゴ除去は Starter だとアドオン） | **日 300 通**（毎日リセット、繰り越しなし）。連絡先は 100,000 件まで保存でき、自動化に入れる連絡先は 2,000 まで。ユーザー 1 | 送信の解禁に Brevo 側の**アカウント承認**が挟まる。300 通を超えるキャンペーンは残りを翌日以降に再送。Free では「Sent with Brevo」を外せない | アカウントのみ。料金ページに「No credit card required」。API キーを `api-key` ヘッダーで渡し、`POST /v3/emailCampaigns` でキャンペーンを作る | {{< verified spec >}} | [24][25][26][27] |
 
 {{< bars unit="購読者" caption="無料で持てる購読者数の上限。Brevo は購読者数ではなく日 300 通の通数制（連絡先は 100,000 件まで保存可）のため載せていない" >}}
 Buttondown Free: 100
 MailerLite Free: 250
-beehiiv Launch: 2500
+beehiiv Free: 2500
 Kit Newsletter Plan: 10000
 {{< /bars >}}
 
@@ -53,7 +53,7 @@ Kit Newsletter Plan: 10000
 - 「無料枠」の単位が 2 通りに割れています。Buttondown・Kit・MailerLite・beehiiv は購読者数で、Brevo は 1 日の配信通数です。
   棒グラフは購読者数で数える 4 つだけを並べ、Brevo は外しています。MailerLite は購読者数に加えて月 2,500 通の通数上限も持ちます
 - 「API がある」と「API で送れる」は一致しません。5 つとも API を持ちますが、無料プランで送信まで API から行えるのは Buttondown・Kit・Brevo の 3 つです。
-  MailerLite は Free だと API 送信が塞がれ、beehiiv は Send API が Max 以上です。この記事の「主な制約」列と「前提条件」列は、ここを分かれ目として書いています
+  MailerLite は Free だと API 送信が塞がれ、beehiiv は Send API が Pro 以上です。この記事の「主な制約」列と「前提条件」列は、ここを分かれ目として書いています
 - 送信までに人間のゲートがある社があります。beehiiv は API キーの発行前に Stripe Identity での本人確認、Buttondown は送信前の審査（通常 1〜3 営業日）、Brevo は送信前のアカウント承認です。
   Kit と MailerLite は登録だけで API キーを発行できます。AI に任せる場合、ゲートの前までは AI が進められ、ゲート自体は利用者が越えることになります
 - Buttondown の料金は購読者数で決まりますが、料金ページは「全購読者への配信が 1 日 1 回まで」を前提に組まれていると明記しています [1]。
@@ -142,14 +142,14 @@ API は Free でも使えますが、送信は含まれません。
 ### beehiiv
 
 購読者 2,500 まで無料でカスタムドメインも使える配信基盤で、無料枠の広さでは Kit に次ぎます。
-ただ、API キーの発行に本人確認が要り、送信の API は最上位の Max 以上です。
+ただ、API キーの発行に本人確認が要り、送信の API は有料の Pro 以上です。
 
-- **料金体系**: Launch は USD 0 で購読者 2,500 まで、配信通数は無制限です。有料は Scale USD 43/月、Max USD 96/月 からで、どちらも購読者 100,000 まで段階制です [18][19]
-- **制約**: API は「API Access (excluding Send API)」で、Send API と Create post は「Available on Max and Enterprise」です [18][21]。レート制限は組織単位で 180 回/分です [23]
+- **料金体系**: Free は USD 0 で購読者 2,500 まで、配信通数は無制限です。有料は Lite USD 49/月、Pro USD 95/月 から（年払い時）で、購読者は Lite が 100,000、Pro が 250,000 まで段階制です [18][19]
+- **制約**: API は「API Access (excluding Send API)」で、Send API と Create post は「Available on beehiiv Pro and Enterprise plans」です [18][21]。レート制限は API キー単位で、Free は 30 回/分です [23]
 - **前提条件**: アカウントのみで、登録時にメール認証と電話番号認証があります [22]。料金ページに「free, forever, with no credit card required」とあります [18]。
-  API キーの発行は「you must first complete your account verification through Stripe Identity Verification」で、Owner か Admin の権限が要ります [20]
+  API キーの発行は「you must first complete your account verification through Stripe Identity Verification」で、Admin の権限が要ります [20]
 - **検証した内容**: 公式の料金ページ・ヘルプ・開発者ドキュメントを確認しました。本人確認が利用者の操作になるため、実行は次回の更新に回しています。
-  本人確認を済ませても Send API は Max 以上なので、実行に上げられるのは購読者の登録・解除までです
+  本人確認を済ませても Send API は Pro 以上なので、実行に上げられるのは購読者の登録・解除までです
 
 ### Brevo（Marketing Platform）
 
@@ -158,7 +158,7 @@ API は Free でも使えますが、送信は含まれません。
 
 - **料金体系**: Free は USD 0 で日 300 通です。有料は Starter 月額 1,140 円からで、ロゴの除去は Starter だとアドオンです [25]
 - **制約**: 日 300 通は毎日リセットされ、繰り越しはありません。300 通を超えるキャンペーンは残りを翌日以降に再送します。連絡先は 100,000 件まで、自動化に入れる連絡先は 2,000 までです。
-  Free では「Sent with Brevo」を外せません [24]。送信の解禁に「Once we approve your account for sending」の承認が挟まり [25]、承認前のアカウントは API に権限の制限がかかることがあります [26]
+  Free では「Sent with Brevo」を外せません [24]。送信の解禁に「Once we approve your account for sending」の承認が挟まり [25]
 - **前提条件**: アカウントのみです。料金ページに「No credit card required」とあります [25]。API キーを `api-key` ヘッダーで渡し、`POST /v3/emailCampaigns` でキャンペーンを作ります [27]
 - **検証した内容**: 公式の料金ページ・ヘルプ・API ドキュメントを確認しました。承認のゲートは[メール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)で扱ったものと同じで、
   承認が通れば実行に上げられます

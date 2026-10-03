@@ -2,7 +2,7 @@
 title = 'クラウドストレージ 6 つの無料プラン比較: WebDAV や API で無料のまま動かせるか'
 date = '2026-09-30T06:54:12+09:00'
 # 最終確認日。出典の確認日・実行検証の最終日と揃え、再検証したら更新する（ヘッダーに出る）
-lastmod = '2026-09-30'
+lastmod = '2026-10-03'
 draft = false
 summary = 'Koofr・XServer ドライブ・pCloud・MEGA・Icedrive・Internxt の無料プランを、容量ではなく「WebDAV・API・CLI で無料のまま動かせるか」と「スクリプトに渡す認証が本体のパスワードかどうか」で比較。無料で WebDAV と REST API の両方が使え、アプリ専用パスワードで認証できるのは Koofr で、pCloud は WebDAV と rsync が無料プランでも使えると公式に明記されています。'
 # tags / categories は URL に載るため英語（小文字・ハイフン区切り）で書く
@@ -28,14 +28,14 @@ Internxt の CLI と WebDAV は最上位の Ultimate だけなので、無料プ
 
 ## 比較表
 
-2026-09-30 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は最小の有料プランで揃え、通貨は各社の料金ページの表記のままです。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Koofr | Free（EUR 0）。有料は Briefcase S（10 GB）EUR 0.5/月から。年払いのみ、VAT 22% 込み | **10 GB**。「Free forever」 | zip・exe・html などは公式アプリ以外の経路で制限。削除済みの保持 7 日、公開リンクの転送 50 GB/日 | アカウントのみ。カード登録なし。WebDAV と REST API は**アプリ専用パスワード**で認証 | {{< verified run >}} | [1][2][3][4] |
 | XServer ドライブ | フリープラン（0 円）。有料はスモールビジネス 月 3,960 円（1 か月契約）〜 2,970 円（36 か月）＋初期費用 11,000 円 | **2 GB**（SSD）・1 名 | 公式の上限は 1 ファイル 100 MB。API・CLI の公式の記載なし。有料は法人向けの料金体系 | XServer アカウント。WebDAV はストレージ管理パネルの ID とパスワードで認証 | {{< verified run >}} | [5][6] |
-| pCloud | Free（USD 0）。有料は Premium 500 GB が USD 59.88/年（月あたり USD 4.99）から。買い切りあり | 登録時 **2 GB**。チュートリアルと招待で最大 10 GB | 共有リンクの転送 50 GB/月。API の接続先は登録地で US / EU に分かれる | メールとパスワード。WebDAV と rsync は無料を含む全プラン対応。初回接続はメールで承認 | {{< verified spec >}} | [7][8][9][10] |
+| pCloud | Free（USD 0）。有料は Premium 500 GB が月払い USD 4.99/月、年払い USD 49.99/年の表示から。買い切りあり | 登録時 **2 GB**。チュートリアルと招待で最大 10 GB | 共有リンクの転送 50 GB/月。API の接続先は登録地で US / EU に分かれる | メールとパスワード。WebDAV と rsync は無料を含む全プラン対応。初回接続はメールで承認 | {{< verified spec >}} | [7][8][9][10] |
 | MEGA | Free（EUR 0）。有料は Essential 200 GB が EUR 3.33/月（年払い、税込 EUR 3.67）から。請求はユーロ | **10 GB** | 無料の転送量は IP アドレスごとの直近 6 時間のダウンロード量で制限。固定の上限値の記載なし | メールとパスワード。経路は公式 CLI の MEGA CMD。WebDAV は MEGA CMD が手元に立てる | {{< verified spec >}} | [11][12][13][14] |
 | Icedrive | Free（USD 0）。有料は Pro 2 TB が USD 9.99/月、年払いは USD 99（初年度 USD 59 の表示） | **10 GB** | WebDAV は 2026-04-15 から新規ユーザーに無効。無料プランにバージョン履歴なし | アカウントのみ。料金ページの機能一覧に API・CLI・WebDAV の項目なし | {{< verified spec >}} | [15][16] |
 | Internxt | Free（EUR 0）。有料は Essential 1 TB が年払いプランで初月 EUR 1.99、以降 EUR 9.99/月の表示 | **1 GB** | CLI と WebDAV は Ultimate（5 TB）のみ。CLI と WebDAV は 1 ファイル 100 GB まで | 名前とメールで登録。CLI はブラウザ経由か、メールとパスワードでログイン | {{< verified spec >}} | [17][18] |
@@ -133,7 +133,7 @@ Internxt: 1
 スイスの事業者が運営するクラウドストレージで、サブスクリプションのほかに買い切りのプランがあります。
 WebDAV と rsync が無料プランでも使えることを、公式ヘルプが明記しています。
 
-- **料金体系**: Free は USD 0 です。有料は Premium 500 GB が USD 59.88/年、Premium Plus 2 TB が USD 119.88/年、Ultra 10 TB が USD 359.88/年で、料金ページは月あたりの額（USD 4.99 / 9.99 / 29.99）と並べて表示しています。
+- **料金体系**: Free は USD 0 です。有料は Premium 500 GB が月払い USD 4.99/月、Premium Plus 2 TB が USD 9.99/月、Ultra 10 TB が USD 29.99/月です。年払いは 2026-10-03 時点で、USD 59.88 / 119.88 / 359.88 に取り消し線を引いた USD 49.99 / 99.99 / 299.99 が表示されています。
   買い切りは Premium 500 GB が USD 219、Premium Plus 2 TB が USD 499、Ultra 10 TB が USD 1,499 の表示です [8]
 - **制約**: 無料プランは登録時に 2 GB で、チュートリアルの完了と招待で最大 10 GB まで増えます。共有リンクの転送は 50 GB/月です [7]。
   API の接続先は、アカウントの登録地によって US（`api.pcloud.com`）と EU（`eapi.pcloud.com`）に分かれます [10]
@@ -141,7 +141,7 @@ WebDAV と rsync が無料プランでも使えることを、公式ヘルプが
   初回の接続や新しい端末からの接続では確認のメールが届き、承認するまで接続できません。2 要素認証を有効にしたままでも使えます [9]
 - **検証した内容**: 公式の料金ページ・ヘルプ・API ドキュメントを確認しました。公式ヘルプは WebDAV と rsync について「available for all pCloud plans, including free and paid accounts」と書いています [9]。
   一方、API のドキュメントにはプラン別の制限の記載がなく、無料プランで使えるとの明記もありません [10]。
-  料金ページは月払いと年払いを切り替えても同じ額を表示するため、月払いの額はこの記事に載せていません。実行は次回の更新に回しています
+  実行は次回の更新に回しています
 
 ### MEGA
 
@@ -201,24 +201,24 @@ XServer ドライブと同じ XServer アカウントで申し込める共用サ
 
 ## 出典
 
-1. [Koofr Pricing](https://koofr.eu/pricing/) — 2026-09-30 確認
-2. [Koofr Help — How do I connect a service to Koofr through WebDAV?](https://koofr.eu/help/koofr_with_webdav/how-do-i-connect-a-service-to-koofr-through-webdav/) — 2026-09-30 確認
-3. [Koofr Help — I have a free account and cannot share certain files, why?](https://koofr.eu/help/share-files-and-folders/i-have-a-free-account-and-cannot-share-certain-files-why/) — 2026-09-30 確認
-4. [Koofr Developers](https://app.koofr.net/developers) — 2026-09-30 確認
-5. [XServer ドライブ 料金プラン](https://drive.xserver.ne.jp/price/) — 2026-09-30 確認
-6. [XServer ドライブ マニュアル — WebDAV 接続（Windows 10）](https://drive.xserver.ne.jp/support/manual/man_setting_webdav_windows10.php) — 2026-09-30 確認
-7. [pCloud Help — Plan details](https://help.pcloud.com/article/plan-details) — 2026-09-30 確認
-8. [pCloud Pricing](https://www.pcloud.com/cloud-storage-pricing-plans.html) — 2026-09-30 確認
-9. [pCloud Help — Connect to pCloud using WebDAV and rsync](https://help.pcloud.com/article/connect-to-pcloud-using-webdav-and-rsync) — 2026-09-30 確認
-10. [pCloud Developers](https://docs.pcloud.com/) — 2026-09-30 確認
-11. [MEGA Pricing](https://mega.io/pricing) — 2026-09-30 確認
-12. [MEGA Help Centre — What is transfer quota on MEGA?](https://help.mega.io/plans-storage/space-storage/transfer-quota) — 2026-09-30 確認
-13. [MEGA CMD](https://mega.io/cmd) — 2026-09-30 確認
-14. [MEGA Help Centre — What is MEGA CMD?](https://help.mega.io/desktop-app/mega-cmd/cmd) — 2026-09-30 確認
-15. [Icedrive Plans & Pricing](https://icedrive.net/plans) — 2026-09-30 確認
-16. [Icedrive Support — Does Icedrive support WebDAV?](https://icedrive.net/help/account/does-icedrive-support-webdav) — 2026-09-30 確認
-17. [Internxt Pricing](https://internxt.com/pricing) — 2026-09-30 確認
-18. [Internxt CLI（公式 GitHub の README）](https://github.com/internxt/cli) — 2026-09-30 確認
-19. [Google Drive API — Choose Google Drive API scopes](https://developers.google.com/workspace/drive/api/guides/about-auth) — 2026-09-30 確認
-20. [Dropbox — OAuth Guide](https://docs.dropboxapi.com/dropbox-api/docs/oauth) — 2026-09-30 確認
-21. [Microsoft Graph — Authentication and authorization basics](https://learn.microsoft.com/en-us/graph/auth/auth-concepts) — 2026-09-30 確認
+1. [Koofr Pricing](https://koofr.eu/pricing/) — 2026-10-03 確認
+2. [Koofr Help — How do I connect a service to Koofr through WebDAV?](https://koofr.eu/help/koofr_with_webdav/how-do-i-connect-a-service-to-koofr-through-webdav/) — 2026-10-03 確認
+3. [Koofr Help — I have a free account and cannot share certain files, why?](https://koofr.eu/help/share-files-and-folders/i-have-a-free-account-and-cannot-share-certain-files-why/) — 2026-10-03 確認
+4. [Koofr Developers](https://app.koofr.net/developers) — 2026-10-03 確認
+5. [XServer ドライブ 料金プラン](https://drive.xserver.ne.jp/price/) — 2026-10-03 確認
+6. [XServer ドライブ マニュアル — WebDAV 接続（Windows 10）](https://drive.xserver.ne.jp/support/manual/man_setting_webdav_windows10.php) — 2026-10-03 確認
+7. [pCloud Help — Plan details](https://help.pcloud.com/article/plan-details) — 2026-10-03 確認
+8. [pCloud Pricing](https://www.pcloud.com/cloud-storage-pricing-plans.html) — 2026-10-03 確認
+9. [pCloud Help — Connect to pCloud using WebDAV and rsync](https://help.pcloud.com/article/connect-to-pcloud-using-webdav-and-rsync) — 2026-10-03 確認
+10. [pCloud Developers](https://docs.pcloud.com/) — 2026-10-03 確認
+11. [MEGA Pricing](https://mega.io/pricing) — 2026-10-03 確認
+12. [MEGA Help Centre — What is transfer quota on MEGA?](https://help.mega.io/plans-storage/space-storage/transfer-quota) — 2026-10-03 確認
+13. [MEGA CMD](https://mega.io/cmd) — 2026-10-03 確認
+14. [MEGA Help Centre — What is MEGA CMD?](https://help.mega.io/desktop-app/mega-cmd/cmd) — 2026-10-03 確認
+15. [Icedrive Plans & Pricing](https://icedrive.net/plans) — 2026-10-03 確認
+16. [Icedrive Support — Does Icedrive support WebDAV?](https://icedrive.net/help/account/does-icedrive-support-webdav) — 2026-10-03 確認
+17. [Internxt Pricing](https://internxt.com/pricing) — 2026-10-03 確認
+18. [Internxt CLI（公式 GitHub の README）](https://github.com/internxt/cli) — 2026-10-03 確認
+19. [Google Drive API — Choose Google Drive API scopes](https://developers.google.com/workspace/drive/api/guides/about-auth) — 2026-10-03 確認
+20. [Dropbox — OAuth Guide](https://docs.dropboxapi.com/dropbox-api/docs/oauth) — 2026-10-03 確認
+21. [Microsoft Graph — Authentication and authorization basics](https://learn.microsoft.com/en-us/graph/auth/auth-concepts) — 2026-10-03 確認

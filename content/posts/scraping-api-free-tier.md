@@ -1,7 +1,7 @@
 +++
 title = 'スクレイピング API 5 つの無料枠比較: 無料で試せるか、使い続けられるか'
 date = '2026-09-12T12:00:38+09:00'
-lastmod = '2026-09-12'
+lastmod = '2026-10-03'
 draft = false
 summary = 'ScraperAPI・ScrapingBee・Firecrawl・Apify・Zyte を、無料枠が毎月戻るか一回きりか、カード登録なしで動かせるか、1 ページの取得が何クレジットに当たるかで比較。7 日間のトライアルと月 1,000 クレジットの恒常枠を両方持つのは ScraperAPI だけで、カード登録なしに無料枠を使い続けるなら ScraperAPI が条件を満たす。'
 categories = ['developer-tools']
@@ -28,7 +28,7 @@ Apify は無料枠が月 USD 5 分の使用量で、取れるページ数が動�
 
 ## 比較表
 
-2026-09-12 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小のプランで揃え、通貨は各社の料金ページの表記（USD）のままです。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
@@ -205,17 +205,17 @@ API キーを CI や AI エージェントに渡す場面では、[シークレ�
 
 ## 出典
 
-1. [ScraperAPI Pricing](https://www.scraperapi.com/pricing/) — 2026-09-10 確認
-2. [ScraperAPI Docs — Plans and Billing (FAQ)](https://docs.scraperapi.com/resources/faq/plans-and-billing) — 2026-09-11 確認
-3. [ScraperAPI Docs — Credits and Requests costs](https://docs.scraperapi.com/getting-started/quick-start/credits-and-requests-costs) — 2026-09-12 確認
-4. [ScraperAPI Docs — API Status Codes](https://docs.scraperapi.com/responses-and-formats/api-status-codes) — 2026-09-12 確認
-5. [ScrapingBee Pricing](https://www.scrapingbee.com/pricing/) — 2026-09-12 確認
-6. [ScrapingBee Documentation](https://www.scrapingbee.com/documentation/) — 2026-09-12 確認
-7. [Firecrawl Pricing](https://www.firecrawl.dev/pricing) — 2026-09-12 確認
-8. [Firecrawl Docs — Rate Limits](https://docs.firecrawl.dev/rate-limits) — 2026-09-12 確認
-9. [Firecrawl Docs — Self-hosting](https://docs.firecrawl.dev/contributing/self-host) — 2026-09-11 確認
-10. [Apify Pricing](https://apify.com/pricing) — 2026-09-12 確認
-11. [Apify Docs — Limits](https://docs.apify.com/platform/limits) — 2026-09-12 確認
-12. [Zyte Pricing](https://www.zyte.com/pricing/) — 2026-09-12 確認
-13. [Zyte API Docs — Pricing](https://docs.zyte.com/zyte-api/pricing.html) — 2026-09-12 確認
-14. [ScraperAPI Docs — Credit Usage](https://docs.scraperapi.com/account-management/credit-usage) — 2026-09-12 確認
+1. [ScraperAPI Pricing](https://www.scraperapi.com/pricing/) — 2026-10-03 確認
+2. [ScraperAPI Docs — Plans and Billing (FAQ)](https://docs.scraperapi.com/resources/faq/plans-and-billing) — 2026-10-03 確認
+3. [ScraperAPI Docs — Credits and Requests costs](https://docs.scraperapi.com/getting-started/quick-start/credits-and-requests-costs) — 2026-10-03 確認
+4. [ScraperAPI Docs — API Status Codes](https://docs.scraperapi.com/responses-and-formats/api-status-codes) — 2026-10-03 確認
+5. [ScrapingBee Pricing](https://www.scrapingbee.com/pricing/) — 2026-10-03 確認
+6. [ScrapingBee Documentation](https://www.scrapingbee.com/documentation/) — 2026-10-03 確認
+7. [Firecrawl Pricing](https://www.firecrawl.dev/pricing) — 2026-10-03 確認
+8. [Firecrawl Docs — Rate Limits](https://docs.firecrawl.dev/rate-limits) — 2026-10-03 確認
+9. [Firecrawl Docs — Self-hosting](https://docs.firecrawl.dev/contributing/self-host) — 2026-10-03 確認
+10. [Apify Pricing](https://apify.com/pricing) — 2026-10-03 確認
+11. [Apify Docs — Limits](https://docs.apify.com/platform/limits) — 2026-10-03 確認
+12. [Zyte Pricing](https://www.zyte.com/pricing/) — 2026-10-03 確認
+13. [Zyte API Docs — Pricing](https://docs.zyte.com/zyte-api/pricing.html) — 2026-10-03 確認
+14. [ScraperAPI Docs — Credit Usage](https://docs.scraperapi.com/account-management/credit-usage) — 2026-10-03 確認

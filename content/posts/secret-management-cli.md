@@ -1,7 +1,7 @@
 +++
 title = 'シークレット管理 CLI 6 つ比較: AI が非対話で扱える範囲'
 date = '2026-09-05T23:35:51+09:00'
-lastmod = '2026-09-05'
+lastmod = '2026-10-03'
 draft = false
 summary = 'Bitwarden Secrets Manager・Infisical・Doppler・1Password・HashiCorp Vault Community・OpenBao を、個人が使える最小プランの料金、無料枠の上限、機械向けトークンの作り方とスコープ、run 相当の注入、読み取り専用の作り分けで比較。6 つすべてを AI が実際に動かし、無料でカード登録なしに CI や AI エージェントへ読み書きさせるなら Bitwarden Secrets Manager が条件を満たす。'
 categories = ['developer-tools']
@@ -24,16 +24,16 @@ Free プランで machine account 3 つ・project 3 つまで持て、`bws run` 
 
 ## 比較表
 
-2026-09-05 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
-料金は個人が申し込める最小のプランで揃え、有料プランの金額は年払い換算の月額（USD）です。
+仕様・料金は末尾の各出典の確認日時点、実測は 2026-09-05 時点の情報です。出典は末尾の番号に対応しています。
+料金は個人が申し込める最小のプランで揃えています。Bitwarden・Infisical・1Password の有料料金は年払い換算の月額（USD）、Doppler は料金ページの月額表示です。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Bitwarden Secrets Manager | Free（USD 0）。有料は Teams USD 6/ユーザー/月、Enterprise USD 12/ユーザー/月 | ユーザー 2・machine account 3・project 3。secret 数は無制限 | project の 4 つ目は 400 で拒否。machine account の権限は web vault で付け、CLI からは変えられない。access token は再表示できない | Bitwarden アカウント（Free）と Free organization。実際の登録ではカード不要（料金ページに記載なし）。`bws` はバイナリか Docker | {{< verified run >}} | [1][2][4][7][8] |
-| Infisical | Free（USD 0）。有料は Pro USD 20/identity/月（30 日トライアル） | identity 5・environment 3・secret sync 10。project 数は無制限、監査ログの保持なし | environment の 4 つ目は 400 で拒否。project の作成と identity の操作は CLI に無く REST API。token の TTL（既定 30 日）は作成時に決める | Free にサインアップ。カード不要と料金ページに明記（実際の登録でも不要）。machine identity に Universal Auth か Token Auth。セルフホスト可 | {{< verified run >}} | [9][10][11][12][13] |
+| Infisical | Free（USD 0）。有料は Pro USD 20/identity/月（年払い。月払いは USD 23。30 日トライアル） | identity 5・environment 3・secret sync 10。project 数は無制限、監査ログの保持なし | environment の 4 つ目は 400 で拒否。project の作成と identity の操作は CLI に無く REST API。token の TTL は設定で指定。既定値は公式内で不一致 | Free にサインアップ。カード不要と料金ページに明記（実際の登録でも不要）。machine identity に Universal Auth か Token Auth。セルフホスト可 | {{< verified run >}} | [9][10][11][12][13] |
 | Doppler | Developer（USD 0、3 ユーザーまで。4 人目から USD 8/月）。有料は Team USD 21/ユーザー/月（14 日トライアル） | project 10・environment 4・service token 50・CLI token 5/ユーザー。監査ログは 3 日 | environment の 5 つ目は拒否。service account は Team 以上のみで、Developer で機械向けに使えるのは config 単位の service token | アカウントのみ。カード不要（実際に登録して確認）。personal token はダッシュボード、service token は CLI で発行 | {{< verified run >}} | [14][15][16][17] |
-| 1Password | Individual USD 2.99/月（初年度。以後 3.99）、Families USD 4.49/月（初年度。以後 5.99）。無料プランなし | 14 日トライアルのみ | レート制限はトークンあたり write 100/時・read 1,000/時、アカウントあたり 1,000/日で、超過は 429。サービスアカウントの権限は作成後に変更不可 | 有料サブスクリプション。サービスアカウントは web で作成し、CLI からは作れない。`op` はバイナリ | {{< verified run >}} | [18][19][20][21] |
-| HashiCorp Vault Community | 無料（セルフホスト）。HCP Vault Dedicated は組織作成時に USD 500 の trial credit（6 か月） | セルフホストに上限なし | ライセンスは BUSL 1.1（ホスト型で第三者に提供する用途は対象外）。`run` 相当のサブコマンドは無く、Agent の設定ファイルが要る。`-dev` モードは本番利用不可 | バイナリを置いて自分でサーバーを起動する。アカウント・カードとも不要 | {{< verified run >}} | [22][23][24][25][26] |
+| 1Password | Individual USD 2.99/月（初年度。以後 3.99）、Families USD 4.49/月（初年度。以後 5.99）。無料プランなし | 14 日トライアルのみ | レート制限はトークンあたり write 100/時・read 1,000/時、アカウントあたり 1,000/日で、超過は 429。サービスアカウントの権限は作成後に変更不可 | 有料サブスクリプション。サービスアカウントは web または CLI で作成。作成権限が要る。`op` はバイナリ | {{< verified run >}} | [18][19][20][21] |
+| HashiCorp Vault Community | 無料（セルフホスト）。HCP Vault Dedicated は組織作成時に USD 500 の trial credit（6 か月） | セルフホストに上限なし | BUSL 1.1（IBM の有料版と競合するホスト型・組み込み提供は対象外）。`run` 相当のサブコマンドは無く、Agent の設定ファイルが要る。`-dev` モードは本番利用不可 | バイナリを置いて自分でサーバーを起動する。アカウント・カードとも不要 | {{< verified run >}} | [22][23][24][25][26] |
 | OpenBao | 無料（セルフホスト） | セルフホストに上限なし | ライセンスは MPL 2.0。Vault 用の CLI 手順と Agent の設定ファイルがそのまま通る（実測） | バイナリを置いて自分でサーバーを起動する。アカウント・カードとも不要 | {{< verified run >}} | [27][28][29] |
 
 {{< bars unit="ms" caption="secret 1 件を子プロセスの環境変数に注入して起動するまでの時間（2026-09-05、macOS Apple Silicon、東京から。各対象の「検証した内容」の実測値。Vault / OpenBao は Agent が子プロセスを起動する前に約 2 秒待つ）" >}}
@@ -94,14 +94,16 @@ Free の organization に machine account を 3 つまで置け、そのトー�
 CLI と REST API の両方が公開されていて、identity（機械向けの主体）の作成やロールの付与まで API で閉じます。
 6 つのうち、読み取り専用の主体を作って書き込み拒否まで API だけで再現できたのは Infisical と Vault / OpenBao だけです。
 
-- **料金体系**: Free は USD 0 です。Pro は identity あたり USD 20/月で、有料プランには 30 日のトライアルがあり、カードは不要です。
+- **料金体系**: Free は USD 0 です。Pro は年払いで identity あたり USD 20/月、月払いで USD 23/月です。有料プランには 30 日のトライアルがあり、カードは不要です。
   Free の上限は identity 5・environment 3・secret sync 10 で、project 数に上限は無く、監査ログは保持されません [9]
 - **制約**: environment の 4 つ目を作ると 400「Failed to create environment due to environment limit reached. Upgrade plan」で止まります。
-  project の作成と identity の操作は CLI に無く、REST API を使います。identity の access token は JWT で、TTL（既定 30 日）・最大使用回数・接続元 IP（既定 0.0.0.0/0）は Token Auth の設定で決めます [12][13]。
+  project の作成と identity の操作は CLI に無く、REST API を使います。identity の access token は JWT で、TTL・最大使用回数は Token Auth の設定で決めます [12][13]。
+  TTL の既定値は同じ公式ページの設定説明で 2,592,000 秒（30 日）、API 利用説明で 7,200 秒と記載が揃っていないため、ここでは断定しません。
+  接続元 IP を絞る機能は Cloud では Pro、セルフホストでは enterprise ライセンスが必要です。既定の `0.0.0.0/0` はすべての IPv4 アドレスを許可します [13]。
   `secrets delete` は `--type` の既定が `personal` のため、identity のトークンでは `--type shared` を付けないと 400「Must be user to delete personal secret」になります [11]
 - **前提条件**: Infisical Cloud の Free にサインアップし、machine identity に Universal Auth（client id / secret）か Token Auth を付けます。サインアップにカード登録は求められませんでした（2026-09-05 に実際に登録）。
-  `infisical` はバイナリ（122 MB）で、`--token` か環境変数 `INFISICAL_TOKEN` で認証します [10][12]。ソースが公開されていてセルフホストもできます [9]
-- **検証した内容**: 2026-09-05 に infisical 0.43.129 と REST API で実行しました。identity は Token Auth（TTL 30 日、IP 制限有効）です。
+  `infisical` はバイナリ（122 MB）で、`--token` か環境変数 `INFISICAL_TOKEN` で認証します [10][11][12]。ソースが公開されていてセルフホストもできます [9]
+- **検証した内容**: 2026-09-05 に infisical 0.43.129 と REST API で実行しました。identity は Token Auth（TTL 30 日）です。接続元 IP の絞り込みが有効かは検証していません。
 
   | 操作 | 結果 |
   | --- | --- |
@@ -150,8 +152,9 @@ Developer プランに service account は無く、機械向けには config 単
 - **料金体系**: Individual は USD 2.99/月（年払い、初年度。以後 3.99）、Families は USD 4.49/月（初年度。以後 5.99、5 人まで）です。
   無料プランは無く、14 日のトライアルだけです。CLI とサービスアカウントは Individual から使えます [18]
 - **制約**: レート制限が 3 段あります。トークンあたり write 100/時・read 1,000/時、アカウントあたり 1,000/日（Individual / Families。Business は 50,000/日）で、超過は 429 です [21]。
-  サービスアカウントの権限は vault ごとに「読み取り / 書き込み / 共有」を作成時に選び、後から変えられません。Personal / Private vault と既定の Shared vault には付けられません [20]
-- **前提条件**: 有料サブスクリプションが要ります。サービスアカウントは web の管理画面で作成し、トークンは作成時に 1 度だけ表示されます。CLI からは作れません [20]。
+  サービスアカウントの権限は vault ごとに「読み取り / 書き込み / 共有」を作成時に選び、後から変えられません。built-in の Personal・Private・Employee vault と既定の Shared vault には付けられません [20]
+- **前提条件**: 有料サブスクリプションが要ります。サービスアカウントは web の管理画面、または `op service-account create` で作成できます。作成には十分なアカウント権限が必要で、トークンは作成時に 1 度だけ表示されます。
+  既存のサービスアカウントトークンだけで別のサービスアカウントを作れるかは未確認です [20]。
   `op` はバイナリで、環境変数 `OP_SERVICE_ACCOUNT_TOKEN` だけで認証します [19]
 - **検証した内容**: 2026-09-05 に op 2.39.0 で実行しました。トークンはこの記事の運営で使っているもの（Dev vault に読み取りのみ）です。
 
@@ -173,7 +176,8 @@ Developer プランに service account は無く、機械向けには config 単
 
 - **料金体系**: Community 版は無料でセルフホストします。マネージド版の HCP Vault Dedicated は組織の作成時に USD 500 の trial credit（6 か月有効）が付きますが、
   時間単価は公式の料金ページから取得できませんでした [26]
-- **制約**: ライセンスは BUSL 1.1 で、ホスト型や組み込みで第三者に提供する用途は Additional Use Grant の対象外です [22]。
+- **制約**: ライセンスは BUSL 1.1 です。Additional Use Grant は、IBM の有料版と競合する製品として第三者へホスト型・組み込みで提供する用途を除外しています。
+  LICENSE は、有料サポートを含む有償提供で IBM の有料版と機能が大幅に重なる製品を競合と定義し、組織内部でのホスティング・利用は競合に含めないと明記しています [22]。
   `vault server -dev` は in-memory・unseal 済みで起動し、ドキュメントが本番利用を禁じています [24]。
   バイナリは 514 MB、dev サーバーの常駐メモリは起動直後 148 MB・一巡後 158 MB でした（実測）
 - **前提条件**: バイナリを置くだけで、アカウントもカードも要りません [23]。`run` 相当は Agent の process supervisor mode で、
@@ -238,32 +242,32 @@ AI に API キーを渡す場面がある記事では、この記事で比べた
 
 ## 出典
 
-1. [Bitwarden Pricing](https://bitwarden.com/pricing/) — 2026-09-05 確認
-2. [Bitwarden Secrets Manager](https://bitwarden.com/products/secrets-manager/) — 2026-09-05 確認
-3. [Bitwarden Help — Password Manager CLI](https://bitwarden.com/help/cli/) — 2026-09-05 確認
-4. [Bitwarden Help — Secrets Manager CLI](https://bitwarden.com/help/secrets-manager-cli/) — 2026-09-05 確認
-5. [Bitwarden Help — Secrets Manager Quick Start](https://bitwarden.com/help/secrets-manager-quick-start/) — 2026-09-05 確認
-6. [Bitwarden Help — About Organizations](https://bitwarden.com/help/about-organizations/) — 2026-09-05 確認
-7. [Bitwarden Help — Machine Accounts](https://bitwarden.com/help/machine-accounts/) — 2026-09-05 確認
-8. [Bitwarden Help — Access Tokens](https://bitwarden.com/help/access-tokens/) — 2026-09-05 確認
-9. [Infisical Pricing](https://infisical.com/pricing) — 2026-09-05 確認
-10. [Infisical Docs — CLI Overview](https://infisical.com/docs/cli/overview) — 2026-09-05 確認
-11. [Infisical Docs — CLI Usage](https://infisical.com/docs/cli/usage) — 2026-09-05 確認
-12. [Infisical Docs — Machine Identities](https://infisical.com/docs/documentation/platform/identities/machine-identities) — 2026-09-05 確認
-13. [Infisical Docs — Token Auth](https://infisical.com/docs/documentation/platform/identities/token-auth) — 2026-09-05 確認
-14. [Doppler Pricing](https://www.doppler.com/pricing) — 2026-09-05 確認
-15. [Doppler Docs — CLI](https://docs.doppler.com/docs/cli) — 2026-09-05 確認
-16. [Doppler Docs — Service Tokens](https://docs.doppler.com/docs/service-tokens) — 2026-09-05 確認
-17. [Doppler Docs — Service Accounts](https://docs.doppler.com/docs/service-accounts) — 2026-09-05 確認
-18. [1Password 個人向け料金プラン](https://1password.com/jp/pricing/personal) — 2026-09-05 確認
-19. [1Password Developer — CLI Get Started](https://www.1password.dev/cli/get-started/) — 2026-09-05 確認
-20. [1Password Developer — Service Accounts Get Started](https://www.1password.dev/service-accounts/get-started/) — 2026-09-05 確認
-21. [1Password Developer — Service Account Rate Limits](https://www.1password.dev/service-accounts/rate-limits/) — 2026-09-05 確認
-22. [HashiCorp Vault LICENSE（BUSL 1.1）](https://github.com/hashicorp/vault/blob/main/LICENSE) — 2026-09-05 確認
-23. [Vault Docs — Install](https://developer.hashicorp.com/vault/docs/install) — 2026-09-05 確認
-24. [Vault Docs — server command](https://developer.hashicorp.com/vault/docs/commands/server) — 2026-09-05 確認
-25. [Vault Docs — Agent process supervisor mode](https://developer.hashicorp.com/vault/docs/agent-and-proxy/agent/process-supervisor) — 2026-09-05 確認
-26. [HCP Docs — Billing](https://developer.hashicorp.com/hcp/docs/hcp/admin/billing) — 2026-09-05 確認
-27. [OpenBao](https://openbao.org/) — 2026-09-05 確認
-28. [OpenBao LICENSE（MPL 2.0）](https://github.com/openbao/openbao/blob/main/LICENSE) — 2026-09-05 確認
-29. [OpenBao Docs — server command](https://openbao.org/docs/commands/server/) — 2026-09-05 確認
+1. [Bitwarden Pricing](https://bitwarden.com/pricing/) — 2026-10-03 確認
+2. [Bitwarden Secrets Manager](https://bitwarden.com/products/secrets-manager/) — 2026-10-03 確認
+3. [Bitwarden Help — Password Manager CLI](https://bitwarden.com/help/cli/) — 2026-10-03 確認
+4. [Bitwarden Help — Secrets Manager CLI](https://bitwarden.com/help/secrets-manager-cli/) — 2026-10-03 確認
+5. [Bitwarden Help — Secrets Manager Quick Start](https://bitwarden.com/help/secrets-manager-quick-start/) — 2026-10-03 確認
+6. [Bitwarden Help — About Organizations](https://bitwarden.com/help/about-organizations/) — 2026-10-03 確認
+7. [Bitwarden Help — Machine Accounts](https://bitwarden.com/help/machine-accounts/) — 2026-10-03 確認
+8. [Bitwarden Help — Access Tokens](https://bitwarden.com/help/access-tokens/) — 2026-10-03 確認
+9. [Infisical Pricing](https://infisical.com/pricing) — 2026-10-03 確認
+10. [Infisical Docs — CLI Overview](https://infisical.com/docs/cli/overview) — 2026-10-03 確認
+11. [Infisical Docs — CLI Reference](https://infisical.com/docs/cli/reference) — 2026-10-03 確認
+12. [Infisical Docs — Machine Identities](https://infisical.com/docs/documentation/platform/identities/machine-identities) — 2026-10-03 確認
+13. [Infisical Docs — Token Auth](https://infisical.com/docs/documentation/platform/identities/token-auth) — 2026-10-03 確認
+14. [Doppler Pricing](https://www.doppler.com/pricing) — 2026-10-03 確認
+15. [Doppler Docs — CLI](https://docs.doppler.com/docs/cli) — 2026-10-03 確認
+16. [Doppler Docs — Service Tokens](https://docs.doppler.com/docs/service-tokens) — 2026-10-03 確認
+17. [Doppler Docs — Service Accounts](https://docs.doppler.com/docs/service-accounts) — 2026-10-03 確認
+18. [1Password 個人向け料金プラン](https://1password.com/jp/pricing/personal) — 2026-10-03 確認
+19. [1Password Developer — CLI Get Started](https://www.1password.dev/cli/get-started/) — 2026-10-03 確認
+20. [1Password Developer — Service Accounts Get Started](https://www.1password.dev/service-accounts/get-started/) — 2026-10-03 確認
+21. [1Password Developer — Service Account Rate Limits](https://www.1password.dev/service-accounts/rate-limits/) — 2026-10-03 確認
+22. [HashiCorp Vault LICENSE（BUSL 1.1）](https://github.com/hashicorp/vault/blob/main/LICENSE) — 2026-10-03 確認
+23. [Vault Docs — Install](https://developer.hashicorp.com/vault/docs/install) — 2026-10-03 確認
+24. [Vault Docs — server command](https://developer.hashicorp.com/vault/docs/commands/server) — 2026-10-03 確認
+25. [Vault Docs — Agent process supervisor mode](https://developer.hashicorp.com/vault/docs/agent-and-proxy/agent/process-supervisor) — 2026-10-03 確認
+26. [HCP Docs — Billing](https://developer.hashicorp.com/hcp/docs/hcp/admin/billing) — 2026-10-03 確認
+27. [OpenBao](https://openbao.org/) — 2026-10-03 確認
+28. [OpenBao LICENSE（MPL 2.0）](https://github.com/openbao/openbao/blob/main/LICENSE) — 2026-10-03 確認
+29. [OpenBao Docs — server command](https://openbao.org/docs/commands/server/) — 2026-10-03 確認

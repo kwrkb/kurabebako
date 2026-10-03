@@ -58,8 +58,8 @@
     <text x="580" y="306" font-weight="600">MailerLite</text>
     <text x="580" y="328" font-size="12">購読者 250・月 2,500 通。API 送信は有料プランから</text>
     <text x="580" y="436" font-weight="600">beehiiv</text>
-    <text x="580" y="458" font-size="12">Launch 2,500・通数無制限。キー発行に本人確認</text>
+    <text x="580" y="458" font-size="12">Free 2,500・通数無制限。キー発行に本人確認</text>
     <text x="380" y="551" font-weight="600">購読者数ではなく通数で数え、連絡先を多く持ち、送信前の承認待ちを受け入れられるなら Brevo</text>
-    <text x="380" y="571" font-size="12">日 300 通・連絡先 100,000 件。承認前は API に制限。トランザクション送信と同じアカウントで扱える</text>
+    <text x="380" y="571" font-size="12">日 300 通・連絡先 100,000 件。送信は承認後。トランザクション送信と同じアカウントで扱える</text>
   </g>
 </svg>
