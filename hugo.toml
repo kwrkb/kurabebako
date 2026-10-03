@@ -51,8 +51,10 @@ enableRobotsTXT = true
   ShowReadingTime = true
   ShowBreadCrumbs = true
   ShowToc = true
-  # 比較記事は節を行き来するので、目次は開いた状態で始める
-  TocOpen = true
+  # 目次は閉じた状態で始める。開いたままだと、各対象の見出しと「よくある質問」の質問文で
+  # PC の最初の画面がほぼ目次で埋まり、結論の早見表まで遠くなる（2026-10-03 の読者の指摘）。
+  # 節を行き来する読者は目次を開けばよい
+  TocOpen = false
   ShowCodeCopyButtons = true
 
   # トップの冒頭に「何を、どう比べるサイトか」を出す。
