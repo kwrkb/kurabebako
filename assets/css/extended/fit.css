@@ -19,32 +19,38 @@
   right: 0.9rem;
 }
 
-/* テーマは .post-content の dl に左の padding を付けるので、カードの中では外す */
+/* テーマは .post-content の dl を flex にし、dt を幅 25%・dd を幅 75% に固定している。
+   そのままだと 6.5rem のラベル列の中で dt が 25% に縮み、「向く条件」が 1 文字ずつ縦に並ぶ。
+   カードの中ではテーマの dl の指定を全部外し、行ごとの grid で並べる */
 .post-content .fit-list {
+  display: block;
   margin: 0;
   padding: 0;
 }
 
-.fit-row {
+.post-content .fit-row {
   display: grid;
   grid-template-columns: 6.5rem 1fr;
   gap: 0.5rem;
   align-items: start;
 }
 
-.fit-row + .fit-row {
+.post-content .fit-row + .fit-row {
   margin-top: 0.5rem;
 }
 
-.fit-row dt {
+.post-content .fit-row dt {
+  width: auto;
   padding-top: 0.15rem;
   color: var(--secondary);
   font-size: 0.85rem;
   font-weight: 600;
 }
 
-.fit-row dd {
+.post-content .fit-row dd {
+  width: auto;
   margin: 0;
+  padding-inline-start: 0;
 }
 
 /* 1 行目の本文が右上のバッジに重ならないよう、右に余白を取る */
@@ -54,7 +60,7 @@
 
 /* 狭い画面ではラベルと本文を縦に並べる（6.5rem のラベル列が本文を細くしすぎるため） */
 @media (max-width: 480px) {
-  .fit-row {
+  .post-content .fit-row {
     grid-template-columns: 1fr;
     gap: 0.1rem;
   }
