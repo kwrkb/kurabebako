@@ -32,6 +32,8 @@ tags = ['shared-hosting', 'xserver', 'lolipop', 'sakura-internet', 'conoha-wing'
 | AI にはファイルを上げてもらうだけでよく、時間課金で短期間だけ使いたい | ConoHa WING | 「料金」列（時間課金の通常料金）と「主な制約」列（公式のスキルは FTPS でのアップロードだけ） |
 | cPanel に慣れていて、お試しの代わりに返金保証で足りる | mixhost | 「無料枠」列（返金保証）と「料金」列（初回価格は更新時に上がる） |
 
+静的なファイルを無料で置くだけなら、海外のサービスを比べた[静的サイトの無料ホスティング 5 社比較](/posts/static-site-hosting-free-tier/)で足ります。
+
 {{< cta "xserver" >}}
 
 ## 比較表

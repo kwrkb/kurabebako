@@ -271,7 +271,7 @@ Vault 用に書いた CLI 手順と Agent の設定ファイルが、コマン�
 この記事の検証は、[国内 VPS の最小プラン比較](/posts/vps-japan-minimum-plan/)で Terraform に渡した認証情報と、
 [死活監視の無料枠比較](/posts/uptime-monitoring-free-tier/)で使った API キーを、1Password のサービスアカウントから `op run` で注入する運用の延長で行いました。
 AI に API キーを渡す場面がある記事では、この記事で比べた手段のどれかが前提になります。
-たとえば [メール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)では、Resend の API キーを `op run` で注入して送信ドメインの登録から削除まで動かしています。
+たとえば [トランザクションメール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)では、Resend の API キーを `op run` で注入して送信ドメインの登録から削除まで動かしています。
 [スクレイピング API 5 つの無料枠比較](/posts/scraping-api-free-tier/)でも、3 社の API キーを `op run` で注入して取得から上限の確認まで動かしています。
 [クラウドストレージ 6 つの無料プラン比較](/posts/cloud-storage-free-tier/)では、API キーではなくパスワードとアプリ専用パスワードを `op run` で注入して、WebDAV と REST API を動かしています。
 
