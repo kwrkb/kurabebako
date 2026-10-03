@@ -1,8 +1,8 @@
 +++
 title = 'メール配信システム 5 つの比較: 国内で無料と API から始められるのはどれか'
-date = '2026-10-03T10:19:11+09:00'
+date = '2026-10-03T15:11:00+09:00'
 lastmod = '2026-10-03'
-draft = true
+draft = false
 summary = 'Benchmark Email（日本語版）・ブラストメール・WiLL Mail・める配くん・配配メールを、月額の決まり方（登録アドレス数か配信通数か）、初期費用と最低利用期間、無料プランやトライアルの申込条件、API が使えるプランで比較。メール配信を無料で API から試せるのは Benchmark Email の無料プラン（コンタクト 500・月 2,500 通・カード不要）で、リストとコンタクトの作成から下書きの削除まで API だけで一巡した。ただし配信そのものは API キーでは行えず画面操作になり、フッターの名称と住所を設定しないと送れない。'
 categories = ['developer-tools']
 tags = ['bulk-email', 'benchmark-email', 'blastmail', 'will-mail', 'meruhaikun', 'haihaimail']
