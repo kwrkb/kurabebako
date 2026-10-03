@@ -1,0 +1,43 @@
+{{- /* 要点カード。各対象の詳細の冒頭に置き、「向く条件 / 向かない条件」と検証区分を一目で見せる。
+       他の比較サイトが各対象の頭に置く「向いている人」「良い点 / 気になる点」のカードに当たる要素を、
+       主観ではなく条件付きの結論で書くための型。
+       {{< fit run >}}
+       向く: 無料で、API からリストとコンタクトを作って試したい
+       向かない: 配信まで API で閉じたい（配信は画面操作）
+       {{< /fit >}}
+       第 1 引数は verified と同じ run / spec。行は「向く:」「向かない:」の 2 行だけ。
+       数字は書かない（数字は比較表と bars に任せる規約。ここは条件の文）。
+       前後を空行で区切る（続けて書くと段落にまとめられて HTML が入れ子になる） */ -}}
+{{- $kind := .Get 0 -}}
+{{- $labels := dict "run" "実行" "spec" "仕様" -}}
+{{- $label := index $labels $kind -}}
+{{- if not $label -}}
+  {{- errorf "fit: 第 1 引数は run か spec のみ（%q が渡された）: %s" $kind .Position -}}
+{{- end -}}
+{{- $fit := "" -}}
+{{- $unfit := "" -}}
+{{- range split (trim .Inner "\n ") "\n" -}}
+  {{- /* CRLF の記事では行末に \r が残るので先に落とす（bars / ranking と同じ扱い） */ -}}
+  {{- $line := trim . " \r" -}}
+  {{- if $line -}}
+    {{- if findRE `^向く[:：]\s*\S` $line -}}
+      {{- if $fit -}}{{- errorf "fit: 「向く:」の行が 2 つあります: %s" $.Position -}}{{- end -}}
+      {{- $fit = replaceRE `^向く[:：]\s*` "" $line -}}
+    {{- else if findRE `^向かない[:：]\s*\S` $line -}}
+      {{- if $unfit -}}{{- errorf "fit: 「向かない:」の行が 2 つあります: %s" $.Position -}}{{- end -}}
+      {{- $unfit = replaceRE `^向かない[:：]\s*` "" $line -}}
+    {{- else -}}
+      {{- errorf "fit の各行は「向く: 条件」「向かない: 条件」の形式で書いてください（%q）: %s" $line $.Position -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if or (not $fit) (not $unfit) -}}
+  {{- errorf "fit には「向く:」と「向かない:」の 2 行が要ります: %s" .Position -}}
+{{- end -}}
+<div class="fit">
+  <span class="verified verified-{{ $kind }} fit-badge">{{ $label }}</span>
+  <dl class="fit-list">
+    <div class="fit-row"><dt>向く条件</dt><dd>{{ $fit | markdownify }}</dd></div>
+    <div class="fit-row"><dt>向かない条件</dt><dd>{{ $unfit | markdownify }}</dd></div>
+  </dl>
+</div>

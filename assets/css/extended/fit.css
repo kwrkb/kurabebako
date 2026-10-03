@@ -1,0 +1,61 @@
+/* 要点カード（fit shortcode）。各対象の詳細の冒頭で「向く条件 / 向かない条件」と検証区分を一目で見せる。
+   他の比較サイトが各対象の頭に置く「向いている人」「良い点 / 気になる点」のカードに当たる。
+   枠は ranking-item（affiliate.css）と同じテーマ変数に揃え、左の縦線は h2 の区切り（accent.css）と同じ
+   アクセントカラーにする。固定色は使わない。JS なし */
+.fit {
+  position: relative;
+  margin: 1rem 0 1.25rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--entry);
+}
+
+/* 検証区分のバッジ（verified.css の見た目）を右上に置く */
+.fit-badge {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.9rem;
+}
+
+/* テーマは .post-content の dl に左の padding を付けるので、カードの中では外す */
+.post-content .fit-list {
+  margin: 0;
+  padding: 0;
+}
+
+.fit-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.fit-row + .fit-row {
+  margin-top: 0.5rem;
+}
+
+.fit-row dt {
+  padding-top: 0.15rem;
+  color: var(--secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.fit-row dd {
+  margin: 0;
+}
+
+/* 1 行目の本文が右上のバッジに重ならないよう、右に余白を取る */
+.fit-row:first-child dd {
+  padding-right: 3.5rem;
+}
+
+/* 狭い画面ではラベルと本文を縦に並べる（6.5rem のラベル列が本文を細くしすぎるため） */
+@media (max-width: 480px) {
+  .fit-row {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+}

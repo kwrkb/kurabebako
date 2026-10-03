@@ -45,6 +45,15 @@ const E_H2 = "H2 の構成が型と違います";
 const E_SEG = "「比較表」節を切り出せません";
 const E_VOICE = "体験や主観を示す表現があります";
 const E_YMYL = "扱わない領域（YMYL）の語があります";
+const E_FAQ_POS = "「## よくある質問」は「## 用途別の選び方」と「## 出典」の間にだけ置けます";
+const E_FAQ_Q = "「？」で終わる質問文にしてください";
+const E_FIT_KIND = "fit: 第 1 引数は run か spec のみ";
+const E_FIT_ROWS = "fit には「向く:」と「向かない:」の 2 行が要ります";
+
+// 任意の「よくある質問」節と要点カード（fit）。valid.md には入れず、ここで差し込む
+const FAQ = "## よくある質問\n\n### 無料で使えますか？\n\nサンプル A は無料です。\n\n";
+const fit = (kind, body) => `{{< fit ${kind} >}}\n${body}\n{{< /fit >}}\n\n`;
+const FIT_BODY = "向く: 試すだけの用途\n向かない: 上限を超える用途";
 
 // expect: null = ビルドが通る / 配列 = ビルドが止まり、どの文言もログに出る
 const cases = [
@@ -102,6 +111,18 @@ const cases = [
     make: (s) => swap(s, "## 比較表\n", "## 比較表　\n"),
     expect: [E_H2, E_SEG],
   },
+  // 任意の「よくある質問」節。用途別の選び方と出典の間にだけ置ける
+  { name: "よくある質問が用途別の選び方と出典の間", make: (s) => swap(s, "## 出典\n", FAQ + "## 出典\n"), expect: null },
+  { name: "よくある質問が比較表の前", make: (s) => swap(s, "## 比較表\n", FAQ + "## 比較表\n"), expect: [E_FAQ_POS] },
+  {
+    name: "よくある質問の見出しが？で終わらない",
+    make: (s) => swap(s, "## 出典\n", "## よくある質問\n\n### 無料で使えるか\n\nサンプル A は無料です。\n\n## 出典\n"),
+    expect: [E_FAQ_Q],
+  },
+  // 要点カード fit。引数は run / spec、行は「向く:」「向かない:」の 2 行
+  { name: "fit を正しく使う", make: (s) => swap(s, "- **料金体系**", fit("run", FIT_BODY) + "- **料金体系**"), expect: null },
+  { name: "fit の引数が run / spec 以外", make: (s) => swap(s, "- **料金体系**", fit("done", FIT_BODY) + "- **料金体系**"), expect: [E_FIT_KIND] },
+  { name: "fit に「向かない:」が無い", make: (s) => swap(s, "- **料金体系**", fit("spec", "向く: 試すだけの用途") + "- **料金体系**"), expect: [E_FIT_ROWS] },
 ];
 
 function build(dest) {
