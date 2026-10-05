@@ -40,14 +40,14 @@
   </g>
   <!-- 質問の文言 -->
   <g text-anchor="middle">
-    <text x="170" y="46">DNS・cron・DB・SSH 鍵まで、</text>
-    <text x="170" y="68">API や CLI から設定したい</text>
-    <text x="170" y="176">API はドメイン・SSL・WordPress・</text>
-    <text x="170" y="198">メールまでで足り、月額を抑えたい</text>
-    <text x="170" y="306">API は要らず、カード登録なしで</text>
-    <text x="170" y="328">2 週間試したい</text>
-    <text x="170" y="436">お試しは不要で、契約後 30 日以内の</text>
-    <text x="170" y="458">返金で足りる。cPanel に慣れている</text>
+    <text x="170" y="46">DNS・cron・DB・SSH 鍵の設定まで</text>
+    <text x="170" y="68">AI に任せたい（準備は API キー）</text>
+    <text x="170" y="176">ドメイン・SSL・WordPress・メール</text>
+    <text x="170" y="198">まで AI に任せ、月額を抑えたい</text>
+    <text x="170" y="306">AI にはファイル操作だけ頼み、</text>
+    <text x="170" y="328">カード登録なしで 2 週間試したい</text>
+    <text x="170" y="436">cPanel は自分で操作でき、お試しの</text>
+    <text x="170" y="458">代わりに 30 日以内の返金で足りる</text>
   </g>
   <!-- 答えの文言 -->
   <g text-anchor="middle">
