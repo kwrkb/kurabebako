@@ -238,6 +238,7 @@ WebDAV を新規ユーザーに止めており、無料プランで公式アプ�
 
 XServer ドライブと同じ XServer アカウントで申し込める共用サーバーは、[国内の共用レンタルサーバー比較](/posts/shared-hosting-japan/)で扱っています。
 パスワードをスクリプトに直接書かずに渡す手段は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で比べています。
+AI で生成した画像をどこで作るかは、[ComfyUI をローカルとクラウド 3 社で比較](/posts/comfyui-local-cloud/)で扱っています。
 
 ## よくある質問
 

@@ -1,8 +1,8 @@
 +++
 title = 'ComfyUI をローカルとクラウド 3 社で比較: AI に任せられた範囲と、自分でする準備'
-date = '2026-10-07T00:30:00+09:00'
+date = '2026-10-07T18:05:00+09:00'
 lastmod = '2026-10-07'
-draft = true
+draft = false
 summary = 'ComfyUI を動かす場所として、手元の PC に入れるローカル版と、ComfyUI を用意したクラウド 3 つ（国内の ConoHa AI Canvas、海外の ThinkDiffusion と RunDiffusion）を、最初に自分ですること、AI に任せられた範囲、起動中の課金と保存が消える条件、外部のツールから接続できるかで比較。ローカル版は GPU 付きの PC で、AI が環境の構築から生成・中断・停止までローカル API で一巡した。クラウド 3 つは公式ページの確認で、ConoHa AI Canvas は申込時に支払い情報が要り外部接続の手順が無く、ThinkDiffusion Hobby は月会費なしの時間課金で放置すると保存が消え、RunDiffusion の API Mode は有料の上位プランだけで稼働分の単価は非公開。'
 categories = ['ai-tools']
 tags = ['comfyui', 'image-generation', 'conoha', 'thinkdiffusion', 'rundiffusion']
@@ -13,6 +13,8 @@ tags = ['comfyui', 'image-generation', 'conoha', 'thinkdiffusion', 'rundiffusion
   hidden = true
   hiddenInList = true
 +++
+
+{{< pr >}}
 
 ## 結論
 
@@ -148,6 +150,8 @@ ComfyUI は、モデルと処理をノードでつないだ「ワークフロー
 - **検証した内容**: 料金・仕様・契約と WebUI 起動のガイド・契約と WebUI の FAQ を 2026-10-07 に確認しました。
   API や外部のツールからの接続に触れた記述は、ガイドと FAQ のどこにもありませんでした。「接続できない」と断定する根拠にもしていません。
   申込・課金・生成は行っていません
+
+{{< cta "conoha-ai-canvas" >}}
 
 ### ThinkDiffusion Hobby
 

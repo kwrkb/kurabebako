@@ -102,3 +102,14 @@ url = 'https://px.a8.net/svt/ejp?a8mat=4BCLVX+CAD4SI+CO4+1THW9E'
 pixel = 'https://www12.a8.net/0.gif?a8mat=4BCLVX+CAD4SI+CO4+1THW9E'
 text = 'XServerドライブ'
 program = 'A8.net s00000001642011（配られたテキスト素材の文言「XServerドライブ」で固定する。自由テキスト素材かは未確認）'
+
+# ---- A8.net（2026-10-07 提携。ComfyUI の実行環境比較の国内対象）----
+# a8mat の先頭（4BEAX0）は既存の 4BC9F6 / 4BCLVX のどちらとも違う。XServer ドライブと同じく、発行時の値をそのまま登録した。
+# 成果が kurabebako.com 側に付くかは初回の成果で確かめる（desk の affiliates/README.md）
+
+[conoha-ai-canvas]
+name = 'ConoHa AI Canvas'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BEAX0+EPAF42+50+7RTY1E'
+pixel = 'https://www17.a8.net/0.gif?a8mat=4BEAX0+EPAF42+50+7RTY1E'
+text = 'ブラウザだけでできる 本格的なAI画像生成 【ConoHa AI Canvas】'
+program = 'A8.net s00000000018047（テキスト素材。文言はそのまま使う。計測画像は www17。自由テキスト素材かは未確認）'
