@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 600" font-family="system-ui, -apple-system, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-size="14" fill="currentColor">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g stroke="currentColor" stroke-width="1.5" fill="none">
+    <rect x="20" y="20" width="300" height="64" rx="8"/>
+    <rect x="20" y="150" width="300" height="64" rx="8"/>
+    <rect x="20" y="280" width="300" height="64" rx="8"/>
+    <rect x="20" y="410" width="300" height="64" rx="8"/>
+    <rect x="420" y="20" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="150" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="280" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="410" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="20" y="530" width="720" height="50" rx="8" opacity="0.9"/>
+    <line x1="320" y1="52" x2="418" y2="52" marker-end="url(#arrow)"/>
+    <line x1="320" y1="182" x2="418" y2="182" marker-end="url(#arrow)"/>
+    <line x1="320" y1="312" x2="418" y2="312" marker-end="url(#arrow)"/>
+    <line x1="320" y1="442" x2="418" y2="442" marker-end="url(#arrow)"/>
+    <line x1="170" y1="84" x2="170" y2="148" marker-end="url(#arrow)"/>
+    <line x1="170" y1="214" x2="170" y2="278" marker-end="url(#arrow)"/>
+    <line x1="170" y1="344" x2="170" y2="408" marker-end="url(#arrow)"/>
+    <line x1="170" y1="474" x2="170" y2="528" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12" opacity="0.75">
+    <text x="360" y="46" text-anchor="middle">はい</text>
+    <text x="360" y="176" text-anchor="middle">はい</text>
+    <text x="360" y="306" text-anchor="middle">はい</text>
+    <text x="360" y="436" text-anchor="middle">はい</text>
+    <text x="182" y="120">いいえ</text>
+    <text x="182" y="250">いいえ</text>
+    <text x="182" y="380">いいえ</text>
+    <text x="182" y="506">いいえ</text>
+  </g>
+  <g text-anchor="middle">
+    <text x="170" y="46">画像はすでに自分の置き場所にあり、</text>
+    <text x="170" y="68">変換だけをかぶせたい</text>
+    <text x="170" y="176">画像を預けて配りたい。上限を超えたら</text>
+    <text x="170" y="198">課金より止まるほうがよい</text>
+    <text x="170" y="306">変換・保存・帯域を 1 つの枠にまとめ、</text>
+    <text x="170" y="328">機能の広さを取りたい</text>
+    <text x="170" y="436">無料枠にこだわらず、まず</text>
+    <text x="170" y="458">期間限定で試したい</text>
+  </g>
+  <g text-anchor="middle">
+    <text x="580" y="46" font-weight="600">Cloudflare Images（Free）</text>
+    <text x="580" y="68" font-size="12">変換だけで保存は無い。超えても課金されない</text>
+    <text x="580" y="176" font-weight="600">ImageKit（Free）</text>
+    <text x="580" y="198" font-size="12">帯域で数える。使い切ると配信が止まる</text>
+    <text x="580" y="306" font-weight="600">Cloudinary（Free）</text>
+    <text x="580" y="328" font-size="12">クレジットで合算。超えても課金されないが放置すると停止</text>
+    <text x="580" y="436" font-weight="600">bunny.net Optimizer / imgix</text>
+    <text x="580" y="458" font-size="12">恒常の無料枠は無く、14 日と 30 日のトライアル</text>
+    <text x="380" y="551" font-weight="600">元画像を預ける置き場所そのものが目的なら、画像 CDN ではなくクラウドストレージ</text>
+    <text x="380" y="571" font-size="12">個人向けクラウドストレージの無料枠比較が対象</text>
+  </g>
+</svg>
