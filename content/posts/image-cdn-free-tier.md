@@ -48,11 +48,10 @@ tags = ['image-cdn', 'cloudinary', 'imagekit', 'cloudflare', 'bunny-net', 'imgix
 | [bunny.net Optimizer](#bunnynet-optimizer) | USD 9.50/サイト/月の定額（変換は無制限） | 恒常の無料枠なし。**14 日トライアル** | 配信の帯域は含まれず、CDN の料金（USD 0.002/GB から）が別に要る | アカウント。トライアルはカード不要。20 サイト超は問い合わせ | {{< verified spec >}} | [10][12] |
 | [imgix](#imgix) | Starter USD 25/月（年払い 250）・100 クレジット。上位は USD 75/月から | 恒常の無料枠なし。**30 日・100 クレジットのトライアル** | Starter は保存 50 GB・配信 100 GB まで。超えたときの挙動は記載なし | アカウント。トライアルはカード不要。有料のカード要否は記載なし | {{< verified spec >}} | [11] |
 
-{{< bars unit="USD/月" caption="最小の有料プランの月額（月払い）。含まれる量と単位は各社で異なるので、同じ量の価格ではない。Cloudflare Images は最低料金のない従量のため載せていない" >}}
-ImageKit Lite: 9
-bunny.net Optimizer: 9.5
-imgix Starter: 25
-Cloudinary Plus: 99
+{{< bars unit="MB" caption="Free で 1 枚にアップロードできる画像の上限。Cloudflare Images は Free に保存が無いので、Images binding に渡せる入力の上限。bunny.net Optimizer と imgix は恒常の無料枠が無く、料金ページに上限の記載も無いため載せていない" >}}
+Cloudinary: 10
+Cloudflare Images（binding の入力）: 20
+ImageKit: 25
 {{< /bars >}}
 
 ## 比較の前提
@@ -62,7 +61,7 @@ Cloudinary Plus: 99
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
 - 料金表記の注意: 通貨は USD で、税の扱いは各社の料金ページの表示のままです。年払いのある対象は括弧で補いました。Cloudflare Images の変換は「元画像とパラメータの組」を暦月に 1 回だけ数える単位で、Cloudinary の「変換 1,000 回」とは数え方が違います [1][3][5]
 - 選び方の軸: 「無料枠」列は、数える単位で分かれます。
-  変換数、クレジット（変換・保存・帯域の合算）、帯域のどれを枠にするかで、1 つの棒グラフに並ばないため、棒グラフは最小の有料プランの月額だけを載せています。
+  変換数、クレジット（変換・保存・帯域の合算）、帯域のどれを枠にするかで、1 つの棒グラフに並ばないため、棒グラフには 3 社で単位が揃う Free の最大アップロードサイズを載せています。
   「主な制約」列は、枠を超えたときに止まるのか、課金されるのか、アカウントが止まるのかで分かれます。
   「前提条件」列は、画像を預けられるか（Cloudflare Images の Free は変換だけ）と、無料のまま API が使えるかで分かれます。
   Cloudflare Images は、サイトのドメインを Cloudflare に置く（ゾーン）か、Worker（Cloudflare 上で動かす小さなプログラム）を書くかのどちらかが前提です
