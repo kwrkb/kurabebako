@@ -1,8 +1,8 @@
 +++
 title = '画像配信 CDN の無料枠比較: 画像 CDN は何の単位で数え、超えたらどうなるか'
-date = '2026-10-10T14:40:00+09:00'
+date = '2026-10-10T15:10:00+09:00'
 lastmod = '2026-10-10'
-draft = true
+draft = false
 summary = '画像 CDN の無料枠を、Cloudflare Images・Cloudinary・ImageKit・bunny.net Optimizer・imgix で比較。Cloudinary の無料枠（月 25 クレジット）は変換・保存・帯域を合算し、ImageKit は帯域、Cloudflare Images は変換数で数える。超えたときも、止まる・課金なしで放置するとアカウント停止、と分かれる。3 社は API で一巡を実行して確認した。'
 categories = ['hosting']
 tags = ['image-cdn', 'cloudinary', 'imagekit', 'cloudflare', 'bunny-net', 'imgix']
