@@ -14,6 +14,8 @@ tags = ['uptime-monitoring', 'uptimerobot', 'better-stack', 'checkly', 'cronitor
   hiddenInList = true
 +++
 
+{{< pr >}}
+
 ## 結論
 
 死活監視サービス 4 つと OSS 1 つの無料枠を、「無料のまま、公式の手段で監視を作って消せるか」を軸に比べました。
@@ -109,6 +111,8 @@ Uptime Kuma（自前サーバー）: 1
   無料プランでは 5 分より短い間隔を API から指定しても拒否されます。**API ドキュメントの「minimum: 30」は有料プランの値**で、
   無料枠の下限は料金ページの 5 分が正です。作った監視は 1 件残し、このサイトの運用に使っています
 
+{{< cta id="uptimerobot" text="UptimeRobot の Free プランに登録する（カード登録なし）" >}}
+
 ### Better Stack（Uptime）
 
 無料枠の件数は中位で、間隔は Checkly に次いで短いです。API と Terraform provider は公式にありますが、
@@ -127,6 +131,8 @@ Uptime Kuma（自前サーバー）: 1
   公式の Terraform provider（`BetterStackHQ/better-uptime`）があります [10][11][12]
 - **検証した内容**: 仕様区分です。上記の公式ページ [7]〜[12] を 2026-09-03 に確認しました。
   カード要否が公式に明記されていないため、AI によるアカウント登録は行っていません
+
+{{< cta id="better-stack" text="Better Stack の Free プランに登録する" >}}
 
 ### Checkly
 
@@ -214,6 +220,13 @@ Uptime Kuma（自前サーバー）: 1
   公式の管理 API がないため、作成・削除を自動化する用途には向きません。手で登録して運用する前提なら最も自由度が高い選択です
 - 少数の監視で、通知はメールと Slack で足りる → Better Stack。決め手は「主な制約」列（無料枠の通知先）です。電話・SMS が要るなら有料プランになります
 - ごく少数で最小構成にしたい → Cronitor。決め手は「前提条件」列（公式 CLI と API、カード不要）です。Terraform の公式 provider はありません
+
+提携のある 2 つを、比較表の結果の順に並べます。Checkly・Cronitor・Uptime Kuma は提携が無いためここには載せていません。
+
+{{< ranking >}}
+uptimerobot: 無料枠の件数が最も多く、API v3 と公式の Terraform provider を無料のまま使えます。カード登録も要りません
+better-stack: 無料枠の最短間隔が UptimeRobot より短く、メールに加えて Slack に無料で通知でき、監視の地点を選べます。カード要否が公式に未記載な点は「前提条件」列です
+{{< /ranking >}}
 
 各サービスの API キーを CI や AI エージェントに渡す手段は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で、無料枠と機械向けトークンの作り方を実際に動かして比べています。
 監視の通知を自前の API からメールで送るなら、[トランザクションメール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)で無料枠と送信までのゲートを比べています。

@@ -113,3 +113,48 @@ url = 'https://px.a8.net/svt/ejp?a8mat=4BEAX0+EPAF42+50+7RTY1E'
 pixel = 'https://www17.a8.net/0.gif?a8mat=4BEAX0+EPAF42+50+7RTY1E'
 text = 'ブラウザだけでできる 本格的なAI画像生成 【ConoHa AI Canvas】'
 program = 'A8.net s00000000018047（テキスト素材。文言はそのまま使う。計測画像は www17。自由テキスト素材かは未確認）'
+
+# ---- UptimeRobot（2026-10-12 承認。Reditus 計測）----
+# ダッシュボードの Affiliate から Reditus（app.getreditus.com）の申請フォームに飛ばされ、承認後に ?red= 付きのトップ URL が配られた。
+# 配られたのはトップ 1 種のみ（signup 直リンクは無い）。文言は自由、pixel なし
+
+[uptimerobot]
+name = 'UptimeRobot'
+url = 'https://uptimerobot.com/?red=kurabe'
+program = 'UptimeRobot アフィリエイト（Reditus 計測。2026-10-12 承認）'
+
+# ---- Buttondown（2026-10-12 取得。自社の referral。審査なし）----
+# リンクは Buttondown のユーザー名で決まる（https://buttondown.com/refer/<username>）。ユーザー名を変えるとリンクが変わるので、
+# lab アカウントのユーザー名は変えない。名前がリンクに出ることはユーザーが 2026-10-12 に了承済み。文言は自由、pixel なし
+
+[buttondown]
+name = 'Buttondown'
+url = 'https://buttondown.com/refer/yugosasaki'
+program = 'Buttondown referral（自社。2026-10-12 取得）'
+
+# ---- Better Stack（2026-10-12 取得。自社プログラム。アカウント内で発行）----
+# 配られたのは ?ref= 付きのトップ 1 種。文言は自由、pixel なし。
+# 記事の Better Stack は仕様区分（カード要否が公式に未記載）なので、cta の文言に「カード登録なし」を入れない
+
+[better-stack]
+name = 'Better Stack'
+url = 'https://betterstack.com/?ref=b-jgtc'
+program = 'Better Stack アフィリエイト（自社。2026-10-12 取得）'
+
+# ---- pCloud（2026-10-12 登録。自社パートナープログラム partner.pcloud.com）----
+# リンクの飛び先は発行時に「pCloud home」を選んだ（無料登録の入口。Pricing は有料・買い切りへの誘導なので無料枠比較には合わない）。
+# 文言は自由、pixel なし
+
+[pcloud]
+name = 'pCloud'
+url = 'https://partner.pcloud.com/r/158047'
+program = 'pCloud パートナープログラム（自社。2026-10-12 登録）'
+
+# ---- beehiiv（2026-10-12 登録。Partner Program。Dub 計測）----
+# 既定の key はアカウント名から自動生成されたので、Partner Program の Links タブで key を kurabebako にしたリンクを作り直した。
+# 既定のリンク（?via=yugo-sasaki）は使わない。文言は自由、pixel なし
+
+[beehiiv]
+name = 'beehiiv'
+url = 'https://www.beehiiv.com/?via=kurabebako'
+program = 'beehiiv Partner Program（Dub 計測。2026-10-12 登録）'
