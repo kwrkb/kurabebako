@@ -1,8 +1,8 @@
 +++
 title = '短縮リンクサービスの無料枠比較: 無料枠は何の単位で数え、消したら戻るか'
-date = '2026-10-15T20:45:04+09:00'
+date = '2026-10-15T21:03:00+09:00'
 lastmod = '2026-10-15'
-draft = true
+draft = false
 summary = '短縮リンク（URL 短縮）サービスの無料枠を、Short.io・Dub・Bitly・Rebrandly で比較。無料枠の単位は、同時に持てる本数（Short.io）と月の新規作成数（ほか 3 社）で分かれ、消したリンクの枠が戻るのは Short.io だけ。独自ドメインは Bitly の無料プランに無く、Bitly の無料リンクは広告つきの中間ページを挟む。Short.io と Dub は API で作成から削除までを実行して確認した。'
 categories = ['developer-tools']
 tags = ['url-shortener', 'short-io', 'dub', 'bitly', 'rebrandly']
