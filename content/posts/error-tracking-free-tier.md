@@ -1,8 +1,8 @@
 +++
 title = 'エラー監視の無料枠 5 つを比較: 月の例外数・保持期間・Sentry SDK 互換で選ぶ'
-date = '2026-10-18T00:15:35+09:00'
+date = '2026-10-18T00:23:18+09:00'
 lastmod = '2026-10-18'
-draft = true
+draft = false
 summary = 'エラー監視（エラートラッキング）の無料枠を、Better Stack Errors・Rollbar・Sentry・Honeybadger・GlitchTip で比較。無料で受けられる例外の数は Better Stack が桁違いで、Rollbar・Sentry・Honeybadger が同じ量で並ぶ。無料で複数人が使えるのは Rollbar と GlitchTip のホスト版。Sentry SDK のまま送り先を替えられるのは Better Stack と GlitchTip。Better Stack と Rollbar は API で送信まで実行して確認した。'
 categories = ['monitoring']
 tags = ['error-tracking', 'better-stack', 'rollbar', 'sentry', 'honeybadger', 'glitchtip']

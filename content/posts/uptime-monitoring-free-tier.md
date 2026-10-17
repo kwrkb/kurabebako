@@ -68,7 +68,7 @@ Uptime Kuma（自前サーバー）: 1
   同じ用途で最も広く使われている OSS の Uptime Kuma です。SaaS はいずれも HTTP(S) の死活監視を無料枠に含みます
 - 除外したもの: Pingdom・Datadog Synthetics・New Relic Synthetics などの、無料枠がトライアルのみか、
   監視が上位製品の一機能になっているサービス。Grafana Cloud の Synthetic Monitoring は無料枠がありますが、
-  Prometheus 連携が前提で比較軸が変わるため別の記事で扱います
+  Prometheus 連携が前提で比較軸が変わるため別の記事で扱います。アプリの中で起きた例外を集めるエラー監視は、[エラー監視の無料枠比較](/posts/error-tracking-free-tier/)で比べています
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
 - 料金表記の注意: 料金は各社の表示通貨（USD）のままです。「最短間隔」は無料枠で設定できる最小値で、有料プランの値は「料金」列に書いています
 - 選び方の軸: 「無料枠」列は、登録できる件数と最短間隔で分かれます。件数は UptimeRobot が突出し、間隔は Checkly が最も短く、
