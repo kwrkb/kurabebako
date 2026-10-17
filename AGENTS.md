@@ -109,6 +109,12 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 - ビルド成功は出典の正しさ・実行証跡・結論の妥当性を保証しない。単位・期限・出典との対応は別に読む。
 - 終了前に `git diff --check`・`git diff`・`git status --short` で差分を確認する。
 
+### 1Password CLI のサービスアカウント
+
+- `$env:OP_SERVICE_ACCOUNT_TOKEN` が空なら、`$env:OP_SERVICE_ACCOUNT_TOKEN = [Environment]::GetEnvironmentVariable('OP_SERVICE_ACCOUNT_TOKEN', 'User')` で既存トークンを読み込む。読み込みと `op run` は同じツール呼び出し内で行う。
+- 値を表示・保存せず、永続設定は変更しない。対象の lab / metrics 手順にある `.env.tpl` を `op run` で使う。
+- 再ログイン・トークン再発行を依頼する前に、環境変数の継承と sandbox の通信拒否を確認する。`op whoami --format=json > $null` の終了コードで認証を確認する。
+
 ## desk・Git・公開の境界
 
 - サイト本体は public。調査素材・バックログ・ASP 条件や報酬・アクセス/収益の観測値は private の `../kurabebako-desk/` に置く。記事に必要なサービス仕様と実行結果は本文に記載できる。
