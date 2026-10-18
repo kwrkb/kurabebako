@@ -137,7 +137,7 @@ Mailgun: 100
 - **制約**: 承認の記述は料金ページの FAQ にあり、原文は「Once we approve your account for sending, you can start sending up to 300 emails per day.」です。
   「Sent with Brevo」のロゴは Free と Starter で付き、Standard 以上は除去が料金に込みです [11]
 - **前提条件**: カード不要の記述は、料金カードの「Free forever, no credit card needed」と、FAQ の「Do I have to enter my credit card details to sign up? / No.」です [11]
-- **検証した内容**: 公式の料金ページと FAQ を確認しました。承認の有無で API から送れるかが変わるため、実行区分にはアカウント作成と承認待ちが要ります
+- **検証した内容**: 公式の料金ページと FAQ を確認しました。承認の有無で API から送れるかが変わるため、実行区分に上げるには、アカウントの作成と承認待ちが要ります
 
 ### Mailgun
 

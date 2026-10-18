@@ -55,7 +55,7 @@ Hugo などで生成した静的サイトを無料で公開できる 5 サービ
 - 除外したもの: Firebase Hosting・Render・Surge など。初回は対象を 5 つに絞ったためで、
   次回以降の更新で追加します。VPS やレンタルサーバーは、無料枠での常時公開を前提にできず
   比較軸（無料枠・用途制限）が揃わないため対象外にしました。
-  サーバーごと借りる場合の国内 VPS の最小プランは、[別の記事](/posts/vps-japan-minimum-plan/)で比べています。
+  サーバーごと借りる場合の国内 VPS の最小プランは、[国内 VPS 5 社の最小プラン比較](/posts/vps-japan-minimum-plan/)で比べています。
   配信する画像を URL の指示で変換したい場合は、[画像配信 CDN の無料枠比較](/posts/image-cdn-free-tier/)が対象です。
   root 権限は要らないが WordPress やメールも使いたい場合は、[国内の共用レンタルサーバー比較](/posts/shared-hosting-japan/)が対象になります
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
@@ -114,7 +114,7 @@ Cloudflare 外の DNS で管理しているドメインも使える点が、Work
 - **制約**: ファイル数は有料プランで 100,000 です。カスタムドメインは 1 プロジェクト 100 個までです [6]
 - **前提条件**: Cloudflare が公開する Workers との機能比較表では、
   Pages が対応し Workers が非対応なのはこの「Cloudflare 外ゾーンの独自ドメイン」1 項目だけです（Custom Branch Aliases は Workers で「提供予定」の表示）。Early Hints・ブランチデプロイ制御・
-  ファイルベースルーティング・Pages Plugins は Workers では非対応だが回避策あり、Cron Triggers・Gradual Deployments・
+  ファイルベースルーティング・Pages Plugins は Workers では非対応で回避策あり、Cron Triggers・Gradual Deployments・
   Logpush などは Workers のみ対応と示されています [8]
 - **検証した内容**: 仕様区分です。上記の公式ページ [6][7][8] を 2026-10-03 に確認しました。
   このサイトでは Workers を採用しているため、Pages への実デプロイは行っていません

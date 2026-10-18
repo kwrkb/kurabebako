@@ -187,7 +187,7 @@ Uptime Kuma（自前サーバー）: 1
 向かない: 作成・削除を、公式に保証された API で自動化したい
 {{< /fit >}}
 
-- **料金体系**: サーバー代は別で、国内 VPS の最小プランの比較は [別の記事](/posts/vps-japan-minimum-plan/) にまとめています [22]
+- **料金体系**: サーバー代は別で、国内 VPS の最小プランは[国内 VPS 5 社の最小プラン比較](/posts/vps-japan-minimum-plan/)にまとめています [22]
 - **制約**: 公式の REST API はモニター管理向けにはなく、Socket.IO の内部 API は「予告なく破壊的変更あり」とも明記されています [24]。
   CLI は community 版のみで、モニターを管理する Terraform provider は公式の一覧にありません [27]。
   SQLite は POSIX のファイルロックが必須で、NFS 上には置けません [23]
