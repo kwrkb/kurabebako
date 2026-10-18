@@ -158,3 +158,13 @@ program = 'pCloud パートナープログラム（自社。2026-10-12 登録）
 name = 'beehiiv'
 url = 'https://www.beehiiv.com/?via=kurabebako'
 program = 'beehiiv Partner Program（Dub 計測。2026-10-12 登録）'
+
+# ---- Icedrive（2026-10-19 承認。自社パートナープログラム）----
+# 配られたのはトラッキングコード pt= 1 種（トップ URL に付ける。フロントのページでしか効かず、ファイル共有の URL には付けられない）。
+# pts= は Sub ID で、同じコードを別サイトで使っても区別できるようにサイト名を入れた。
+# 先方の案内は短縮 URL で隠す運用だが、静的配信で JS もリダイレクトも持たない方針なので生の URL のまま出す。文言は自由、pixel なし
+
+[icedrive]
+name = 'Icedrive'
+url = 'https://icedrive.net/?pt=kie6lsz8m7&pts=kurabebako'
+program = 'Icedrive パートナープログラム（自社。2026-10-19 承認）'

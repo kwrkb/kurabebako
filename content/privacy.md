@@ -14,6 +14,8 @@ ShowBreadCrumbs = false
 
 変更日: 2026-10-15（「アフィリエイトプログラム」の項に、参加しているプログラムの名前を列挙しました。A8.net のほかに、各サービスが自社または計測基盤を通じて提供するプログラムに参加しているためです）
 
+変更日: 2026-10-19（「アフィリエイトプログラム」の一覧に Icedrive を追加しました）
+
 ## 運営者
 
 kwrkb（[kwrkb.com](https://kwrkb.com/)）。連絡先は [お問い合わせ](/contact/) に記載しています。
@@ -54,10 +56,10 @@ Cookie はブラウザの設定で無効にできますが、その場合も当�
 
 ## アフィリエイトプログラム
 
-当サイトは、次のアフィリエイトプログラムに参加しています（2026-10-15 時点）。
+当サイトは、次のアフィリエイトプログラムに参加しています（2026-10-19 時点）。
 
 - アフィリエイト・サービス・プロバイダ（ASP）が提供するプログラム: A8.net
-- 各サービスが自社で、または計測基盤（FirstPromoter・Dub Partners・Reditus）を通じて提供するプログラム: ScraperAPI、Firecrawl、UptimeRobot、Buttondown、Better Stack、pCloud、beehiiv
+- 各サービスが自社で、または計測基盤（FirstPromoter・Dub Partners・Reditus）を通じて提供するプログラム: ScraperAPI、Firecrawl、UptimeRobot、Buttondown、Better Stack、pCloud、beehiiv、Icedrive
 
 参加するプログラムを追加・終了したときは、この一覧を更新します。
 アフィリエイトリンクを含む記事には本文の先頭に **PR** と表示し、リンクには `rel="sponsored"` を付けています。
