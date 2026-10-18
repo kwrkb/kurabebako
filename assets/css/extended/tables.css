@@ -108,3 +108,82 @@
 .post-content li {
   margin-top: 0.35rem;
 }
+
+/* スマホ幅（600px 以下）では比較表を「対象ごとのカード」に組み替える。
+   横スクロールと先頭列の固定（上の 1139px 以下の指定）でも、375px では固定列が画面の 4 割を取り、
+   右に見えるのは 1 列だけで、100 字を超えるセルは 1 行 10 字ほどで縦に 10 行以上に伸びていた
+   （2026-10-18 のレビューで 4 組とも最優先に挙げた）。
+   各行を 1 枚のカードにし、ヘッダー行は隠して、列名は render-table.html が td に付けた data-label を
+   ::before で出す。JS なし。型の検査は .RawContent を読むので、この見た目の影響を受けない。
+   上の sticky・幅の固定・nowrap はここで全部外す（指定の順で後に書いたこちらが勝つ） */
+@media (max-width: 600px) {
+  .post-content > table:has(> thead > tr > th:nth-child(7)),
+  .post-content > table:has(> thead > tr > th:nth-child(7)) tbody,
+  .post-content > table:has(> thead > tr > th:nth-child(7)) tr {
+    display: block;
+    width: auto;
+    overflow: visible;
+  }
+
+  /* ヘッダー行は見た目だけ隠す（読み上げには残す） */
+  .post-content > table:has(> thead > tr > th:nth-child(7)) thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .post-content > table:has(> thead > tr > th:nth-child(7)) tbody > tr {
+    margin-bottom: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  /* td:nth-child(n) は全セルに当たる。素の td だと、テーマの
+     .md-content table:not(.highlighttable, .highlight table, .gist .highlight) td（:not の中の 2 クラスで詳細度が高い）の
+     padding に負け、列名と本文が重なった */
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td:nth-child(n),
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td:first-child,
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td:nth-child(2),
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td:nth-last-child(-n + 2),
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td:last-child {
+    /* grid にすると、セルの中の文字・リンク・code・バッジがそれぞれ別の格子に分かれて並ぶので、
+       セルは block のまま左に列名の幅を空け、列名（::before）を絶対配置で置く */
+    display: block;
+    position: relative;
+    width: auto;
+    min-width: 0;
+    padding: 0.45rem 0.8rem 0.45rem 6.9rem;
+    border: 0;
+    border-top: 1px solid var(--border);
+    box-shadow: none;
+    white-space: normal;
+  }
+
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 0.5rem;
+    left: 0.8rem;
+    width: 5.5rem;
+    color: var(--secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* 先頭のセル（対象名）はカードの見出しにする。列名の「対象」は出さない */
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td:first-child {
+    padding-left: 0.8rem;
+    border-top: 0;
+    font-size: 1rem;
+    --cell-bg: color-mix(in srgb, var(--accent) 10%, var(--theme));
+    background: var(--cell-bg);
+  }
+
+  .post-content > table:has(> thead > tr > th:nth-child(7)) td:first-child::before {
+    content: none;
+  }
+}

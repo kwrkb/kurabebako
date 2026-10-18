@@ -24,12 +24,19 @@
       </tr>
     {{- end }}
   </thead>
+  {{- /* 各セルに列名を data-label で持たせる。狭い画面で比較表を「対象ごとのカード」に組み替えたとき、
+         ヘッダー行を隠して CSS の attr() で列名を出すため（assets/css/extended/tables.css の末尾） */ -}}
+  {{- $head := slice -}}
+  {{- with .THead }}{{ range index . 0 }}{{ $head = $head | append (.Text | plainify) }}{{ end }}{{ end }}
   <tbody>
     {{- range .TBody }}
       <tr>
-        {{- range . }}
+        {{- range $i, $c := . }}
           <td
-            {{- with .Alignment }}
+            {{- with index $head $i }}
+              {{- printf " data-label=\"%s\"" (htmlEscape .) | safeHTMLAttr }}
+            {{- end }}
+            {{- with $c.Alignment }}
               {{- printf " style=%q" (printf "text-align: %s" .) | safeHTMLAttr }}
             {{- end -}}
           >
