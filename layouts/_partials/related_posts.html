@@ -1,0 +1,52 @@
+{{- /* 記事末尾の「関連する比較記事」のカード（最大 3 枚）。
+       本文中の内部リンクは読者がその場で必要になる位置に置く規約で、読み終えた読者や
+       結論だけ読んで下へ飛ばした読者には次の記事が見えなかった（2026-09-08 のユーザー所感）。
+       front matter に related を足すと記事ごとの手入れが要り、書き忘れても気づけないので、
+       すでに書いてある値から機械的に選ぶ:
+         - 本文から相手へのリンク 1 本ごとに +1、相手の本文からこの記事へのリンク 1 本ごとに +1
+           （兄弟記事どうしは互いに何度も案内しているので、ここが一番強く効く）
+         - 共通のタグ 1 つごとに +2（better-stack・cloudflare など、同じ事業者を扱う記事）
+         - 同じカテゴリなら +1
+       点が 0 の記事は出さない。同点は新しい記事を先にする。
+       Hugo 組み込みの .Related は既定で新しい記事を外し（includeNewer = false）、設定は hugo.toml に
+       書くことになるので使わない。JS なし。見た目は assets/css/extended/related.css */ -}}
+{{- $cur := . -}}
+{{- $curTags := .Params.tags | default slice -}}
+{{- $curCats := .Params.categories | default slice -}}
+{{- $raw := .RawContent -}}
+{{- $scored := slice -}}
+{{- range where site.RegularPages "Type" "posts" -}}
+  {{- if ne .RelPermalink $cur.RelPermalink -}}
+    {{- $score := 0 -}}
+    {{- $score = add $score (strings.Count (printf "](%s" .RelPermalink) $raw) -}}
+    {{- $score = add $score (strings.Count (printf "](%s" $cur.RelPermalink) .RawContent) -}}
+    {{- $score = add $score (mul 2 (len (intersect $curTags (.Params.tags | default slice)))) -}}
+    {{- $score = add $score (len (intersect $curCats (.Params.categories | default slice))) -}}
+    {{- if gt $score 0 -}}
+      {{- /* sort は 1 つのキーでしか並べられないので、点と日付を 1 本の文字列にして降順に並べる */ -}}
+      {{- $scored = $scored | append (dict "key" (printf "%04d-%012d" $score .Date.Unix) "page" .) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- with first 3 (sort $scored "key" "desc") }}
+<nav class="related-posts" aria-labelledby="related-posts-title">
+  <h2 id="related-posts-title" class="related-posts-title">関連する比較記事</h2>
+  <ul class="related-posts-list">
+    {{- range . }}
+    {{- with .page }}
+    <li class="related-card">
+      <a class="related-card-link" href="{{ .RelPermalink }}">
+        <span class="related-card-title">{{ .Title }}</span>
+        {{- with .Summary }}
+        <span class="related-card-summary">{{ . | plainify }}</span>
+        {{- end }}
+        {{- if not .Lastmod.IsZero }}
+        <span class="related-card-meta">最終確認 {{ .Lastmod | time.Format (default ":date_long" site.Params.DateFormat) }}</span>
+        {{- end }}
+      </a>
+    </li>
+    {{- end }}
+    {{- end }}
+  </ul>
+</nav>
+{{- end }}

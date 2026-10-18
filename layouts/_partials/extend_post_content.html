@@ -160,3 +160,8 @@
     {{- errorf "扱わない領域（YMYL）の語があります（%s）。VISION.md の「やらないこと」に当たらないか確認し、当たらないなら言い換えてください: %s" (delimit . " / ") $path -}}
   {{- end -}}
 {{- end -}}
+
+{{- /* 型の検査を通った比較記事だけ、本文の下に関連記事のカードを出す（related_posts.html） */ -}}
+{{- if and (eq .Kind "page") (eq .Type "posts") -}}
+  {{- partial "related_posts.html" . -}}
+{{- end -}}

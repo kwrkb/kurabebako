@@ -1,0 +1,69 @@
+/* 記事末尾の「関連する比較記事」のカード（layouts/_partials/related_posts.html）。
+   枠と背景は要点カード（fit.css）・ランキング（affiliate.css）と同じテーマ変数に揃え、固定色は使わない。
+   カード全体を 1 つのリンクにして、狭い画面でも押せる面を広く取る。
+   summary は記事によって 120〜380 字あり、そのままだとカードの高さが揃わないので 3 行で切る
+   （全文は記事を開けば読める。切るのは見た目だけで、HTML には全文が残る） */
+.related-posts {
+  margin-top: 56px;
+}
+
+.related-posts-title {
+  margin-bottom: 1rem;
+  padding-left: 12px;
+  border-left: 4px solid var(--accent);
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.related-posts-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.related-card-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  height: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--entry);
+  color: var(--content);
+  text-decoration: none;
+  box-shadow: none;
+}
+
+.related-card-link:hover,
+.related-card-link:focus-visible {
+  border-color: var(--accent);
+}
+
+/* 記事のタイトルは 40〜50 字あり、本文と同じ大きさだと 3 列のカードで 5 行になる */
+.related-card-title {
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.related-card-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  color: var(--secondary);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.related-card-meta {
+  margin-top: auto;
+  color: var(--secondary);
+  font-size: 0.8rem;
+}
