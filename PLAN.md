@@ -73,6 +73,9 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
   - 2026-09 集計（desk の `metrics/2026-09-summary.md`。Search Console は 09-29 までの暫定で、11 月の回で確定値に置き換える）。表示された記事 10 本（09-30 公開の `cloud-storage-free-tier` 以外の全記事）とタグページ 19 個。GA4 は 09-19 以降のデータあり。Bing とインデックス登録の断面は今回が初回。前月比は desk 参照
   - 2026-10 以降の月次の集計は desk の `metrics/YYYY-MM-summary.md`（毎月 2 日の routine `kurabebako-metrics-monthly` が書く。2026-10-18 からクラウドで走り、サイト側には触れない）。
     ここには月ごとの行を足さず、判断ポイントに関わる変化があったときだけ書く（2026-10-18 に決めた）
+- 2026-10-18 に、比較記事とは別の型「作例」（既存記事の部品を組み合わせて作った成果物の解説。`/examples/`、月 1 本まで、1 本目は 11 月）を足すことを決めた。
+  16 本が API 公開の無料枠サービスに寄っていたため（候補の採点が「AI が実行できるか」で決まる）。
+  比較記事の型と Phase の判断ポイントは変えない。決定事項・運用・書き方の調査は desk の `reviews/2026-10-18-combination-articles.md` と `reviews/2026-10-18-examples-style.md`
 
 **判断ポイント**: インデックスされないなら技術面（構成・内部リンク・品質シグナル）を疑う。
 収益経路（ASP 承認と案件台帳）が無いまま Phase 3 に入らない
