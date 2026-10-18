@@ -112,6 +112,7 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 ### 1Password CLI のサービスアカウント
 
 - `$env:OP_SERVICE_ACCOUNT_TOKEN` が空なら、`$env:OP_SERVICE_ACCOUNT_TOKEN = [Environment]::GetEnvironmentVariable('OP_SERVICE_ACCOUNT_TOKEN', 'User')` で既存トークンを読み込む。読み込みと `op run` は同じツール呼び出し内で行う。
+- OS の環境変数のトークンは旧 `Dev` 用のサービスアカウントで、kurabebako の item（`kurabebako` / `kurabebako-cloud` vault。2026-10-18 に `Dev` から分離）は読めない。続けて `$env:OP_SERVICE_ACCOUNT_TOKEN = op read "op://Dev/2f3ckgx4ok2sq2447yaanhdp7i/credential"` で `kurabebako` 用サービスアカウントのトークンに入れ替えてから `op run` する（Bash なら `export OP_SERVICE_ACCOUNT_TOKEN=$(op read "op://Dev/2f3ckgx4ok2sq2447yaanhdp7i/credential")`）。vault と item の対応は desk の `accounts.md`。
 - 値を表示・保存せず、永続設定は変更しない。対象の lab / metrics 手順にある `.env.tpl` を `op run` で使う。
 - 再ログイン・トークン再発行を依頼する前に、環境変数の継承と sandbox の通信拒否を確認する。`op whoami --format=json > $null` の終了コードで認証を確認する。
 
