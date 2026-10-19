@@ -36,8 +36,8 @@
   <g text-anchor="middle">
     <text x="170" y="46">作って消すを繰り返す。</text>
     <text x="170" y="68">API で作成から削除までを自動化したい</text>
-    <text x="170" y="176">独自ドメインを無料で複数載せたい。</text>
-    <text x="170" y="198">月に作る本数は少なくてよい</text>
+    <text x="170" y="176">読み取り専用など操作の種類で</text>
+    <text x="170" y="198">絞った鍵を渡したい。月に作る本数は少ない</text>
     <text x="170" y="306">独自ドメインを 1 つだけ無料で載せ、</text>
     <text x="170" y="328">月に数本で足りる</text>
     <text x="170" y="436">アカウントだけで月に数本。</text>
@@ -47,7 +47,7 @@
     <text x="580" y="46" font-weight="600">Short.io（Free）</text>
     <text x="580" y="68" font-size="12">同時に持てる本数で数え、消せば枠が戻る</text>
     <text x="580" y="176" font-weight="600">Dub（Free）</text>
-    <text x="580" y="198" font-size="12">独自ドメインが最も多い。消しても枠は戻らない</text>
+    <text x="580" y="198" font-size="12">鍵を操作の種類で絞れる。消しても枠は戻らない</text>
     <text x="580" y="306" font-weight="600">Rebrandly（Free）</text>
     <text x="580" y="328" font-size="12">独自ドメイン 1 つ。消しても枠は戻らない</text>
     <text x="580" y="436" font-weight="600">Bitly（Free）</text>
