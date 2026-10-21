@@ -61,7 +61,8 @@ OpenBao（agent exec）: 2152
   AI が非対話で読み書きできた 6 つです。Bitwarden は Password Manager ではなく Secrets Manager（`bws`）を対象にしました。
   同じ Free アカウントで使えますが別製品で、この記事では Secrets Manager だけを動かしています
 - 除外したもの: AWS Secrets Manager や Google Cloud Secret Manager などクラウドの従量課金サービス。無料枠はあってもアカウント作成にカード登録が要り、
-  料金の単位（secret 数 × 月、API 呼び出し数）が他と揃いません。HashiCorp のマネージド版 HCP Vault Dedicated は、時間単価が公式の料金ページで取得できなかったため、
+  料金の単位（secret 数 × 月、API 呼び出し数）が他と揃いません。人が使う個人の保管庫（Bitwarden の Password Manager や 1Password の個人向けプラン）とその CLI は、[パスワードマネージャー 4 つの比較](/posts/password-manager-free-tier/)で別に比べています。
+  HashiCorp のマネージド版 HCP Vault Dedicated は、時間単価が公式の料金ページで取得できなかったため、
   trial credit の記載だけを Vault の行に添えています
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
 - 料金表記の注意: 1Password の月額は初年度の価格で、2 年目からは上がります [18]。Doppler の Developer は無料ですが、ユーザーが一定の人数を超えると、超えた人数ぶんの月額がかかります [14]
@@ -274,6 +275,7 @@ AI に API キーを渡す場面がある記事では、この記事で比べた
 たとえば [トランザクションメール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)では、Resend の API キーを `op run` で注入して送信ドメインの登録から削除まで動かしています。
 [スクレイピング API 5 つの無料枠比較](/posts/scraping-api-free-tier/)でも、3 社の API キーを `op run` で注入して取得から上限の確認まで動かしています。
 [クラウドストレージ 6 つの無料プラン比較](/posts/cloud-storage-free-tier/)では、API キーではなくパスワードとアプリ専用パスワードを `op run` で注入して、WebDAV と REST API を動かしています。
+[パスワードマネージャー 4 つの比較](/posts/password-manager-free-tier/)では、Bitwarden の個人 API キーとマスターパスワードを `op run` で注入して、保管庫の項目の作成から完全削除まで動かしています。
 
 ## よくある質問
 

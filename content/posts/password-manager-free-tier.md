@@ -1,8 +1,8 @@
 +++
 title = 'パスワードマネージャー 4 つを比較: 無料枠・CLI が使えるプラン・同期の持ち方で選ぶ'
-date = '2026-10-21T20:09:26+09:00'
+date = '2026-10-21T20:37:37+09:00'
 lastmod = '2026-10-21'
-draft = true
+draft = false
 summary = '個人向けのパスワードマネージャーを、Bitwarden・KeePassXC・Proton Pass・1Password の 4 つで比較。恒常の無料枠があるか、CLI がどのプランから使えるか、同期をクラウドに任せるか自分で持つかで分けました。無料のまま CLI で登録・書き換え・削除まで AI に任せられるのは Bitwarden と KeePassXC で、どちらも実際に動かして確認しています。Proton Pass の CLI は有料プランから、1Password は恒常の無料プランがありません。'
 categories = ['developer-tools']
 tags = ['password-manager', 'bitwarden', 'keepassxc', 'proton-pass', '1password']
