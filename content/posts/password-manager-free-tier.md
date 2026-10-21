@@ -3,7 +3,7 @@ title = 'パスワードマネージャー 4 つを比較: 無料枠・CLI が�
 date = '2026-10-21T20:37:37+09:00'
 lastmod = '2026-10-21'
 draft = false
-summary = '個人向けのパスワードマネージャーを、Bitwarden・KeePassXC・Proton Pass・1Password の 4 つで比較。恒常の無料枠があるか、CLI がどのプランから使えるか、同期をクラウドに任せるか自分で持つかで分けました。無料のまま CLI で登録・書き換え・削除まで AI に任せられるのは Bitwarden と KeePassXC で、どちらも実際に動かして確認しています。Proton Pass の CLI は有料プランから、1Password は恒常の無料プランがありません。'
+summary = '個人向けのパスワードマネージャーを、Bitwarden・KeePassXC・Proton Pass・1Password の 4 つで比較。恒常の無料枠があるか、CLI がどのプランから使えるか、同期をクラウドに任せるか自分で持つかで分けました。無料のまま CLI で登録・書き換え・削除まで AI に任せられるのは Bitwarden と KeePassXC です。1Password は有料プランのサービスアカウントで同じ操作が通り、3 つとも実際に動かして確認しています。Proton Pass の CLI は有料プランからで、1Password には恒常の無料プランがありません。'
 categories = ['developer-tools']
 tags = ['password-manager', 'bitwarden', 'keepassxc', 'proton-pass', '1password']
 # OGP 用の画像。本文と一覧には出さない（hidden）。生成は desk の images/
@@ -29,7 +29,7 @@ CLI が無料プランから使えるかどうかが、保管庫への登録や�
 | 無料のまま、登録・書き換え・削除を CLI で AI に任せたい | Bitwarden | 「無料枠」列（CLI を含む）と「検証区分」列（作成から完全削除まで一巡） |
 | 保管庫のファイルを自分で持ち、アカウントを作りたくない | KeePassXC | 「前提条件」列（アカウント不要・鍵ファイルだけで開く）と「主な制約」列（同期は自分で持つ） |
 | 無料でメールのエイリアスも使い、CLI は要らない | Proton Pass | 「無料枠」列（エイリアス）と「主な制約」列（CLI は有料） |
-| 有料でよく、家族と共有し、開発者向けの CLI と SDK まで使いたい | 1Password | 「料金」列（無料プランなし）と「前提条件」列（CLI はサブスクリプション前提） |
+| 有料でよく、家族と共有し、開発者向けの CLI と SDK まで使いたい | 1Password | 「料金」列（無料プランなし）と「主な制約」列（サービスアカウントが扱える保管庫） |
 
 CI や AI エージェントに機械用のトークンで secret を渡す仕組みを探しているなら、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)が対象です。
 
@@ -44,7 +44,7 @@ CI や AI エージェントに機械用のトークンで secret を渡す仕�
 | [Bitwarden](#bitwarden) | Free は USD 0。Premium は年払いのみで月 1.65（年 USD 19.80）、Families 月 3.99（年 USD 47.88、6 人） | **端末・項目とも無制限**、他 1 人と共有、テキストの Send、パスキー、暗号化エクスポート、**CLI** | TOTP の生成・ファイル添付・ファイルの Send は Premium。CLI でも同じ境界で止まる | アカウントのみ（登録時にカード不要）。CLI は個人 API キーでログインし、unlock にマスターパスワード本体が要る | {{< verified run >}} | [1][2][3][4] |
 | [KeePassXC](#keepassxc) | 無料（GPL-2.0 または GPL-3.0 のオープンソース）。有料プランなし | 上限なし（保管庫は手元の 1 ファイル）。**CLI `keepassxc-cli` 同梱**、鍵ファイルだけで非対話に開ける | クラウド同期の機能は無く、ファイルの置き場と同期は自分で持つ。`export` は平文の XML / CSV | **アカウント不要**。Windows / macOS / Linux。CLI の文言とごみ箱の名前は OS のロケールで決まる | {{< verified run >}} | [10][11][12][13] |
 | [Proton Pass](#proton-pass) | Free は USD 0。Pass Plus 月 4.99（年払いは月 2.99、年 USD 35.88）、Pass Family 月 6.99（年払いは月 4.99、6 人） | ログイン・端末とも無制限、vault 2、共有 2 人、**hide-my-email エイリアス 10**、1 GB、パスキー | **CLI・2FA 認証器・項目単位の共有・ファイル添付は Pass Plus 以上** | Proton アカウントのみ（カード不要）。CLI を使うなら有料プラン | {{< verified spec >}} | [7] |
-| [1Password](#1password) | **恒常の無料プランなし**。Individual 月 4.99（年払いは月 3.99）、Families 月 7.99（年払いは月 5.99、5 人） | 14 日のトライアルのみ（カード不要） | トライアル後は有料。CLI（`op`）はサブスクリプションが前提で、デスクトップアプリ連携かサービスアカウントで認証 | 1Password アカウント。1 ユーザー 1 GB | {{< verified spec >}} | [8][9] |
+| [1Password](#1password) | **恒常の無料プランなし**。Individual 月 4.99（年払いは月 3.99）、Families 月 7.99（年払いは月 5.99、5 人） | 14 日のトライアルのみ（カード不要） | トライアル後は有料。CLI（`op`）はサブスクリプションが前提。サービスアカウントは個人の既定の保管庫（Private）を扱えず、共有用の vault だけ | 1Password アカウント。CLI はデスクトップアプリ連携か、vault 単位で権限を絞ったサービスアカウントのトークンで認証。1 ユーザー 1 GB | {{< verified run >}} | [8][9] |
 
 {{< bars unit="USD/月" caption="最小の有料プランの月額（年払い換算。1Password は通常価格で、新規の初年度の割引は詳細に。KeePassXC は有料プランが無く 0。出典は比較表と同じ）" >}}
 Bitwarden Premium: 1.65
@@ -53,15 +53,16 @@ Proton Pass Plus: 2.99
 KeePassXC: 0
 {{< /bars >}}
 
-{{< bars unit="ms" caption="CLI でログイン項目を 1 件登録するのにかかった時間（2026-10-20 の実行。Bitwarden は bw create item、KeePassXC は keepassxc-cli add。出典は各対象の「検証した内容」）" >}}
+{{< bars unit="ms" caption="CLI でログイン項目を 1 件登録するのにかかった時間（Bitwarden と KeePassXC は 2026-10-20、1Password は 10-21 の実行。bw create item / keepassxc-cli add / op item create。出典は各対象の「検証した内容」）" >}}
 Bitwarden（bw）: 7431
+1Password（op）: 3379
 KeePassXC（keepassxc-cli）: 226
 {{< /bars >}}
 
 ## 比較の前提
 
 - 対象に含めたもの: 個人が使う保管庫のうち、恒常の無料プランかオープンソースの無償版を持ち、料金と CLI の有無を公式ページで裏取りできる 4 つです。
-  Bitwarden と KeePassXC は CLI で登録から削除までを実行し、Proton Pass と 1Password は公式ページの確認にとどめています
+  Bitwarden・KeePassXC・1Password は CLI で登録から削除までを実行し、Proton Pass は公式ページの確認にとどめています
 - 除外したもの: CI や AI エージェント向けに機械用のトークンで secret を注入するサービス（Bitwarden Secrets Manager・1Password のサービスアカウント・Infisical・Doppler など）は、
   [シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で比べています。ブラウザや OS に内蔵の保管機能は、単体の料金ページと CLI が無いため対象外にしました
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
@@ -69,11 +70,12 @@ KeePassXC（keepassxc-cli）: 226
   Proton Pass と 1Password は月払いと年払いの両方があり、表には月払いを載せています。1Password の年払いには新規の初年度だけの割引があり、表は通常価格です
 - 選び方の軸: 「料金」列は、恒常の無料プランがあるかで分かれます。Bitwarden と Proton Pass は無料のまま使い続けられ、KeePassXC は料金そのものが無く、1Password はトライアルの後に有料になります。
   「無料枠」列と「主な制約」列は、CLI が無料プランに含まれるかで分かれます。Bitwarden と KeePassXC は含まれ、Proton Pass は有料プランから、1Password はサブスクリプションが前提です。
-  「前提条件」列は、CLI に何を渡して開くかで分かれます。Bitwarden は個人 API キーに加えてマスターパスワード本体が要り、KeePassXC は鍵ファイルだけで開けます。
+  「前提条件」列は、CLI に何を渡して開くかで分かれます。Bitwarden は個人 API キーに加えてマスターパスワード本体が要り、KeePassXC は鍵ファイルだけで開け、1Password はサービスアカウントのトークン 1 つで足ります。
   同期の持ち方も「主な制約」列にあり、KeePassXC だけがクラウド同期を持たず、ファイルの置き場を自分で決めます
-- 検証の手順: Bitwarden と KeePassXC で 2026-10-20 に、Windows 11 の Git Bash から行いました。
+- 検証の手順: Bitwarden と KeePassXC は 2026-10-20 に、1Password は 2026-10-21 に、Windows 11 の Git Bash から行いました。
   Bitwarden は無料プランのアカウントと個人 API キー、マスターパスワードをユーザーが 1Password に置き、AI が `op run` で環境変数に注入して CLI を流しています。
   AI は鍵やパスワードの値を見ていません。KeePassXC は鍵ファイルだけで保管庫を作り、パスワードの入力なしに流しています。
+  1Password は有料の Individual プランで、ユーザーが作ったサービスアカウントのトークンを環境変数で渡し、書き込みを許した検証用の vault だけで流しています。無料のトライアルの経路と、デスクトップアプリ連携の対話的な認証は動かしていません。
   段階は (1) 非対話でログインまたは保管庫を開く (2) フォルダとログイン項目を登録する (3) 検索・取り出し・書き換えをして読み直す (4) 無料プランの境界に当てる (5) ごみ箱・完全削除・エクスポートまで消す、の 5 つです。
   保管した項目はダミー（`example.com`、ユーザー名 `demo`、生成したパスワード）だけで、本物の認証情報は CLI に渡していません。結果は「各対象の詳細」の「検証した内容」に書いています
 - 鍵やパスワードを AI エージェントに渡す手段は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で比べています。この検証でも、そこで扱った `op run` で注入しています
@@ -165,17 +167,31 @@ CLI は料金ページの比較表で有料プランの列にだけ載ってい�
 有料プランだけのパスワードマネージャーで、個人向けと家族向けの 2 つの契約があります。
 CLI の `op` は開発者向けの機能として用意され、デスクトップアプリとの連携かサービスアカウントで認証します。
 
-{{< fit spec >}}
+{{< fit run >}}
 向く: 有料でよく、家族と保管庫を共有し、CLI と SDK を開発にも使いたい
-向かない: 無料のまま使い続けたい
+向かない: 無料のまま使い続けたい。または個人の既定の保管庫そのものを CLI だけで任せたい
 {{< /fit >}}
 
 - **料金体系**: 年払いの通常価格に加えて、1Password.com から直接申し込む新規の契約には初年度だけの割引があります。割引はアプリストア経由では適用されません [8]
-- **制約**: 恒常の無料プランは無く、14 日のトライアルの後はどちらかの契約を選びます。支払いはカードのほか、米国の口座の ACH と 1Password のギフトカードに対応しています [8]
+- **制約**: 恒常の無料プランは無く、14 日のトライアルの後はどちらかの契約を選びます。支払いはカードのほか、米国の口座の ACH と 1Password のギフトカードに対応しています [8]。
+  サービスアカウントには、共有用に作った vault しか見えません。この検証で個人の既定の保管庫（Private）を指すと `"Private" isn't a vault in this account.` で止まり、読み取りだけを許した vault への作成は `(101) You do not have permission to perform this action` で止まりました。
+  `op item delete` は既定で完全に消し、`--archive` を付けるとアーカイブに移ります。復元は CLI にありません
 - **前提条件**: トライアルはカード不要です。CLI の導入手順はどのプラットフォームでも「1Password subscription」を前提に書かれ、
   macOS と Linux でアプリ連携を使うにはデスクトップアプリが要ります。サービスアカウントのトークンは vault 単位で範囲を絞れます [9]
-- **検証した内容**: この比較ではアカウントを作らず、実行していません。確認したのは公式の料金ページと CLI の導入手順（2026-10-21）です。
-  サービスアカウントでの `op` の実行は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で扱っています
+- **検証した内容**: 2026-10-21 に、有料の Individual プランのサービスアカウント（検証用の vault に読み書き、ほかの vault は読み取りだけ）で `op` 2.40.0 を実行しました。全段が非対話で通り、作った項目は消しています。
+  サービスアカウントで secret を注入する側の実行は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で扱っています。
+
+  | 手順 | 呼び出し | 結果 |
+  | --- | --- | --- |
+  | 認証 | `OP_SERVICE_ACCOUNT_TOKEN` を環境変数に置いて `op whoami` | `user_type: SERVICE_ACCOUNT`。ログインの操作は無い（0.4 秒） |
+  | 見える保管庫 | `op vault list` | 共有用に作った vault 3 つだけ。個人の既定の保管庫（Private）は出ない |
+  | 登録 | `op item create --category Login --title <名前> --url https://example.com username=demo --generate-password=20,letters,digits,symbols` | `LOGIN` の項目が作られ、`id` が返る（3.4 秒）。パスワードは CLI 側で生成 |
+  | 検索と取り出し | `op item list --vault <vault>` → `op item get <id> --fields password --reveal` | タイトル一致 1 件。取り出したパスワードは 20 文字で、`--reveal` を付けないと伏せ字 |
+  | 書き換え | `op item edit <id> username=demo2 notesPlain=...` → `op item get` | ユーザー名と notes が変わり、`version` が 2 に。パスワードは不変（4.2 秒） |
+  | 権限の境界 | 読み取りだけの vault に `op item create` / `Private` を指定 | `(101) You do not have permission to perform this action` / `"Private" isn't a vault in this account.` |
+  | アーカイブ | `op item delete <id> --archive` → `op item list --include-archive` | 通常の一覧は 0 件、`--include-archive` で 1 件（`state: ARCHIVED`） |
+  | 完全削除 | `op item delete <id>` → `op item get <id>` | 一覧は 0 件。`get` は `isn't an item in the ... vault` |
+  | 呼び出しの上限 | `op service-account ratelimit` | トークンあたり書き込み 100 回/時・読み取り 1,000 回/時、アカウントあたり 1,000 回/日。この一巡で書き込み 10 回・読み取り 61 回 |
 
 ## 用途別の選び方
 
@@ -187,7 +203,7 @@ CLI の `op` は開発者向けの機能として用意され、デスクトッ�
 - 保管庫のファイルを自分で持ち、アカウントを作りたくない → KeePassXC。決め手は「前提条件」列です。同期は「主な制約」列のとおり自分で持ちます
 - 無料のまま、登録・書き換え・削除を CLI で AI に任せたい → Bitwarden。決め手は「無料枠」列と「検証区分」列です。CLI に渡すものは「前提条件」列にあります
 - 無料でメールのエイリアスも使い、CLI は要らない → Proton Pass。決め手は「無料枠」列です。CLI が要るなら「主な制約」列のとおり有料プランになります
-- 有料でよく、家族と共有し、CLI と SDK まで使いたい → 1Password。決め手は「料金」列と「前提条件」列です
+- 有料でよく、家族と共有し、CLI と SDK まで使いたい → 1Password。決め手は「料金」列と「前提条件」列です。サービスアカウントで扱える保管庫の範囲は「主な制約」列にあります
 - CI や AI エージェントに機械用のトークンで secret を渡したい → [シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)が対象です
 
 ## よくある質問
@@ -206,7 +222,7 @@ TOTP の生成・ファイル添付・ファイルの Send は Premium の機能
 ### 1Password に無料プランはありますか？
 
 恒常の無料プランはありません。Individual と Families のどちらも 14 日のトライアルがあり、カードの登録は不要です [8]。
-CLI の導入手順はサブスクリプションを前提に書かれています [9]。
+CLI の導入手順はサブスクリプションを前提に書かれています [9]。実行検証では、有料プランのサービスアカウントで項目の作成から完全削除まで非対話で通りました。
 
 ## 出典
 
