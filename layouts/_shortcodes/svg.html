@@ -8,7 +8,11 @@
   {{- errorf "svg: assets/figures/%s が見つかりません: %s" $src .Position -}}
 {{- else -}}
 <figure class="figure-svg" role="img" aria-label="{{ .Get "alt" }}">
-  {{ $r.Content | safeHTML }}
+  {{- /* 狭い画面で横スクロールするのは SVG を包むこの div だけ。figcaption を figure 直下に残すのは、
+         figure 自体をスクロール枠にすると図を右へ送ったときに説明まで左へ消えるため（2026-10-21、Codex 報告 2026-10-19 の指摘） */ -}}
+  <div class="figure-svg-scroll">
+    {{ $r.Content | safeHTML }}
+  </div>
   {{- with .Get "caption" }}
   <figcaption>{{ . }}</figcaption>
   {{- end }}

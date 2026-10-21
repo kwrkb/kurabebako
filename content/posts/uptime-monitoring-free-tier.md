@@ -26,11 +26,11 @@ tags = ['uptime-monitoring', 'uptimerobot', 'better-stack', 'checkly', 'cronitor
 
 | こういう条件なら | 対象 | 決め手 |
 | --- | --- | --- |
-| 無料で件数を最も多く持つ。API や Terraform で作成・削除する | UptimeRobot | 「無料枠」列（件数が最も多い）と「前提条件」列（API と Terraform が全プランで使える） |
-| 監視の定義をコードで持ち、CLI や CI から配備する | Checkly | 「前提条件」列（公式 CLI が無料枠で使える）と「無料枠」列（最短間隔が最も短い） |
-| 自前のサーバーで、件数と間隔の上限なしに監視する | Uptime Kuma | 「無料枠」列（無制限）。公式の管理 API が無い点は「主な制約」列 |
-| 少数の監視で、通知はメールと Slack で足りる | Better Stack | 「主な制約」列（無料枠の通知先）。カードの要否が明記されていない点は「前提条件」列 |
-| ごく少数で最小構成にし、CLI と API で操作する | Cronitor | 「前提条件」列（公式 CLI と API、カード不要）。件数は「無料枠」列 |
+| 無料で件数を最も多く持つ。API や Terraform で作成・削除する | [UptimeRobot](#uptimerobot) | 「無料枠」列（件数が最も多い）と「前提条件」列（API と Terraform が全プランで使える） |
+| 監視の定義をコードで持ち、CLI や CI から配備する | [Checkly](#checkly) | 「前提条件」列（公式 CLI が無料枠で使える）と「無料枠」列（最短間隔が最も短い） |
+| 自前のサーバーで、件数と間隔の上限なしに監視する | [Uptime Kuma](#uptime-kumaoss) | 「無料枠」列（無制限）。公式の管理 API が無い点は「主な制約」列 |
+| 少数の監視で、通知はメールと Slack で足りる | [Better Stack](#better-stackuptime) | 「主な制約」列（無料枠の通知先）。カードの要否が明記されていない点は「前提条件」列 |
+| ごく少数で最小構成にし、CLI と API で操作する | [Cronitor](#cronitor) | 「前提条件」列（公式 CLI と API、カード不要）。件数は「無料枠」列 |
 
 ## 比較表
 

@@ -49,6 +49,11 @@ const E_FAQ_POS = "「## よくある質問」は「## 用途別の選び方」�
 const E_FAQ_Q = "「？」で終わる質問文にしてください";
 const E_FIT_KIND = "fit: 第 1 引数は run か spec のみ";
 const E_FIT_ROWS = "fit には「向く:」と「向かない:」の 2 行が要ります";
+const E_QUICK_LINK = "結論の早見表の「対象」セルは詳細の見出しへのアンカーリンク";
+const E_QUICK_COLS = "結論の早見表の列が型と違います";
+
+// 結論の早見表。valid.md には入れず、「## 比較表」の直前に差し込む
+const quick = (target) => `| こういう条件なら | 対象 | 決め手 |\n| --- | --- | --- |\n| 無料で試したい | ${target} | 「無料枠」列 |\n\n`;
 
 // 任意の「よくある質問」節と要点カード（fit）。valid.md には入れず、ここで差し込む
 const FAQ = "## よくある質問\n\n### 無料で使えますか？\n\nサンプル A は無料です。\n\n";
@@ -123,6 +128,13 @@ const cases = [
   { name: "fit を正しく使う", make: (s) => swap(s, "- **料金体系**", fit("run", FIT_BODY) + "- **料金体系**"), expect: null },
   { name: "fit の引数が run / spec 以外", make: (s) => swap(s, "- **料金体系**", fit("done", FIT_BODY) + "- **料金体系**"), expect: [E_FIT_KIND] },
   { name: "fit に「向かない:」が無い", make: (s) => swap(s, "- **料金体系**", fit("spec", "向く: 試すだけの用途") + "- **料金体系**"), expect: [E_FIT_ROWS] },
+  { name: "早見表の対象がアンカーリンク", make: (s) => swap(s, "## 比較表\n", quick("[サンプル A](#サンプル-a)") + "## 比較表\n"), expect: null },
+  { name: "早見表の対象がリンクでない", make: (s) => swap(s, "## 比較表\n", quick("サンプル A") + "## 比較表\n"), expect: [E_QUICK_LINK] },
+  {
+    name: "早見表の列が型と違う",
+    make: (s) => swap(s, "## 比較表\n", "| 条件 | 対象 |\n| --- | --- |\n| 無料で試したい | [サンプル A](#サンプル-a) |\n\n## 比較表\n"),
+    expect: [E_QUICK_COLS],
+  },
 ];
 
 function build(dest) {

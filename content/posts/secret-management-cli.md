@@ -24,12 +24,12 @@ API キーや認証情報を CI や AI エージェントに渡すためのシ�
 
 | こういう条件なら | 対象 | 決め手 |
 | --- | --- | --- |
-| 無料でカード登録なしに始め、CI や AI エージェントに読み書きまでさせたい | Bitwarden Secrets Manager | 「無料枠」列（secret 数は無制限）と「主な制約」列（権限の付け替えは web vault） |
-| 読み取り専用の主体を API から作り分けたい。将来セルフホストに移すかもしれない | Infisical | 「主な制約」列（identity の操作は REST API）と「前提条件」列（セルフホスト可） |
-| CLI の速さとオフラインでの再実行が欲しい | Doppler | 棒グラフ（注入までの時間が最も短い）と「主な制約」列（機械向けは service token） |
-| すでに 1Password を契約していて、ツールを増やしたくない | 1Password | 「料金」列（無料プランなし）と「主な制約」列（アカウントあたりの日次の上限） |
-| 自分でサーバーを持ち、policy と AppRole で権限を細かく切りたい | HashiCorp Vault Community | 「前提条件」列（自分でサーバーを起動する）と「主な制約」列（ライセンスと Agent の設定ファイル） |
-| Vault と同じ使い方で、BUSL を避けたい | OpenBao | 「主な制約」列（ライセンスと、Vault の手順がそのまま通ること） |
+| 無料でカード登録なしに始め、CI や AI エージェントに読み書きまでさせたい | [Bitwarden Secrets Manager](#bitwarden-secrets-manager) | 「無料枠」列（secret 数は無制限）と「主な制約」列（権限の付け替えは web vault） |
+| 読み取り専用の主体を API から作り分けたい。将来セルフホストに移すかもしれない | [Infisical](#infisical) | 「主な制約」列（identity の操作は REST API）と「前提条件」列（セルフホスト可） |
+| CLI の速さとオフラインでの再実行が欲しい | [Doppler](#doppler) | 棒グラフ（注入までの時間が最も短い）と「主な制約」列（機械向けは service token） |
+| すでに 1Password を契約していて、ツールを増やしたくない | [1Password](#1password) | 「料金」列（無料プランなし）と「主な制約」列（アカウントあたりの日次の上限） |
+| 自分でサーバーを持ち、policy と AppRole で権限を細かく切りたい | [HashiCorp Vault Community](#hashicorp-vault-community) | 「前提条件」列（自分でサーバーを起動する）と「主な制約」列（ライセンスと Agent の設定ファイル） |
+| Vault と同じ使い方で、BUSL を避けたい | [OpenBao](#openbao) | 「主な制約」列（ライセンスと、Vault の手順がそのまま通ること） |
 
 ## 比較表
 

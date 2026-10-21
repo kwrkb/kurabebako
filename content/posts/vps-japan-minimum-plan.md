@@ -26,11 +26,11 @@ tags = ['vps', 'conoha', 'sakura-internet', 'kagoya', 'xserver', 'webarena']
 
 | こういう条件なら | 対象 | 決め手 |
 | --- | --- | --- |
-| API・Terraform・MCP から作成〜削除まで自動化する | ConoHa VPS (Ver.3.0) | 「前提条件」列（サーバー作成を含む公式 API と Terraform provider）と「主な制約」列（時間課金） |
-| 常時稼働で月額を最小にする | WebARENA Indigo | 「料金」列（1GB の月上限が最も低い）。最小プランの IPv4 の有無は「主な制約」列 |
-| API は不要で、月の途中から日割りで使う | KAGOYA CLOUD VPS | 「料金」列（日額と月上限） |
-| 無料で試す | さくらのVPS | 「無料枠」列（期間限定のお試し）。本契約へ自動で移る点は「主な制約」列 |
-| 上位寄りのスペックから始める | Xserver VPS | 「料金」列（最小プランが大きい）。新規受付の停止は「主な制約」列 |
+| API・Terraform・MCP から作成〜削除まで自動化する | [ConoHa VPS (Ver.3.0)](#conoha-vps-ver30) | 「前提条件」列（サーバー作成を含む公式 API と Terraform provider）と「主な制約」列（時間課金） |
+| 常時稼働で月額を最小にする | [WebARENA Indigo](#webarena-indigo) | 「料金」列（1GB の月上限が最も低い）。最小プランの IPv4 の有無は「主な制約」列 |
+| API は不要で、月の途中から日割りで使う | [KAGOYA CLOUD VPS](#kagoya-cloud-vps) | 「料金」列（日額と月上限） |
+| 無料で試す | [さくらのVPS](#さくらのvps) | 「無料枠」列（期間限定のお試し）。本契約へ自動で移る点は「主な制約」列 |
+| 上位寄りのスペックから始める | [Xserver VPS](#xserver-vps) | 「料金」列（最小プランが大きい）。新規受付の停止は「主な制約」列 |
 
 {{< cta "conoha-vps" >}}
 

@@ -27,11 +27,11 @@ tags = ['error-tracking', 'better-stack', 'rollbar', 'sentry', 'honeybadger', 'g
 
 | こういう条件なら | 対象 | 決め手 |
 | --- | --- | --- |
-| 無料で受けられる量を優先し、Sentry SDK のまま送り先だけ替えたい | Better Stack Errors | 「無料枠」列（件数）と「前提条件」列（Sentry SDK 互換） |
-| 無料のまま複数人で同じエラーを見たい | Rollbar | 「無料枠」列（ユーザー無制限） |
-| エラーのデータを自分のサーバーに置きたい | GlitchTip | 「料金」列（セルフホストは無料）と「前提条件」列 |
-| 1 人で、トレースやセッションの記録も同じ画面で試したい | Sentry | 「無料枠」列（エラー以外の枠） |
-| 1 人で、死活監視とステータスページも同じ画面にまとめたい | Honeybadger | 「無料枠」列（監視とステータスページ） |
+| 無料で受けられる量を優先し、Sentry SDK のまま送り先だけ替えたい | [Better Stack Errors](#better-stack-errors) | 「無料枠」列（件数）と「前提条件」列（Sentry SDK 互換） |
+| 無料のまま複数人で同じエラーを見たい | [Rollbar](#rollbar) | 「無料枠」列（ユーザー無制限） |
+| エラーのデータを自分のサーバーに置きたい | [GlitchTip](#glitchtip) | 「料金」列（セルフホストは無料）と「前提条件」列 |
+| 1 人で、トレースやセッションの記録も同じ画面で試したい | [Sentry](#sentry) | 「無料枠」列（エラー以外の枠） |
+| 1 人で、死活監視とステータスページも同じ画面にまとめたい | [Honeybadger](#honeybadger) | 「無料枠」列（監視とステータスページ） |
 
 アプリの外から URL を叩いて、落ちたら知らせる仕組みを探しているなら、[死活監視の無料枠比較](/posts/uptime-monitoring-free-tier/)が対象です。
 
