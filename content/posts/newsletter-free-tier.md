@@ -1,7 +1,7 @@
 +++
 title = '海外のニュースレター配信サービス 5 つの無料枠比較: カード登録なしで API から配信できるのはどれか'
 date = '2026-09-15T00:04:33+09:00'
-lastmod = '2026-09-27'
+lastmod = '2026-10-23'
 draft = false
 summary = '海外のニュースレター配信サービス Buttondown・Kit・MailerLite・beehiiv・Brevo を、無料プランを主役に、無料枠の単位が購読者数か配信通数か、カード登録なしで始められるか、無料プランで API から配信まで届くかで比較。Free で API の全機能が使え、購読者の登録から配信・解除・削除まで API だけで閉じたのは Buttondown で、AI や CI に配信を任せるなら Buttondown が条件を満たす。無料で持てる購読者数を最大にするなら Kit。国内の事業者を円建ての有料プランで比べた記事は別にある。'
 categories = ['developer-tools']
@@ -30,7 +30,7 @@ tags = ['newsletter', 'buttondown', 'kit', 'mailerlite', 'beehiiv', 'brevo']
 | AI や CI に、購読者の登録から配信・解除まで API で任せたい | [Buttondown](#buttondown) | 「前提条件」列（Free を含む全プランで API キー）と「主な制約」列（送信前の審査） |
 | 無料で持てる購読者数を最大にしたく、API でも送りたい | [Kit](#kit旧-convertkit) | 「無料枠」列（5 つで最も多い購読者数）と「前提条件」列（API キーは全プラン） |
 | フォームや自動化を無料で多く使いたく、API からの送信は要らない | [MailerLite](#mailerlite) | 「無料枠」列（自動化とフォームの数）と「主な制約」列（Free の API は送信を含まない） |
-| 無料でカスタムドメインを使いたく、本人確認を受け入れられる | [beehiiv](#beehiiv) | 「無料枠」列（カスタムドメイン可）と「前提条件」列（API キーの発行に本人確認） |
+| 無料で持てる購読者数が Kit に次いで多ければよく、本人確認を受け入れられる | [beehiiv](#beehiiv) | 「無料枠」列（購読者数が Kit に次ぐ）と「前提条件」列（API キーの発行に本人確認） |
 | 購読者数ではなく通数で数え、連絡先を多く持ちたい | [Brevo](#brevomarketing-platform) | 「無料枠」列（日次の通数制）と「主な制約」列（送信前にアカウント承認） |
 
 国内の事業者を円建て・日本語の画面で、有料プランを主役に比べた記事は[国内のメール配信システム 5 つの比較](/posts/bulk-email-japan/)です。
@@ -38,15 +38,15 @@ tags = ['newsletter', 'buttondown', 'kit', 'mailerlite', 'beehiiv', 'brevo']
 
 ## 比較表
 
-2026-09-13 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-10-23 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小のプランで揃え、通貨は各社の料金ページの表記のままです（Brevo のみ円建て）。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Buttondown](#buttondown) | Free（USD 0）。有料は購読者 100 超で購読者数に応じた従量。タグ・セグメントは +USD 9/月、自動化は +USD 29/月 などのアドオン制 | **購読者 100 まで**。配信通数の上限は無いが、料金は「全購読者への配信が 1 日 1 回まで」を前提に組まれている | API は全体で 600 回/分、購読者の作成は 100 回/日（超過はそれぞれ 429 / 400）。新規アカウントは**送信前に審査**（通常 1〜3 営業日。審査中は下書き可、送信・購読者の収集・公開アーカイブの閲覧は不可）。フッターの「Powered by Buttondown」の除去は有料アドオン | アカウントのみ。登録画面に「No credit card required」。API キーは Free を含む全プランで発行でき、キーごとに `email_access` / `sending_access` を分けられる。API から送るには初回に `X-Buttondown-Live-Dangerously: true` ヘッダーが要る | {{< verified run >}} | [1][2][3][4][5][6] |
-| [Kit（旧 ConvertKit）](#kit旧-convertkit) | Newsletter Plan（USD 0）。有料は Creator USD 33/月（購読者 1,000）、Pro USD 66/月から | **購読者 10,000 まで**。配信通数は無制限。フォームとランディングページは無制限、自動化 1 本とシーケンス 1 本 | API キーは 120 回/60 秒（OAuth アプリは 600）。購読者は API で解除できるが削除はできない。フッターの「Built with Kit」の除去は Creator 以上で、運営者住所を設定しないと Kit 社の住所が入る | アカウントのみ。料金ページに「No credit card required」。API キーは全プランで発行でき、ヘッダー `X-Kit-Api-Key` で渡す。送信前の審査は公式ページに記載なし | {{< verified run >}} | [9][10][11][12][13] |
+| [Kit（旧 ConvertKit）](#kit旧-convertkit) | Newsletter Plan（USD 0）。有料は Creator USD 33/月（年払い時。月払いは 39。購読者 1,000）、Pro USD 66/月から | **購読者 10,000 まで**。配信通数は無制限。フォームとランディングページは無制限、自動化 1 本とシーケンス 1 本 | API キーは 120 回/60 秒（OAuth アプリは 600）。購読者は API で解除できるが削除はできない。フッターの「Built with Kit」の除去は Creator 以上で、運営者住所を設定しないと Kit 社の住所が入る | アカウントのみ。料金ページに「No credit card required」。API キーは全プランで発行でき、ヘッダー `X-Kit-Api-Key` で渡す。送信前の審査は公式ページに記載なし | {{< verified run >}} | [9][10][11][12][13] |
 | [MailerLite](#mailerlite) | Free（USD 0）。有料は Comfort USD 12/月（月間通数は購読者枠の 10 倍）、Power USD 25/月（通数無制限）から | **購読者 250 まで、月 2,500 通**。自動化 3、フォーム 3、ランディングページ 1、サイト 1、ユーザー 2 | Free の API は制限付きで**送信を含まない**（「Email sending via the API and MCP server is available on paid plans」）。API は全体 120 回/分、インポート系 5 回/分。購読者が 250 を超えると API 経由の追加も止まる | アカウントのみ。料金ページに「No credit card required」。登録後 14 日間はプレミアム機能のトライアル。API は Bearer トークン | {{< verified spec >}} | [14][15][16][17] |
-| [beehiiv](#beehiiv) | Free（USD 0）。有料は Lite USD 49/月、Pro USD 95/月から（年払い時。月払いは 59 / 109。購読者上限は Lite 100,000、Pro 250,000） | **購読者 2,500 まで**。配信通数は無制限。カスタムドメイン可 | API は **Send API を除いて**利用可。Send API と Create post は Pro 以上。Free は 30 回/分（API キー単位） | アカウントのみ（メール認証と電話番号認証）。料金ページに「no credit card required」。**API キーの発行に Stripe Identity での本人確認**と Admin 権限が要る | {{< verified spec >}} | [18][19][20][21][22][23] |
+| [beehiiv](#beehiiv) | Free（USD 0）。有料は Lite USD 49/月、Pro USD 95/月から（年払い時。月払いは 59 / 109。購読者上限は Lite 100,000、Pro 250,000） | **購読者 2,500 まで**。配信通数は無制限 | API は **Send API を除いて**利用可。Send API と Create post は Pro 以上。Free は 30 回/分（API キー単位）。独自ドメイン（Web・送信元とも）は Lite 以上 | アカウントのみ（メール認証と電話番号認証）。料金ページに「no credit card required」。**API キーの発行に Stripe Identity での本人確認**と Admin 権限が要る | {{< verified spec >}} | [18][19][20][21][22][23][29] |
 | [Brevo（Marketing Platform）](#brevomarketing-platform) | Free（USD 0）。有料は Starter 月額 1,140 円から（ロゴ除去は Starter だとアドオン） | **日 300 通**（毎日リセット、繰り越しなし）。連絡先は 100,000 件まで保存でき、自動化に入れる連絡先は 2,000 まで。ユーザー 1 | 送信の解禁に Brevo 側の**アカウント承認**が挟まる。300 通を超えるキャンペーンは残りを翌日以降に再送。Free では「Sent with Brevo」を外せない | アカウントのみ。料金ページに「No credit card required」。API キーを `api-key` ヘッダーで渡し、`POST /v3/emailCampaigns` でキャンペーンを作る | {{< verified spec >}} | [24][25][26][27] |
 
 {{< bars unit="購読者" caption="無料で持てる購読者数の上限。Brevo は購読者数ではなく日 300 通の通数制（連絡先は 100,000 件まで保存可）のため載せていない" >}}
@@ -167,20 +167,24 @@ API は Free でも使えますが、送信は含まれません。
 
 ### beehiiv
 
-無料でカスタムドメインも使える配信基盤で、無料で持てる購読者数では Kit に次ぎます。
-ただ、API キーの発行に本人確認が要り、送信の API は有料の Pro 以上です。
+無料で持てる購読者数では Kit に次ぐ配信基盤です。
+ただ、API キーの発行に本人確認が要り、送信の API は有料の Pro 以上で、独自ドメインも有料プランからです。
 
 {{< fit spec >}}
-向く: 無料でカスタムドメインを使い、API では購読者の管理まで行えれば足りる
+向く: 無料で持てる購読者数を Kit に次いで多く取り、API では購読者の管理まで行えれば足りる
 向かない: 本人確認なしで API キーを発行したい。無料のまま API から配信したい
 {{< /fit >}}
 
 - **料金体系**: 有料プランの購読者の上限は段階制です [18][19]
-- **制約**: 料金ページの API の項目は「API Access (excluding Send API)」で、Send API と Create post は「Available on beehiiv Pro and Enterprise plans」です [18][21]
+- **制約**: 料金ページの API の項目は「API Access (excluding Send API)」で、Send API と Create post は「Available on beehiiv Pro and Enterprise plans」です [18][21]。
+  独自ドメインはヘルプの対象欄が「All Paid Plans」で、Web のドメインと送信元のドメインの両方が有料プランからです [29]。
+  料金ページでは Free の「What's included」にだけ「Custom Domains」が載り、同じページの比較表（Free は「—」）と食い違います [18]
 - **前提条件**: 料金ページの文言は「free, forever, with no credit card required」です [18]。
   API キーの発行の条件は「you must first complete your account verification through Stripe Identity Verification」と書かれています [20]
 - **検証した内容**: 公式の料金ページ・ヘルプ・開発者ドキュメントを確認しました。本人確認が利用者の操作になるため、実行は次回の更新に回しています。
-  本人確認を済ませても Send API は Pro 以上なので、実行に上げられるのは購読者の登録・解除までです
+  本人確認を済ませても Send API は Pro 以上なので、実行に上げられるのは購読者の登録・解除までです。
+  2026-10-21 に Free のアカウントの設定画面（Settings → Domain）を確認したところ、表示は「Custom domains are part of a paid plan」「Unlock with Lite plan」で、
+  Pro の試用中も使えず、Free の送信元は `mail.beehiiv.com` のアドレスに固定されていました
 
 {{< cta id="beehiiv" text="beehiiv の Free プランに登録する（カード登録なし）" >}}
 
@@ -212,8 +216,8 @@ API は Free でも使えますが、送信は含まれません。
   購読者を API で削除できない点と、運営者住所の既定値に注意が要ります
 - フォームや自動化を無料で多く使いたい。API からの送信は要らない → MailerLite。決め手は「無料枠」列と「主な制約」列です。
   月の通数上限も、購読者数とは別に効きます
-- 無料でカスタムドメインを使って配信したい。本人確認を受け入れられる → beehiiv。決め手は「前提条件」列と「主な制約」列です。
-  AI に任せられるのは購読者の管理までです
+- 無料で持てる購読者数を Kit に次いで多く取りたい。本人確認を受け入れられる → beehiiv。決め手は「無料枠」列と「前提条件」列です。
+  AI に任せられるのは購読者の管理までで、独自ドメインは有料プランからです
 - 購読者数ではなく通数で数えたい。連絡先を多く持ち、送信前の承認待ちを受け入れられる → Brevo。決め手は「無料枠」列と「主な制約」列です。
   トランザクション送信と同じアカウントで扱えます
 
@@ -221,7 +225,7 @@ API は Free でも使えますが、送信は含まれません。
 
 {{< ranking >}}
 buttondown: 購読者の登録から配信・解除まで API で通せることを Free アカウントで実際に確かめています。カード登録も要りません
-beehiiv: 無料でカスタムドメインを使って配信できる唯一の対象です。API キーの発行に本人確認が要り、無料のまま API から配信はできない点は「前提条件」列と「主な制約」列です
+beehiiv: 無料で持てる購読者数が Kit に次いで多い対象です。API キーの発行に本人確認が要り、無料のまま API から配信はできない点と、独自ドメインが有料プランからである点は「前提条件」列と「主な制約」列です
 {{< /ranking >}}
 
 購読フォームを置く先は、[静的サイトの無料ホスティング比較](/posts/static-site-hosting-free-tier/)で扱ったホスティングです。
@@ -240,7 +244,7 @@ Buttondown は Free のアカウントで、Kit は Creator のトライアル�
 ### クレジットカードなしで始められますか？
 
 5 つとも、料金ページか登録画面に「No credit card required」の記載があります [2][9][14][18][25]。
-ただし beehiiv は登録時にメール認証と電話番号認証があり、API キーの発行には Stripe Identity での本人確認が要ります [20][22]。
+ただし beehiiv は登録時にメール認証と電話番号認証があり、API キーの発行には Stripe Identity での本人確認が要ります [20][22][30]。
 
 ### 無料で何人の購読者まで持てますか？
 
@@ -254,7 +258,7 @@ beehiiv は API キーの発行前に Stripe Identity での本人確認が要�
 
 ## 出典
 
-1. [Buttondown Pricing](https://buttondown.com/pricing) — 2026-09-13 確認
+1. [Buttondown Pricing](https://buttondown.com/pricing) — 2026-10-14 確認
 2. [Buttondown — Register](https://buttondown.com/register) — 2026-09-13 確認
 3. [Buttondown — API](https://buttondown.com/features/api) — 2026-09-13 確認
 4. [Buttondown Docs — Account review](https://docs.buttondown.com/account-review) — 2026-09-13 確認
@@ -262,23 +266,25 @@ beehiiv は API キーの発行前に Stripe Identity での本人確認が要�
 6. [Buttondown Docs — Rate limits](https://docs.buttondown.com/api-rate-limits) — 2026-09-13 確認
 7. [Buttondown Docs — Drafting emails via the API](https://docs.buttondown.com/drafting-emails-via-the-api) — 2026-09-13 確認
 8. [Buttondown Docs — Deleting an email](https://docs.buttondown.com/api-emails-delete) — 2026-09-13 確認
-9. [Kit Pricing](https://kit.com/pricing) — 2026-09-13 確認
-10. [Kit Help — The Kit Newsletter Plan](https://help.kit.com/en/articles/9053602-the-kit-newsletter-plan) — 2026-09-13 確認
+9. [Kit Pricing](https://kit.com/pricing) — 2026-10-14 確認
+10. [Kit Help — The Kit Newsletter Plan](https://help.kit.com/en/articles/9053602-the-kit-newsletter-plan) — 2026-10-23 確認
 11. [Kit Help — Kit API overview](https://help.kit.com/en/articles/9902901-kit-api-overview) — 2026-09-13 確認
 12. [Kit Developers — Authentication](https://developers.kit.com/api-reference/authentication) — 2026-09-13 確認
 13. [Kit Developers — Create a broadcast](https://developers.kit.com/api-reference/broadcasts/create-a-broadcast) — 2026-09-13 確認
-14. [MailerLite Pricing](https://www.mailerlite.com/pricing) — 2026-09-13 確認
+14. [MailerLite Pricing](https://www.mailerlite.com/pricing) — 2026-10-14 確認
 15. [MailerLite Help — Free plan update FAQ](https://www.mailerlite.com/help/free-plan-update-faq) — 2026-09-13 確認
 16. [MailerLite Developers — Getting started](https://developers.mailerlite.com/docs/) — 2026-09-13 確認
 17. [MailerLite Developers — Campaigns](https://developers.mailerlite.com/docs/campaigns.html) — 2026-09-13 確認
-18. [beehiiv Pricing](https://www.beehiiv.com/pricing) — 2026-09-13 確認
+18. [beehiiv Pricing](https://www.beehiiv.com/pricing) — 2026-10-14 確認
 19. [beehiiv Help — Plan types and subscriber plan tier pricing](https://www.beehiiv.com/support/article/23874462928663-plan-types-and-subscriber-plan-tier-pricing) — 2026-09-13 確認
 20. [beehiiv Help — How to access your Publication ID or API keys](https://www.beehiiv.com/support/article/13091918395799-how-to-access-your-publication-id-or-api-keys) — 2026-09-13 確認
 21. [beehiiv Help — Using the Send API and Create post endpoint](https://www.beehiiv.com/support/article/36759164012439-using-the-send-api-and-create-post-endpoint) — 2026-09-13 確認
 22. [beehiiv Help — How to create and verify your beehiiv account](https://www.beehiiv.com/support/article/27235107130391-how-to-create-and-verify-your-beehiiv-account) — 2026-09-13 確認
 23. [beehiiv Developers — Rate Limiting](https://developers.beehiiv.com/welcome/rate-limiting) — 2026-09-13 確認
-24. [Brevo Help — FAQs: What are the limits of the Free plan?](https://help.brevo.com/hc/en-us/articles/208580669-FAQs-What-are-the-limits-of-the-Free-plan) — 2026-09-13 確認
-25. [Brevo Pricing](https://www.brevo.com/pricing/) — 2026-09-13 確認
+24. [Brevo Help — FAQs: What are the limits of the Free plan?](https://help.brevo.com/hc/en-us/articles/208580669-FAQs-What-are-the-limits-of-the-Free-plan) — 2026-10-14 確認
+25. [Brevo Pricing](https://www.brevo.com/pricing/) — 2026-10-14 確認
 26. [Brevo Developers — API limits](https://developers.brevo.com/docs/api-limits) — 2026-09-13 確認
 27. [Brevo Developers — Create an email campaign](https://developers.brevo.com/reference/createemailcampaign-1) — 2026-09-13 確認
 28. [EmailOctopus — API documentation v2](https://emailoctopus.com/api-documentation/v2) — 2026-09-13 確認
+29. [beehiiv Help — How to use a custom domain for your publication](https://www.beehiiv.com/support/article/14492990172823-how-to-use-a-custom-domain-for-your-publication) — 2026-10-23 確認
+30. [beehiiv Help — How to confirm your account with Stripe Identity Verification](https://www.beehiiv.com/support/article/12889886149655) — 2026-10-23 確認
