@@ -1,7 +1,7 @@
 +++
 title = '死活監視の無料枠 5 つを比較: 最短間隔と API で選ぶ'
 date = '2026-09-03T14:59:52+09:00'
-lastmod = '2026-10-03'
+lastmod = '2026-10-23'
 draft = false
 summary = 'UptimeRobot・Better Stack・Checkly・Cronitor・Uptime Kuma の無料枠を、モニター数・最短間隔・通知手段・公式の自動化手段（API / CLI / Terraform）で比較。無料で 50 件まで API から作成・削除できる UptimeRobot、監視をコードで持つなら Checkly。UptimeRobot・Checkly・Uptime Kuma は実際に監視を作成して確認した結果を載せる。'
 categories = ['monitoring']
@@ -29,17 +29,17 @@ tags = ['uptime-monitoring', 'uptimerobot', 'better-stack', 'checkly', 'cronitor
 | 無料で件数を最も多く持つ。API や Terraform で作成・削除する | [UptimeRobot](#uptimerobot) | 「無料枠」列（件数が最も多い）と「前提条件」列（API と Terraform が全プランで使える） |
 | 監視の定義をコードで持ち、CLI や CI から配備する | [Checkly](#checkly) | 「前提条件」列（公式 CLI が無料枠で使える）と「無料枠」列（最短間隔が最も短い） |
 | 自前のサーバーで、件数と間隔の上限なしに監視する | [Uptime Kuma](#uptime-kumaoss) | 「無料枠」列（無制限）。公式の管理 API が無い点は「主な制約」列 |
-| 少数の監視で、通知はメールと Slack で足りる | [Better Stack](#better-stackuptime) | 「主な制約」列（無料枠の通知先）。カードの要否が明記されていない点は「前提条件」列 |
+| 少数の監視で、通知はメールと Slack で足り、監視の地点を選びたい | [Better Stack](#better-stackuptime) | 「主な制約」列（無料枠の通知先と地点）と「前提条件」列（カード不要） |
 | ごく少数で最小構成にし、CLI と API で操作する | [Cronitor](#cronitor) | 「前提条件」列（公式 CLI と API、カード不要）。件数は「無料枠」列 |
 
 ## 比較表
 
-2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。対象名を押すと、その対象の詳細に移ります。
+2026-10-23 時点の公式情報に基づきます。出典は末尾の番号に対応しています。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [UptimeRobot](#uptimerobot) | Free は USD 0。Solo は USD 9/月（年払い。月払いは USD 10）で 60 秒間隔・10 件・保持 12 か月 | 50 モニター、5 分間隔、データ保持 3 か月。ステータスページ 1（独自ドメイン不可） | 通知はメール・Google Chat・Discord・Pushover など。Slack・Teams・Telegram は Solo 以上、Webhook・PagerDuty は Team 以上。API は 10 req/分。5 分より短い間隔は API でも拒否される | アカウントのみ。クレジットカード不要、商用利用可。API v3 と公式 Terraform provider が全プランで使える。CLI はなし | {{< verified run >}} | [1][2][3][4][5][6] |
-| [Better Stack（Uptime）](#better-stackuptime) | Free は USD 0。追加 50 モニターで USD 25/月（年払い USD 21/月）、30 秒間隔 | 10 モニター + 10 ハートビート、3 分間隔。ステータスページ 1 | 通知はメールと Slack。電話・SMS は有料プランの記載のみ。リージョンは us / eu / as / au | アカウントのみ。クレジットカードの要否は公式に明記なし。REST API v2 と公式 Terraform provider あり。CLI はなし | {{< verified spec >}} | [7][8][9][10][11][12] |
+| [Better Stack（Uptime）](#better-stackuptime) | Free は USD 0。追加 50 モニターで USD 25/月（年払い USD 21/月）、30 秒間隔 | 10 モニター + 10 ハートビート、3 分間隔。ステータスページ 1 | 通知はメールと Slack。電話・SMS は有料プランの記載のみ。リージョンは us / eu / as / au | アカウントのみ（カード不要。登録の入力はメールアドレスだけ）。REST API v2 と公式 Terraform provider あり。CLI はなし | {{< verified spec >}} | [7][8][9][10][11][12][32] |
 | [Checkly](#checkly) | Hobby は USD 0。Starter は USD 24/月（年払い。月払いは USD 29）で 50 モニター・1 分間隔・3 ユーザー | アップタイムモニター 10、2 分間隔、地点 6 か所。ブラウザチェック 1,000 回/月、API チェック 10,000 回/月（ハードキャップ）。保持は生データ 7 日 | 通知はメール・Slack・Webhook。SMS は Starter 以上、電話は Team 以上。1 ユーザーのみ、プライベートロケーション不可 | アカウントのみ。クレジットカード不要。公式 CLI（`checkly test` / `deploy`）と Terraform provider が Hobby でも使える | {{< verified run >}} | [13][14][15][16][28][29] |
 | [Cronitor](#cronitor) | Hacker は USD 0。Business は USD 2/月/モニター + USD 5/月/ユーザー（基本料なし、14 日トライアル） | 5 モニター、5 分間隔。ステータスページ 1（基本） | 通知はメール・Slack・Discord・Teams・Webhook。SMS とオンコール連携（PagerDuty など）は有料のみ。地点数と保持期間は無料枠の記載なし。ダッシュボードユーザー 1 | アカウントのみ。クレジットカード不要（トライアルは必要）。Monitor API と公式 CLI あり。Terraform は community 版のみ | {{< verified spec >}} | [17][18][19][20][21] |
 | [Uptime Kuma（OSS）](#uptime-kumaoss) | USD 0（サーバー代は別） | 無制限（自前サーバー）。最小間隔はコード上 1 秒（UI は 20 秒未満で警告） | セルフホストが要る。公式の管理 API がなく、Socket.IO の内部 API は「サードパーティ向けに非サポート」と明記。SQLite は NFS 不可 | Node.js 20.4 以上または Docker。MIT ライセンス。通知は 90 種以上、ステータスページは複数可 | {{< verified run >}} | [22][23][24][25][26][27][30] |
@@ -116,21 +116,21 @@ Uptime Kuma（自前サーバー）: 1
 ### Better Stack（Uptime）
 
 無料枠の件数は中位で、間隔は Checkly に次いで短いです。API と Terraform provider は公式にありますが、
-無料枠でカードが要るかどうかが公式に書かれていないため、この記事では仕様区分にとどめています。
+API での監視の作成から削除までの一巡は未実施のため、この記事では仕様区分にとどめています。
 
 {{< fit spec >}}
 向く: 少数の監視で、通知はメールと Slack で足りる。監視の地点（リージョン）を選びたい
-向かない: カードの要否を申込前に確かめたい。電話や SMS の通知が無料で要る
+向かない: 公式の CLI で操作したい。電話や SMS の通知が無料で要る
 {{< /fit >}}
 
 - **料金体系**: 表の「料金」列に載せた以外の段階は料金ページにありません [7]
 - **制約**: 料金ページの「30 秒」は有料の値で、ドキュメントに「3 minutes for free plans」と明記されています [7][9]。
   電話と SMS の「無制限」は料金ページの有料機能の欄にだけ出てきます [7]
-- **前提条件**: クレジットカードの要否は料金ページに記載がなく、「不要」とは書けません [7]。
+- **前提条件**: クレジットカードの要否は料金ページに記載がありませんが、サインアップページの入力欄はメールアドレスだけで、カードの欄はありません [7][32]。
   REST API v2（`POST /api/v2/monitors` で `check_frequency` と `regions` を指定）と、
   公式の Terraform provider（`BetterStackHQ/better-uptime`）があります [10][11][12]
-- **検証した内容**: 仕様区分です。上記の公式ページ [7]〜[12] を 2026-09-03 に確認しました。
-  カード要否が公式に明記されていないため、AI によるアカウント登録は行っていません
+- **検証した内容**: 仕様区分です。上記の公式ページ [7]〜[12] を 2026-10-03 に、サインアップページ [32] を 2026-10-23 に確認しました。
+  2026-10-12 のアカウント作成ではカードの登録を求められませんでした。API での監視の作成から削除までは未実施です
 
 {{< cta id="better-stack" text="Better Stack の Free プランに登録する" >}}
 
@@ -225,7 +225,7 @@ Uptime Kuma（自前サーバー）: 1
 
 {{< ranking >}}
 uptimerobot: 無料枠の件数が最も多く、API v3 と公式の Terraform provider を無料のまま使えます。カード登録も要りません
-better-stack: 無料枠の最短間隔が UptimeRobot より短く、メールに加えて Slack に無料で通知でき、監視の地点を選べます。カード要否が公式に未記載な点は「前提条件」列です
+better-stack: 無料枠の最短間隔が UptimeRobot より短く、メールに加えて Slack に無料で通知でき、監視の地点を選べます。カード登録も要りません
 {{< /ranking >}}
 
 各サービスの API キーを CI や AI エージェントに渡す手段は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で、無料枠と機械向けトークンの作り方を実際に動かして比べています。
@@ -251,7 +251,8 @@ UptimeRobot は API から 5 分より短い間隔を指定しても 403 で拒�
 
 ### クレジットカードなしで始められますか？
 
-UptimeRobot・Checkly・Cronitor の無料枠はクレジットカード不要です [1][13][31]。Better Stack は料金ページに要否の記載がありません [7]。
+UptimeRobot・Checkly・Cronitor・Better Stack の無料枠はクレジットカード不要です [1][13][31][32]。
+Better Stack は料金ページに要否の記載が無く、サインアップページの入力欄がメールアドレスだけである点で判断しています [7][32]。
 Uptime Kuma は OSS で、かかるのはサーバー代だけです [22]。
 
 ## 出典
@@ -262,7 +263,7 @@ Uptime Kuma は OSS で、かかるのはサーバー代だけです [22]。
 4. [UptimeRobot API](https://uptimerobot.com/api/) — 2026-10-03 確認
 5. [GitHub — uptimerobot/terraform-provider-uptimerobot](https://github.com/uptimerobot/terraform-provider-uptimerobot) — 2026-10-03 確認
 6. [UptimeRobot Blog — Terraform provider release](https://uptimerobot.com/blog/uptimerobot-terraform-provider-release/) — 2026-10-03 確認
-7. [Better Stack Pricing](https://betterstack.com/pricing) — 2026-10-03 確認
+7. [Better Stack Pricing](https://betterstack.com/pricing) — 2026-10-23 確認
 8. [Better Stack Uptime](https://betterstack.com/uptime) — 2026-10-03 確認
 9. [Better Stack Docs — Check frequency](https://betterstack.com/docs/uptime/check-frequency/) — 2026-10-03 確認
 10. [Better Stack Docs — Create a new monitor (API v2)](https://betterstack.com/docs/uptime/api/create-a-new-monitor/) — 2026-10-03 確認
@@ -287,3 +288,4 @@ Uptime Kuma は OSS で、かかるのはサーバー代だけです [22]。
 29. [Checkly Docs — CLI authentication](https://www.checklyhq.com/docs/cli/authentication/) — 2026-10-03 確認
 30. [GitHub — louislam/uptime-kuma 2.5.3 src/util.js（MIN_INTERVAL_SECOND）](https://github.com/louislam/uptime-kuma/blob/2.5.3/src/util.js) — 2026-10-03 確認
 31. [Cronitor — Sign up](https://cronitor.io/sign-up) — 2026-10-03 確認
+32. [Better Stack — Sign up](https://betterstack.com/users/sign-up) — 2026-10-23 確認
