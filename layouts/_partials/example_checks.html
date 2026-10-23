@@ -1,0 +1,107 @@
+{{- /* 作例（content/examples/ の単ページ）の型の検査。extend_post_content.html から .Type == "examples" のときだけ呼ばれる。
+       型の正典は CLAUDE.md の「作例の型」と archetypes/examples.md、書き方は desk の reviews/2026-10-18-examples-style.md。
+       比較記事の検査（extend_post_content.html の posts の節）とは意図的に分けてある。作例は判断の理由に主観を入れてよく、
+       見出しの構成も違う。共通化すると比較記事側の検査を触ることになり、回帰の範囲が広がる（2026-10-23）。
+       比較記事と同じく、Windows の CRLF と行末の空白を先に落としてから正規表現を掛ける */ -}}
+{{- $path := .File.Path -}}
+{{- $raw := replaceRE "\r" "" .RawContent -}}
+{{- $raw = replaceRE `(?m)[ \t]+$` "" $raw -}}
+
+{{- /* 1. front matter の必須 5 キー。比較記事と同じ理由でファイルを読み直して TOML の行を見る */ -}}
+{{- $src := replaceRE "\r" "" (os.ReadFile (printf "content/%s" $path)) -}}
+{{- $fm := "" -}}
+{{- with findRESubmatch `(?s)^\+\+\+\n(.*?)\n\+\+\+` $src -}}
+  {{- $fm = index (index . 0) 1 -}}
+{{- else -}}
+  {{- errorf "front matter が +++ で囲まれた TOML になっていません: %s" $path -}}
+{{- end -}}
+{{- range $key := slice "title" "date" "lastmod" "draft" "summary" -}}
+  {{- if not (findRE (printf `(?m)^%s\s*=` $key) $fm) -}}
+    {{- errorf "front matter に %s がありません（title / date / lastmod / draft / summary は必須）: %s" $key $path -}}
+  {{- end -}}
+{{- end -}}
+{{- if findRE `(?m)^summary\s*=\s*(''|"")\s*$` $fm -}}
+  {{- errorf "summary が空です。一覧と OGP に出る要約を書いてください: %s" $path -}}
+{{- end -}}
+
+{{- /* 2. URL に載る値は英小文字・数字・ハイフンのみ */ -}}
+{{- $slugRE := `^[a-z0-9]+(-[a-z0-9]+)*$` -}}
+{{- if not (findRE $slugRE .File.ContentBaseName) -}}
+  {{- errorf "ファイル名（slug）は英小文字・数字・ハイフンのみにしてください（%q）: %s" .File.ContentBaseName $path -}}
+{{- end -}}
+{{- range $tax := slice "tags" "categories" -}}
+  {{- range $v := (index $.Params $tax) -}}
+    {{- if not (findRE $slugRE (string $v)) -}}
+      {{- errorf "%s の値は英小文字・数字・ハイフンのみにしてください（%q）。表示名は content/%s/<slug>/_index.md の title で与えます: %s" $tax $v $tax $path -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* 3. H2 は 9 節で固定（現物 → 理由 → 手順 → 気づき の順。desk の examples-style の骨組み）。
+       5 節目は作った AI の製品名で、Claude か Codex */ -}}
+{{- $expected := slice "## できたもの" "## 完成形の全体像" "## なぜこの組み合わせか" "## 最初に自分ですること" "## (Claude|Codex) がしたこと" "## 同じものを自分の環境で動かす" "## 判断と気づき" "## 制約と撤収" "## 出典" -}}
+{{- $h2 := findRE `(?m)^## .*$` $raw -}}
+{{- $h2ok := eq (len $h2) (len $expected) -}}
+{{- if $h2ok -}}
+  {{- range $i, $e := $expected -}}
+    {{- if not (findRE (printf `^%s$` $e) (index $h2 $i)) -}}{{- $h2ok = false -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $h2ok -}}
+  {{- errorf "H2 の構成が作例の型と違います。期待: [%s] / 実際: [%s]: %s" (delimit $expected " → ") (delimit $h2 " → ") $path -}}
+{{- end -}}
+
+{{- /* 4. 冒頭の定型。最初の H2 より前に、作った AI の製品名（「〜が作り」）と成果物のリポジトリへのリンク。
+       AI を著者欄に置かず本文の冒頭で開示する形（Google の AI 生成コンテンツの指針、10-18 確認）。AI 名は 5 節目の見出しと一致させる */ -}}
+{{- $lead := $raw -}}
+{{- with findRESubmatch `(?s)\A(.*?)\n## ` $raw -}}{{- $lead = index (index . 0) 1 -}}{{- end -}}
+{{- $leadAI := findRESubmatch `(Claude|Codex) が作り` $lead -}}
+{{- if not $leadAI -}}
+  {{- errorf "冒頭に定型の 1 段落がありません。「この作例は Claude（または Codex）が作り、判断と確認は私が行いました」を最初の見出しより前に置いてください: %s" $path -}}
+{{- end -}}
+{{- if not (findRE `github\.com/kwrkb/kurabebako-example-[a-z0-9-]+` $lead) -}}
+  {{- errorf "冒頭の段落に成果物のリポジトリ（https://github.com/kwrkb/kurabebako-example-<slug>）へのリンクがありません: %s" $path -}}
+{{- end -}}
+{{- if and $leadAI $h2ok -}}
+  {{- $ai := index (index $leadAI 0) 1 -}}
+  {{- if ne (index $h2 4) (printf "## %s がしたこと" $ai) -}}
+    {{- errorf "冒頭の AI 名（%s）と 5 節目の見出し（%s）が一致しません: %s" $ai (index $h2 4) $path -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* 5. モデルの版は書かない（10-18 決定。版が上がっても本文が古びないように製品名まで）。title / summary も見る */ -}}
+{{- $text := printf "%s\n%s" $fm $raw -}}
+{{- with findRE `(Claude|Fable|Opus|Sonnet|Haiku|GPT)[ -]?\d` $text | uniq -}}
+  {{- errorf "モデルの版が書かれています（%s）。作例では製品名（Claude / Codex）までにし、版は書きません: %s" (delimit . " / ") $path -}}
+{{- end -}}
+
+{{- /* 6. 出典の各行に確認日があり、lastmod がその最新日より古くないこと（比較記事と同じ） */ -}}
+{{- with findRESubmatch `(?s)\n## 出典\n(.*)\z` $raw -}}
+  {{- $seg := index (index . 0) 1 -}}
+  {{- $items := apply (findRE `(?m)^\d+\.\s.*$` $seg) "strings.TrimSpace" "." -}}
+  {{- if not $items -}}
+    {{- errorf "「出典」節に番号付きの出典がありません（`1. [ページ名](URL) — YYYY-MM-DD 確認` の形式）: %s" $path -}}
+  {{- end -}}
+  {{- $latest := "" -}}
+  {{- range $item := $items -}}
+    {{- $m := findRESubmatch `— (\d{4}-\d{2}-\d{2}) 確認$` $item -}}
+    {{- if not $m -}}
+      {{- errorf "出典の行末は `— YYYY-MM-DD 確認` で終えてください: %s / 行: %s" $path (substr $item 0 40) -}}
+    {{- else -}}
+      {{- $d := index (index $m 0) 1 -}}
+      {{- if gt $d $latest -}}{{- $latest = $d -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $lastmod := $.Lastmod | time.Format "2006-01-02" -}}
+  {{- if and $latest (lt $lastmod $latest) -}}
+    {{- errorf "lastmod（%s）が出典の最新の確認日（%s）より古いです。再確認した日に揃えてください: %s" $lastmod $latest $path -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "「出典」節が本文の末尾にありません: %s" $path -}}
+{{- end -}}
+
+{{- /* 7. 扱わない領域の語（VISION.md「やらないこと」。辞書は比較記事の検査と同じ）。
+       体験・主観の表現の検査は掛けない: 作例は判断の理由に限って「私」「Claude」を主語にした主観を入れてよい（10-18 決定） */ -}}
+{{- with findRE `医療|医薬|服薬|健康|金融|保険|転職|投資|節税|資産運用|副業` $text | uniq -}}
+  {{- errorf "扱わない領域（YMYL）の語があります（%s）。VISION.md の「やらないこと」に当たらないか確認し、当たらないなら言い換えてください: %s" (delimit . " / ") $path -}}
+{{- end -}}

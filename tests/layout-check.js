@@ -44,14 +44,17 @@ function findBrowser() {
   return candidates.find((c) => fs.existsSync(c));
 }
 
-// 検査するページ。記事は全部、それ以外は種類ごとに 1 つ（トップ・固定ページ・タグの一覧）
+// 検査するページ。記事（比較記事・作例）は全部、それ以外は種類ごとに 1 つ（トップ・固定ページ・タグの一覧）
 function pages() {
   const list = ["/"];
-  const posts = path.join(pub, "posts");
-  for (const e of fs.readdirSync(posts, { withFileTypes: true })) {
-    if (e.isDirectory() && e.name !== "page" && fs.existsSync(path.join(posts, e.name, "index.html"))) list.push(`/posts/${e.name}/`);
+  for (const section of ["posts", "examples"]) {
+    const dir = path.join(pub, section);
+    if (!fs.existsSync(dir)) continue;
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.isDirectory() && e.name !== "page" && fs.existsSync(path.join(dir, e.name, "index.html"))) list.push(`/${section}/${e.name}/`);
+    }
   }
-  for (const extra of ["/about/", "/tags/"]) if (fs.existsSync(path.join(pub, extra, "index.html"))) list.push(extra);
+  for (const extra of ["/about/", "/tags/", "/examples/"]) if (fs.existsSync(path.join(pub, extra, "index.html"))) list.push(extra);
   const tags = path.join(pub, "tags");
   const firstTag = fs.existsSync(tags) && fs.readdirSync(tags, { withFileTypes: true }).find((e) => e.isDirectory());
   if (firstTag) list.push(`/tags/${firstTag.name}/`);

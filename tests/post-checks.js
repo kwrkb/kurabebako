@@ -21,8 +21,16 @@ const os = require("node:os");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
-const valid = fs.readFileSync(path.join(__dirname, "fixtures", "valid.md"), "utf8").replace(/\r/g, "");
-const target = path.join(root, "content", "posts", "zz-fixture-post-checks.md");
+// セクションごとの正常なフィクスチャと一時ファイルの置き場。作例（content/examples/）は比較記事と別の型で、
+// 検査も別（layouts/_partials/example_checks.html）なので、ケースに section を書いて切り替える
+const fixtures = {
+  posts: fs.readFileSync(path.join(__dirname, "fixtures", "valid.md"), "utf8").replace(/\r/g, ""),
+  examples: fs.readFileSync(path.join(__dirname, "fixtures", "valid-example.md"), "utf8").replace(/\r/g, ""),
+};
+const targets = {
+  posts: path.join(root, "content", "posts", "zz-fixture-post-checks.md"),
+  examples: path.join(root, "content", "examples", "zz-fixture-post-checks.md"),
+};
 
 // 置換が空振りすると「壊していない記事が通った」だけのテストになるので、必ず確かめる
 function swap(src, from, to) {
@@ -51,6 +59,15 @@ const E_FIT_KIND = "fit: 第 1 引数は run か spec のみ";
 const E_FIT_ROWS = "fit には「向く:」と「向かない:」の 2 行が要ります";
 const E_QUICK_LINK = "結論の早見表の「対象」セルは詳細の見出しへのアンカーリンク";
 const E_QUICK_COLS = "結論の早見表の列が型と違います";
+
+// 作例の検査（example_checks.html）の文言
+const E_EX_H2 = "H2 の構成が作例の型と違います";
+const E_EX_LEAD = "冒頭に定型の 1 段落がありません";
+const E_EX_REPO = "成果物のリポジトリ";
+const E_EX_AI = "5 節目の見出し";
+const E_EX_MODEL = "モデルの版が書かれています";
+const E_EX_SRC = "出典の行末は";
+const ex = (c) => ({ section: "examples", ...c });
 
 // 結論の早見表。valid.md には入れず、「## 比較表」の直前に差し込む
 const quick = (target) => `| こういう条件なら | 対象 | 決め手 |\n| --- | --- | --- |\n| 無料で試したい | ${target} | 「無料枠」列 |\n\n`;
@@ -135,6 +152,37 @@ const cases = [
     make: (s) => swap(s, "## 比較表\n", "| 条件 | 対象 |\n| --- | --- |\n| 無料で試したい | [サンプル A](#サンプル-a) |\n\n## 比較表\n"),
     expect: [E_QUICK_COLS],
   },
+
+  // 作例（content/examples/）。比較記事の検査は掛からず、作例の検査だけが掛かる
+  ex({ name: "作例: 正常", make: (s) => s, expect: null }),
+  ex({ name: "作例: CRLF の正常な記事", make: (s) => s.replace(/\n/g, "\r\n"), expect: null }),
+  ex({
+    name: "作例: 体験や主観の表現があっても通る（判断の理由に主観を入れてよい）",
+    make: (s) => swap(s, "私は無料で始められる点で選びました。", "私は無料で始められる点で選びました。使ってみて快適だったのでおすすめです。"),
+    expect: null,
+  }),
+  ex({ name: "作例: H2 が欠ける", make: (s) => swap(s, "## 判断と気づき\n", ""), expect: [E_EX_H2] }),
+  ex({ name: "作例: H2 の順番が違う", make: (s) => swap(swap(s, "## 制約と撤収\n", "## 一時\n"), "## 判断と気づき\n", "## 制約と撤収\n").replace("## 一時\n", "## 判断と気づき\n"), expect: [E_EX_H2] }),
+  ex({ name: "作例: 冒頭の定型に AI の製品名が無い", make: (s) => swap(s, "この作例は Claude が作り、", "この作例は AI が作り、"), expect: [E_EX_LEAD] }),
+  ex({
+    name: "作例: 冒頭にリポジトリのリンクが無い",
+    make: (s) => swap(s, "https://github.com/kwrkb/kurabebako-example-fixture", "https://example.com/"),
+    expect: [E_EX_REPO],
+  }),
+  ex({ name: "作例: 冒頭の AI 名と 5 節目の見出しが違う", make: (s) => swap(s, "## Claude がしたこと", "## Codex がしたこと"), expect: [E_EX_AI] }),
+  ex({ name: "作例: Codex で揃っていれば通る", make: (s) => swap(swap(s, "この作例は Claude が作り", "この作例は Codex が作り"), "## Claude がしたこと", "## Codex がしたこと"), expect: null }),
+  ex({
+    name: "作例: モデルの版が書かれている",
+    make: (s) => swap(s, "サンプル A で公開したページです。", "サンプル A で公開したページです。制作には Claude Opus 5.5 を使いました。"),
+    expect: [E_EX_MODEL],
+  }),
+  ex({ name: "作例: 出典に確認日が無い", make: (s) => swap(s, " — 2026-10-23 確認", ""), expect: [E_EX_SRC] }),
+  ex({
+    name: "作例: 扱わない領域の語",
+    make: (s) => swap(s, "サンプル A で公開したページです。", "サンプル A で公開したページです。転職にも向きます。"),
+    expect: [E_YMYL, "転職"],
+  }),
+  ex({ name: "作例: HTML コメントが残っている", make: (s) => swap(s, "## できたもの\n", "<!-- 指示 -->\n\n## できたもの\n"), expect: ["本文に HTML コメントが残っています"] }),
 ];
 
 function build(dest) {
@@ -148,17 +196,23 @@ function build(dest) {
   return { ok: r.status === 0, log: `${r.stdout}\n${r.stderr}` };
 }
 
-if (fs.existsSync(target)) {
-  console.error(`前回の一時ファイルが残っています。消してから実行してください: ${target}`);
-  process.exit(1);
+for (const target of Object.values(targets)) {
+  if (fs.existsSync(target)) {
+    console.error(`前回の一時ファイルが残っています。消してから実行してください: ${target}`);
+    process.exit(1);
+  }
 }
 
 const dest = fs.mkdtempSync(path.join(os.tmpdir(), "kurabebako-post-checks-"));
 let failed = 0;
 try {
   for (const c of cases) {
-    fs.writeFileSync(target, c.make(valid));
+    const section = c.section || "posts";
+    const target = targets[section];
+    fs.writeFileSync(target, c.make(fixtures[section]));
     const { ok, log } = build(dest);
+    // 壊した記事を次のケース（別セクション）に持ち越さない
+    fs.rmSync(target, { force: true });
     let reason = "";
     if (c.expect === null) {
       if (!ok) reason = "通るはずのビルドが止まった";
@@ -177,7 +231,7 @@ try {
     }
   }
 } finally {
-  fs.rmSync(target, { force: true });
+  for (const target of Object.values(targets)) fs.rmSync(target, { force: true });
   fs.rmSync(dest, { recursive: true, force: true });
 }
 

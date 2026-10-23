@@ -67,7 +67,7 @@ if (!commits) {
 console.log(commits);
 
 step("公開を伴うコミットが混ざっていないか");
-const changed = git("diff", "--name-only", "origin/main", "HEAD", "--", "content/posts").split("\n").filter(Boolean);
+const changed = git("diff", "--name-only", "origin/main", "HEAD", "--", "content/posts", "content/examples").split("\n").filter(Boolean);
 const publishing = changed.filter((file) => {
   if (!file.endsWith(".md") || file.endsWith("_index.md")) return false;
   // 公開済みの記事の修正（前後とも公開）と、draft のままの記事は通す

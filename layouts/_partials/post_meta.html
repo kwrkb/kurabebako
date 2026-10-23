@@ -9,7 +9,8 @@
     {{- $scratch.Add "meta" (slice (printf "<span title='公開日 %s'>公開 %s</span>" (.Date) (.Date | time.Format (default ":date_long" site.Params.DateFormat)))) }}
 {{- end }}
 
-{{- if and (eq .Section "posts") (not .Lastmod.IsZero) -}}
+{{- /* 比較記事と作例だけ。about / privacy / contact には出さない */ -}}
+{{- if and (in (slice "posts" "examples") .Section) (not .Lastmod.IsZero) -}}
     {{- $scratch.Add "meta" (slice (printf "<span class='post-lastmod' title='記事の内容を最後に確認した日'>最終確認 %s</span>" (.Lastmod | time.Format (default ":date_long" site.Params.DateFormat)))) }}
 {{- end }}
 

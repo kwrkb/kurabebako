@@ -14,6 +14,11 @@
   {{- errorf "本文に HTML コメントが残っています。archetype の指示コメントを消してください: %s" .File.Path -}}
 {{- end -}}
 
+{{- /* 作例（content/examples/ の単ページ）は比較記事と別の型なので、検査も example_checks.html に分けてある */ -}}
+{{- if and (eq .Kind "page") (eq .Type "examples") -}}
+  {{- partial "example_checks.html" . -}}
+{{- end -}}
+
 {{- /* ここから下は比較記事（content/posts/ の単ページ）だけに掛ける「記事の型」の検査。
        型の正典は CLAUDE.md の「記事の型」と archetypes/posts.md。about / privacy / contact は対象外。
        Windows で書いた記事は CRLF になり得るので、行末の \r を先に落としてから正規表現を掛ける */ -}}
