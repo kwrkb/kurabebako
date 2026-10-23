@@ -182,7 +182,7 @@ API は Free でも使えますが、送信は含まれません。
 - **前提条件**: 料金ページの文言は「free, forever, with no credit card required」です [18]。
   API キーの発行の条件は「you must first complete your account verification through Stripe Identity Verification」と書かれています [20]
 - **検証した内容**: 公式の料金ページ・ヘルプ・開発者ドキュメントを確認しました。本人確認が利用者の操作になるため、実行は次回の更新に回しています。
-  本人確認を済ませても Send API は Pro 以上なので、実行に上げられるのは購読者の登録・解除までです。
+  本人確認を済ませても、恒常の Free では Send API が Pro 以上なので、実行に上げられるのは購読者の登録・解除までです。
   2026-10-21 に Free のアカウントの設定画面（Settings → Domain）を確認したところ、表示は「Custom domains are part of a paid plan」「Unlock with Lite plan」で、
   Pro の試用中も使えず、Free の送信元は `mail.beehiiv.com` のアドレスに固定されていました
 
