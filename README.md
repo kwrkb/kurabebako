@@ -3,7 +3,7 @@
 AIツール・開発環境・CLI・SaaS・サーバーの比較まとめサイト。
 
 - 本番: https://kurabebako.com/
-- 静的サイトジェネレータ: [Hugo](https://gohugo.io/)（extended 0.166.0）
+- 静的サイトジェネレータ: [Hugo](https://gohugo.io/)（extended 0.168.0）
 - ホスティング: Cloudflare Workers (Static Assets)　※ Cloudflare Pages は使わない
 
 ## セットアップ
@@ -22,7 +22,7 @@ AIツール・開発環境・CLI・SaaS・サーバーの比較まとめサイ�
 公式の macOS 向け配布は `.pkg` のみなので、`pkgutil` で展開してバイナリだけ `~/.local/hugo` に置く（sudo 不要）。
 
 ```bash
-V=0.166.0
+V=0.168.0
 curl -fL -o /tmp/hugo.pkg "https://github.com/gohugoio/hugo/releases/download/v${V}/hugo_extended_${V}_darwin-universal.pkg"
 pkgutil --expand-full /tmp/hugo.pkg /tmp/hugo-pkg
 mkdir -p ~/.local/hugo && cp /tmp/hugo-pkg/Payload/hugo ~/.local/hugo/hugo && chmod +x ~/.local/hugo/hugo
@@ -31,7 +31,7 @@ echo 'export PATH="$HOME/.local/hugo:$PATH"' >> ~/.zshrc
 
 ```bash
 hugo version
-# => hugo v0.166.0-... +extended darwin/arm64  ならOK
+# => hugo v0.168.0-... +extended darwin/arm64  ならOK
 ```
 
 `+extended` が付いていること、`build.sh` の `HUGO_VERSION` と一致していることの2点を確認する。
@@ -67,9 +67,9 @@ winget は `--version` で版を固定できるので、`build.sh` の `HUGO_VER
 `winget upgrade --all` で上がってしまったら、`build.sh` の版を上げるか、同じコマンドで入れ直す。
 
 ```powershell
-winget install --id Hugo.Hugo.Extended --version 0.166.0 --exact
+winget install --id Hugo.Hugo.Extended --version 0.168.0 --exact
 hugo version
-# => hugo v0.166.0-... +extended windows/amd64  ならOK
+# => hugo v0.168.0-... +extended windows/amd64  ならOK
 ```
 
 #### 2. Go の確認
