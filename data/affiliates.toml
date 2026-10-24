@@ -168,3 +168,13 @@ program = 'beehiiv Partner Program（Dub 計測。2026-10-12 登録）'
 name = 'Icedrive'
 url = 'https://icedrive.net/?pt=kie6lsz8m7&pts=kurabebako'
 program = 'Icedrive パートナープログラム（自社。2026-10-19 承認）'
+
+# ---- セカイVPN（2026-10-25 提携。A8.net、即時提携）----
+# a8mat の先頭は既存の 4BC9F6 と違う（4BEOXN）。XServer ドライブ（4BCLVX）と同じで、発行時に kurabebako（websiteId=003）を選んだ値。
+# 自由テキスト素材 003 を使う（文言は自由。計測画像は www10）
+
+[sekai-vpn]
+name = 'セカイVPN'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BEOXN+E39DQA+7QW+1ZGNQQ'
+pixel = 'https://www10.a8.net/0.gif?a8mat=4BEOXN+E39DQA+7QW+1ZGNQQ'
+program = 'A8.net s00000001004012（素材 003 自由テキスト）'

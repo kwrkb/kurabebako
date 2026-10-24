@@ -14,6 +14,8 @@ tags = ['vpn', 'windscribe', 'proton-vpn', 'hide-me', 'sekai-vpn']
   hiddenInList = true
 +++
 
+{{< pr >}}
+
 ## 結論
 
 VPN は、手元の端末と事業者のサーバーの間に暗号化した通信路を作り、インターネットへの出口をそのサーバーに移すサービスです。
@@ -180,6 +182,8 @@ Linux 向けには GUI が無く、WireGuard を実装したオープンソー�
 - **前提条件**: 対応 OS は Windows・macOS・iOS・Android・Chrome OS で、Linux は載っていません。公式アプリは Windows・Mac・iOS・Fire TV で、Android と Chrome OS は OS 標準の VPN 設定を使います。
   接続方式は PPTP・L2TP・OpenVPN・IKEv2・OpenConnect（iOS だけ HTTPS 接続も）です [15]
 - **検証した内容**: この比較ではアカウントを作らず、実行していません。確認したのは公式のサービス詳細・料金・無料体験・利用開始までの流れのページ（2026-10-25）です
+
+{{< cta "sekai-vpn" >}}
 
 ## 用途別の選び方
 
