@@ -16,21 +16,34 @@
 #                                 # 指定すると cta の text 引数や既定の「〜の公式サイトを見る」より優先される
 # pixel = 'https://.../0.gif?a8mat=' # 任意。ASP がリンクと対で配る 1x1 のインプレッション計測画像。
 #                                 # 成果計測はリンク側で行われるが、配られたコードを崩さないために一緒に出す
+# paused = '〜から新規申込みの受付を一時停止しています（再開は未定）'
+#                                 # 任意。広告主が新規受付を止めている間だけ置く。cta / ranking はボタンの代わりに
+#                                 # 「受付停止中」の注意書きを出し、リンクと計測画像を出さない（申し込めない先へ
+#                                 # 広告クリックを送らないため）。再開したら paused と paused_url を消すだけで元に戻る
+# paused_url = 'https://.../news/' # 任意。注意書きから張る公式のお知らせ（アフィリエイトリンクではない）
 
 # ---- A8.net（2026-09-12 提携）----
 # a8mat はサイト kurabebako.com（websiteId=003）向けに発行したもの。主サイト用と混ぜない。
+
+# ConoHa は 2026-10-24 13:40 から緊急メンテナンスのため全サービスの新規申込みの受付を一時停止（終了日時は未定。
+# 公式のお知らせ 2026-10-24、A8.net からの通知 2026-10-25）。VPS / WING / AI Canvas の 3 案件に paused を置き、
+# 再開を確認したら 3 案件とも paused と paused_url を消す。記事側の「主な制約」セルと詳細の記述もそのとき直す
 
 [conoha-vps]
 name = 'ConoHa VPS'
 url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+52S51E+50+4Z0M6A'
 pixel = 'https://www14.a8.net/0.gif?a8mat=4BC9F6+52S51E+50+4Z0M6A'
 program = 'A8.net s00000000018030（素材 068 自由テキスト）'
+paused = '2026-10-24 13:40 から新規申込みの受付を一時停止しています（再開は未定）'
+paused_url = 'https://vps.conoha.jp/news/?ap=2015054919'
 
 [conoha-wing]
 name = 'ConoHa WING'
 url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+4785Z6+50+5SKSCY'
 pixel = 'https://www12.a8.net/0.gif?a8mat=4BC9F6+4785Z6+50+5SKSCY'
 program = 'A8.net s00000000018035（自由テキスト）'
+paused = '2026-10-24 13:40 から新規申込みの受付を一時停止しています（再開は未定）'
+paused_url = 'https://www.conoha.jp/wing/news/?ap=2015054918'
 
 [xserver]
 name = 'エックスサーバー'
@@ -113,6 +126,10 @@ url = 'https://px.a8.net/svt/ejp?a8mat=4BEAX0+EPAF42+50+7RTY1E'
 pixel = 'https://www17.a8.net/0.gif?a8mat=4BEAX0+EPAF42+50+7RTY1E'
 text = 'ブラウザだけでできる 本格的なAI画像生成 【ConoHa AI Canvas】'
 program = 'A8.net s00000000018047（テキスト素材。文言はそのまま使う。計測画像は www17。自由テキスト素材かは未確認）'
+# 受付停止の経緯は上の ConoHa VPS / WING のコメント。comfyui-local-cloud はこの案件が唯一のリンクなので、
+# 停止中は記事の {{< pr >}} も外してある（リンクが無いのに PR 表記があるとビルドが止まる）。再開時に戻す
+paused = '2026-10-24 13:40 から新規申込みの受付を一時停止しています（再開は未定）'
+paused_url = 'https://ai.conoha.jp/canvas/news/?ap=2015054922'
 
 # ---- UptimeRobot（2026-10-12 承認。Reditus 計測）----
 # ダッシュボードの Affiliate から Reditus（app.getreditus.com）の申請フォームに飛ばされ、承認後に ?red= 付きのトップ URL が配られた。

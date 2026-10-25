@@ -3,11 +3,11 @@
        example-vps: 時間課金で最小構成が最も安い
        another-vps: 国内リージョンがある
        {{< /ranking >}}
-       順位の根拠は理由欄に書き、報酬額で並べ替えない（PR 表記の約束をここで守る） */ -}}
-{{- if not (.Page.Store.Get "prDeclared") -}}
-  {{- errorf "ranking より前に {{< pr >}} を置いてください（PR 表記がリンクより先に出る必要がある）: %s" .Position -}}
-{{- end -}}
+       順位の根拠は理由欄に書き、報酬額で並べ替えない（PR 表記の約束をここで守る）。
+       台帳に paused がある案件は、順位と理由はそのまま出し、ボタンの代わりに受付停止の注意書きを出す
+       （cta.html と同じ扱い。順位は比較結果で決めているので、受付停止で入れ替えない） */ -}}
 {{- $items := slice -}}
+{{- $active := false -}}
 {{- range split (trim .Inner "\n ") "\n" -}}
   {{- $line := trim . " \r" -}}
   {{- if $line -}}
@@ -17,6 +17,7 @@
       {{- $id := replaceRE `^([a-z0-9-]+):.*$` "$1" $line -}}
       {{- $reason := replaceRE `^[a-z0-9-]+:\s*` "" $line -}}
       {{- $a := partial "affiliate.html" (dict "id" $id "position" $.Position) -}}
+      {{- if not $a.paused -}}{{- $active = true -}}{{- end -}}
       {{- $items = $items | append (dict "a" $a "reason" $reason) -}}
     {{- end -}}
   {{- end -}}
@@ -24,13 +25,23 @@
 {{- if not $items -}}
   {{- errorf "ranking の中身が空です: %s" .Position -}}
 {{- end -}}
-{{- .Page.Store.Set "hasAffiliate" true -}}
+{{- /* 受付停止でない案件が 1 つでもあればアフィリエイトリンクが出るので、PR 表記を要求する */ -}}
+{{- if $active -}}
+  {{- if not (.Page.Store.Get "prDeclared") -}}
+    {{- errorf "ranking より前に {{< pr >}} を置いてください（PR 表記がリンクより先に出る必要がある）: %s" .Position -}}
+  {{- end -}}
+  {{- .Page.Store.Set "hasAffiliate" true -}}
+{{- end -}}
 <ol class="ranking">
 {{- range $i, $it := $items }}
   <li class="ranking-item">
     <div class="ranking-head"><span class="ranking-rank">{{ add $i 1 }}</span><span class="ranking-name">{{ $it.a.name }}</span></div>
     <div class="ranking-reason">{{ $it.reason | markdownify }}</div>
+    {{- if $it.a.paused }}
+    <div class="cta-paused" role="note"><strong>受付停止中</strong>{{ $it.a.name }} は {{ $it.a.paused }}。{{ with $it.a.paused_url }}<a href="{{ . }}" rel="noopener" target="_blank">公式のお知らせ</a>{{ end }}</div>
+    {{- else }}
     <div class="cta"><a class="cta-button" href="{{ $it.a.url }}" rel="sponsored nofollow noopener" target="_blank">{{ $it.a.text | default (printf "%s の公式サイトを見る" $it.a.name) }}</a>{{ with $it.a.pixel }}<img class="cta-pixel" src="{{ . }}" width="1" height="1" alt="" loading="lazy">{{ end }}</div>
+    {{- end }}
   </li>
 {{- end }}
 </ol>

@@ -1,7 +1,7 @@
 +++
 title = '国内 VPS 5 社の最小プラン比較: 時間課金と API の有無で選ぶ'
 date = '2026-09-02T23:07:57+09:00'
-lastmod = '2026-10-03'
+lastmod = '2026-10-25'
 draft = false
 summary = '国内 VPS 5 サービスの最小プランを、料金・課金単位・お試し・最低利用期間・API の有無で比較。AI やスクリプトから作成〜削除まで自動化するなら ConoHa VPS 3.0、最安で API があるのは WebARENA Indigo。ConoHa は Terraform で実際に作成・計測・削除した結果を載せる。'
 categories = ['hosting']
@@ -26,21 +26,24 @@ tags = ['vps', 'conoha', 'sakura-internet', 'kagoya', 'xserver', 'webarena']
 
 | こういう条件なら | 対象 | 決め手 |
 | --- | --- | --- |
-| API・Terraform・MCP から作成〜削除まで自動化する | [ConoHa VPS (Ver.3.0)](#conoha-vps-ver30) | 「前提条件」列（サーバー作成を含む公式 API と Terraform provider）と「主な制約」列（時間課金） |
+| API・Terraform・MCP から作成〜削除まで自動化する | [ConoHa VPS (Ver.3.0)](#conoha-vps-ver30) | 「前提条件」列（サーバー作成を含む公式 API と Terraform provider）と「主な制約」列（時間課金）。新規受付の停止は「主な制約」列 |
 | 常時稼働で月額を最小にする | [WebARENA Indigo](#webarena-indigo) | 「料金」列（1GB の月上限が最も低い）。最小プランの IPv4 の有無は「主な制約」列 |
 | API は不要で、月の途中から日割りで使う | [KAGOYA CLOUD VPS](#kagoya-cloud-vps) | 「料金」列（日額と月上限） |
 | 無料で試す | [さくらのVPS](#さくらのvps) | 「無料枠」列（期間限定のお試し）。本契約へ自動で移る点は「主な制約」列 |
 | 上位寄りのスペックから始める | [Xserver VPS](#xserver-vps) | 「料金」列（最小プランが大きい）。新規受付の停止は「主な制約」列 |
 
+ConoHa VPS は新規申込みの受付を一時停止しています（停止日と再開の見込みは「主な制約」列）。
+停止中に作成〜削除まで自動化するなら、同じ時間課金で REST API のある WebARENA Indigo が代わりの候補です。
+
 {{< cta "conoha-vps" >}}
 
 ## 比較表
 
-2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。対象名を押すと、その対象の詳細に移ります。
+2026-10-03 時点の公式情報に基づき、ConoHa VPS の新規受付の状況を 2026-10-25 に確認しました。出典は末尾の番号に対応しています。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
-| [ConoHa VPS (Ver.3.0)](#conoha-vps-ver30) | 512MB（1 vCPU・SSD 30GB）は 1.3 円/時、月上限 751 円。1GB（2 vCPU・SSD 100GB）は 1.9 円/時、月上限 1,065 円。36 か月前払いの「まとめトク」なら 512MB 293 円/月（更新時は 326 円/月） | なし | 1 時間単位の課金で月上限あり。まとめトクは途中解約不可。初期費用なし | ConoHa アカウントと支払い手段。公開 API（OpenStack 準拠）、Terraform provider、MCP サーバーが公式。Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13 ほか | {{< verified run >}} | [1][2][3][4][5][6] |
+| [ConoHa VPS (Ver.3.0)](#conoha-vps-ver30) | 512MB（1 vCPU・SSD 30GB）は 1.3 円/時、月上限 751 円。1GB（2 vCPU・SSD 100GB）は 1.9 円/時、月上限 1,065 円。36 か月前払いの「まとめトク」なら 512MB 293 円/月（更新時は 326 円/月） | なし | 1 時間単位の課金で月上限あり。まとめトクは途中解約不可。初期費用なし。2026-10-24 13:40 から新規申込みの受付を一時停止（再開は未定） | ConoHa アカウントと支払い手段。公開 API（OpenStack 準拠）、Terraform provider、MCP サーバーが公式。Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13 ほか | {{< verified run >}} | [1][2][3][4][5][6][23] |
 | [さくらのVPS](#さくらのvps) | 512MB（1 vCPU・SSD 25GB）は石狩 643 円/月、東京 698 円/月。1GB（2 vCPU・SSD 50GB）は石狩 880 円/月、東京 990 円/月 | クレジットカード払いで 2 週間無料。同時 2 台まで | 月額・年額のみ。最低利用期間 3 か月。お試し期間中に解約しないと自動で本契約。API は電源操作・状態取得などで、サーバー作成・削除は不可。Ubuntu 24.04 は 1GB 以上のプランのみ | さくらインターネット会員 ID と支払い手段。IPv4・IPv6 各 1 個。リージョンは東京・大阪・石狩 | {{< verified spec >}} | [7][8][9][10][11] |
 | [KAGOYA CLOUD VPS](#kagoya-cloud-vps) | 1GB は日額 20 円、月上限 550 円、年額 6,072 円 | なし（アカウント登録は無料） | 日額（月上限あり）または年額。公式マニュアルに API の項目がない。スナップショットと無停止スケールアップあり | KAGOYA アカウントと支払い手段。OS テンプレート 12 種（Ubuntu 24.04 / 26.04 を含む） | {{< verified spec >}} | [12][13][14] |
 | [Xserver VPS](#xserver-vps) | 2GB（3 vCPU・NVMe 50GB）は 1 か月契約 2,640 円（更新 1,980 円）、36 か月契約 2,035 円/月（更新 1,265 円/月）。受付停止前（2026-09-02）の表示 | 「無料VPS」（2GB / 4GB、NVMe 30GB、30Mbps）。毎日コントロールパネルから手動で契約更新が必要で、更新の自動化は不正行為 | 月額のみで契約期間分を一括前払い。2026-10-03 時点で新規申込みの受付を全プランで一時停止（契約中のアカウントは追加申込み可）。XServer API はレンタルサーバー向けで、VPS の作成・削除は対象外 | Xserver アカウント。無料VPS もクレジットカード登録が必要。Ubuntu 22.04 / 24.04 / 26.04、Debian 11〜13 ほか | {{< verified spec >}} | [15][16][17][18] |
@@ -83,12 +86,14 @@ Xserver VPS 2GB（参考）: 1980
 
 {{< fit run >}}
 向く: API・Terraform・MCP から作成〜削除まで自動化したい。短時間だけ動かして消す検証に使いたい
-向かない: 前払いの割引を使いながら途中で解約したい。5 社で最も低い月額を求める
+向かない: 新規でいま申し込みたい（受付停止中）。前払いの割引を使いながら途中で解約したい。5 社で最も低い月額を求める
 {{< /fit >}}
 
 - **料金体系**: 2GB プランは 3.7 円/時（上限 2,033 円）です。1〜36 か月の前払い「まとめトク」は最大 68% 引きになりますが、途中解約はできません。
   契約更新時の単価は初回より高くなります [1]
-- **制約**: プランに含まれる SSD（512MB で 30GB、1GB 以上で 100GB）がブートボリュームになります [1]。
+- **制約**: 2026-10-24 13:40 から緊急メンテナンスのため新規申込みの受付を一時停止しており、終了日時は未定です。
+  既存の契約への影響は公式のお知らせに記載がありません [23]。
+  プランに含まれる SSD（512MB で 30GB、1GB 以上で 100GB）がブートボリュームになります [1]。
   OS テンプレートは Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13、AlmaLinux、Rocky Linux、Arch Linux、FreeBSD など。
   Docker、GitLab、Dokku、Jenkins などのアプリケーションテンプレートも 40 種以上あります [6]
 - **前提条件**: API を使うにはコントロールパネルで API ユーザーを発行します。
@@ -213,7 +218,8 @@ API がないため、自動化よりはコントロールパネルで手動運�
 
 {{< svg src="vps-japan-minimum-plan-flow.svg" alt="用途別の判断フロー。自動化したいなら ConoHa、月額最小なら WebARENA Indigo、日単位なら KAGOYA、無料で試すならさくら、それ以外はスペックかリージョンで Xserver かさくら" caption="図: 用途別の判断フロー" >}}
 
-- API・Terraform・MCP から作成〜削除まで自動化する → ConoHa VPS。決め手は「前提条件」列です。Indigo の REST API は英語ドキュメントのみで、さくらの API は作成・削除に対応していません
+- API・Terraform・MCP から作成〜削除まで自動化する → ConoHa VPS。決め手は「前提条件」列です。Indigo の REST API は英語ドキュメントのみで、さくらの API は作成・削除に対応していません。
+  ConoHa の新規受付の停止中は、次の分岐の WebARENA Indigo が代わりになります
 - 短時間だけ動かして消す検証用途 → ConoHa か WebARENA Indigo。決め手は「主な制約」列（時間課金）です。Indigo は停止中も課金され、最低利用料があります
 - 常時稼働で月額を最小にする → WebARENA Indigo の 1GB。決め手は「料金」列です。IPv4 が要らなければ 768MB で足り、
   国内リージョンの選択やスナップショットが要るならさくらのVPS の 1GB が候補です
@@ -282,3 +288,4 @@ ConoHa VPS・KAGOYA CLOUD VPS・Xserver VPS・WebARENA Indigo は Ubuntu 24.04 �
 20. [WebARENA Indigo 機能一覧（Linux）](https://web.arena.ne.jp/indigo/spec/) — 2026-10-03 確認
 21. [WebARENA Indigo インスタンス上限値](https://web.arena.ne.jp/indigo/spec/instance.html) — 2026-10-03 確認
 22. [WebARENA Indigo API](https://indigo.arena.ne.jp/userapi/) — 2026-10-03 確認
+23. [ConoHa VPS お知らせ — 緊急メンテナンスによる新規お申し込み受付の一時停止のお知らせ](https://vps.conoha.jp/news/?ap=2015054919) — 2026-10-25 確認

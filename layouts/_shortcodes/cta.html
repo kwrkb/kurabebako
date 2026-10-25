@@ -1,13 +1,20 @@
 {{- /* 案件へのリンクボタン。
        {{< cta "案件id" >}}                       … 「<表示名> の公式サイトを見る」
        {{< cta id="案件id" text="ボタン文言" >}}  … 文言を指定
-       rel="sponsored" は検索エンジンにアフィリエイトリンクだと伝えるために付ける */ -}}
+       rel="sponsored" は検索エンジンにアフィリエイトリンクだと伝えるために付ける。
+       台帳（data/affiliates.toml）の案件に paused があるときは、ボタンの代わりに受付停止の注意書きを出す。
+       アフィリエイトリンクも計測画像も出さない（申し込めない先へ広告クリックを送らないため）ので、
+       PR 表記の前後関係も hasAffiliate も見ない。受付が再開したら台帳の paused を消すだけで元のボタンに戻る */ -}}
 {{- $id := cond .IsNamedParams (.Get "id") (.Get 0) -}}
 {{- $text := cond .IsNamedParams (.Get "text") "" -}}
+{{- $a := partial "affiliate.html" (dict "id" $id "position" .Position) -}}
+{{- if $a.paused -}}
+<div class="cta-paused" role="note"><strong>受付停止中</strong>{{ $a.name }} は {{ $a.paused }}。{{ with $a.paused_url }}<a href="{{ . }}" rel="noopener" target="_blank">公式のお知らせ</a>{{ end }}</div>
+{{- else -}}
 {{- /* 台帳に text があれば素材の文言なので引数より優先する（ASP の規約で文言を変えられない案件のため） */ -}}
 {{- if not (.Page.Store.Get "prDeclared") -}}
   {{- errorf "cta より前に {{< pr >}} を置いてください（PR 表記がリンクより先に出る必要がある）: %s" .Position -}}
 {{- end -}}
-{{- $a := partial "affiliate.html" (dict "id" $id "position" .Position) -}}
 {{- .Page.Store.Set "hasAffiliate" true -}}
 <div class="cta"><a class="cta-button" href="{{ $a.url }}" rel="sponsored nofollow noopener" target="_blank">{{ $a.text | default ($text | default (printf "%s の公式サイトを見る" $a.name)) }}</a>{{ with $a.pixel }}<img class="cta-pixel" src="{{ . }}" width="1" height="1" alt="" loading="lazy">{{ end }}</div>
+{{- end -}}
