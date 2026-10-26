@@ -195,3 +195,14 @@ name = 'セカイVPN'
 url = 'https://px.a8.net/svt/ejp?a8mat=4BEOXN+E39DQA+7QW+1ZGNQQ'
 pixel = 'https://www10.a8.net/0.gif?a8mat=4BEOXN+E39DQA+7QW+1ZGNQQ'
 program = 'A8.net s00000001004012（素材 003 自由テキスト）'
+
+# ---- Proton VPN（2026-10-26 提携。A8.net、10-25 申請の審査承認）----
+# 自由テキスト素材が無い（テキスト 2 件とバナー 5 件）。テキスト 002「【Proton VPN】」を使い、文言は素材どおり text で固定する
+# （001 は「世界1億人のユーザーに信頼されるVPN 【Proton VPN】」で広告主の宣伝文句なので使わない）。計測画像は www14
+
+[proton-vpn]
+name = 'Proton VPN'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BEOXN+DUBVNM+5V4A+5YRHE'
+pixel = 'https://www14.a8.net/0.gif?a8mat=4BEOXN+DUBVNM+5V4A+5YRHE'
+program = 'A8.net s00000027361001（素材 002 テキスト。文言固定）'
+text = '【Proton VPN】'
