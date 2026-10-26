@@ -1,8 +1,16 @@
 {{- /* テーマが <head> の末尾で全ページから呼ぶ拡張点。
-       ここではサイト全体に掛ける検査だけを行う（head に出す要素は無い）。
+       ここではサイト全体に掛ける検査と、GA4 の送信を本番ドメインに限る script だけを置く。
        ページ単位の検査は extend_post_content.html にあるが、ビルド対象から外れた記事には
        そもそもページが無く、そこでは検査できない。トップページは必ず 1 回は描画されるので、
        そこを「ビルドごとに 1 回走る場所」として使う */ -}}
 {{- if .IsHome -}}
   {{- partial "site_checks.html" . -}}
+{{- end -}}
+{{- /* GA4 を本番ドメイン以外（`npm run dev` / `npm run preview` の localhost）から送らない。
+       params.env = 'production' のためタグはどの環境でも出るが、テーマはこの partial を GA の
+       snippet より前に呼ぶ（head.html の末尾）ので、gtag が読む opt-out フラグをここで立てれば
+       送信だけが止まる。GA4 側の内部トラフィック除外は IP でしか定義できず、ホスト名では除けない。
+       測定 ID は hugo.toml の services.googleAnalytics.id から取り、2 か所に書かない */ -}}
+{{- with site.Config.Services.GoogleAnalytics.ID -}}
+<script>if (location.hostname !== 'kurabebako.com') { window['ga-disable-{{ . }}'] = true; }</script>
 {{- end -}}

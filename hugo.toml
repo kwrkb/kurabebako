@@ -44,7 +44,10 @@ mainSections = ['posts', 'examples']
 # gtag のスニペットを layouts/ に手で貼らず、ID だけをここに置く。
 # Cloudflare Web Analytics（ダッシュボード側の設定で自動挿入されている）とは別に動く。
 # GA4 は Cookie（_ga）を使うので、外す・足すときは content/privacy.md の「アクセス解析」「Cookie」も揃える。
-# params.env = 'production' のため `npm run dev` でもタグが出る（localhost のヒットは GA4 側のフィルタで除く）
+# params.env = 'production' のため `npm run dev` でもタグが出る。`npm run preview` も本番ビルドを localhost で配信する。
+# GA4 の内部トラフィック除外は IP でしか定義できずホスト名では除けないので、本番ドメイン以外では
+# layouts/_partials/extend_head.html が gtag の opt-out フラグを立てて送信を止める（2026-10-26。それまでの
+# localhost のヒットは desk の fetch.py が hostName で除く）
 [services.googleAnalytics]
   id = 'G-MCLR0RTLCW'
 
