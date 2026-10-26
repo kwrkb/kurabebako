@@ -1,8 +1,8 @@
 +++
 title = '無料で使える VPN 4 つを比較: データ量の上限・選べる場所・CLI で接続を任せられるか'
-date = '2026-10-25T00:09:31+09:00'
+date = '2026-10-26T20:25:00+09:00'
 lastmod = '2026-10-25'
-draft = true
+draft = false
 summary = '無料で使い続けられる VPN を、Windscribe・Proton VPN・hide.me と国内のセカイVPN の 4 つで比較。無料枠のデータ量と選べる場所、同時接続の台数、カードや登録の要否に加えて、人がアカウントを用意した後に接続・状態確認・切断を CLI で AI に任せられるかで分けました。無料のまま Windows と Linux の CLI で接続から切断まで通ったのは Windscribe で、Windows Sandbox と Linux の VPS の両方で実際に動かして確認しています。Proton VPN と hide.me はデータ量の上限が無い代わりに同時 1 台で、セカイVPN には恒常の無料枠が無く、無料体験の後は有料です。'
 categories = ['developer-tools']
 tags = ['vpn', 'windscribe', 'proton-vpn', 'hide-me', 'sekai-vpn']

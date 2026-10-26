@@ -276,6 +276,7 @@ AI に API キーを渡す場面がある記事では、この記事で比べた
 [スクレイピング API 5 つの無料枠比較](/posts/scraping-api-free-tier/)でも、3 社の API キーを `op run` で注入して取得から上限の確認まで動かしています。
 [クラウドストレージ 6 つの無料プラン比較](/posts/cloud-storage-free-tier/)では、API キーではなくパスワードとアプリ専用パスワードを `op run` で注入して、WebDAV と REST API を動かしています。
 [パスワードマネージャー 4 つの比較](/posts/password-manager-free-tier/)では、Bitwarden の個人 API キーとマスターパスワードを `op run` で注入して、保管庫の項目の作成から完全削除まで動かしています。
+[無料で使える VPN 4 つの比較](/posts/vpn-free-tier/)では、Windscribe の CLI に渡すユーザー名とパスワードを `op run` で注入して、Linux の VPS で接続から切断まで動かしています。
 
 ## よくある質問
 

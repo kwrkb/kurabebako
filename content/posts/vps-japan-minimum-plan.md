@@ -239,6 +239,7 @@ sakura-vps: 5 社で唯一 2 週間の無料お試しがあり、東京・大阪
 常時稼働させるサーバーの死活監視は、[死活監視の無料枠 5 つの比較](/posts/uptime-monitoring-free-tier/)で無料枠を比べています。
 自前のサーバーに立てる Uptime Kuma も、その記事で実際に起動して確認しています。
 Terraform や API に渡す認証情報を AI にどう持たせるかは、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で、機械向けトークンと `run` 相当の注入を実際に動かして比べています。
+時間課金の VPS を検証の実行環境に使った例は[無料で使える VPN 4 つの比較](/posts/vpn-free-tier/)にあり、ConoHa VPS の Ubuntu で Windscribe の CLI を接続から切断まで動かしています。
 
 ## よくある質問
 
