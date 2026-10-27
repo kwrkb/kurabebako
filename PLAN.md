@@ -45,6 +45,9 @@ Hugo + Cloudflare Workers (Static Assets) で `kurabebako.com` を配信でき�
 - [x] 検証用 VPS の経路を作る（2026-09-02 ConoHa VPS 3.0 を Terraform + 1Password で作成〜実測〜削除まで AI が自走。構成と結果は desk の `lab/conoha/`、`research/vps-japan/`）
 - [x] 2本目: 国内 VPS 比較（2026-09-02 `vps-japan-minimum-plan`。主役は ConoHa を「実行」区分で。他社は「仕様」区分、実測できたものから「実行」に置き換える）
 - [x] 10 本まで投入する（2026-09-20 に 10 本目を公開して達成。候補と線引きは desk の `backlog.md`。1 本ごとに「実行」区分の主役を置き、収益に近い領域と検索需要が大きい領域を混ぜる）
+- [ ] 有料プランの検証を 1 件だけ始める（2026-10-27 に決めた。1 件目は `vpn-free-tier` の兄弟記事で Proton VPN Plus の 1 か月とセカイVPN の無料体験。
+  条件と上限は `VISION.md` の「有料プランの検証」、候補の並びは desk の `reviews/2026-10-27-paid-verification-budget.md`。
+  2 本目以降は 90 日後の想定クエリの照合を見てから）
   - 3 本目: 死活監視の無料枠比較（2026-09-03 `uptime-monitoring-free-tier`。UptimeRobot / Checkly / Uptime Kuma を「実行」区分で。手順は desk の `lab/uptime/`）
   - 4 本目: 国内の共用レンタルサーバー比較（2026-09-05 `shared-hosting-japan`。エックスサーバーを「実行」区分で。お試し中の API キーで REST API・CLI・MCP を動かした。手順は desk の `lab/xserver/`）
   - 5 本目: シークレット管理 CLI 比較（2026-09-05 `secret-management-cli`。Bitwarden Secrets Manager を主役に、6 対象すべてを「実行」区分で。同じ 5 手順を流す検証は desk の `lab/secrets/`）
