@@ -123,7 +123,7 @@ function readBlock(file, name) {
   if (blocks.length !== 1) stop(`${path.relative(desk, file)} に \`\`\`${name} のブロックが ${blocks.length} 個あります（1 つだけにする）`);
   const data = {};
   for (const line of blocks[0][1].split("\n")) {
-    const kv = line.match(/^([a-z_]+):\s*(.*?)\s*(?:#.*)?$/);
+    const kv = line.match(/^([a-z0-9_]+):\s*(.*?)\s*(?:#.*)?$/);
     if (!kv) continue;
     if (kv[1] in data) stop(`${path.relative(desk, file)} の ${name} ブロックに ${kv[1]} が 2 回あります`);
     data[kv[1]] = kv[2];
@@ -201,13 +201,14 @@ function checkPublication(slug, publishing, changedAll) {
     if (pre[k] !== v) stop(`precheck の ${k} が「${pre[k] ?? "（無し）"}」です。期待は「${v}」（${k === "sources" || k === "fetched" ? "記事の出典節の行数" : "今日の全件一致"}）`);
   }
   const articleSha = sha256(gitBytes("HEAD", file));
-  if (pre.article_sha256 !== articleSha) stop(`precheck の article_sha256 が HEAD の ${file}（${articleSha.slice(0, 12)}…）と違います。照合の後に記事を直したなら取り直してください`);
+  if (pre.article_sha256 !== articleSha) stop(`precheck の article_sha256（${(pre.article_sha256 || "（無し）").slice(0, 12)}…）が HEAD の ${file}（${articleSha.slice(0, 12)}…）と違います。照合の後に記事を直したなら取り直してください`);
 
   // 提携: precheck に列挙した案件が記事に置かれていること。台帳の案件名が「各対象の詳細」の見出しに当たるのに
   // 置いていないときは、precheck の affiliates_skip に理由つきで書いてあることを要求する
   const table = affiliates();
   const listed = (pre.affiliates || "").split(",").map((s) => s.trim()).filter((s) => s && s !== "none");
-  const skipped = (pre.affiliates_skip || "").split(",").map((s) => s.trim().split(/\s/)[0]).filter(Boolean);
+  // affiliates_skip は「id（理由）, id（理由）」。id は英小文字・数字・ハイフンの先頭部分
+  const skipped = (pre.affiliates_skip || "").split(",").map((s) => (s.trim().match(/^[a-z0-9-]+/) || [""])[0]).filter(Boolean);
   const placed = (id) => text.includes(`{{< cta "${id}" >}}`) || new RegExp(`^\\s*${id}:`, "m").test(text);
   for (const id of listed) {
     if (!table[id]) stop(`precheck の affiliates にある ${id} は data/affiliates.toml にありません`);
