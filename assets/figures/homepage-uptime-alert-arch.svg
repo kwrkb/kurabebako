@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 500" font-family="system-ui, -apple-system, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-size="14" fill="currentColor">
+  <defs>
+    <marker id="arrow-arch" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g stroke="currentColor" stroke-width="1.5" fill="none">
+    <!-- 左列: リポジトリ → GitHub Pages → 公開ページ -->
+    <rect x="20" y="30" width="220" height="64" rx="8"/>
+    <rect x="20" y="140" width="220" height="64" rx="8"/>
+    <rect x="20" y="250" width="220" height="64" rx="8" stroke-width="2.5"/>
+    <line x1="130" y1="94" x2="130" y2="138" marker-end="url(#arrow-arch)"/>
+    <line x1="130" y1="204" x2="130" y2="248" marker-end="url(#arrow-arch)"/>
+    <!-- 右上: Cloudflare Web Analytics（公開ページのビーコンから） -->
+    <rect x="420" y="30" width="320" height="64" rx="8" opacity="0.9"/>
+    <polyline points="240,262 300,262 300,62 418,62" marker-end="url(#arrow-arch)"/>
+    <!-- 右中: UptimeRobot（公開ページを見に来る）→ メール -->
+    <rect x="420" y="250" width="320" height="64" rx="8" opacity="0.9"/>
+    <line x1="420" y1="300" x2="242" y2="300" marker-end="url(#arrow-arch)"/>
+    <rect x="420" y="360" width="320" height="50" rx="8" opacity="0.9"/>
+    <line x1="580" y1="314" x2="580" y2="358" marker-end="url(#arrow-arch)"/>
+    <!-- 下: 登録は Claude が API で -->
+    <rect x="20" y="440" width="720" height="44" rx="8" stroke-dasharray="6 4"/>
+  </g>
+  <g text-anchor="middle">
+    <text x="130" y="56">リポジトリ（main）</text>
+    <text x="130" y="78" font-size="12" opacity="0.8">HTML と CSS だけ。ビルド無し</text>
+    <text x="130" y="166">GitHub Pages</text>
+    <text x="130" y="188" font-size="12" opacity="0.8">main をそのまま配信</text>
+    <text x="130" y="276" font-weight="600">公開ページ</text>
+    <text x="130" y="298" font-size="12" opacity="0.8">kwrkb.github.io/kurabebako-example-…/</text>
+    <text x="580" y="56">Cloudflare Web Analytics</text>
+    <text x="580" y="78" font-size="12" opacity="0.8">訪問を数える。Cookie 無し</text>
+    <text x="580" y="276">UptimeRobot（Free）</text>
+    <text x="580" y="298" font-size="12" opacity="0.8">5 分おきに HTTP で見に来る</text>
+    <text x="580" y="390">止まったらメールで知らせる（復旧も）</text>
+    <text x="380" y="467" font-size="13">登録はすべて Claude が公式 API で行う: Pages の有効化 / 解析サイトの作成 / モニターの作成</text>
+  </g>
+  <g font-size="12" opacity="0.85">
+    <text x="306" y="150">ビーコン</text>
+    <text x="306" y="166">1 行</text>
+    <text x="330" y="320" text-anchor="middle">GET /（200 なら UP）</text>
+  </g>
+</svg>
