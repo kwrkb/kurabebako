@@ -15,10 +15,6 @@ enableRobotsTXT = true
 [pagination]
   pagerSize = 20
 
-# トップの一覧に出すセクション。既定は記事数が最多のセクション（posts）だけになり、
-# 月 1 本の作例（examples）が一覧に出ない。作例は比較記事の入口なので並べて出す（2026-10-23）
-mainSections = ['posts', 'examples']
-
 # テーマは Hugo Modules で管理する（git submodule は使わない）。
 # 更新は `npm run mod:update`（= hugo mod get -u ./... && hugo mod tidy）。
 [module]
@@ -52,6 +48,12 @@ mainSections = ['posts', 'examples']
   id = 'G-MCLR0RTLCW'
 
 [params]
+  # トップの一覧に出すセクション。既定は記事数が最多のセクション（posts）だけになり、
+  # 月 1 本の作例（examples）が一覧に出ない。作例は比較記事の入口なので並べて出す（2026-10-23）。
+  # トップレベルの mainSections ではなく [params] に置くのは、PaperMod の list.html が
+  # site.Params.mainSections を読み、トップレベルの値は Params に映らないため
+  # （2026-10-29、作例 1 本目の公開後にトップに出ていないことで気づいた）
+  mainSections = ['posts', 'examples']
   env = 'production'
   description = 'AIツール・開発環境・CLI・SaaS・サーバーの比較まとめ'
   defaultTheme = 'auto'
