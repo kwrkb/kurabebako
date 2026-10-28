@@ -86,8 +86,13 @@ linter は無い。テストは 2 つ。表示の崩れの検査（`tests/layout
   ゲートは 作業ツリーが clean → 公開を伴うコミットが無い → 型検査の回帰テスト → 本番共通ビルド → 内部リンク切れ →
   表示の崩れ（`tests/layout-check.js`）→ desk の `check-backlog.py` の順で、通ったら push して Workers Builds の check-run まで見る。
   自律で push してよいのは**公開を伴わず、表示にも効かない変更**だけ（2026-09-21 に決めた段階 1）。
-  記事の公開（draft を倒す）と、レイアウト・CSS の変更は、ユーザーが preview を見てから `git push origin main` で出す。
-  型検査は構造しか見ておらず、数字の正しさと表示の崩れは人の目でしか確かめていないため
+  レイアウト・CSS の変更は、ユーザーが preview を見てから `git push origin main` で出す。
+  **記事の公開は段階 2**（2026-10-28）: 人の preview が見ていた「数字の正しさ」と「表示の崩れ」を、
+  当日の出典の取り直しと全セル照合（desk の `research/<slug>/precheck-<日付>.md`）と、`tests/layout-check.js --shots` で撮った
+  画像の全枚読み（同 `visual-<日付>.md`）に置き換え、`npm run push:site -- --prepare-publish <slug>` → `--publish <slug>` のゲートが
+  その記録をハッシュつきで確かめる。環境変数 `KURABEBAKO_PUBLISH_STAGE=2` と `--publish` の両方が要り、公開は比較記事 1 本ずつ、
+  公開のコミットに既存記事からの内部リンクと新しいタグの `_index.md` を同梱する（条件の全文は `tests/push-site.js` の `checkPublication`）。
+  回すのは desk の `kurabebako-publish-weekly`（日曜）だけで、人が公開するときは従来どおり preview と `git push origin main` でよい
 - 1 コミット＝デプロイできる状態に保つ。履歴は線形（merge commit を作らない）。壊れたら `git revert` で戻す
 - 書きかけの記事は `draft = true` のまま `main` に置いてよい。本番ビルドは draft を出さない。
   公開はフラグを倒すコミット 1 つで行う
