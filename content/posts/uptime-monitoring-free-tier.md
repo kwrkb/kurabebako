@@ -230,6 +230,7 @@ better-stack: 無料枠の最短間隔が UptimeRobot より短く、メール�
 
 各サービスの API キーを CI や AI エージェントに渡す手段は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で、無料枠と機械向けトークンの作り方を実際に動かして比べています。
 監視の通知を自前の API からメールで送るなら、[トランザクションメール送信 API 5 つの無料枠比較](/posts/email-api-free-tier/)で無料枠と送信までのゲートを比べています。
+UptimeRobot の登録を API だけで済ませ、実際に一度止めてメールが届くまでを記録した作例は、[AI にホームページを公開して、止まったら知らせてもらう](/examples/homepage-uptime-alert/)にあります。
 
 ## よくある質問
 

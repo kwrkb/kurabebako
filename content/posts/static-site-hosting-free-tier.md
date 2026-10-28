@@ -1,7 +1,7 @@
 +++
 title = '静的サイトの無料ホスティング 5 社比較: 広告を載せるならどれか'
 date = '2026-09-02T19:43:49+09:00'
-lastmod = '2026-10-23'
+lastmod = '2026-10-28'
 draft = false
 summary = 'Hugo などで生成した静的サイトを無料で公開できる5サービスを、料金・無料枠・上限・商用利用の可否・前提条件で比較。アフィリエイトや広告を載せる予定があるなら Cloudflare Workers Static Assets が条件を満たす。'
 categories = ['hosting']
@@ -42,7 +42,7 @@ Hugo などで生成した静的サイトを無料で公開できる 5 サービ
 | --- | --- | --- | --- | --- | --- | --- |
 | [Cloudflare Workers Static Assets](#cloudflare-workers-static-assets) | 無料。有料は月 5 USD から（静的配信だけなら不要） | 静的ファイルへのリクエストは無料・無制限。保存容量も無料。ビルドは月 3,000 分 | 1 バージョンあたり 20,000 ファイル、1 ファイル 25 MiB。同時ビルド 1、ビルド 20 分で打ち切り | Cloudflare アカウント。独自ドメインは DNS を Cloudflare に置く必要あり。自動ビルドは GitHub・GitLab など（自己ホストの GitHub / GitLab は不可） | {{< verified run >}} | [1][2][3][4][5][17] |
 | [Cloudflare Pages](#cloudflare-pages) | 無料。有料プラン（Pro・Business・Enterprise）は上限が増える | 静的ファイルへのリクエストは無料・無制限。ビルドは月 500 回 | 20,000 ファイル、1 ファイル 25 MiB、100 プロジェクト、同時ビルド 1、ビルド 20 分で打ち切り | Cloudflare アカウント。独自ドメインは Cloudflare 外の DNS でも可 | {{< verified spec >}} | [6][7][8] |
-| [GitHub Pages](#github-pages) | 無料（GitHub Free）。非公開リポジトリから公開するには GitHub Pro 以上 | サイト容量 1 GB、転送量 月 100 GB（ソフト上限） | ビルド 1 時間に 10 回（ソフト上限、独自の Actions なら対象外）、デプロイ 10 分で打ち切り。オンラインビジネス・EC・商用 SaaS など商取引が主目的のサイトは不可 | GitHub アカウント。GitHub Free では公開リポジトリのみ | {{< verified spec >}} | [9][10] |
+| [GitHub Pages](#github-pages) | 無料（GitHub Free）。非公開リポジトリから公開するには GitHub Pro 以上 | サイト容量 1 GB、転送量 月 100 GB（ソフト上限） | ビルド 1 時間に 10 回（ソフト上限、独自の Actions なら対象外）、デプロイ 10 分で打ち切り。オンラインビジネス・EC・商用 SaaS など商取引が主目的のサイトは不可 | GitHub アカウント。GitHub Free では公開リポジトリのみ | {{< verified run >}} | [9][10] |
 | [Netlify Free](#netlify-free) | 無料。有料は Personal 月 9 USD から | 月 300 クレジット（本番デプロイ 1 回 15、転送 1 GB 20、リクエスト 1 万件 2） | クレジットを使い切ると全サイトが停止し「Site not available」になる。追加購入不可 | Netlify アカウント。500 プロジェクトまで、チームオーナー 1 名 | {{< verified spec >}} | [11][12] |
 | [Vercel Hobby](#vercel-hobby) | 無料。有料は Pro 月 20 USD（デプロイ席 1 つ込み）から | 転送量 月 100 GB まで（Fair Use の目安） | 非商用・個人利用のみ。広告掲載やアフィリエイト主目的のサイトは商用扱い。1 日 100 デプロイ、200 プロジェクト、1 プロジェクト 50 ドメイン | Vercel アカウント。組織所有の Git リポジトリは接続不可 | {{< verified spec >}} | [13][14][15][16] |
 
@@ -65,7 +65,8 @@ Hugo などで生成した静的サイトを無料で公開できる 5 サービ
   「無料枠」列は、上限に達したときの扱いで分かれます。Netlify Free はクレジットを使い切ると全サイトが止まり、Cloudflare の 2 つは静的ファイルへのリクエストに上限がありません。
   「前提条件」列は、独自ドメインの DNS を Cloudflare に置けるかと、リポジトリを公開できるかで分かれます
 - 検証の手順: Cloudflare Workers Static Assets は、このサイト自体の稼働で 2026-09-02 に確かめました（トップページの応答・存在しないパスの 404・出力のファイル数）。
-  ほかの 4 つは、2026-10-21 に公式ページを確認するにとどめています。結果は「各対象の詳細」の「検証した内容」に書いています
+  GitHub Pages は、2026-10-28 に公開リポジトリを新しく作り、REST API での有効化から公開 URL の応答、無効化と再有効化までを確かめました（作例の一部として）。
+  ほかの 3 つは、2026-10-21 に公式ページを確認するにとどめています。結果は「各対象の詳細」の「検証した内容」に書いています
 
 ## 各対象の詳細
 
@@ -125,7 +126,7 @@ Cloudflare 外の DNS で管理しているドメインも使える点が、Work
 リポジトリがすでに GitHub にあるなら、追加のアカウントなしで始められるのが利点です。
 ただし利用規約の用途制限があります。
 
-{{< fit spec >}}
+{{< fit run >}}
 向く: 非商用の個人サイトで、公開リポジトリが GitHub にある
 向かない: 商取引が主目的のサイトを出したい。非公開リポジトリから無料で出したい
 {{< /fit >}}
@@ -134,8 +135,10 @@ Cloudflare 外の DNS で管理しているドメインも使える点が、Work
 - **制約**: 利用規約の文言は、「商取引の促進を主目的とするサイト」の無料ホスティングとしては使えない、というものです [9]
 - **前提条件**: URL は `<owner>.github.io` か `<owner>.github.io/<repo>` です。
   独自ドメインと HTTPS に対応しています [10]
-- **検証した内容**: 仕様区分です。上記の公式ページ [9][10] を 2026-10-03 に確認しました。
-  検証用にリポジトリを新規作成する必要があるため、今回は実デプロイを行っていません
+- **検証した内容**: 実行区分です。2026-10-28 に、公開リポジトリに HTML 1 枚を置き、REST API の `POST /repos/{owner}/{repo}/pages` で Pages を有効化して、
+  ビルドの状態が `built` になり公開 URL が 200 を返すまでを確かめました（有効化から 52 秒）。`DELETE` で無効化すると 404 になり、再び `POST` すると 200 に戻ることも確かめています。
+  無効化の直後は配信側のキャッシュ（`Cache-Control: max-age=600`）で、直前に開いた拠点からは最長 10 分ほど古い内容が返ります。
+  手順と記録は、作例[AI にホームページを公開して、止まったら知らせてもらう](/examples/homepage-uptime-alert/)にあります。公式ページ [9][10] は同日に再確認しました
 
 ### Netlify Free
 
@@ -194,6 +197,7 @@ Cloudflare 外の DNS で管理しているドメインも使える点が、Work
 公開したサイトが落ちていないかを無料枠で見張るなら、[死活監視の無料枠 5 つの比較](/posts/uptime-monitoring-free-tier/)が続きになります。
 監視対象はこのサイト自身で、同じ Cloudflare の構成に対して作成から削除までを確認しています。
 公開したサイトがどれだけ読まれているかを無料で数えるなら、[アクセス解析の無料枠比較](/posts/analytics-free-tier/)が対象になります。
+GitHub Pages で公開したページに、死活監視とアクセス解析をこの 2 本の記事の対象から足して動かした作例は、[AI にホームページを公開して、止まったら知らせてもらう](/examples/homepage-uptime-alert/)にあります。
 静的なファイルだけでは足りず、リクエストに応じてコードを動かすなら、[サーバーレス実行環境の無料枠比較](/posts/serverless-free-tier/)が対象になります。
 
 ## よくある質問
@@ -229,8 +233,8 @@ Cron Triggers・Gradual Deployments・Logpush などは、Workers だけが対�
 6. [Cloudflare Pages — Limits](https://developers.cloudflare.com/pages/platform/limits/) — 2026-10-21 確認
 7. [Cloudflare Pages — Functions: Pricing](https://developers.cloudflare.com/pages/functions/pricing/) — 2026-10-21 確認
 8. [Cloudflare Workers — Migrate from Pages to Workers](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) — 2026-10-21 確認
-9. [GitHub Docs — GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) — 2026-10-21 確認
-10. [GitHub Docs — About GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages) — 2026-10-21 確認
+9. [GitHub Docs — GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) — 2026-10-28 確認
+10. [GitHub Docs — About GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages) — 2026-10-28 確認
 11. [Netlify Docs — Credit-based pricing plans](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) — 2026-10-21 確認
 12. [Netlify Docs — How credits work](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/) — 2026-10-21 確認
 13. [Vercel Docs — Hobby Plan](https://vercel.com/docs/plans/hobby) — 2026-10-21 確認

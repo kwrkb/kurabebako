@@ -204,6 +204,8 @@ Cookie を使わないことを前面に出した有料のアクセス解析で�
 - 有料でよい。Cookie を使わない解析を、運用ごと任せたい → Plausible か Fathom。決め手は「料金」列で、サイトが少なければ Plausible、多ければ Fathom です。
   API で数字を取り出すなら、Plausible は Business 以上が要ります
 
+Cloudflare Web Analytics のサイト登録からビーコンの設置、集計の取得までを API で済ませた作例は、[AI にホームページを公開して、止まったら知らせてもらう](/examples/homepage-uptime-alert/)にあります。
+
 ## よくある質問
 
 ### 無料で使えるアクセス解析はどれですか？

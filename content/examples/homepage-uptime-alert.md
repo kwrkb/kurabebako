@@ -1,9 +1,9 @@
 +++
 title = 'AI にホームページを公開して、止まったら知らせてもらう'
-date = '2026-10-28T14:13:43+09:00'
+date = '2026-10-29T01:20:00+09:00'
 # 最終確認日。出典の確認日・現物が動くことを最後に確かめた日と揃える（ヘッダーに出る）
 lastmod = '2026-10-28'
-draft = true
+draft = false
 summary = 'GitHub Pages・UptimeRobot・Cloudflare Web Analytics の無料枠を組み合わせ、1 ページのホームページを公開して、止まったらメールで知らせ、訪問を数える仕組みを Claude に作らせた作例。登録はすべて公式 API で行い、実際に一度止めて通知が届くまでを記録した。'
 # tags / categories は URL に載るため英語（小文字・ハイフン区切り）で書く。
 # tags には部品の比較記事と同じ事業者名を入れる（タグページで比較記事と並ぶ）
@@ -142,6 +142,10 @@ op run --env-file=uptimerobot.env.tpl -- bash scripts/outage.sh
 通知が送られた事実は `GET /incidents/{id}/alerts` で確かめます。`channelType` が `EMAIL`、`status` が `SUCCESS` の行が、送信済みの記録です。
 再有効化すると 200 に戻り、`status` が `UP` に戻って復旧のメールも送られます。時刻は「完成形の全体像」の 2 つ目の表にあります
 （[outage のログ](https://github.com/kwrkb/kurabebako-example-homepage-uptime-alert/blob/main/runs/outage-20261028-1412.log)）。
+
+DOWN のメールは私の受信箱に届きました。件名の行と本文はこのとおりで、宛名の行だけ省いています。
+
+![UptimeRobot から届いた DOWN のメール。モニター名の後に「is down.」と出て、本文に N. Virginia, USA から見て止まっていると書かれている](/images/examples/homepage-uptime-alert/down-mail.png)
 
 ハマりどころ: Pages を無効化しても、手元の curl はしばらく 200 を返し続けました。
 GitHub Pages は `Cache-Control: max-age=600` で配信していて、直前に開いた拠点の CDN キャッシュが切れるまでは古い内容が返ります。
