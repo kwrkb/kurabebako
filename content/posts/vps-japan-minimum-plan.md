@@ -1,7 +1,7 @@
 +++
 title = '国内 VPS 5 社の最小プラン比較: 時間課金と API の有無で選ぶ'
 date = '2026-09-02T23:07:57+09:00'
-lastmod = '2026-10-25'
+lastmod = '2026-10-29'
 draft = false
 summary = '国内 VPS 5 サービスの最小プランを、料金・課金単位・お試し・最低利用期間・API の有無で比較。AI やスクリプトから作成〜削除まで自動化するなら ConoHa VPS 3.0、最安で API があるのは WebARENA Indigo。ConoHa は Terraform で実際に作成・計測・削除した結果を載せる。'
 categories = ['hosting']
@@ -74,7 +74,8 @@ Xserver VPS 2GB（参考）: 1980
   「前提条件」列は、サーバーの作成・削除まで届く公式 API があるかで分かれ、届くのは ConoHa と Indigo だけです。
   「無料枠」列は、お試しが本契約へ自動で移るか、毎日の手動更新が要るかで、試すだけの用途に使えるかが決まります
 - 検証の手順: ConoHa VPS に 2026-09-02 に行いました。Terraform provider で 1GB プランのサーバーを作成し、SSH で初期状態を記録して、
-  CPU・メモリ・ディスク・回線を計測してから削除する、の順です。ほかの 4 社は公式ページの確認にとどめています。
+  CPU・メモリ・ディスク・回線を計測してから削除する、の順です。2026-10-29 には同じ構成で AI エージェント（OpenClaw）の導入から常時稼働、応答までを行い、
+  512MB プラン（Debian 13）でも同じ手順を通してから、どちらも削除しました。ほかの 4 社は公式ページの確認にとどめています。
   結果は「各対象の詳細」の「検証した内容」に書いています
 
 ## 各対象の詳細
@@ -94,7 +95,7 @@ Xserver VPS 2GB（参考）: 1980
 - **制約**: 2026-10-24 13:40 から緊急メンテナンスのため新規申込みの受付を一時停止しており、終了日時は未定です。
   既存の契約への影響は公式のお知らせに記載がありません [23]。
   プランに含まれる SSD（512MB で 30GB、1GB 以上で 100GB）がブートボリュームになります [1]。
-  OS テンプレートは Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13、AlmaLinux、Rocky Linux、Arch Linux、FreeBSD など。
+  OS テンプレートは Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13、AlmaLinux、Rocky Linux、Arch Linux、FreeBSD など。Ubuntu は 1GB 以上のプランだけで、512MB では選べません。
   Docker、GitLab、Dokku、Jenkins などのアプリケーションテンプレートも 40 種以上あります [6]
 - **前提条件**: API を使うにはコントロールパネルで API ユーザーを発行します。
   公開 API は OpenStack 準拠で、Identity / Compute / Image / Volume / Network の各 API があります [2][5]。
@@ -139,6 +140,24 @@ Xserver VPS 2GB（参考）: 1980
   料金ページの表記は 1GB が 1.9 円/時（税込）で、明細の 1.65 円（税抜）に消費税を足した額とは一致していません。
   合計 1 円にはクーポンが充当され、実際の請求額は 0 円でした。
   削除後に API でサーバー・ボリューム・キーペアが 0 件になったことも確認しています
+
+  2026-10-29 には同じ構成（1GB、Ubuntu 24.04、Terraform で作成）で、**AI エージェント OpenClaw を常時動かす一巡**を AI が自走しました。
+  公式のインストーラが Node.js 24 を入れて OpenClaw を導入し、Gateway を systemd のユーザーサービスにして `loginctl enable-linger` で常時稼働にし、
+  Anthropic の API キーを環境変数で渡して、CLI から「OS とカーネルをコマンドで確かめて答える」質問に正答するまでを確認しています [24][25][26]。
+  再起動後もログインなしで Gateway が戻りました。所要時間は次のとおりです。
+
+  | 工程 | 1GB（Ubuntu 24.04） | 512MB（Debian 13） |
+  | --- | --- | --- |
+  | インストーラ（Node.js 24 の導入を含む） | 133 秒 | 171 秒 |
+  | Gateway のサービス登録から待ち受けまで | 約 45 秒 | 約 30 秒 |
+  | 質問への応答（1 回目 / 2 回目） | 81 秒 / 55 秒 | 264 秒 / — |
+  | 応答のあとのメモリの空き（available） | 83〜114 MB | 96 MB（スワップ使用 1.3 GB） |
+
+  512MB プランでは Ubuntu のテンプレートを選べません。API はイメージの最小メモリ（Ubuntu は 1GB）で作成を拒否し、
+  テンプレート一覧にも 512MB では利用できない旨の注記があります [6]。Debian 13 では導入から応答まで通りましたが、
+  テンプレート付属の 2GB のスワップに頼り、応答は 1GB の数倍かかりました。1GB も応答のあとに空きがほとんど残らず、
+  常時動かす用途は 1GB 以上を前提に、余裕を見るなら 2GB を検討してください。
+  動いている台のプラン変更は、失敗すると台が停止したまま SSH が届かなくなったため、計測が終わってから別の台で試す手順にしています
 
 {{< cta "conoha-vps" >}}
 
@@ -216,11 +235,13 @@ API がないため、自動化よりはコントロールパネルで手動運�
 
 上から順に答えていくと、条件に合う対象にたどり着きます。各分岐の決め手は比較表の列で、数字はそちらを見てください。
 
-{{< svg src="vps-japan-minimum-plan-flow.svg" alt="用途別の判断フロー。自動化したいなら ConoHa、月額最小なら WebARENA Indigo、日単位なら KAGOYA、無料で試すならさくら、それ以外はスペックかリージョンで Xserver かさくら" caption="図: 用途別の判断フロー" >}}
+{{< svg src="vps-japan-minimum-plan-flow.svg" alt="用途別の判断フロー。自動化したいなら ConoHa、AI エージェントを常時動かすなら 1GB 以上のプラン、月額最小なら WebARENA Indigo、日単位なら KAGOYA、無料で試すならさくら、それ以外はスペックかリージョンで Xserver かさくら" caption="図: 用途別の判断フロー" >}}
 
 - API・Terraform・MCP から作成〜削除まで自動化する → ConoHa VPS。決め手は「前提条件」列です。Indigo の REST API は英語ドキュメントのみで、さくらの API は作成・削除に対応していません。
   ConoHa の新規受付の停止中は、次の分岐の WebARENA Indigo が代わりになります
 - 短時間だけ動かして消す検証用途 → ConoHa か WebARENA Indigo。決め手は「主な制約」列（時間課金）です。Indigo は停止中も課金され、最低利用料があります
+- AI エージェント（OpenClaw など）を常時動かしたい → メモリ 1GB 以上のプラン。実行で確かめたのは ConoHa VPS の 1GB です。決め手は「料金」列の 1GB の月上限と「前提条件」列です。
+  512MB は ConoHa とさくらで Ubuntu を選べず、ConoHa の Debian では動いてもスワップ頼みで応答が遅くなります（「よくある質問」）
 - 常時稼働で月額を最小にする → WebARENA Indigo の 1GB。決め手は「料金」列です。IPv4 が要らなければ 768MB で足り、
   国内リージョンの選択やスナップショットが要るならさくらのVPS の 1GB が候補です
 - API は不要で、月の途中で始めても日割りにしたい → KAGOYA CLOUD VPS。決め手は「料金」列（日額と月上限）です
@@ -262,8 +283,15 @@ ConoHa の 9 月分の明細では、23 分の稼働が 1 時間分に切り上�
 
 ### 最小プランで Ubuntu 24.04 は使えますか？
 
-ConoHa VPS・KAGOYA CLOUD VPS・Xserver VPS・WebARENA Indigo は Ubuntu 24.04 のテンプレートを選べます [6][13][17][20]。
-さくらのVPS は Ubuntu 24.04 が 1GB 以上のプランだけで、512MB では選べません [10]。
+KAGOYA CLOUD VPS・Xserver VPS・WebARENA Indigo は最小プランで Ubuntu 24.04 のテンプレートを選べます [13][17][20]。
+ConoHa VPS とさくらのVPS は Ubuntu が 1GB 以上のプランだけで、512MB では選べません [6][10]。
+ConoHa の 512MB で選べる Linux は Debian、AlmaLinux、Rocky Linux などです [6]。
+
+### AI エージェント（OpenClaw など）を VPS で常時動かせますか？
+
+動かせます。OpenClaw は Node.js 24 以上の Linux で動き、Gateway を systemd のユーザーサービスにすると再起動後もログインなしで立ち上がります [24][25]。
+この記事では ConoHa VPS の 1GB プラン（Ubuntu 24.04）で、導入から常時稼働、応答までを AI が自走して確認しました（「各対象の詳細」の ConoHa の節）。
+512MB プランは Ubuntu を選べず、Debian では動いたもののスワップに頼って応答が大きく遅れたため、常時動かすなら 1GB 以上のプランが前提です [6]。
 
 ## 出典
 
@@ -272,7 +300,7 @@ ConoHa VPS・KAGOYA CLOUD VPS・Xserver VPS・WebARENA Indigo は Ubuntu 24.04 �
 3. [ConoHa ドキュメント — Terraform ConoHa VPS Provider](https://doc.conoha.jp/reference/terraform/terraform-conoha-vps-provider/) — 2026-10-03 確認
 4. [ConoHa ドキュメント — ConoHa VPS MCP Server](https://doc.conoha.jp/reference/mcp-server/conoha-vps-mcp-server/) — 2026-10-03 確認
 5. [ConoHa ドキュメント — 公開API (ConoHa VPS Ver.3.0)](https://doc.conoha.jp/reference/api-vps3/) — 2026-10-03 確認
-6. [ConoHa VPS OS・アプリケーションテンプレート](https://vps.conoha.jp/function/template/) — 2026-10-03 確認
+6. [ConoHa VPS OS・アプリケーションテンプレート](https://vps.conoha.jp/function/template/) — 2026-10-29 確認
 7. [さくらのVPS 料金](https://vps.sakura.ad.jp/) — 2026-10-03 確認
 8. [さくらのVPS 2 週間無料お試し](https://vps.sakura.ad.jp/news/vps-free-trial/) — 2026-10-03 確認
 9. [さくらの VPS マニュアル — API](https://manual.sakura.ad.jp/vps/api/index.html) — 2026-10-03 確認
@@ -290,3 +318,6 @@ ConoHa VPS・KAGOYA CLOUD VPS・Xserver VPS・WebARENA Indigo は Ubuntu 24.04 �
 21. [WebARENA Indigo インスタンス上限値](https://web.arena.ne.jp/indigo/spec/instance.html) — 2026-10-03 確認
 22. [WebARENA Indigo API](https://indigo.arena.ne.jp/userapi/) — 2026-10-03 確認
 23. [ConoHa VPS お知らせ — 緊急メンテナンスによる新規お申し込み受付の一時停止のお知らせ](https://vps.conoha.jp/news/?ap=2015054919) — 2026-10-25 確認
+24. [OpenClaw Docs — Install](https://docs.openclaw.ai/install) — 2026-10-29 確認
+25. [OpenClaw Docs — Gateway](https://docs.openclaw.ai/gateway) — 2026-10-29 確認
+26. [OpenClaw Docs — Environment variables](https://docs.openclaw.ai/gateway/configuration/environment-variables) — 2026-10-29 確認
