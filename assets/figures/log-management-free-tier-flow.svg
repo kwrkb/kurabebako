@@ -34,10 +34,10 @@
     <text x="182" y="506">いいえ</text>
   </g>
   <g text-anchor="middle">
-    <text x="170" y="46">閲覧だけの人を含めて、</text>
-    <text x="170" y="68">無料のまま複数人で見たい</text>
-    <text x="170" y="176">1 人で、無料のままなるべく</text>
-    <text x="170" y="198">多く取り込んで長く残したい</text>
+    <text x="170" y="46">閲覧だけの人を、</text>
+    <text x="170" y="68">人数の上限なしに増やしたい</text>
+    <text x="170" y="176">1 人で、無料のまま</text>
+    <text x="170" y="198">多くのログを取り込みたい</text>
     <text x="170" y="306">Grafana のダッシュボードで、</text>
     <text x="170" y="328">指標とログを同じ画面で見たい</text>
     <text x="170" y="436">死活監視やエラー監視と同じ</text>
@@ -45,11 +45,11 @@
   </g>
   <g text-anchor="middle">
     <text x="580" y="46" font-weight="600">New Relic（Free）</text>
-    <text x="580" y="68" font-size="12">閲覧だけの人は無制限。超えると画面ごと止まる</text>
+    <text x="580" y="68" font-size="12">basic user は無制限。超えると画面ごと止まる</text>
     <text x="580" y="176" font-weight="600">Axiom（Personal）</text>
-    <text x="580" y="198" font-size="12">取り込みと保持が最大。超えたときの動きは記載なし</text>
+    <text x="580" y="198" font-size="12">取り込み量が最大。保存と検索は別の枠</text>
     <text x="580" y="306" font-weight="600">Grafana Cloud Logs（Free）</text>
-    <text x="580" y="328" font-size="12">指標やトレースと同じ画面。カード不要</text>
+    <text x="580" y="328" font-size="12">指標やトレースも同じ Free に含まれる</text>
     <text x="580" y="436" font-weight="600">Better Stack（Free）</text>
     <text x="580" y="458" font-size="12">監視・例外と同じ Free。保持は最も短い</text>
     <text x="380" y="551" font-weight="600">アプリの外から止まったことを知りたいなら、ログ管理ではなく死活監視</text>
