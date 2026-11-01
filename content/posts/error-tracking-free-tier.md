@@ -67,7 +67,8 @@ Honeybadger: 15
 ## 比較の前提
 
 - 対象に含めたもの: アプリが投げた例外を集めるサービスのうち、無料プランか無料のセルフホストを持ち、件数と保持期間が公式に載っている 5 つです。Better Stack Errors と Rollbar は API で送信までを実行し、Sentry・Honeybadger・GlitchTip は公式ページの確認にとどめています
-- 除外したもの: アプリの外から URL を叩く死活監視は、[死活監視の無料枠比較](/posts/uptime-monitoring-free-tier/)で比べています。ログ管理や性能監視（APM）が主役のサービスは、無料枠を容量で数えるため件数での比較が揃わず、対象外にしました
+- 除外したもの: アプリの外から URL を叩く死活監視は、[死活監視の無料枠比較](/posts/uptime-monitoring-free-tier/)で比べています。ログ管理や性能監視（APM）が主役のサービスは、無料枠を容量で数えるため件数での比較が揃わず、対象外にしました。
+  ログ管理は[ログ管理 SaaS の無料枠比較](/posts/log-management-free-tier/)で比べています
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ
 - 料金表記の注意: 通貨は USD で、税の扱いは各社の料金ページの表示のままです。件数の呼び方は exceptions・errors・occurrences・events と各社で違いますが、送られた例外 1 件ごとに数える点は同じです。
   GlitchTip の events だけは、例外のほかに死活監視の確認やトランザクションも同じ枠で数えます [11]

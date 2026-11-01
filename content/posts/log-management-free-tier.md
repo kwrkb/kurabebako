@@ -1,8 +1,8 @@
 +++
 title = 'ログ管理 SaaS の無料枠 4 つを比較: 取り込み量・保持日数・超えたときの止まり方で選ぶ'
-date = '2026-10-31T10:22:05+09:00'
-lastmod = '2026-10-31'
-draft = true
+date = '2026-11-01T09:19:24+09:00'
+lastmod = '2026-11-01'
+draft = false
 summary = 'ログ管理 SaaS の無料枠を、Axiom・Better Stack・Grafana Cloud・New Relic で比較。無料で取り込める量と保持日数、無料枠を超えたときに何が止まるか、API で送れるかを並べる。Grafana Cloud のログの無料枠と保持日数、Better Stack の料金の地域差も表に載せる。Better Stack は API で受け口の作成からログの送信、削除までを実行して確認した。'
 categories = ['monitoring']
 tags = ['log-management', 'axiom', 'better-stack', 'grafana-cloud', 'new-relic']
@@ -34,15 +34,15 @@ tags = ['log-management', 'axiom', 'better-stack', 'grafana-cloud', 'new-relic']
 
 ## 比較表
 
-2026-10-31 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-01 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は無料プランと、個人が申し込める最小の有料の入口を月払いの月額（USD）で載せています。
 対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Axiom](#axiom) | Personal は USD 0。Axiom Cloud は USD 25/月＋従量 | 取り込み 500 GB/月、保存 25 GB、保持 30 日、検索 10 GB-hours/月 | 3 データセット・1 ユーザー・監視 3。無料枠を超えたときの動きは記載なし | アカウントのみ、カード不要。API は全プラン | {{< verified spec >}} | [1][2] |
-| [Better Stack](#better-stack) | Free は USD 0。Nano（40 GB・保持 30 日）は月払い Europe 30 / US 45 / Singapore 105 | ログ 3 GB/月、保持 3 日。同じ Free に監視 10・例外 10 万件/月。Telemetry を見るメンバーは USD 0 で人数の記載なし | 上限に達すると取り込みが 402 で止まる。SQL で読むには global トークンが要る | アカウントのみ。カードの要否は記載なし。API はチーム単位のトークン | {{< verified run >}} | [3][4][5][6] |
-| [Grafana Cloud Logs](#grafana-cloud-logs) | Free は USD 0。Pro は基盤 USD 19/月（50 GB 込み）＋従量 | 取り込み 50 GB/月、保持 14 日。指標・トレースも同じ Free に含まれ、利用者は月 3 人まで | 50 GB を超えたときの動きは記載なし。取り込みは 5 MB/s・1 行 256 KB まで | アカウントのみ、カード不要 | {{< verified spec >}} | [7][8] |
+| [Better Stack](#better-stack) | Free は USD 0。Nano（40 GB・保持 30 日）は月払い Europe 30 / US 45 / Singapore 105 | ログ 3 GB/月、保持 3 日。同じ Free に監視 10・例外 10 万件/月。人数は Free の欄に記載なし | 上限に達すると取り込みが 402 で止まる。SQL で読むには global トークンが要る | アカウントのみ。カードの要否は記載なし。API はチーム単位のトークン | {{< verified run >}} | [3][4][5][6] |
+| [Grafana Cloud Logs](#grafana-cloud-logs) | Free は USD 0。Pro は基盤 USD 19/月（50 GB 込み）＋従量 | 取り込み 50 GB/月、保持 14 日。指標・トレースも同じ Free に含まれ、利用者は月 3 人まで | 50 GB を超えたときの動きは記載なし。速度の上限（5 MB/s）は利用量に合わせて調整され、1 行 256 KB 超は既定で拒否 | アカウントのみ、カード不要 | {{< verified spec >}} | [7][8] |
 | [New Relic](#new-relic) | Free は USD 0。超過は USD 0.40/GB、full user は最初の 1 人 USD 10 | 全データ共通で 100 GB/月、full user 1・basic user 無制限（問い合わせとダッシュボード）、ログの既定保持 30 日 | 100 GB を超えると、翌月 1 日まで取り込みと画面の両方が止まる | アカウントのみ、カード不要 | {{< verified spec >}} | [9][10][11] |
 
 {{< bars unit="日" caption="無料プランでのログの保持日数（New Relic は docs の既定値。出典は比較表と同じ）" >}}
@@ -82,9 +82,10 @@ Better Stack（Free）: 3
 
 - **料金体系**: Axiom Cloud は月額の基盤料に一定の取り込み・検索・保存が含まれ、超えた分は量に応じた段階制の単価で課金されます。支出の上限を決めると、超えた使用は課金されずに止まります [1]
 - **制約**: 1 つのデータセットで項目（field）の数が上限を超えるイベントは、エラーを返して拒否されます [2]。
-  料金ページと制限のページのどちらにも、Personal で取り込み量や保存容量を超えたときの動きは書かれていません [1][2]。通知先はメールと Discord に限られ、エッジのリージョンは Personal では使えません [1][2]
+  料金ページと制限のページのどちらにも、Personal で取り込み量や保存容量を超えたときの動きは書かれていません [1][2]。通知先はメールと Discord に限られます [2]。
+  エッジのリージョンは、料金ページでは Personal が「—」、制限のページでは Personal も Axiom Cloud も「US」で、2 つのページで書き方が分かれます [1][2]
 - **前提条件**: Personal は「Permanent. No credit card required.」と表示されています。API は全プランで使え、上限はフェアユースの規定によります [1][2]
-- **検証した内容**: この比較ではアカウントを作らず、実行していません。確認したのは公式の料金ページと制限のページ（2026-10-31）です
+- **検証した内容**: この比較ではアカウントを作らず、実行していません。確認したのは公式の料金ページと制限のページ（2026-11-01）です
 
 ### Better Stack
 
@@ -96,7 +97,8 @@ Better Stack（Free）: 3
 向かない: 何日も前の障害を追いたい、またはチーム単位のトークンだけでログを読み出したい
 {{< /fit >}}
 
-- **料金体系**: 有料プランは保存先の地域で月額が変わり、年払いにすると月額が下がります。含まれる量を超えた取り込みは、地域ごとに単価の違う 1 GB あたりの従量です。Telemetry を見るだけのメンバーには、有料プランでも料金が掛かりません [3]
+- **料金体系**: 有料プランは保存先の地域で月額が変わり、年払いにすると月額が下がります。含まれる量を超えた取り込みは、地域ごとに単価の違う 1 GB あたりの従量です。Telemetry を見るだけのメンバーには、有料プランでも料金が掛かりません。
+  料金ページの「Unlimited team members」は有料プランの欄にあり、Free の欄には人数の記載がありません [3]
 - **制約**: 取り込みの API は、無料枠か支出の上限に達すると 402 `Quota exceeded` を返します。1 回の送信の大きさにも上限があります [4]。
   SQL でログを読む接続（ClickHouse 互換）を API で作るには、チーム単位ではない global の API トークンが要ります [6]。
   docs は壊れた JSON に 406、誤ったトークンに 403 を返すと書きますが、この検証では 202 と 401 でした [4]
@@ -115,7 +117,7 @@ Better Stack（Free）: 3
   | 設定の読み直し | `GET /api/v1/sources/{id}` | `logs_retention: 3`、`ingesting_paused: false` |
   | 削除 | `DELETE /api/v1/sources/{id}` | 204。続く `GET` は 404 |
 
-{{< cta id="better-stack" text="Better Stack の Free プランに登録する" >}}
+{{< cta "better-stack" >}}
 
 ### Grafana Cloud Logs
 
@@ -129,9 +131,10 @@ Better Stack（Free）: 3
 
 - **料金体系**: Pro は月額の基盤料に一定の取り込みが含まれ、超えた分は処理・書き込み・保持の 3 つに分けて 1 GB ごとに課金されます [7]
 - **制約**: 料金ページの Free は「Limited to 50 GB ingested per month」と書くだけで、超えたときの動きは書かれていません。利用者の数は「Limited to 3 active users per month」で、何をもって active と数えるかの説明は料金ページにありません [7]。
-  取り込みの上限を超えると、速度は 429 `rate_limited`、1 行の長さは 400 `line_too_long`、ストリームの数は 429 `stream_limit` で拒否されます。1 回の検索で遡れる期間にも上限があります [8]
+  取り込みの上限を超えると、速度は 429 `rate_limited`、1 行の長さは 400 `line_too_long`、ストリームの数は 429 `stream_limit` で拒否されます。1 回の検索で遡れる期間にも上限があります [8]。
+  速度の上限は固定の値ではなく、実際の利用量に近づくよう調整されます。対象は標準の push API で、OTLP の送信には別の制限があります。長い行は、拒否せずに切り詰める設定もできます [8]
 - **前提条件**: Free は「No credit card required」と表示されています [7]。制限のページは Free と有料を分けて書いていません [8]
-- **検証した内容**: この比較ではアカウントを作らず、実行していません。確認したのは公式の料金ページと Loki の制限のページ（2026-10-31）です
+- **検証した内容**: この比較ではアカウントを作らず、実行していません。確認したのは公式の料金ページと Loki の制限のページ（2026-11-01）です
 
 ### New Relic
 
@@ -149,7 +152,7 @@ Better Stack（Free）: 3
   basic user ができるのは「run queries and create and view custom dashboards」で、APM やログの専用画面は full platform user の範囲です [10]。
   ログの既定の保持は docs の表の値（「無料枠」列）です [11]。無料枠のページは、無料のデータの保持を「at least eight days」と短く書いています [10]
 - **前提条件**: 無料枠はカード不要です。有料へ切り替えるときに、カードと請求先の登録が要ります [9][10]
-- **検証した内容**: この比較ではアカウントを作らず、実行していません。確認したのは公式の料金ページ・無料枠のページ・データ保持の docs（2026-10-31）です
+- **検証した内容**: この比較ではアカウントを作らず、実行していません。確認したのは公式の料金ページ・無料枠のページ・データ保持の docs（2026-11-01）です
 
 ## 用途別の選び方
 
@@ -166,14 +169,14 @@ Better Stack（Free）: 3
 
 ## 出典
 
-1. [Axiom — Pricing](https://axiom.co/pricing) — 2026-10-31 確認
-2. [Axiom Docs — Limits and requirements](https://axiom.co/docs/reference/limits) — 2026-10-31 確認
-3. [Better Stack — Pricing](https://betterstack.com/pricing) — 2026-10-31 確認
-4. [Better Stack Docs — Ingesting logs via HTTP](https://betterstack.com/docs/logs/ingesting-data/http/logs/) — 2026-10-31 確認
-5. [Better Stack Docs — Create a source](https://betterstack.com/docs/logs/api/create-a-source/) — 2026-10-31 確認
-6. [Better Stack Docs — Create a connection](https://betterstack.com/docs/logs/api/connections/create/) — 2026-10-31 確認
-7. [Grafana Labs — Pricing](https://grafana.com/pricing/) — 2026-10-31 確認
-8. [Grafana Cloud Docs — Loki limits](https://grafana.com/docs/grafana-cloud/send-data/logs/loki-limits/) — 2026-10-31 確認
-9. [New Relic — Pricing](https://newrelic.com/pricing) — 2026-10-31 確認
-10. [New Relic — Free tier](https://newrelic.com/pricing/free-tier) — 2026-10-31 確認
-11. [New Relic Docs — Manage data retention](https://docs.newrelic.com/docs/data-apis/manage-data/manage-data-retention/) — 2026-10-31 確認
+1. [Axiom — Pricing](https://axiom.co/pricing) — 2026-11-01 確認
+2. [Axiom Docs — Limits and requirements](https://axiom.co/docs/reference/limits) — 2026-11-01 確認
+3. [Better Stack — Pricing](https://betterstack.com/pricing) — 2026-11-01 確認
+4. [Better Stack Docs — Ingesting logs via HTTP](https://betterstack.com/docs/logs/ingesting-data/http/logs/) — 2026-11-01 確認
+5. [Better Stack Docs — Create a source](https://betterstack.com/docs/logs/api/create-a-source/) — 2026-11-01 確認
+6. [Better Stack Docs — Create a connection](https://betterstack.com/docs/logs/api/connections/create/) — 2026-11-01 確認
+7. [Grafana Labs — Pricing](https://grafana.com/pricing/) — 2026-11-01 確認
+8. [Grafana Cloud Docs — Loki limits](https://grafana.com/docs/grafana-cloud/send-data/logs/loki-limits/) — 2026-11-01 確認
+9. [New Relic — Pricing](https://newrelic.com/pricing) — 2026-11-01 確認
+10. [New Relic — Free tier](https://newrelic.com/pricing/free-tier) — 2026-11-01 確認
+11. [New Relic Docs — Manage data retention](https://docs.newrelic.com/docs/data-apis/manage-data/manage-data-retention/) — 2026-11-01 確認
