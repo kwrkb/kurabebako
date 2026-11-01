@@ -206,3 +206,30 @@ url = 'https://px.a8.net/svt/ejp?a8mat=4BEOXN+DUBVNM+5V4A+5YRHE'
 pixel = 'https://www14.a8.net/0.gif?a8mat=4BEOXN+DUBVNM+5V4A+5YRHE'
 program = 'A8.net s00000027361001（素材 002 テキスト。文言固定）'
 text = '【Proton VPN】'
+
+# ---- ドメインレジストラ比較の国内 3 件（2026-11-01 提携。A8.net、ユーザーが申請・同日に承認）----
+# 3 件とも自由テキスト素材が無い（テキスト素材は社名か宣伝文句、メール素材は定型文）。社名だけのテキスト素材を使い、
+# 文言は text で固定する。a8mat の先頭（4BGAV1）は発行時の値で、既存の 4BC9F6 / 4BCLVX / 4BEAX0 / 4BEOXN と同じく
+# kurabebako（websiteId=003）を選んだ状態で発行した。記事 domain-registrar（調査中）から参照する予定で、
+# 参照する記事が出るまでは表示に出ない
+
+[star-domain]
+name = 'スタードメイン'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BGAV1+GHL8G2+1WTI+C0B9U'
+pixel = 'https://www15.a8.net/0.gif?a8mat=4BGAV1+GHL8G2+1WTI+C0B9U'
+text = 'スタードメイン'
+program = 'A8.net s00000008919002（素材 017 テキスト。文言固定）'
+
+[xserver-domain]
+name = 'XServerドメイン'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BGAV1+GGZSUA+CO4+15ORS2'
+pixel = 'https://www14.a8.net/0.gif?a8mat=4BGAV1+GGZSUA+CO4+15ORS2'
+text = 'XServerドメイン'
+program = 'A8.net s00000001642007（素材 002 テキスト。文言固定。エックスサーバー s00000001642001 にも同じドメイン報酬が入るが、ドメイン専用のこの ID を使う）'
+
+[muumuu-domain]
+name = 'ムームードメイン'
+url = 'https://px.a8.net/svt/ejp?a8mat=4BGAV1+GI6O1U+348+1BNBJM'
+pixel = 'https://www10.a8.net/0.gif?a8mat=4BGAV1+GI6O1U+348+1BNBJM'
+text = 'ムームードメイン'
+program = 'A8.net s00000000404008（素材 003 テキスト。文言固定）'
