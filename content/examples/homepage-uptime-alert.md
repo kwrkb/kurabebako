@@ -2,7 +2,7 @@
 title = 'AI にホームページを公開して、止まったら知らせてもらう'
 date = '2026-10-29T01:20:00+09:00'
 # 最終確認日。出典の確認日・現物が動くことを最後に確かめた日と揃える（ヘッダーに出る）
-lastmod = '2026-10-28'
+lastmod = '2026-11-03'
 draft = false
 summary = 'GitHub Pages・UptimeRobot・Cloudflare Web Analytics の無料枠を組み合わせ、1 ページのホームページを公開して、止まったらメールで知らせ、訪問を数える仕組みを Claude に作らせた作例。登録はすべて公式 API で行い、実際に一度止めて通知が届くまでを記録した。'
 # tags / categories は URL に載るため英語（小文字・ハイフン区切り）で書く。
@@ -38,7 +38,7 @@ HTML 1 枚のホームページが公開され、止まるとメールが届き�
 | --- | --- | --- | --- |
 | GitHub Pages | リポジトリの `main` をそのまま配信する | 公開リポジトリなら GitHub Free で使える。サイト 1 GB、転送量 月 100 GB（ソフト上限）。商取引が主目的のサイトは不可 [1][2][3] | [静的サイトの無料ホスティング 5 社比較](/posts/static-site-hosting-free-tier/) |
 | UptimeRobot（Free） | 5 分おきに公開ページへ HTTP で見に来て、止まったらメールで知らせる | 50 モニター、5 分間隔、データ保持 3 か月。API は全プランで使え、10 リクエスト/分 [5][6][7] | [死活監視の無料枠 5 つを比較](/posts/uptime-monitoring-free-tier/) |
-| Cloudflare Web Analytics | ページに置いた 1 行のビーコンで訪問を数える。Cookie は使わない | 全プランで無料。参照できるのは直近 6 か月。サイトはアカウントあたり 10 件（ソフト上限） [8][9][10] | [アクセス解析の無料枠比較](/posts/analytics-free-tier/) |
+| Cloudflare Web Analytics | ページに置いた 1 行のビーコンで訪問を数える。Cookie は使わない | 全プランで無料。参照できるのは直近 6 か月。サイトはアカウントあたり 10 件（ソフト上限） [8][9][10][11] | [アクセス解析の無料枠比較](/posts/analytics-free-tier/) |
 
 一度止めて戻すまでの記録です（2026-10-28、時刻は UTC。元の記録は [runs/ の outage のログ](https://github.com/kwrkb/kurabebako-example-homepage-uptime-alert/tree/main/runs)）。
 
@@ -185,14 +185,14 @@ GitHub Pages は `Cache-Control: max-age=600` で配信していて、直前に�
 
 ## 出典
 
-1. [GitHub Docs — About GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages) — 2026-10-28 確認
-2. [GitHub Docs — GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) — 2026-10-28 確認
-3. [GitHub Terms for Additional Products and Features — Pages](https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features#pages) — 2026-10-28 確認
-4. [GitHub REST API — Pages](https://docs.github.com/en/rest/pages/pages) — 2026-10-28 確認
-5. [UptimeRobot Pricing](https://uptimerobot.com/pricing/) — 2026-10-28 確認
-6. [UptimeRobot Help — Who should use UptimeRobot's free plan](https://help.uptimerobot.com/en/articles/11604710-who-should-use-uptimerobot-s-free-plan) — 2026-10-28 確認
-7. [UptimeRobot API](https://uptimerobot.com/api/) — 2026-10-28 確認
-8. [Cloudflare Docs — Web Analytics FAQ](https://developers.cloudflare.com/web-analytics/faq/) — 2026-10-28 確認
-9. [Cloudflare API — Create a Web Analytics site](https://developers.cloudflare.com/api/resources/rum/subresources/site_info/methods/create/) — 2026-10-28 確認
-10. [Cloudflare Docs — GraphQL Analytics API](https://developers.cloudflare.com/analytics/graphql-api/) — 2026-10-28 確認
-11. [Cloudflare — Web Analytics](https://www.cloudflare.com/web-analytics/) — 2026-10-28 確認
+1. [GitHub Docs — About GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages) — 2026-11-03 確認
+2. [GitHub Docs — GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) — 2026-11-03 確認
+3. [GitHub Terms for Additional Products and Features — Pages](https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features#pages) — 2026-11-03 確認
+4. [GitHub REST API — Pages](https://docs.github.com/en/rest/pages/pages) — 2026-11-03 確認
+5. [UptimeRobot Pricing](https://uptimerobot.com/pricing/) — 2026-11-03 確認
+6. [UptimeRobot Help — Who should use UptimeRobot's free plan](https://help.uptimerobot.com/en/articles/11604710-who-should-use-uptimerobot-s-free-plan) — 2026-11-03 確認
+7. [UptimeRobot API](https://uptimerobot.com/api/) — 2026-11-03 確認
+8. [Cloudflare Docs — Web Analytics FAQ](https://developers.cloudflare.com/web-analytics/faq/) — 2026-11-03 確認
+9. [Cloudflare API — Create a Web Analytics site](https://developers.cloudflare.com/api/resources/rum/subresources/site_info/methods/create/) — 2026-11-03 確認
+10. [Cloudflare Docs — GraphQL Analytics API](https://developers.cloudflare.com/analytics/graphql-api/) — 2026-11-03 確認
+11. [Cloudflare — Web Analytics](https://www.cloudflare.com/web-analytics/) — 2026-11-03 確認

@@ -1,7 +1,7 @@
 +++
 title = '国内 VPS 5 社の最小プラン比較: 時間課金と API の有無で選ぶ'
 date = '2026-09-02T23:07:57+09:00'
-lastmod = '2026-11-02'
+lastmod = '2026-11-03'
 draft = false
 summary = '国内 VPS 5 サービスの最小プランを、料金・課金単位・お試し・最低利用期間・API の有無で比較。AI やスクリプトから作成〜削除まで自動化するなら ConoHa VPS 3.0、最安で API があるのは WebARENA Indigo。ConoHa は Terraform で実際に作成・計測・削除した結果を載せる。'
 categories = ['hosting']
@@ -30,7 +30,7 @@ tags = ['vps', 'conoha', 'sakura-internet', 'kagoya', 'xserver', 'webarena']
 | 常時稼働で月額を最小にする | [WebARENA Indigo](#webarena-indigo) | 「料金」列（1GB の月上限が最も低い）。最小プランの IPv4 の有無は「主な制約」列 |
 | API は不要で、月の途中から日割りで使う | [KAGOYA CLOUD VPS](#kagoya-cloud-vps) | 「料金」列（日額と月上限） |
 | 無料で試す | [さくらのVPS](#さくらのvps) | 「無料枠」列（期間限定のお試し）。本契約へ自動で移る点は「主な制約」列 |
-| 上位寄りのスペックから始める | [Xserver VPS](#xserver-vps) | 「料金」列（最小プランが大きい）。新規受付の停止は「主な制約」列 |
+| 上位寄りのスペックから始める | [Xserver VPS](#xserver-vps) | 「料金」列（最小プランが大きい） |
 
 ConoHa VPS は新規申込みの受付を一時停止しています（停止日と再開の見込みは「主な制約」列）。
 停止中に作成〜削除まで自動化するなら、同じ時間課金で REST API のある WebARENA Indigo が代わりの候補です。
@@ -39,18 +39,18 @@ ConoHa VPS は新規申込みの受付を一時停止しています（停止日
 
 ## 比較表
 
-2026-10-03 時点の公式情報に基づき、ConoHa VPS の新規受付の状況を 2026-10-25 に、料金を 2026-11-02 に確認しました。出典は末尾の番号に対応しています。対象名を押すと、その対象の詳細に移ります。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [ConoHa VPS (Ver.3.0)](#conoha-vps-ver30) | 512MB（1 vCPU・SSD 30GB）は 1.3 円/時、月上限 751 円。1GB（2 vCPU・SSD 100GB）は 1.9 円/時、月上限 1,065 円。36 か月前払いの「まとめトク」なら 512MB 326 円/月（更新時も同額） | なし | 1 時間単位の課金で月上限あり。まとめトクは途中解約不可。初期費用なし。2026-10-24 13:40 から新規申込みの受付を一時停止（再開は未定） | ConoHa アカウントと支払い手段。公開 API（OpenStack 準拠）、Terraform provider、MCP サーバーが公式。Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13 ほか | {{< verified run >}} | [1][2][3][4][5][6][23] |
 | [さくらのVPS](#さくらのvps) | 512MB（1 vCPU・SSD 25GB）は石狩 643 円/月、東京 698 円/月。1GB（2 vCPU・SSD 50GB）は石狩 880 円/月、東京 990 円/月 | クレジットカード払いで 2 週間無料。同時 2 台まで | 月額・年額のみ。最低利用期間 3 か月。お試し期間中に解約しないと自動で本契約。API は電源操作・状態取得などで、サーバー作成・削除は不可。Ubuntu 24.04 は 1GB 以上のプランのみ | さくらインターネット会員 ID と支払い手段。IPv4・IPv6 各 1 個。リージョンは東京・大阪・石狩 | {{< verified spec >}} | [7][8][9][10][11] |
 | [KAGOYA CLOUD VPS](#kagoya-cloud-vps) | 1GB は日額 20 円、月上限 550 円、年額 6,072 円 | なし（アカウント登録は無料） | 日額（月上限あり）または年額。公式マニュアルに API の項目がない。スナップショットと無停止スケールアップあり | KAGOYA アカウントと支払い手段。OS テンプレート 12 種（Ubuntu 24.04 / 26.04 を含む） | {{< verified spec >}} | [12][13][14] |
-| [Xserver VPS](#xserver-vps) | 2GB（3 vCPU・NVMe 50GB）は 1 か月契約 2,640 円（更新 1,980 円）、36 か月契約 2,035 円/月（更新 1,265 円/月）。受付停止前（2026-09-02）の表示 | 「無料VPS」（2GB / 4GB、NVMe 30GB、30Mbps）。毎日コントロールパネルから手動で契約更新が必要で、更新の自動化は不正行為 | 月額のみで契約期間分を一括前払い。2026-10-03 時点で新規申込みの受付を全プランで一時停止（契約中のアカウントは追加申込み可）。XServer API はレンタルサーバー向けで、VPS の作成・削除は対象外 | Xserver アカウント。無料VPS もクレジットカード登録が必要。Ubuntu 22.04 / 24.04 / 26.04、Debian 11〜13 ほか | {{< verified spec >}} | [15][16][17][18] |
+| [Xserver VPS](#xserver-vps) | 2GB（3 vCPU・NVMe 50GB）は 1 か月契約 1,980 円、36 か月契約 1,265 円/月（いずれも更新時も同額） | 「無料VPS」（2GB / 4GB、NVMe 30GB、30Mbps）。毎日コントロールパネルから手動で契約更新が必要で、更新の自動化は不正行為。新規受付は停止中 | 月額のみで契約期間分を一括前払い。有料プランは 2026-10-16 14:00 に新規受付を再開（無料VPS は停止中）。XServer API はレンタルサーバー向けで、VPS の作成・削除は対象外 | Xserver アカウント。無料VPS もクレジットカード登録が必要。Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13 ほか | {{< verified spec >}} | [15][16][17][18][27] |
 | [WebARENA Indigo](#webarena-indigo) | 768MB（1 vCPU・SSD 20GB）は 0.52 円/時、月上限 319 円。1GB（1 vCPU・SSD 20GB）は 0.70 円/時、月上限 449 円 | 500 円分のクーポン | 1 時間単位の課金で月上限あり。最低利用料 55 円/計算期間。停止中も課金。768MB は IPv6 のみで IPv4 なし。初期上限 3 インスタンス（45 日後に 25 へ変更可、それ以上は eKYC 本人確認） | NTT 系の WebARENA アカウント。REST API あり（ドキュメントは英語のみ）。Ubuntu 18.04〜24.04、Rocky、Alma、Debian ほか | {{< verified spec >}} | [19][20][21][22] |
 
 メモリ 1GB のプランを 1 か月動かしたときの上限額を並べると、次のようになります。
-Xserver は最小が 2GB なので、2GB の 1 か月契約（更新時）を参考値として入れています。
+Xserver は最小が 2GB なので、2GB の 1 か月契約を参考値として入れています。
 
 {{< bars unit="円/月" caption="1GB クラスのプランを 1 か月動かしたときの上限額（税込。出典は比較表と同じ）" >}}
 WebARENA Indigo 1GB: 449
@@ -91,15 +91,15 @@ Xserver VPS 2GB（参考）: 1980
 {{< /fit >}}
 
 - **料金体系**: 2GB プランは 3.7 円/時（上限 2,033 円）です。1〜36 か月の前払い「まとめトク」は最大 56% 引きになりますが、途中解約はできません。
-  契約更新時の単価は初回より高くなります [1]
+  契約更新時も初回と同じ単価です [1]
 - **制約**: 2026-10-24 13:40 から緊急メンテナンスのため新規申込みの受付を一時停止しており、終了日時は未定です。
   既存の契約への影響は公式のお知らせに記載がありません [23]。
   プランに含まれる SSD（512MB で 30GB、1GB 以上で 100GB）がブートボリュームになります [1]。
   OS テンプレートは Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13、AlmaLinux、Rocky Linux、Arch Linux、FreeBSD など。Ubuntu は 1GB 以上のプランだけで、512MB では選べません。
-  Docker、GitLab、Dokku、Jenkins などのアプリケーションテンプレートも 40 種以上あります [6]
+  Docker、GitLab、Dokku、Jenkins などのアプリケーションテンプレートも 30 種以上あります [6]
 - **前提条件**: API を使うにはコントロールパネルで API ユーザーを発行します。
   公開 API は OpenStack 準拠で、Identity / Compute / Image / Volume / Network の各 API があります [2][5]。
-  Terraform provider（`gmo-internet/conohavps`、Ver.3.0 専用、ベータ）[3] と MCP サーバー（OSS 版とリモート版、ベータ）[4] が公式に提供されています
+  Terraform provider（`gmo-internet/conohavps`、Ver.3.0 専用、ベータ）[3] と MCP サーバー（リモート版と、ベータの OSS 版）[4] が公式に提供されています
 - **検証した内容**: 2026-09-02 に Terraform provider 0.1.0 を使い、AI が 1GB プラン（flavor `g2l-t-c2m1`）に Ubuntu 24.04 テンプレート（`vmi-ubuntu-24.04-amd64`）で 100GB のブートボリュームを付けてサーバーを作成し、
   計測後に削除しました。所要時間は次のとおりです。
 
@@ -203,16 +203,15 @@ API がないため、自動化よりはコントロールパネルで手動運�
 「無料VPS」がありますが、毎日の手動更新が条件で、自動化した運用には向きません。
 
 {{< fit spec >}}
-向く: 上位寄りのスペックから始めたい（契約中のアカウントで追加申込みできる）
-向かない: 新規でいま申し込みたい。無料VPS を自動化した運用に使いたい
+向く: 上位寄りのスペックから始めたい
+向かない: 無料VPS を自動化した運用に使いたい
 {{< /fit >}}
 
-- **料金体系**: 4GB プランは 1 か月契約 5,280 円（更新 2,640 円）です。初期費用はありません [15]。
-  この金額は 2026-09-02 時点の表示で、2026-10-03 時点の料金ページは受付停止のため 2GB の金額を表示していません
-- **制約**: 「無料VPS」は更新を自動化するスクリプトやボットの利用が不正行為とされ、メール送信・イメージ保存・サポートは対象外です [16]。
+- **料金体系**: 4GB プランは 1 か月契約 2,640 円（更新時も同額）です。初期費用はありません [15]
+- **制約**: 有料プランの新規受付は 2026-10-16 に再開しましたが、「無料VPS」の新規受付は停止が続いています [27]。「無料VPS」は更新を自動化するスクリプトやボットの利用が不正行為とされ、メール送信・イメージ保存・サポートは対象外です [16]。
   2026 年 4 月に提供が始まった XServer API は、エックスサーバーと XServer ビジネス（レンタルサーバー）向けです [18]
-- **前提条件**: OS イメージは Ubuntu 22.04 / 24.04 / 26.04、Debian 11〜13、AlmaLinux、Rocky Linux、Oracle Linux、CentOS Stream、Fedora、Arch Linux、openSUSE です [17]
-- **検証した内容**: 仕様区分です。上記の公式ページ [15]〜[18] を 2026-09-02 に確認しました。
+- **前提条件**: OS イメージは Ubuntu 22.04 / 24.04 / 26.04、Debian 12 / 13、AlmaLinux、Rocky Linux、Oracle Linux、CentOS Stream、Fedora、Arch Linux、openSUSE です [17]
+- **検証した内容**: 仕様区分です。上記の公式ページ [15]〜[18][27] を 2026-11-03 に確認しました。
   無料VPS は毎日の手動更新が条件で自動化が禁止されているため、AI による利用は行っていません
 
 ### WebARENA Indigo
@@ -246,7 +245,7 @@ API がないため、自動化よりはコントロールパネルで手動運�
   国内リージョンの選択やスナップショットが要るならさくらのVPS の 1GB が候補です
 - API は不要で、月の途中で始めても日割りにしたい → KAGOYA CLOUD VPS。決め手は「料金」列（日額と月上限）です
 - 無料で試したい → さくらのVPS のお試し。決め手は「無料枠」列です。期間内に解約しないと最低利用期間つきの本契約に移る点は「主な制約」列を見てください。
-  Xserver の無料VPS は毎日の手動更新が条件で、自動化した運用には使えません
+  Xserver の無料VPS は新規受付を停止中で、毎日の手動更新が条件のため自動化した運用にも使えません
 
 下は、この記事の対象のうち提携している 3 社の公式サイトへのリンクです。順位は上の結論と同じで、
 WebARENA Indigo と Xserver VPS は提携が無いためここには載せていません。
@@ -273,7 +272,7 @@ KAGOYA は公式マニュアルに API の項目が無く [14]、XServer API は
 ### 無料で試せる VPS はありますか？
 
 さくらのVPS にクレジットカード払いで 2 週間の無料お試しがあり、期間内に解約しないと最低利用期間 3 か月の本契約に移行します [7][8]。
-Xserver VPS の「無料VPS」は毎日コントロールパネルから手動で契約更新する条件で、更新の自動化は不正行為とされています [16]。
+Xserver VPS の「無料VPS」は新規受付を停止中です [27]。毎日コントロールパネルから手動で契約更新する条件で、更新の自動化は不正行為とされています [16]。
 WebARENA Indigo は 500 円分のクーポンが付きます [19]。
 
 ### 1 時間だけ使って消した場合、いくらかかりますか？
@@ -295,29 +294,30 @@ ConoHa の 512MB で選べる Linux は Debian、AlmaLinux、Rocky Linux など�
 
 ## 出典
 
-1. [ConoHa VPS 料金・スペック](https://vps.conoha.jp/pricing/) — 2026-11-02 確認
-2. [ConoHa VPS API](https://vps.conoha.jp/function/api/) — 2026-10-03 確認
-3. [ConoHa ドキュメント — Terraform ConoHa VPS Provider](https://doc.conoha.jp/reference/terraform/terraform-conoha-vps-provider/) — 2026-10-03 確認
-4. [ConoHa ドキュメント — ConoHa VPS MCP Server](https://doc.conoha.jp/reference/mcp-server/conoha-vps-mcp-server/) — 2026-10-03 確認
-5. [ConoHa ドキュメント — 公開API (ConoHa VPS Ver.3.0)](https://doc.conoha.jp/reference/api-vps3/) — 2026-10-03 確認
-6. [ConoHa VPS OS・アプリケーションテンプレート](https://vps.conoha.jp/function/template/) — 2026-10-29 確認
-7. [さくらのVPS 料金](https://vps.sakura.ad.jp/) — 2026-10-03 確認
-8. [さくらのVPS 2 週間無料お試し](https://vps.sakura.ad.jp/news/vps-free-trial/) — 2026-10-03 確認
-9. [さくらの VPS マニュアル — API](https://manual.sakura.ad.jp/vps/api/index.html) — 2026-10-03 確認
-10. [さくらの VPS マニュアル — Ubuntu 24.04](https://manual.sakura.ad.jp/vps/os-packages/ubuntu-24.04.html) — 2026-10-03 確認
-11. [さくらのVPS 仕様](https://vps.sakura.ad.jp/specification/) — 2026-10-03 確認
-12. [KAGOYA CLOUD VPS 料金](https://www.kagoya.jp/cloud/vps/price/) — 2026-10-03 確認
-13. [KAGOYA CLOUD VPS 特長](https://www.kagoya.jp/vps/feature/) — 2026-10-03 確認
-14. [KAGOYA CLOUD VPS マニュアル](https://support.kagoya.jp/vps/manual/) — 2026-10-03 確認
-15. [XServer VPS 料金](https://vps.xserver.ne.jp/price.php) — 2026-10-03 確認
-16. [XServer VPS 無料VPS](https://vps.xserver.ne.jp/free.php) — 2026-10-03 確認
-17. [XServer VPS OS・アプリイメージ一覧](https://vps.xserver.ne.jp/os-list.php) — 2026-10-03 確認
-18. [XServer API リファレンス](https://developer.xserver.ne.jp/api/server/) — 2026-10-03 確認
-19. [WebARENA Indigo 料金](https://web.arena.ne.jp/indigo/price/) — 2026-10-03 確認
-20. [WebARENA Indigo 機能一覧（Linux）](https://web.arena.ne.jp/indigo/spec/) — 2026-10-03 確認
-21. [WebARENA Indigo インスタンス上限値](https://web.arena.ne.jp/indigo/spec/instance.html) — 2026-10-03 確認
-22. [WebARENA Indigo API](https://indigo.arena.ne.jp/userapi/) — 2026-10-03 確認
-23. [ConoHa VPS お知らせ — 緊急メンテナンスによる新規お申し込み受付の一時停止のお知らせ](https://vps.conoha.jp/news/?ap=2015054919) — 2026-10-25 確認
-24. [OpenClaw Docs — Install](https://docs.openclaw.ai/install) — 2026-10-29 確認
-25. [OpenClaw Docs — Gateway](https://docs.openclaw.ai/gateway) — 2026-10-29 確認
-26. [OpenClaw Docs — Environment variables](https://docs.openclaw.ai/gateway/configuration/environment-variables) — 2026-10-29 確認
+1. [ConoHa VPS 料金・スペック](https://vps.conoha.jp/pricing/) — 2026-11-03 確認
+2. [ConoHa VPS API](https://vps.conoha.jp/function/api/) — 2026-11-03 確認
+3. [ConoHa ドキュメント — Terraform ConoHa VPS Provider](https://doc.conoha.jp/reference/terraform/terraform-conoha-vps-provider/) — 2026-11-03 確認
+4. [ConoHa ドキュメント — MCP Server](https://doc.conoha.jp/reference/mcp-server/) — 2026-11-03 確認
+5. [ConoHa ドキュメント — 公開API (ConoHa VPS Ver.3.0)](https://doc.conoha.jp/reference/api-vps3/) — 2026-11-03 確認
+6. [ConoHa VPS OS・アプリケーションテンプレート](https://vps.conoha.jp/function/template/) — 2026-11-03 確認
+7. [さくらのVPS 料金](https://vps.sakura.ad.jp/) — 2026-11-03 確認
+8. [さくらのVPS 2 週間無料お試し](https://vps.sakura.ad.jp/contents/column/vps-free-trial/) — 2026-11-03 確認
+9. [さくらの VPS マニュアル — API](https://manual.sakura.ad.jp/vps/api/index.html) — 2026-11-03 確認
+10. [さくらの VPS マニュアル — Ubuntu 24.04](https://manual.sakura.ad.jp/vps/os-packages/ubuntu-24.04.html) — 2026-11-03 確認
+11. [さくらのVPS 仕様](https://vps.sakura.ad.jp/specification/) — 2026-11-03 確認
+12. [KAGOYA CLOUD VPS 料金](https://www.kagoya.jp/vps/function-plan/) — 2026-11-03 確認
+13. [KAGOYA CLOUD VPS 特長](https://www.kagoya.jp/vps/feature/) — 2026-11-03 確認
+14. [KAGOYA CLOUD VPS マニュアル](https://support.kagoya.jp/vps/manual/) — 2026-11-03 確認
+15. [XServer VPS 料金](https://vps.xserver.ne.jp/price.php) — 2026-11-03 確認
+16. [XServer VPS 無料VPS](https://vps.xserver.ne.jp/free.php) — 2026-11-03 確認
+17. [XServer VPS OS・アプリイメージ一覧](https://vps.xserver.ne.jp/os-list.php) — 2026-11-03 確認
+18. [XServer API リファレンス](https://developer.xserver.ne.jp/api/server/) — 2026-11-03 確認
+19. [WebARENA Indigo 料金](https://web.arena.ne.jp/indigo/price/) — 2026-11-03 確認
+20. [WebARENA Indigo 機能一覧（Linux）](https://web.arena.ne.jp/indigo/spec/) — 2026-11-03 確認
+21. [WebARENA Indigo インスタンス上限値](https://web.arena.ne.jp/indigo/spec/instance.html) — 2026-11-03 確認
+22. [WebARENA Indigo API](https://indigo.arena.ne.jp/userapi/) — 2026-11-03 確認
+23. [ConoHa VPS お知らせ — 緊急メンテナンスによる新規お申し込み受付の一時停止のお知らせ](https://vps.conoha.jp/news/?ap=2015054919) — 2026-11-03 確認
+24. [OpenClaw Docs — Install](https://docs.openclaw.ai/install) — 2026-11-03 確認
+25. [OpenClaw Docs — Gateway](https://docs.openclaw.ai/gateway) — 2026-11-03 確認
+26. [OpenClaw Docs — Environment variables](https://docs.openclaw.ai/gateway/configuration/environment-variables) — 2026-11-03 確認
+27. [XServer VPS お知らせ — 『XServer VPS』ビジネスプランの新規受付再開と「メモリ無料増設」機能の新規提供終了のお知らせ](https://vps.xserver.ne.jp/support/news_detail.php?view_id=19678) — 2026-11-03 確認

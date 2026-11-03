@@ -1,7 +1,7 @@
 +++
 title = '無料で使える VPN 4 つを比較: データ量の上限・選べる場所・CLI で接続を任せられるか'
 date = '2026-10-26T20:25:00+09:00'
-lastmod = '2026-10-25'
+lastmod = '2026-11-03'
 draft = false
 summary = '無料で使い続けられる VPN を、Windscribe・Proton VPN・hide.me と国内のセカイVPN の 4 つで比較。無料枠のデータ量と選べる場所、同時接続の台数、カードや登録の要否に加えて、人がアカウントを用意した後に接続・状態確認・切断を CLI で AI に任せられるかで分けました。無料のまま Windows と Linux の CLI で接続から切断まで通ったのは Windscribe で、Windows Sandbox と Linux の VPS の両方で実際に動かして確認しています。Proton VPN と hide.me はデータ量の上限が無い代わりに同時 1 台で、セカイVPN には恒常の無料枠が無く、無料体験の後は有料です。'
 categories = ['developer-tools']
@@ -36,7 +36,7 @@ VPN は、手元の端末と事業者のサーバーの間に暗号化した通�
 
 ## 比較表
 
-2026-10-25 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は海外 3 社が USD、セカイVPN が税込の円で、1 か月プランの額を先に、長期プランを後に載せています。
 対象名を押すと、その対象の詳細に移ります。
 
@@ -44,7 +44,7 @@ VPN は、手元の端末と事業者のサーバーの間に暗号化した通�
 | --- | --- | --- | --- | --- | --- | --- |
 | [Windscribe](#windscribe) | Free は USD 0。Pro は月払い USD 9、年払い USD 69。Build-a-Plan は 1 か所 USD 1/月で最低 USD 3、7 か所まで | **月 10 GB**（メール未確認は 2 GB）、10 か国の共有サーバー、端末数の上限なし。**CLI は無料でも同じに動く** | Free で選べるのは 10 か国で、**日本は Pro 専用**。静的 IP と IP ローテーションは有料。CLI の文言は OS の言語で出る | アカウントのみ（カード不要）。Windows / macOS はアプリに CLI が同梱、Linux は CLI 専用ビルド。CLI は root では動かない | {{< verified run >}} | [1][2][3][4][5] |
 | [Proton VPN](#proton-vpn) | Free は USD 0。Plus は 1 か月 USD 9.99。2 年は初回 USD 83.76 で、更新は 12 か月ごと USD 83.88 | **データ量と時間の上限なし**、同時 1 台、10 か国からランダムに割り当て、速度は「Medium」の表記 | Free は接続先の国を選べない。WireGuard 設定の生成で Free が選べる項目は VPN Accelerator だけ。GUI と CLI は同時に動かせない | Proton アカウントのみ（カード不要）。Linux は GUI と CLI が同じパッケージで入る。WireGuard 設定の生成は web の画面操作 | {{< verified spec >}} | [6][7][8][9][10] |
-| [hide.me](#hideme) | Free は USD 0。1 か月 USD 11.99、12＋2 か月 USD 54.99、24＋4 か月 USD 69.99。更新は同じ額と期間 | **データ量の上限なし**、8 か所、同時 1 台。アプリは登録不要 | 場所の数は有料の 1 割弱。Linux は CLI だけで、サーバーの自動選択は未実装（README の TODO） | アプリはアカウント不要。Linux CLI はユーザー名とパスワードで Access-Token を取る。オープンソース（Go） | {{< verified spec >}} | [11][12][13][14] |
+| [hide.me](#hideme) | Free は USD 0。1 か月 USD 11.99、12＋4 か月 USD 54.99、24＋6 か月 USD 69.99（延長月は時期で変わる）。更新は同じ額と期間 | **データ量の上限なし**、8 か所、同時 1 台。アプリは登録不要 | 場所の数は有料の 1 割弱。Linux は CLI だけで、サーバーの自動選択は未実装（README の TODO） | アプリはアカウント不要。Linux CLI はユーザー名とパスワードで Access-Token を取る。オープンソース（Go） | {{< verified spec >}} | [11][12][13][14] |
 | [セカイVPN](#セカイvpn) | 月 1,100 円（税込）、初期費用なし。恒常の無料プランは無く、サービス開始日から翌月末日までの無料体験 | 無料枠なし。体験中もデータ転送量の制限なし、日本を含む 10 か国、同時 3 セッション | 接続中は SMTP など一部のポートが塞がれる。無料体験でもカード情報か身分証明書の提出が要る。同一人物の体験アカウント数に制限 | 対応 OS は Windows / macOS / iOS / Android / Chrome OS で Linux は無い。PPTP・L2TP・OpenVPN・IKEv2・OpenConnect。支払いはカード・NTT 支払い・口座振替 | {{< verified spec >}} | [15][16][17][18] |
 
 {{< bars unit="USD/月" caption="1 か月プランの月額（Windscribe は Pro、Proton VPN は Plus、hide.me は Premium。セカイVPN は円建てなので除いた。出典は比較表と同じ）" >}}
@@ -97,7 +97,7 @@ Linux には GUI の無い CLI 専用ビルドがあり、公式のガイドが�
   無料プランのデータ量は、メールアドレスを登録して確認すると「2 GB becomes 10 GB a month, forever」で、登録しなければ少ないままです [1]
 - **制約**: 無料プランは共有の無料サーバーだけで、場所の一覧では有料の場所に `(Pro)` が付きます。この検証で `locations` に出た無料の場所は 10 か国 25 台（Best Location を除く）で、北米とヨーロッパに香港が加わる構成でした。
   日本（Tokyo）は 2 台とも `(Pro)` で、無料プランで `connect Tokyo` を出すと `Error: Location does not exist or is disabled` で止まります。
-  GUI のアプリが起動していると、`locations` は GUI の窓に一覧を出して端末には何も返しません（`connect` / `status` / `disconnect` は端末に返ります）[4]。
+  安定版の 2.24.13 では、GUI のアプリが起動していると、`locations` は GUI の窓に一覧を出して端末には何も返しません（`connect` / `status` / `disconnect` は端末に返ります）[4]。
   CLI の出力は OS の言語になり、日本語の Windows では「接続済み: Hong Kong - Victoria」のように見出しが日本語で出ます。
   有料だけの機能は静的 IP と IP ローテーションで、R.O.B.E.R.T. のカスタムルールの数もプランで変わります [3]
 - **前提条件**: Windows はアプリの導入で `windscribe-cli.exe` も入り、インストーラーは `-silent` と `-no-auto-start` で無人導入できます [4][5]。
@@ -156,7 +156,7 @@ Linux 向けには GUI が無く、WireGuard を実装したオープンソー�
 向かない: 多くの場所から選びたい。または 2 台以上を同時に繋ぎたい
 {{< /fit >}}
 
-- **料金体系**: 長期プランは「12 Months + 2 Months EXTRA」「24 Months + 4 Months EXTRA」のように無料の延長月が付き、請求は延長を含む期間（14 か月・28 か月）ごとです。
+- **料金体系**: 長期プランは「12 Months + 4 Months EXTRA」「24 Months + 6 Months EXTRA」のように無料の延長月が付き、請求は延長を含む期間（16 か月・30 か月）ごとです。延長月の数は時期で変わり、2026-10-25 の表示は 12＋2・24＋4 でした。
   「Your plan always renews with the same price and duration」と明記され、更新で額が上がる形ではありません [11]
 - **制約**: 無料プランは「a choice of 8 server locations」で、有料の「over 92 server locations」に対して 1 割弱です。同時接続は無料が 1 台、有料が 10 台です [12]。
   Linux CLI の README は TODO に「Automatic server selection」を挙げており、接続先のサーバーは `list` で取った一覧から自分で指定します。`list free` で無料のサーバーだけを出せます [14]
@@ -219,21 +219,21 @@ Linux 向けには GUI が無く、WireGuard を実装したオープンソー�
 
 ## 出典
 
-1. [Windscribe — Use Windscribe for Free](https://windscribe.com/features/use-for-free) — 2026-10-25 確認
-2. [Windscribe — Upgrade（Pro / Build-a-Plan）](https://windscribe.com/upgrade) — 2026-10-25 確認
-3. [Windscribe Knowledge Base — How to use Windscribe on Linux (CLI and headless)](https://windscribe.com/knowledge-base/articles/how-to-use-windscribe-on-linux-cli-and-headless) — 2026-10-25 確認
-4. [Windscribe/Desktop-App — skills/windscribe-cli/SKILL.md](https://github.com/Windscribe/Desktop-App/blob/master/skills/windscribe-cli/SKILL.md) — 2026-10-25 確認
-5. [Windscribe/Desktop-App — Release v2.24.13](https://github.com/Windscribe/Desktop-App/releases/tag/v2.24.13) — 2026-10-25 確認
-6. [Proton VPN — Pricing](https://protonvpn.com/pricing) — 2026-10-25 確認
-7. [Proton VPN Support — How to use WireGuard configuration files](https://protonvpn.com/support/wireguard-configurations) — 2026-10-25 確認
-8. [Proton VPN Support — How to use the Proton VPN Linux CLI](https://protonvpn.com/support/use-linux-cli) — 2026-10-25 確認
-9. [Proton VPN Support — Install the Linux app and CLI on Debian / Ubuntu](https://protonvpn.com/support/cli-debian-ubuntu) — 2026-10-25 確認
-10. [Proton VPN — Free VPN](https://protonvpn.com/free-vpn) — 2026-10-25 確認
-11. [hide.me — Pricing](https://hide.me/en/pricing) — 2026-10-25 確認
-12. [hide.me — Free VPN](https://hide.me/en/free-vpn) — 2026-10-25 確認
-13. [hide.me — VPN for Linux](https://hide.me/en/software/linux) — 2026-10-25 確認
-14. [eventure/hide.client.linux — README](https://github.com/eventure/hide.client.linux/blob/master/README.md) — 2026-10-25 確認
-15. [インターリンク — セカイVPN サービス詳細](https://www.interlink.or.jp/service/sekaivpn/) — 2026-10-25 確認
-16. [インターリンク — セカイVPN 料金](https://www.interlink.or.jp/service/sekaivpn/price.html) — 2026-10-25 確認
-17. [インターリンク — 無料体験について](https://www.interlink.or.jp/taiken.html) — 2026-10-25 確認
-18. [インターリンク — セカイVPN ご利用開始までの流れ](https://www.interlink.or.jp/service/sekaivpn/flow.html) — 2026-10-25 確認
+1. [Windscribe — Use Windscribe for Free](https://windscribe.com/features/use-for-free) — 2026-11-03 確認
+2. [Windscribe — Upgrade（Pro / Build-a-Plan）](https://windscribe.com/upgrade) — 2026-11-03 確認
+3. [Windscribe Knowledge Base — How to use Windscribe on Linux (CLI and headless)](https://windscribe.com/knowledge-base/articles/how-to-use-windscribe-on-linux-cli-and-headless) — 2026-11-03 確認
+4. [Windscribe/Desktop-App — skills/windscribe-cli/SKILL.md（v2.24.13）](https://github.com/Windscribe/Desktop-App/blob/v2.24.13/skills/windscribe-cli/SKILL.md) — 2026-11-03 確認
+5. [Windscribe/Desktop-App — Release v2.24.13](https://github.com/Windscribe/Desktop-App/releases/tag/v2.24.13) — 2026-11-03 確認
+6. [Proton VPN — Pricing](https://protonvpn.com/pricing) — 2026-11-03 確認
+7. [Proton VPN Support — How to use WireGuard configuration files](https://protonvpn.com/support/wireguard-configurations) — 2026-11-03 確認
+8. [Proton VPN Support — How to use the Proton VPN Linux CLI](https://protonvpn.com/support/use-linux-cli) — 2026-11-03 確認
+9. [Proton VPN Support — Install the Linux app and CLI on Debian / Ubuntu](https://protonvpn.com/support/linux-vpn-debian-ubuntu) — 2026-11-03 確認
+10. [Proton VPN — Free VPN](https://protonvpn.com/free-vpn) — 2026-11-03 確認
+11. [hide.me — Pricing](https://hide.me/en/pricing) — 2026-11-03 確認
+12. [hide.me — Free VPN](https://hide.me/en/free-vpn) — 2026-11-03 確認
+13. [hide.me — VPN for Linux](https://hide.me/en/software/linux) — 2026-11-03 確認
+14. [eventure/hide.client.linux — README](https://github.com/eventure/hide.client.linux/blob/master/README.md) — 2026-11-03 確認
+15. [インターリンク — セカイVPN サービス詳細](https://www.interlink.or.jp/service/sekaivpn/) — 2026-11-03 確認
+16. [インターリンク — セカイVPN 料金](https://www.interlink.or.jp/service/sekaivpn/price.html) — 2026-11-03 確認
+17. [インターリンク — 無料体験について](https://www.interlink.or.jp/taiken.html) — 2026-11-03 確認
+18. [インターリンク — セカイVPN ご利用開始までの流れ](https://www.interlink.or.jp/service/sekaivpn/flow.html) — 2026-11-03 確認

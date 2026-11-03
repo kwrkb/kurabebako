@@ -1,7 +1,7 @@
 +++
 title = '短縮リンクサービスの無料枠比較: 無料枠は何の単位で数え、消したら戻るか'
 date = '2026-10-15T21:03:00+09:00'
-lastmod = '2026-10-20'
+lastmod = '2026-11-03'
 draft = false
 summary = '短縮リンク（URL 短縮）サービスの無料枠を、Short.io・Dub・Bitly・Rebrandly で比較。無料枠の単位は、同時に持てる本数（Short.io）と月の新規作成数（ほか 3 社）で分かれ、消したリンクの枠が戻るのは Short.io だけ。独自ドメインは Bitly の無料プランに無く、Bitly の無料リンクは広告つきの中間ページを挟む。Short.io と Dub は API で作成から削除までを実行して確認した。'
 categories = ['developer-tools']
@@ -34,7 +34,7 @@ tags = ['url-shortener', 'short-io', 'dub', 'bitly', 'rebrandly']
 
 ## 比較表
 
-2026-10-15 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小の有料プランを月払いの月額（USD）で載せ、年払いしか無いものはその旨を書いています。
 対象名を押すと、その対象の詳細に移ります。
 
@@ -207,23 +207,23 @@ Bitly の無料プランは転送の前に広告つきの中間ページを挟�
 
 ## 出典
 
-1. [Short.io — Pricing](https://short.io/pricing) — 2026-10-15 確認
-2. [Short.io Docs — How can I add a free s.gy subdomain?](https://docs.short.io/articles/managing-your-account-and-domains/manage-your-domain/how-can-i-add-a-free-short.gy-subdomain) — 2026-10-15 確認
-3. [Short.io Docs — How to activate a free s.gy subdomain](https://docs.short.io/articles/managing-your-account-and-domains/manage-your-domain/how-to-activate-a-free-short.gy-subdomain) — 2026-10-15 確認
-4. [Short.io Developers — Create a new link](https://developers.short.io/reference/post_links) — 2026-10-15 確認
-5. [Short.io Developers — Link statistics](https://developers.short.io/reference/getlinklinkid) — 2026-10-15 確認
-6. [Dub — Pricing (Dub Links)](https://dub.co/pricing/links) — 2026-10-15 確認
-7. [Dub Help — Dub Analytics Limits](https://dub.co/help/article/dub-analytics-limits) — 2026-10-15 確認
-8. [Dub Help — Why are my dub.sh links not working?](https://dub.co/help/article/dub-links-not-working) — 2026-10-15 確認
-9. [Dub Help — What are default Dub domains?](https://dub.co/help/article/default-dub-domains) — 2026-10-15 確認
-10. [Dub Docs — Retrieve analytics](https://dub.co/docs/api-reference/endpoint/retrieve-analytics) — 2026-10-15 確認
-11. [Dub Docs — Create a link](https://dub.co/docs/api-reference/endpoint/create-a-link) — 2026-10-15 確認
-12. [Bitly — Pricing](https://bitly.com/pages/pricing) — 2026-10-15 確認
-13. [Bitly Support — Why are there ads on my links?](https://support.bitly.com/hc/en-us/articles/32874287800333-Why-are-there-ads-on-my-links) — 2026-10-15 確認
-14. [Bitly Support — What are my monthly limits?](https://support.bitly.com/hc/en-us/articles/11243274022413-What-are-my-monthly-limits) — 2026-10-15 確認
-15. [Bitly Support — Can I hide, delete, or archive a link in Bitly?](https://support.bitly.com/hc/en-us/articles/230903368-Can-I-hide-delete-or-archive-a-link-in-Bitly-) — 2026-10-15 確認
-16. [Bitly Developer — Rate Limits](https://dev.bitly.com/docs/getting-started/rate-limits/) — 2026-10-15 確認
-17. [Rebrandly — Pricing](https://www.rebrandly.com/pricing) — 2026-10-15 確認
-18. [Rebrandly Support — How is monthly usage calculated?](https://support.rebrandly.com/en/articles/752965-how-is-monthly-usage-calculated) — 2026-10-15 確認
-19. [Short.io Docs — How to use the Short.io API](https://docs.short.io/articles/api-reference/Technical%20questions/how-to-use-the-short.io-api) — 2026-10-20 確認
-20. [Dub Docs — API Authentication](https://dub.co/docs/api-reference/authentication) — 2026-10-20 確認
+1. [Short.io — Pricing](https://short.io/pricing) — 2026-11-03 確認
+2. [Short.io Docs — How can I add a free s.gy subdomain?](https://docs.short.io/articles/managing-your-account-and-domains/manage-your-domain/how-can-i-add-a-free-short.gy-subdomain) — 2026-11-03 確認
+3. [Short.io Docs — How to activate a free s.gy subdomain](https://docs.short.io/articles/managing-your-account-and-domains/manage-your-domain/how-to-activate-a-free-short.gy-subdomain) — 2026-11-03 確認
+4. [Short.io Developers — Create a new link](https://developers.short.io/reference/post_links) — 2026-11-03 確認
+5. [Short.io Developers — Link statistics](https://developers.short.io/reference/getlinklinkid) — 2026-11-03 確認
+6. [Dub — Pricing (Dub Links)](https://dub.co/pricing/links) — 2026-11-03 確認
+7. [Dub Help — Dub Analytics Limits](https://dub.co/help/article/dub-analytics-limits) — 2026-11-03 確認
+8. [Dub Help — Why are my dub.sh links not working?](https://dub.co/help/article/dub-links-not-working) — 2026-11-03 確認
+9. [Dub Help — What are default Dub domains?](https://dub.co/help/article/default-dub-domains) — 2026-11-03 確認
+10. [Dub Docs — Retrieve analytics](https://dub.co/docs/api-reference/endpoint/retrieve-analytics) — 2026-11-03 確認
+11. [Dub Docs — Create a link](https://dub.co/docs/api-reference/endpoint/create-a-link) — 2026-11-03 確認
+12. [Bitly — Pricing](https://bitly.com/pages/pricing) — 2026-11-03 確認
+13. [Bitly Support — Why are there ads on my links?](https://support.bitly.com/hc/en-us/articles/32874287800333-Why-are-there-ads-on-my-links) — 2026-11-03 確認
+14. [Bitly Support — What are my monthly limits?](https://support.bitly.com/hc/en-us/articles/11243274022413-What-are-my-monthly-limits) — 2026-11-03 確認
+15. [Bitly Support — Can I hide, delete, or archive a link in Bitly?](https://support.bitly.com/hc/en-us/articles/230903368-Can-I-hide-delete-or-archive-a-link-in-Bitly-) — 2026-11-03 確認
+16. [Bitly Developer — Rate Limits](https://dev.bitly.com/docs/getting-started/rate-limits/) — 2026-11-03 確認
+17. [Rebrandly — Pricing](https://www.rebrandly.com/pricing) — 2026-11-03 確認
+18. [Rebrandly Support — How is monthly usage calculated?](https://support.rebrandly.com/en/articles/752965-how-is-monthly-usage-calculated) — 2026-11-03 確認
+19. [Short.io Docs — How to use the Short.io API](https://docs.short.io/articles/api-reference/Technical%20questions/how-to-use-the-short.io-api) — 2026-11-03 確認
+20. [Dub Docs — API Authentication](https://dub.co/docs/api-reference/authentication) — 2026-11-03 確認

@@ -1,7 +1,7 @@
 +++
 title = 'パスワードマネージャー 4 つを比較: 無料枠・CLI が使えるプラン・同期の持ち方で選ぶ'
 date = '2026-10-21T20:37:37+09:00'
-lastmod = '2026-10-21'
+lastmod = '2026-11-03'
 draft = false
 summary = '個人向けのパスワードマネージャーを、Bitwarden・KeePassXC・Proton Pass・1Password の 4 つで比較。恒常の無料枠があるか、CLI がどのプランから使えるか、同期をクラウドに任せるか自分で持つかで分けました。無料のまま CLI で登録・書き換え・削除まで AI に任せられるのは Bitwarden と KeePassXC です。1Password は有料プランのサービスアカウントで同じ操作が通り、3 つとも実際に動かして確認しています。Proton Pass の CLI は有料プランからで、1Password には恒常の無料プランがありません。'
 categories = ['developer-tools']
@@ -35,7 +35,7 @@ CI や AI エージェントに機械用のトークンで secret を渡す仕�
 
 ## 比較表
 
-2026-10-21 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小の有料プランを月払いの月額（USD）で載せ、年払いを括弧で補っています。
 対象名を押すと、その対象の詳細に移ります。
 
@@ -226,16 +226,16 @@ CLI の導入手順はサブスクリプションを前提に書かれていま�
 
 ## 出典
 
-1. [Bitwarden — Pricing](https://bitwarden.com/pricing/) — 2026-10-21 確認
-2. [Bitwarden Help — About Bitwarden Plans](https://bitwarden.com/help/about-bitwarden-plans/) — 2026-10-21 確認
-3. [Bitwarden Help — Password Manager CLI](https://bitwarden.com/help/cli/) — 2026-10-21 確認
-4. [Bitwarden Help — Personal API Key for CLI Authentication](https://bitwarden.com/help/personal-api-key/) — 2026-10-21 確認
-5. [Bitwarden Help — Encrypted Exports](https://bitwarden.com/help/encrypted-export/) — 2026-10-21 確認
-6. [bitwarden/clients — LICENSE.txt](https://github.com/bitwarden/clients/blob/main/LICENSE.txt) — 2026-10-21 確認
-7. [Proton Pass — Pricing & Plans](https://proton.me/pass/pricing) — 2026-10-21 確認
-8. [1Password — Pricing for Individuals & Families](https://1password.com/pricing/password-manager) — 2026-10-21 確認
-9. [1Password Developer — Get started with 1Password CLI](https://www.1password.dev/cli/get-started/) — 2026-10-21 確認
-10. [KeePassXC — Documentation and FAQ](https://keepassxc.org/docs/) — 2026-10-21 確認
-11. [KeePassXC — Download](https://keepassxc.org/download/) — 2026-10-21 確認
-12. [keepassxc-cli(1) — man page](https://github.com/keepassxreboot/keepassxc/blob/develop/docs/man/keepassxc-cli.1.adoc) — 2026-10-21 確認
-13. [KeePassXC — COPYING](https://github.com/keepassxreboot/keepassxc/blob/develop/COPYING) — 2026-10-21 確認
+1. [Bitwarden — Pricing](https://bitwarden.com/pricing/) — 2026-11-03 確認
+2. [Bitwarden Help — About Bitwarden Plans](https://bitwarden.com/help/about-bitwarden-plans/) — 2026-11-03 確認
+3. [Bitwarden Help — Password Manager CLI](https://bitwarden.com/help/cli/) — 2026-11-03 確認
+4. [Bitwarden Help — Personal API Key for CLI Authentication](https://bitwarden.com/help/personal-api-key/) — 2026-11-03 確認
+5. [Bitwarden Help — Encrypted Exports](https://bitwarden.com/help/encrypted-export/) — 2026-11-03 確認
+6. [bitwarden/clients — LICENSE.txt](https://github.com/bitwarden/clients/blob/main/LICENSE.txt) — 2026-11-03 確認
+7. [Proton Pass — Pricing & Plans](https://proton.me/pass/pricing) — 2026-11-03 確認
+8. [1Password — Pricing for Individuals & Families](https://1password.com/pricing/password-manager) — 2026-11-03 確認
+9. [1Password Developer — Get started with 1Password CLI](https://www.1password.dev/cli/get-started/) — 2026-11-03 確認
+10. [KeePassXC — Documentation and FAQ](https://keepassxc.org/docs/) — 2026-11-03 確認
+11. [KeePassXC — Download](https://keepassxc.org/download/) — 2026-11-03 確認
+12. [keepassxc-cli(1) — man page](https://github.com/keepassxreboot/keepassxc/blob/develop/docs/man/keepassxc-cli.1.adoc) — 2026-11-03 確認
+13. [KeePassXC — COPYING](https://github.com/keepassxreboot/keepassxc/blob/develop/COPYING) — 2026-11-03 確認

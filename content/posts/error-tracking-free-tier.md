@@ -1,9 +1,9 @@
 +++
 title = 'エラー監視の無料枠 5 つを比較: 月の例外数・保持期間・Sentry SDK 互換で選ぶ'
 date = '2026-10-18T00:23:18+09:00'
-lastmod = '2026-10-18'
+lastmod = '2026-11-03'
 draft = false
-summary = 'エラー監視（エラートラッキング）の無料枠を、Better Stack Errors・Rollbar・Sentry・Honeybadger・GlitchTip で比較。無料で受けられる例外の数は Better Stack が桁違いで、Rollbar・Sentry・Honeybadger が同じ量で並ぶ。無料で複数人が使えるのは Rollbar と GlitchTip のホスト版。Sentry SDK のまま送り先を替えられるのは Better Stack と GlitchTip。Better Stack と Rollbar は API で送信まで実行して確認した。'
+summary = 'エラー監視（エラートラッキング）の無料枠を、Better Stack Errors・Rollbar・Sentry・Honeybadger・GlitchTip で比較。無料で受けられる例外の数は Better Stack が桁違いで、Rollbar・Sentry・Honeybadger が同じ量で並ぶ。無料で人数無制限と明記しているのは Rollbar。Sentry SDK のまま送り先を替えられるのは Better Stack と GlitchTip。Better Stack と Rollbar は API で送信まで実行して確認した。'
 categories = ['monitoring']
 tags = ['error-tracking', 'better-stack', 'rollbar', 'sentry', 'honeybadger', 'glitchtip']
 # OGP 用の画像。本文と一覧には出さない（hidden）。生成は desk の images/
@@ -37,7 +37,7 @@ tags = ['error-tracking', 'better-stack', 'rollbar', 'sentry', 'honeybadger', 'g
 
 ## 比較表
 
-2026-10-18 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小の有料プランを月払いの月額（USD）で載せ、年払いを括弧で補っています。
 対象名を押すと、その対象の詳細に移ります。
 
@@ -47,7 +47,7 @@ tags = ['error-tracking', 'better-stack', 'rollbar', 'sentry', 'honeybadger', 'g
 | [Rollbar](#rollbar) | Free は USD 0。Essentials USD 9/月（年払いは月 7.50、1 万件） | **5,000 件/月**、保持 30 日、**ユーザー無制限**、セッションリプレイ 1,000/月 | 上限に達すると、既定では翌期まで新しいイベントを処理しない。Sentry SDK 互換ではない（自社 SDK か REST API） | アカウントのみ。カード不要。読み取り用のトークンは自分で追加する | {{< verified run >}} | [5][6][7] |
 | [Sentry](#sentry) | Developer は USD 0。Team USD 29/月（年払いは月 26、5 万件） | **5,000 件/月**、保持 30 日、**1 ユーザー**。ほかにログ 5 GB、スパン 500 万、リプレイ 50 | 無料は 1 人まで。料金ページは API と外部連携を Team の追加機能として載せる | アカウントのみ。新規は 14 日の Business トライアルで始まり、終了後に Developer へ移る | {{< verified spec >}} | [8][9] |
 | [Honeybadger](#honeybadger) | Developer は USD 0。Team USD 26/月（年 USD 286、5 万件） | **5,000 件/月**、保持 15 日、**1 ユーザー**。ほかに死活監視 1、ステータスページ 1 | 上限の 125% で月末まで処理を止める。トライアルの終了までにプランを選ばないと監視が止まる | アカウントのみ。新規は 30 日のトライアル（カード不要）で始まる | {{< verified spec >}} | [10] |
-| [GlitchTip](#glitchtip) | セルフホストは無料（MIT）。ホスト版は Small USD 15/月（10 万件） | ホスト版 **1,000 件/月**（例外のほか死活監視の確認なども数える）、メンバー無制限 | ホスト版は上限を超えると段階的に絞り、2 倍で遮断。ホスト版の保持期間は記載なし | セルフホストは Docker と PostgreSQL 14 以上、メモリ 256 MB から。Sentry SDK 互換 | {{< verified spec >}} | [11][12][13][14] |
+| [GlitchTip](#glitchtip) | セルフホストは無料（MIT）。ホスト版は Small USD 15/月（10 万件） | ホスト版 **1,000 件/月**（例外のほか死活監視の確認なども数える）、保持 30 日。人数の記載なし | ホスト版は上限を超えると段階的に絞り、2 倍で遮断 | セルフホストは Docker と PostgreSQL 14 以上、メモリ 256 MB から。Sentry SDK 互換 | {{< verified spec >}} | [11][12][13][14] |
 
 {{< bars unit="件/月" caption="無料で受けられる例外の数（GlitchTip はホスト版の Free。セルフホストは上限なし。出典は比較表と同じ）" >}}
 Better Stack Errors: 100000
@@ -57,11 +57,12 @@ Honeybadger: 5000
 GlitchTip（ホスト版）: 1000
 {{< /bars >}}
 
-{{< bars unit="日" caption="無料プランでの例外の保持期間（GlitchTip のホスト版は記載なし。セルフホストは既定 90 日で変えられる。出典は比較表と同じ）" >}}
+{{< bars unit="日" caption="無料プランでの例外の保持期間（GlitchTip はホスト版の Free。セルフホストは既定 90 日で変えられる。出典は比較表と同じ）" >}}
 Better Stack Errors: 90
 Rollbar: 30
 Sentry: 30
 Honeybadger: 15
+GlitchTip（ホスト版）: 30
 {{< /bars >}}
 
 ## 比較の前提
@@ -74,7 +75,7 @@ Honeybadger: 15
   GlitchTip の events だけは、例外のほかに死活監視の確認やトランザクションも同じ枠で数えます [11]
 - 選び方の軸: 「無料枠」列は、件数が桁で分かれます。
   Better Stack だけが大きく、Rollbar・Sentry・Honeybadger が同じ量で並び、GlitchTip のホスト版が最も少なくなります。
-  同じ列の人数も分かれ目で、Rollbar と GlitchTip のホスト版は無料のまま人数が無制限、Sentry と Honeybadger は 1 人です。
+  同じ列の人数も分かれ目で、Rollbar は無料のまま人数が無制限、Sentry と Honeybadger は 1 人で、GlitchTip のホスト版は無料プランの人数を公式に書いていません。
   「主な制約」列は、上限に達したときの動きで分かれます。止める（Rollbar・Honeybadger）、段階的に絞る（GlitchTip）、従量で課金する（Better Stack）の 3 通りです。
   「前提条件」列は、Sentry SDK をそのまま使えるかで分かれます。Better Stack と GlitchTip は DSN を差し替えるだけで送り先を移せ、Rollbar は自社の SDK か REST API で送ります
 - 検証の手順: Better Stack Errors と Rollbar で 2026-10-17 に行いました。どちらも無料プランのアカウントと API トークンをユーザーが用意し、AI が送信から後片付けまでを流しています。
@@ -174,7 +175,7 @@ Sentry SDK の送り先として動くので、Sentry から移るときにア�
 ### GlitchTip
 
 Sentry SDK と互換のあるオープンソースのエラー監視で、自分のサーバーで動かすか、開発元のホスト版を使います。
-ホスト版の無料枠は 5 つの中で最も少ない一方、人数は無制限です。
+ホスト版の無料枠は 5 つの中で最も少なく、人数無制限は有料の Small からです。
 
 {{< fit spec >}}
 向く: エラーのデータを自分のサーバーに置き、Sentry SDK をそのまま使いたい
@@ -222,17 +223,17 @@ GlitchTip のホスト版は段階的に絞ってから遮断し [11]、Better S
 
 ## 出典
 
-1. [Better Stack — Pricing](https://betterstack.com/pricing) — 2026-10-18 確認
-2. [Better Stack Docs — Create an application](https://betterstack.com/docs/errors/api/applications/create/) — 2026-10-18 確認
-3. [Better Stack Docs — Sentry SDK](https://betterstack.com/docs/errors/collecting-errors/sentry-sdk/) — 2026-10-18 確認
-4. [Better Stack Docs — Getting started with Errors API](https://betterstack.com/docs/errors/api/getting-api-token/) — 2026-10-18 確認
-5. [Rollbar — Pricing for AI agents](https://rollbar.com/pricing-for-agents) — 2026-10-18 確認
-6. [Rollbar Docs — Access Tokens](https://docs.rollbar.com/docs/access-tokens) — 2026-10-18 確認
-7. [Rollbar Docs — Rate Limits](https://docs.rollbar.com/docs/rate-limits) — 2026-10-18 確認
-8. [Sentry — Pricing](https://sentry.io/pricing/) — 2026-10-18 確認
-9. [Sentry Docs — Pricing & Billing](https://docs.sentry.io/pricing/) — 2026-10-18 確認
-10. [Honeybadger — Plans & Pricing](https://www.honeybadger.io/plans/) — 2026-10-18 確認
-11. [GlitchTip — Pricing](https://glitchtip.com/pricing) — 2026-10-18 確認
-12. [GlitchTip Docs — Installation Guide](https://glitchtip.com/documentation/install) — 2026-10-18 確認
-13. [GlitchTip — Sentry SDK Documentation](https://glitchtip.com/sdkdocs) — 2026-10-18 確認
-14. [GlitchTip Backend — LICENSE](https://gitlab.com/glitchtip/glitchtip-backend/-/blob/master/LICENSE) — 2026-10-18 確認
+1. [Better Stack — Pricing](https://betterstack.com/pricing) — 2026-11-03 確認
+2. [Better Stack Docs — Create an application](https://betterstack.com/docs/errors/api/applications/create/) — 2026-11-03 確認
+3. [Better Stack Docs — Sentry SDK](https://betterstack.com/docs/errors/collecting-errors/sentry-sdk/) — 2026-11-03 確認
+4. [Better Stack Docs — Getting started with Errors API](https://betterstack.com/docs/errors/api/getting-api-token/) — 2026-11-03 確認
+5. [Rollbar — Pricing for AI agents](https://rollbar.com/pricing-for-agents) — 2026-11-03 確認
+6. [Rollbar Docs — Access Tokens](https://docs.rollbar.com/docs/access-tokens) — 2026-11-03 確認
+7. [Rollbar Docs — Rate Limits](https://docs.rollbar.com/docs/rate-limits) — 2026-11-03 確認
+8. [Sentry — Pricing](https://sentry.io/pricing/) — 2026-11-03 確認
+9. [Sentry Docs — Pricing & Billing](https://docs.sentry.io/pricing/) — 2026-11-03 確認
+10. [Honeybadger — Plans & Pricing](https://www.honeybadger.io/plans/) — 2026-11-03 確認
+11. [GlitchTip — Pricing](https://glitchtip.com/pricing) — 2026-11-03 確認
+12. [GlitchTip Docs — Installation Guide](https://glitchtip.com/documentation/install) — 2026-11-03 確認
+13. [GlitchTip — Sentry SDK Documentation](https://glitchtip.com/sdkdocs) — 2026-11-03 確認
+14. [GlitchTip Backend — LICENSE](https://gitlab.com/glitchtip/glitchtip-backend/-/blob/master/LICENSE) — 2026-11-03 確認

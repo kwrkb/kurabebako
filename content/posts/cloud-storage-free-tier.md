@@ -2,7 +2,7 @@
 title = 'クラウドストレージ 6 つの無料プラン比較: WebDAV や API で無料のまま動かせるか'
 date = '2026-09-30T06:54:12+09:00'
 # 最終確認日。出典の確認日・実行検証の最終日と揃え、再検証したら更新する（ヘッダーに出る）
-lastmod = '2026-10-20'
+lastmod = '2026-11-03'
 draft = false
 summary = 'Koofr・XServer ドライブ・pCloud・MEGA・Icedrive・Internxt の無料プランを、容量ではなく「WebDAV・API・CLI で無料のまま動かせるか」と「スクリプトに渡す認証が本体のパスワードかどうか」で比較。無料で WebDAV と REST API の両方が使え、アプリ専用パスワードで認証できるのは Koofr で、pCloud は WebDAV と rsync が無料プランでも使えると公式に明記されています。'
 # tags / categories は URL に載るため英語（小文字・ハイフン区切り）で書く
@@ -38,7 +38,7 @@ tags = ['cloud-storage', 'webdav', 'koofr', 'xserver', 'pcloud', 'mega', 'icedri
 
 ## 比較表
 
-2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は最小の有料プランで揃え、通貨は各社の料金ページの表記のままです。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
@@ -47,8 +47,8 @@ tags = ['cloud-storage', 'webdav', 'koofr', 'xserver', 'pcloud', 'mega', 'icedri
 | [XServer ドライブ](#xserver-ドライブ) | フリープラン（0 円）。有料はスモールビジネス 月 3,960 円（1 か月契約）〜 2,970 円（36 か月）＋初期費用 11,000 円（2027-01-14 まで 0 円） | **2 GB**（SSD）・1 名 | 公式の上限は 1 ファイル 100 MB。API・CLI の公式の記載なし。有料は法人向けの料金体系 | XServer アカウント。WebDAV はストレージ管理パネルの ID とパスワードで認証 | {{< verified run >}} | [5][6] |
 | [pCloud](#pcloud) | Free（USD 0）。有料は Premium 500 GB が月払い USD 4.99/月、年払い USD 49.99/年の表示から。買い切りあり | 登録時 **2 GB**。チュートリアルと招待で最大 10 GB | 共有リンクの転送 50 GB/月。API の接続先は登録地で US / EU に分かれる | メールとパスワード。WebDAV と rsync は無料を含む全プラン対応。初回接続はメールで承認 | {{< verified spec >}} | [7][8][9][10] |
 | [MEGA](#mega) | Free（EUR 0）。有料は Essential 200 GB が EUR 3.33/月（年払い、税込 EUR 3.67）から。請求はユーロ | **10 GB** | 無料の転送量は IP アドレスごとの直近 6 時間のダウンロード量で制限。固定の上限値の記載なし | メールとパスワード。経路は公式 CLI の MEGA CMD。WebDAV は MEGA CMD が手元に立てる | {{< verified spec >}} | [11][12][13][14] |
-| [Icedrive](#icedrive) | Free（USD 0）。有料は Starter 200 GB が USD 3.99/月、Pro 3 TB が USD 12.99/月。年払いは月額換算 USD 2.99 / 9.99 | **10 GB** | WebDAV は 2026-04-15 から新規ユーザーに無効。無料プランにバージョン履歴なし | アカウントのみ。料金ページの機能一覧に API・CLI・WebDAV の項目なし | {{< verified spec >}} | [15][16] |
-| [Internxt](#internxt) | Free（EUR 0）。有料は Essential 1 TB が年払いプランで初月 EUR 1.99、以降 EUR 9.99/月の表示 | **1 GB** | CLI と WebDAV は Ultimate（5 TB）のみ。CLI と WebDAV は 1 ファイル 100 GB まで | 名前とメールで登録。CLI はブラウザ経由か、メールとパスワードでログイン | {{< verified spec >}} | [17][18] |
+| [Icedrive](#icedrive) | Free（USD 0）。有料は Starter 100 GB が年払いのみで月額換算 USD 2.99、Pro 2 TB が月払い USD 10.99/月（年払いは月額換算 USD 8.99） | **10 GB** | WebDAV は 2026-04-15 から新規ユーザーに無効。無料プランにバージョン履歴なし | アカウントのみ。料金ページの機能一覧に API・CLI・WebDAV の項目なし | {{< verified spec >}} | [15][16] |
+| [Internxt](#internxt) | Free（EUR 0）。有料は Essential 1 TB が年払いプランで初月 EUR 1.69（期間限定のセール表示）、以降 EUR 9.99/月の表示 | **1 GB** | CLI と WebDAV は Ultimate（5 TB）のみ。CLI と WebDAV は 1 ファイル 100 GB まで | 名前とメールで登録。CLI はブラウザ経由か、メールとパスワードでログイン | {{< verified spec >}} | [17][18] |
 
 {{< bars unit="GB" caption="無料プランの容量。pCloud は登録時の値で、チュートリアルと招待で最大 10 GB まで増える" >}}
 Koofr: 10
@@ -200,9 +200,9 @@ WebDAV を新規ユーザーに止めており、無料プランで公式アプ�
 向かない: WebDAV・API・CLI のどれかで、スクリプトから動かしたい
 {{< /fit >}}
 
-- **料金体系**: 有料は Starter・Pro のほかに Pro+ 10 TB があり、月払い USD 29.99/月、年払いは月額換算 USD 24.99 です。
-  料金ページは年払いを月額換算でだけ表示し、年額の合計と初年度の割引は載っていません。
-  バージョン履歴の保持は Starter 10 日・Pro 30 日・Pro+ 90 日で、Free にはありません [15]
+- **料金体系**: 有料は Starter・Pro のほかに、Pro Extra 5 TB（月払い USD 19.99/月、年払いは月額換算 USD 16.99）と Pro+ 10 TB（月払い USD 34.99/月、年払いは月額換算 USD 29.99）があります。
+  料金ページは年払いを月額換算と年額の合計で表示し、新規の利用者には Pro 以上で初月か初年度の割引を表示しています。
+  バージョン履歴の保持は Starter 14 日、Pro 以上 90 日で、Free にはありません [15]
 - **制約**: WebDAV を止めたのは新規ユーザーに対してで、既存のユーザーは当面使えますが、今後の更新で完全に廃止すると公式ヘルプが書いています [16]
 - **前提条件**: 表の「前提条件」列に載せた以外の条件は、料金ページにありません [15]
 - **検証した内容**: 公式の料金ページとヘルプを確認しました。無料プランで動かせる経路が無いため、実行の対象にしていません
@@ -219,7 +219,7 @@ WebDAV を新規ユーザーに止めており、無料プランで公式アプ�
 向かない: 無料プランや下位の有料プランで、CLI や WebDAV から動かしたい
 {{< /fit >}}
 
-- **料金体系**: 有料の年払いプランは、Essential のほかに Premium 3 TB が初月 EUR 3.99・以降 EUR 19.99/月、Ultimate 5 TB が初月 EUR 5.99・以降 EUR 29.99/月と表示されています [17]
+- **料金体系**: 有料の年払いプランは、Essential のほかに Premium 2 TB が初月 EUR 3.39・以降 EUR 19.99/月、Ultimate 5 TB が初月 EUR 5.09・以降 EUR 29.99/月と表示されています（初月の額は 2026-11-03 時点のセール表示）[17]
 - **制約**: 公式の CLI の README は、CLI を使えるのは Ultimate のユーザーだけと書いています [18]。
   料金ページのプランのカードでも、「CLI & WebDav support」が載っているのは Ultimate だけです [17]
 - **前提条件**: 登録に本人確認とメールの確認はありません [17]
@@ -278,24 +278,24 @@ XServer ドライブは 2 GB、Internxt は 1 GB です [5][17]。
 
 ## 出典
 
-1. [Koofr Pricing](https://koofr.eu/pricing/) — 2026-10-03 確認
-2. [Koofr Help — How do I connect a service to Koofr through WebDAV?](https://koofr.eu/help/koofr_with_webdav/how-do-i-connect-a-service-to-koofr-through-webdav/) — 2026-10-03 確認
-3. [Koofr Help — I have a free account and cannot share certain files, why?](https://koofr.eu/help/share-files-and-folders/i-have-a-free-account-and-cannot-share-certain-files-why/) — 2026-10-03 確認
-4. [Koofr Developers](https://app.koofr.net/developers) — 2026-10-03 確認
-5. [XServer ドライブ 料金プラン](https://drive.xserver.ne.jp/price/) — 2026-10-20 確認
-6. [XServer ドライブ マニュアル — WebDAV 接続（Windows 10）](https://drive.xserver.ne.jp/support/manual/man_setting_webdav_windows10.php) — 2026-10-03 確認
-7. [pCloud Help — Plan details](https://help.pcloud.com/article/plan-details) — 2026-10-03 確認
-8. [pCloud Pricing](https://www.pcloud.com/cloud-storage-pricing-plans.html) — 2026-10-03 確認
-9. [pCloud Help — Connect to pCloud using WebDAV and rsync](https://help.pcloud.com/article/connect-to-pcloud-using-webdav-and-rsync) — 2026-10-03 確認
-10. [pCloud Developers](https://docs.pcloud.com/) — 2026-10-03 確認
-11. [MEGA Pricing](https://mega.io/pricing) — 2026-10-03 確認
-12. [MEGA Help Centre — What is transfer quota on MEGA?](https://help.mega.io/plans-storage/space-storage/transfer-quota) — 2026-10-03 確認
-13. [MEGA CMD](https://mega.io/cmd) — 2026-10-03 確認
-14. [MEGA Help Centre — What is MEGA CMD?](https://help.mega.io/desktop-app/mega-cmd/cmd) — 2026-10-03 確認
-15. [Icedrive Plans & Pricing](https://icedrive.net/plans) — 2026-10-20 確認
-16. [Icedrive Support — Does Icedrive support WebDAV?](https://icedrive.net/help/account/does-icedrive-support-webdav) — 2026-10-03 確認
-17. [Internxt Pricing](https://internxt.com/pricing) — 2026-10-03 確認
-18. [Internxt CLI（公式 GitHub の README）](https://github.com/internxt/cli) — 2026-10-03 確認
-19. [Google Drive API — Choose Google Drive API scopes](https://developers.google.com/workspace/drive/api/guides/about-auth) — 2026-10-03 確認
-20. [Dropbox — OAuth Guide](https://docs.dropboxapi.com/dropbox-api/docs/oauth) — 2026-10-03 確認
-21. [Microsoft Graph — Authentication and authorization basics](https://learn.microsoft.com/en-us/graph/auth/auth-concepts) — 2026-10-03 確認
+1. [Koofr Pricing](https://koofr.eu/pricing/) — 2026-11-03 確認
+2. [Koofr Help — How do I connect a service to Koofr through WebDAV?](https://koofr.eu/help/koofr_with_webdav/how-do-i-connect-a-service-to-koofr-through-webdav/) — 2026-11-03 確認
+3. [Koofr Help — I have a free account and cannot share certain files, why?](https://koofr.eu/help/share-files-and-folders/i-have-a-free-account-and-cannot-share-certain-files-why/) — 2026-11-03 確認
+4. [Koofr Developers](https://app.koofr.net/developers) — 2026-11-03 確認
+5. [XServer ドライブ 料金プラン](https://drive.xserver.ne.jp/price/) — 2026-11-03 確認
+6. [XServer ドライブ マニュアル — WebDAV 接続（Windows 10）](https://drive.xserver.ne.jp/support/manual/man_setting_webdav_windows10.php) — 2026-11-03 確認
+7. [pCloud Help — Plan details](https://help.pcloud.com/article/plan-details) — 2026-11-03 確認
+8. [pCloud Pricing](https://www.pcloud.com/cloud-storage-pricing-plans.html) — 2026-11-03 確認
+9. [pCloud Help — Connect to pCloud using WebDAV and rsync](https://help.pcloud.com/article/connect-to-pcloud-using-webdav-and-rsync) — 2026-11-03 確認
+10. [pCloud Developers](https://docs.pcloud.com/) — 2026-11-03 確認
+11. [MEGA Pricing](https://mega.io/pricing) — 2026-11-03 確認
+12. [MEGA Help Centre — What is transfer quota on MEGA?](https://help.mega.io/plans-storage/space-storage/transfer-quota) — 2026-11-03 確認
+13. [MEGA CMD](https://mega.io/cmd) — 2026-11-03 確認
+14. [MEGA Help Centre — What is MEGA CMD?](https://help.mega.io/desktop-app/mega-cmd/cmd) — 2026-11-03 確認
+15. [Icedrive Plans & Pricing](https://icedrive.net/plans) — 2026-11-03 確認
+16. [Icedrive Support — Does Icedrive support WebDAV?](https://icedrive.net/help/account/does-icedrive-support-webdav) — 2026-11-03 確認
+17. [Internxt Pricing](https://internxt.com/pricing) — 2026-11-03 確認
+18. [Internxt CLI（公式 GitHub の README）](https://github.com/internxt/cli) — 2026-11-03 確認
+19. [Google Drive API — Choose Google Drive API scopes](https://developers.google.com/workspace/drive/api/guides/about-auth) — 2026-11-03 確認
+20. [Dropbox — OAuth Guide](https://docs.dropboxapi.com/dropbox-api/docs/oauth) — 2026-11-03 確認
+21. [Microsoft Graph — Authentication and authorization basics](https://learn.microsoft.com/en-us/graph/auth/auth-concepts) — 2026-11-03 確認

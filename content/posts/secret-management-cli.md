@@ -1,7 +1,7 @@
 +++
 title = 'シークレット管理 CLI 6 つ比較: AI が非対話で扱える範囲'
 date = '2026-09-05T23:35:51+09:00'
-lastmod = '2026-10-03'
+lastmod = '2026-11-03'
 draft = false
 summary = 'Bitwarden Secrets Manager・Infisical・Doppler・1Password・HashiCorp Vault Community・OpenBao を、個人が使える最小プランの料金、無料枠の上限、機械向けトークンの作り方とスコープ、run 相当の注入、読み取り専用の作り分けで比較。6 つすべてを AI が実際に動かし、無料でカード登録なしに CI や AI エージェントへ読み書きさせるなら Bitwarden Secrets Manager が条件を満たす。'
 categories = ['developer-tools']
@@ -303,32 +303,32 @@ CLI の手順と Agent の設定ファイルは、コマンド名を `bao` に�
 
 ## 出典
 
-1. [Bitwarden Pricing](https://bitwarden.com/pricing/) — 2026-10-03 確認
-2. [Bitwarden Secrets Manager](https://bitwarden.com/products/secrets-manager/) — 2026-10-03 確認
-3. [Bitwarden Help — Password Manager CLI](https://bitwarden.com/help/cli/) — 2026-10-03 確認
-4. [Bitwarden Help — Secrets Manager CLI](https://bitwarden.com/help/secrets-manager-cli/) — 2026-10-03 確認
-5. [Bitwarden Help — Secrets Manager Quick Start](https://bitwarden.com/help/secrets-manager-quick-start/) — 2026-10-03 確認
-6. [Bitwarden Help — About Organizations](https://bitwarden.com/help/about-organizations/) — 2026-10-03 確認
-7. [Bitwarden Help — Machine Accounts](https://bitwarden.com/help/machine-accounts/) — 2026-10-03 確認
-8. [Bitwarden Help — Access Tokens](https://bitwarden.com/help/access-tokens/) — 2026-10-03 確認
-9. [Infisical Pricing](https://infisical.com/pricing) — 2026-10-03 確認
-10. [Infisical Docs — CLI Overview](https://infisical.com/docs/cli/overview) — 2026-10-03 確認
-11. [Infisical Docs — CLI Reference](https://infisical.com/docs/cli/reference) — 2026-10-03 確認
-12. [Infisical Docs — Machine Identities](https://infisical.com/docs/documentation/platform/identities/machine-identities) — 2026-10-03 確認
-13. [Infisical Docs — Token Auth](https://infisical.com/docs/documentation/platform/identities/token-auth) — 2026-10-03 確認
-14. [Doppler Pricing](https://www.doppler.com/pricing) — 2026-10-03 確認
-15. [Doppler Docs — CLI](https://docs.doppler.com/docs/cli) — 2026-10-03 確認
-16. [Doppler Docs — Service Tokens](https://docs.doppler.com/docs/service-tokens) — 2026-10-03 確認
-17. [Doppler Docs — Service Accounts](https://docs.doppler.com/docs/service-accounts) — 2026-10-03 確認
-18. [1Password 個人向け料金プラン](https://1password.com/jp/pricing/personal) — 2026-10-03 確認
-19. [1Password Developer — CLI Get Started](https://www.1password.dev/cli/get-started/) — 2026-10-03 確認
-20. [1Password Developer — Service Accounts Get Started](https://www.1password.dev/service-accounts/get-started/) — 2026-10-03 確認
-21. [1Password Developer — Service Account Rate Limits](https://www.1password.dev/service-accounts/rate-limits/) — 2026-10-03 確認
-22. [HashiCorp Vault LICENSE（BUSL 1.1）](https://github.com/hashicorp/vault/blob/main/LICENSE) — 2026-10-03 確認
-23. [Vault Docs — Install](https://developer.hashicorp.com/vault/docs/install) — 2026-10-03 確認
-24. [Vault Docs — server command](https://developer.hashicorp.com/vault/docs/commands/server) — 2026-10-03 確認
-25. [Vault Docs — Agent process supervisor mode](https://developer.hashicorp.com/vault/docs/agent-and-proxy/agent/process-supervisor) — 2026-10-03 確認
-26. [HCP Docs — Billing](https://developer.hashicorp.com/hcp/docs/hcp/admin/billing) — 2026-10-03 確認
-27. [OpenBao](https://openbao.org/) — 2026-10-03 確認
-28. [OpenBao LICENSE（MPL 2.0）](https://github.com/openbao/openbao/blob/main/LICENSE) — 2026-10-03 確認
-29. [OpenBao Docs — server command](https://openbao.org/docs/commands/server/) — 2026-10-03 確認
+1. [Bitwarden Pricing](https://bitwarden.com/pricing/) — 2026-11-03 確認
+2. [Bitwarden Secrets Manager](https://bitwarden.com/products/secrets-manager/) — 2026-11-03 確認
+3. [Bitwarden Help — Password Manager CLI](https://bitwarden.com/help/cli/) — 2026-11-03 確認
+4. [Bitwarden Help — Secrets Manager CLI](https://bitwarden.com/help/secrets-manager-cli/) — 2026-11-03 確認
+5. [Bitwarden Help — Secrets Manager Quick Start](https://bitwarden.com/help/secrets-manager-quick-start/) — 2026-11-03 確認
+6. [Bitwarden Help — About Organizations](https://bitwarden.com/help/about-organizations/) — 2026-11-03 確認
+7. [Bitwarden Help — Machine Accounts](https://bitwarden.com/help/machine-accounts/) — 2026-11-03 確認
+8. [Bitwarden Help — Access Tokens](https://bitwarden.com/help/access-tokens/) — 2026-11-03 確認
+9. [Infisical Pricing](https://infisical.com/pricing) — 2026-11-03 確認
+10. [Infisical Docs — CLI Overview](https://infisical.com/docs/cli/overview) — 2026-11-03 確認
+11. [Infisical Docs — CLI Reference](https://infisical.com/docs/cli/reference) — 2026-11-03 確認
+12. [Infisical Docs — Machine Identities](https://infisical.com/docs/documentation/platform/identities/machine-identities) — 2026-11-03 確認
+13. [Infisical Docs — Token Auth](https://infisical.com/docs/documentation/platform/identities/token-auth) — 2026-11-03 確認
+14. [Doppler Pricing](https://www.doppler.com/pricing) — 2026-11-03 確認
+15. [Doppler Docs — CLI](https://docs.doppler.com/docs/cli) — 2026-11-03 確認
+16. [Doppler Docs — Service Tokens](https://docs.doppler.com/docs/service-tokens) — 2026-11-03 確認
+17. [Doppler Docs — Service Accounts](https://docs.doppler.com/docs/service-accounts) — 2026-11-03 確認
+18. [1Password 個人向け料金プラン](https://1password.com/jp/pricing/personal) — 2026-11-03 確認
+19. [1Password Developer — CLI Get Started](https://www.1password.dev/cli/get-started/) — 2026-11-03 確認
+20. [1Password Developer — Service Accounts Get Started](https://www.1password.dev/service-accounts/get-started/) — 2026-11-03 確認
+21. [1Password Developer — Service Account Rate Limits](https://www.1password.dev/service-accounts/rate-limits/) — 2026-11-03 確認
+22. [HashiCorp Vault LICENSE（BUSL 1.1）](https://github.com/hashicorp/vault/blob/main/LICENSE) — 2026-11-03 確認
+23. [Vault Docs — Install](https://developer.hashicorp.com/vault/docs/install) — 2026-11-03 確認
+24. [Vault Docs — server command](https://developer.hashicorp.com/vault/docs/commands/server) — 2026-11-03 確認
+25. [Vault Docs — Agent process supervisor mode](https://developer.hashicorp.com/vault/docs/agent-and-proxy/agent/process-supervisor) — 2026-11-03 確認
+26. [HCP Docs — Billing](https://developer.hashicorp.com/hcp/docs/hcp/admin/billing) — 2026-11-03 確認
+27. [OpenBao](https://openbao.org/) — 2026-11-03 確認
+28. [OpenBao LICENSE（MPL 2.0）](https://github.com/openbao/openbao/blob/main/LICENSE) — 2026-11-03 確認
+29. [OpenBao Docs — server command](https://openbao.org/docs/commands/server/) — 2026-11-03 確認

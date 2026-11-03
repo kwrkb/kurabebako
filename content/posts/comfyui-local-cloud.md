@@ -1,7 +1,7 @@
 +++
 title = 'ComfyUI をローカルとクラウド 3 社で比較: AI に任せられた範囲と、自分でする準備'
 date = '2026-10-07T18:05:00+09:00'
-lastmod = '2026-10-25'
+lastmod = '2026-11-03'
 draft = false
 summary = 'ComfyUI を動かす場所として、手元の PC に入れるローカル版と、ComfyUI を用意したクラウド 3 つ（国内の ConoHa AI Canvas、海外の ThinkDiffusion と RunDiffusion）を、最初に自分ですること、AI に任せられた範囲、起動中の課金と保存が消える条件、外部のツールから接続できるかで比較。ローカル版は GPU 付きの PC で、AI が環境の構築から生成・中断・停止までローカル API で一巡した。クラウド 3 つは公式ページの確認で、ConoHa AI Canvas は申込時に支払い情報が要り外部接続の手順が無く、ThinkDiffusion Hobby は月会費なしの時間課金で放置すると保存が消え、RunDiffusion の API Mode は有料の上位プランだけで稼働分の単価は非公開。'
 categories = ['ai-tools']
@@ -44,7 +44,7 @@ ConoHa AI Canvas は新規申込みの受付を一時停止しています（停
 
 ## 比較表
 
-2026-10-07 時点の公式情報に基づき、ConoHa AI Canvas の新規受付の状況を 2026-10-25 に確認しました。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 ローカル版の実行は 2026-10-04 に行いました。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
@@ -238,26 +238,26 @@ RunDiffusion で自分のファイルを置くには Creators Club が要りま�
 
 ## 出典
 
-1. [ComfyUI — README（GitHub）](https://github.com/Comfy-Org/ComfyUI) — 2026-10-07 確認
-2. [ComfyUI Server Routes（HTTP and WebSocket API）](https://docs.comfy.org/development/comfyui-server/comms_routes) — 2026-10-07 確認
-3. [ComfyUI v0.38.0 — comfy/cli_args.py](https://github.com/Comfy-Org/ComfyUI/blob/v0.38.0/comfy/cli_args.py) — 2026-10-07 確認
-4. [Stability AI — SD-XL 1.0-base Model Card](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) — 2026-10-07 確認
-5. [ConoHa AI Canvas 料金](https://ai.conoha.jp/canvas/pricing/) — 2026-10-07 確認
-6. [ConoHa AI Canvas サービス仕様](https://ai.conoha.jp/canvas/specification/) — 2026-10-07 確認
-7. [ConoHa サポート — AI Canvas を契約する](https://support.conoha.jp/ac/add-aicanvas/) — 2026-10-07 確認
-8. [ConoHa サポート — AI Canvas よくある質問（契約 / 料金）](https://support.conoha.jp/ai-canvas/faq/faq-contract/) — 2026-10-07 確認
-9. [ConoHa サポート — AI Canvas よくある質問（WebUI）](https://support.conoha.jp/ai-canvas/faq/faq-webui/) — 2026-10-07 確認
-10. [ConoHa サポート — AI Canvas よくある質問（AI Canvas について）](https://support.conoha.jp/ai-canvas/faq/faq-service/) — 2026-10-07 確認
-11. [ConoHa サポート — WebUI を起動・終了する](https://support.conoha.jp/ac/webui-boot/) — 2026-10-07 確認
-12. [ConoHa サポート — WebUI の自動終了時間を設定する](https://support.conoha.jp/ac/autotermination/) — 2026-10-07 確認
-13. [ConoHa サポート — WebUI（ComfyUI）を使う](https://support.conoha.jp/ac/webui-comfyui/) — 2026-10-07 確認
-14. [ThinkDiffusion Pricing](https://www.thinkdiffusion.com/pricing) — 2026-10-07 確認
-15. [ThinkDiffusion Help Docs — File Management](https://docs.thinkdiffusion.com/thinkdiffusion-walkthrough/file-management) — 2026-10-07 確認
-16. [ThinkDiffusion Help Docs — Admin & Billing](https://docs.thinkdiffusion.com/thinkdiffusion-walkthrough/admin-and-billing) — 2026-10-07 確認
-17. [ThinkDiffusion Help Docs — How to view and test Automatic1111 API](https://docs.thinkdiffusion.com/ai-art-video-models-and-apps/automatic1111-in-the-cloud/how-to-view-and-test-automatic1111-api) — 2026-10-07 確認
-18. [ThinkDiffusion Sign Up](https://www.thinkdiffusion.com/signup) — 2026-10-07 確認
-19. [RunDiffusion Pricing](https://www.rundiffusion.com/pricing) — 2026-10-07 確認
-20. [RunDiffusion FAQ](https://www.rundiffusion.com/faq) — 2026-10-07 確認
-21. [RunDiffusion Open-Source Application API Guide](https://www.rundiffusion.com/open-source-application-api-guide) — 2026-10-07 確認
-22. [RunDiffusion Getting Started](https://www.rundiffusion.com/getting-started) — 2026-10-07 確認
-23. [ConoHa AI Canvas お知らせ — 緊急メンテナンスによる新規お申し込み受付の一時停止のお知らせ](https://ai.conoha.jp/canvas/news/?ap=2015054922) — 2026-10-25 確認
+1. [ComfyUI — README（GitHub）](https://github.com/Comfy-Org/ComfyUI) — 2026-11-03 確認
+2. [ComfyUI Server Routes（HTTP and WebSocket API）](https://docs.comfy.org/development/comfyui-server/comms_routes) — 2026-11-03 確認
+3. [ComfyUI v0.38.0 — comfy/cli_args.py](https://github.com/Comfy-Org/ComfyUI/blob/v0.38.0/comfy/cli_args.py) — 2026-11-03 確認
+4. [Stability AI — SD-XL 1.0-base Model Card](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0) — 2026-11-03 確認
+5. [ConoHa AI Canvas 料金](https://ai.conoha.jp/canvas/pricing/) — 2026-11-03 確認
+6. [ConoHa AI Canvas サービス仕様](https://ai.conoha.jp/canvas/specification/) — 2026-11-03 確認
+7. [ConoHa サポート — AI Canvas を契約する](https://support.conoha.jp/ac/add-aicanvas/) — 2026-11-03 確認
+8. [ConoHa サポート — AI Canvas よくある質問（契約 / 料金）](https://support.conoha.jp/ai-canvas/faq/faq-contract/) — 2026-11-03 確認
+9. [ConoHa サポート — AI Canvas よくある質問（WebUI）](https://support.conoha.jp/ai-canvas/faq/faq-webui/) — 2026-11-03 確認
+10. [ConoHa サポート — AI Canvas よくある質問（AI Canvas について）](https://support.conoha.jp/ai-canvas/faq/faq-service/) — 2026-11-03 確認
+11. [ConoHa サポート — WebUI を起動・終了する](https://support.conoha.jp/ac/webui-boot/) — 2026-11-03 確認
+12. [ConoHa サポート — WebUI の自動終了時間を設定する](https://support.conoha.jp/ac/autotermination/) — 2026-11-03 確認
+13. [ConoHa サポート — WebUI（ComfyUI）を使う](https://support.conoha.jp/ac/webui-comfyui/) — 2026-11-03 確認
+14. [ThinkDiffusion Pricing](https://www.thinkdiffusion.com/pricing) — 2026-11-03 確認
+15. [ThinkDiffusion Help Docs — File Management](https://docs.thinkdiffusion.com/thinkdiffusion-walkthrough/file-management) — 2026-11-03 確認
+16. [ThinkDiffusion Help Docs — Admin & Billing](https://docs.thinkdiffusion.com/thinkdiffusion-walkthrough/admin-and-billing) — 2026-11-03 確認
+17. [ThinkDiffusion Help Docs — How to view and test Automatic1111 API](https://docs.thinkdiffusion.com/ai-art-video-models-and-apps/automatic1111-in-the-cloud/how-to-view-and-test-automatic1111-api) — 2026-11-03 確認
+18. [ThinkDiffusion Sign Up](https://www.thinkdiffusion.com/signup) — 2026-11-03 確認
+19. [RunDiffusion Pricing](https://www.rundiffusion.com/pricing) — 2026-11-03 確認
+20. [RunDiffusion FAQ](https://www.rundiffusion.com/faq) — 2026-11-03 確認
+21. [RunDiffusion Open-Source Application API Guide](https://www.rundiffusion.com/open-source-application-api-guide) — 2026-11-03 確認
+22. [RunDiffusion Getting Started](https://www.rundiffusion.com/getting-started) — 2026-11-03 確認
+23. [ConoHa AI Canvas お知らせ — 緊急メンテナンスによる新規お申し込み受付の一時停止のお知らせ](https://ai.conoha.jp/canvas/news/?ap=2015054922) — 2026-11-03 確認

@@ -1,7 +1,7 @@
 +++
 title = 'サーバーレス実行環境の無料枠比較: 1 回の呼び出しで何ができるか'
 date = '2026-09-20T20:12:53+09:00'
-lastmod = '2026-10-03'
+lastmod = '2026-11-03'
 draft = false
 summary = 'Cloudflare Workers・Deno Deploy・Vercel Functions・Netlify Functions・AWS Lambda を、無料枠の単位（回数か CPU 時間かクレジットか）、1 回の呼び出しに許される CPU・待ち時間・メモリ、カードと商用利用の条件で比較。同じ負荷を当てると、Workers の無料プランは CPU を絞る代わりに 300 秒の待ちが通り、Deno Deploy は 24 秒の計算が通る代わりに約 100 秒で応答が切られた。'
 categories = ['hosting']
@@ -33,7 +33,7 @@ tags = ['serverless', 'cloudflare', 'deno-deploy', 'vercel', 'netlify', 'aws-lam
 
 ## 比較表
 
-2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小のプランで揃え、金額は月払いの月額（USD）です。AWS Lambda の単価は米国東部（バージニア北部）の第 1 段です。
 対象名を押すと、その対象の詳細に移ります。
 
@@ -43,7 +43,7 @@ tags = ['serverless', 'cloudflare', 'deno-deploy', 'vercel', 'netlify', 'aws-lam
 | [Deno Deploy](#deno-deploy) | Free は USD 0。Pro USD 20/月、Builder USD 200/月 | **月 100 万リクエスト・Active CPU 10 時間**。Memory time 150 GiB 時、転送 20 GiB、アプリ 10 | 呼び出しごとの CPU 上限とタイムアウトは公式に記載なし。高 CPU 負荷とスクレイパーは利用規定で禁止 | GitHub か Google のアカウントで登録。カード要否は公式に記載なし。トークンは権限を選べない | {{< verified run >}} | [6][7][8][9] |
 | [Vercel Functions](#vercel-functions) | Hobby は USD 0。Pro USD 20/月（同額のクレジット込みで、超過は従量） | **月 100 万呼び出し・Active CPU 4 時間**。Provisioned Memory 360 GB 時、転送 100 GB | **Hobby は非商用の個人利用のみ**（広告の掲載、アフィリエイトが主目的のサイトは商用）。最大 300 秒、2 GB / 1 vCPU | アカウントのみ。カードは Pro に上げるときに入力する。上限を超えた機能は多くが 30 日待ち | {{< verified spec >}} | [10][11][12][13] |
 | [Netlify Functions](#netlify-functions) | Free は USD 0。Personal USD 9/月（1,000 クレジット）、Pro USD 20/月（3,000 クレジット） | **月 300 クレジット**（追加購入不可）。本番デプロイ 15/回、コンピュート 10/GB 時、帯域 20/GB | 使い切ると全プロジェクトが停止する。同期 60 秒、バックグラウンド 15 分。メモリ 1,024 MB（Free は変更不可） | アカウントのみ。Free のカード要否は公式に記載なし。2025-09-04 以降の新規アカウントはクレジット制 | {{< verified spec >}} | [14][15][16][17] |
-| [AWS Lambda](#aws-lambda) | 最低料金なしの従量。x86 USD 0.0000166667/GB 秒、Arm USD 0.0000133334/GB 秒、USD 0.20/100 万リクエスト | **月 100 万リクエスト・40 万 GB 秒**（期限なし。x86 と Arm の両方に使える） | タイムアウト最大 900 秒、メモリ 128〜10,240 MB、本文 6 MB（同期）。無料プランのアカウントは 6 か月で閉鎖 | AWS アカウント。新規の多くは登録時に支払い方法の入力が不要（本人確認で求められる場合あり）。新規アカウントは同時実行とメモリの枠が低い | {{< verified spec >}} | [18][19][20][21][22][23] |
+| [AWS Lambda](#aws-lambda) | 最低料金なしの従量。x86 USD 0.0000166667/GB 秒、Arm USD 0.0000133334/GB 秒、USD 0.20/100 万リクエスト | **月 100 万リクエスト・40 万 GB 秒**（期限なし） | タイムアウト最大 900 秒、メモリ 128〜10,240 MB、本文 6 MB（同期）。無料プランのアカウントは 6 か月で閉鎖 | AWS アカウント。新規の多くは登録時に支払い方法の入力が不要（本人確認で求められる場合あり）。新規アカウントは同時実行とメモリの枠が低い | {{< verified spec >}} | [18][19][20][21][22][23] |
 
 {{< bars unit="秒" caption="公式に書かれた、HTTP で呼ぶ関数 1 回の実行時間の上限（無料プラン）。Cloudflare Workers は「上限なし」、Deno Deploy は記載が無いため載せていない。検証では Workers は 300 秒の待ちが通り、Deno Deploy は約 100 秒で 503 になった" >}}
 Netlify Functions（同期）: 60
@@ -183,14 +183,13 @@ AWS の関数実行サービスで、1 回の実行時間とメモリの上限�
 向かない: 無料プランのアカウントのまま長く使い続けたい。待っている時間の課金を避けたい
 {{< /fit >}}
 
-- **料金体系**: 表の「料金」列の Arm は Graviton2 です [18][23]。
-  料金ページの単価の表はリージョンを選ぶと描画されるので、数字は AWS が公開している価格表（Price List。発行日 2026-10-01）から読みました [23]
+- **料金体系**: 料金ページの単価の表はリージョンを選ぶと描画されるので、数字は AWS が公開している価格表（Price List。発行日 2026-10-30）から読みました [23]
 - **制約**: メモリは 1,769 MB で 1 vCPU 相当で、同期呼び出しの本文の上限は要求・応答の両方に掛かります。デプロイパッケージは zip で 50 MB、展開後 250 MB、コンテナイメージは 10 GB までです。
   同時実行の既定は 1,000 で、新規アカウントの低い枠は利用に応じて自動で引き上げられます [19]。
   メモリ 128 MB の関数なら、40 万 GB 秒は 320 万秒ぶんの実行時間にあたります
 - **前提条件**: 無料プランでは、有料プランに上げるまで請求はされません [21]。
   新規アカウントは登録時に USD 100、活動に応じて最大 USD 100 のクレジットを受け取ります。無料プランは 6 か月たつか、クレジットを使い切ると終わり、アカウントが閉じられます。データは 90 日保持され、その間に有料プランへ上げれば再開できます [20][21][22]。
-  クレジットの有効期限はアカウントの作成から 12 か月で、6 か月以内に有料プランへ上げた場合も対象です。期限の無い無料枠は有料プランでも続きます [21]
+  クレジットの有効期限は、FAQ の一般の項がアカウントの作成から 6 か月、有料プランへ上げたときの項が 12 か月と書いていて、公式内で揃っていません。期限の無い無料枠は有料プランでも続きます [21]
 - **検証した内容**: 公式の料金ページ・docs・FAQ を確認しました。アカウントの作成が要るため、実行はしていません
 
 ## 用途別の選び方
@@ -234,26 +233,26 @@ Vercel の Hobby は多くの機能が 30 日たつまで使えなくなり [13]
 
 ## 出典
 
-1. [Cloudflare Docs — Workers Pricing](https://developers.cloudflare.com/workers/platform/pricing/) — 2026-10-03 確認
-2. [Cloudflare Docs — Workers Limits](https://developers.cloudflare.com/workers/platform/limits/) — 2026-10-03 確認
-3. [Cloudflare Docs — Create a Cloudflare account](https://developers.cloudflare.com/fundamentals/account/create-account/) — 2026-10-03 確認
-4. [Cloudflare Docs — Workers Infrastructure as Code](https://developers.cloudflare.com/workers/platform/infrastructure-as-code/) — 2026-10-03 確認
-5. [Cloudflare API — Upload Worker Module](https://developers.cloudflare.com/api/resources/workers/subresources/scripts/methods/update/) — 2026-10-03 確認
-6. [Deno Deploy — Pricing](https://deno.com/deploy/pricing) — 2026-10-03 確認
-7. [Deno Docs — Deploy pricing and limitations](https://docs.deno.com/deploy/pricing_and_limits/) — 2026-10-03 確認
-8. [Deno Docs — Deploy runtime](https://docs.deno.com/deploy/reference/runtime/) — 2026-10-03 確認
-9. [Deno Docs — Deploy acceptable use policy](https://docs.deno.com/deploy/acceptable_use_policy/) — 2026-10-03 確認
-10. [Vercel — Pricing](https://vercel.com/pricing) — 2026-10-03 確認
-11. [Vercel Docs — Vercel Functions Limits](https://vercel.com/docs/functions/limitations) — 2026-10-03 確認
-12. [Vercel Docs — Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines) — 2026-10-03 確認
-13. [Vercel Docs — Hobby Plan](https://vercel.com/docs/plans/hobby) — 2026-10-03 確認
-14. [Netlify — Pricing](https://www.netlify.com/pricing/) — 2026-10-03 確認
-15. [Netlify Docs — Credit-based pricing plans](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) — 2026-10-03 確認
-16. [Netlify Docs — How credits work](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/) — 2026-10-03 確認
-17. [Netlify Docs — Functions configuration](https://docs.netlify.com/build/functions/configuration/) — 2026-10-03 確認
-18. [AWS Lambda — Pricing](https://aws.amazon.com/lambda/pricing/) — 2026-10-03 確認
-19. [AWS Lambda Developer Guide — Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) — 2026-10-03 確認
-20. [AWS — Free Tier](https://aws.amazon.com/free/) — 2026-10-03 確認
-21. [AWS — Free Tier FAQs](https://aws.amazon.com/free/free-tier-faqs/) — 2026-10-03 確認
-22. [AWS Billing User Guide — Choosing a plan](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/free-tier-plans.html) — 2026-10-03 確認
-23. [AWS Price List — AWSLambda（us-east-1）](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSLambda/current/us-east-1/index.json) — 2026-10-03 確認
+1. [Cloudflare Docs — Workers Pricing](https://developers.cloudflare.com/workers/platform/pricing/) — 2026-11-03 確認
+2. [Cloudflare Docs — Workers Limits](https://developers.cloudflare.com/workers/platform/limits/) — 2026-11-03 確認
+3. [Cloudflare Docs — Create a Cloudflare account](https://developers.cloudflare.com/fundamentals/account/create-account/) — 2026-11-03 確認
+4. [Cloudflare Docs — Workers Infrastructure as Code](https://developers.cloudflare.com/workers/platform/infrastructure-as-code/) — 2026-11-03 確認
+5. [Cloudflare API — Upload Worker Module](https://developers.cloudflare.com/api/resources/workers/subresources/scripts/methods/update/) — 2026-11-03 確認
+6. [Deno Deploy — Pricing](https://deno.com/deploy/pricing) — 2026-11-03 確認
+7. [Deno Docs — Deploy pricing and limitations](https://docs.deno.com/deploy/pricing_and_limits/) — 2026-11-03 確認
+8. [Deno Docs — Deploy runtime](https://docs.deno.com/deploy/reference/runtime/) — 2026-11-03 確認
+9. [Deno Docs — Deploy acceptable use policy](https://docs.deno.com/deploy/acceptable_use_policy/) — 2026-11-03 確認
+10. [Vercel — Pricing](https://vercel.com/pricing) — 2026-11-03 確認
+11. [Vercel Docs — Vercel Functions Limits](https://vercel.com/docs/functions/limitations) — 2026-11-03 確認
+12. [Vercel Docs — Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines) — 2026-11-03 確認
+13. [Vercel Docs — Hobby Plan](https://vercel.com/docs/plans/hobby) — 2026-11-03 確認
+14. [Netlify — Pricing](https://www.netlify.com/pricing/) — 2026-11-03 確認
+15. [Netlify Docs — Credit-based pricing plans](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) — 2026-11-03 確認
+16. [Netlify Docs — How credits work](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/) — 2026-11-03 確認
+17. [Netlify Docs — Functions configuration](https://docs.netlify.com/build/functions/configuration/) — 2026-11-03 確認
+18. [AWS Lambda — Pricing](https://aws.amazon.com/lambda/pricing/) — 2026-11-03 確認
+19. [AWS Lambda Developer Guide — Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html) — 2026-11-03 確認
+20. [AWS — Free Tier](https://aws.amazon.com/free/) — 2026-11-03 確認
+21. [AWS — Free Tier FAQs](https://aws.amazon.com/free/free-tier-faqs/) — 2026-11-03 確認
+22. [AWS Billing User Guide — Choosing a plan](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/free-tier-plans.html) — 2026-11-03 確認
+23. [AWS Price List — AWSLambda（us-east-1）](https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSLambda/current/us-east-1/index.json) — 2026-11-03 確認

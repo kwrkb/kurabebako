@@ -1,7 +1,7 @@
 +++
 title = 'スクレイピング API 5 つの無料枠比較: 無料で試せるか、使い続けられるか'
 date = '2026-09-12T12:00:38+09:00'
-lastmod = '2026-10-03'
+lastmod = '2026-11-03'
 draft = false
 summary = 'ScraperAPI・ScrapingBee・Firecrawl・Apify・Zyte を、無料枠が毎月戻るか一回きりか、カード登録なしで動かせるか、1 ページの取得が何クレジットに当たるかで比較。7 日間のトライアルと月 1,000 クレジットの恒常枠を両方持つのは ScraperAPI だけで、カード登録なしに無料枠を使い続けるなら ScraperAPI が条件を満たす。'
 categories = ['developer-tools']
@@ -37,14 +37,14 @@ URL を渡すと Web ページを取得して返すスクレイピング API 5 �
 
 ## 比較表
 
-2026-10-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小のプランで揃え、通貨は各社の料金ページの表記（USD）のままです。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [ScraperAPI](#scraperapi) | 無料プラン（USD 0）。有料は Hobby USD 49/月（10 万クレジット）から | 登録後 7 日間の 5,000 クレジットと、**月 1,000 クレジット**（月次リセット）の両方 | 同時接続 5。通常ドメインは 1 リクエスト = 1 クレジット、`render=true`（JS 描画）で 10、`premium=true` で 10、両方で 25。同時接続の超過は 429、月次クレジットの枯渇は 403。課金は 200 と 404 のみで、70 秒の再試行後の失敗（500）は無課金 | アカウントのみ。料金ページに「No credit card required」。API キーをクエリ `api_key` で渡し、`GET /account` で使用量と上限を取れる | {{< verified run >}} | [1][2][3][4][14] |
 | [ScrapingBee](#scrapingbee) | 無料トライアル（USD 0）。有料は Hobby USD 19/月（75,000 クレジット・同時 25）から | 1,000 クレジット（**一回きり**。月次リセットなし） | JS 描画あり（既定）は 1 リクエスト 5 クレジット、なしは 1。premium proxy で 25 / 10、stealth proxy で 75。同時接続の超過は 429 で無課金、クレジット切れは 401。無料枠の同時接続は 5（料金ページに記載が無く、`GET /api/v1/usage` の `max_concurrency` で確認） | アカウントのみ。料金ページに「no credit card required」。`GET /api/v1/usage` で残クレジットと同時接続の上限を取れる（6 回/分まで） | {{< verified run >}} | [5][6] |
-| [Firecrawl](#firecrawl) | Free（USD 0）。有料は Hobby USD 19/月（年払い USD 16。5,000 クレジット・同時 5）から | **月 1,000 クレジット**（月次リセット） | 同時ブラウザ 2（超えた分はキューに入り、6 並列でも 429 は出ない）。`/scrape` `/map` `/search` は 10 リクエスト/分、`/crawl` `/agent` は 2 リクエスト/分で、超過は 429。1 クレジット = 1 ページ（scrape / crawl / map）、search は 10 件ごとに 2、JSON などの構造化形式はページごとに +4 | アカウントのみ。料金ページに「No cost, no card, no hassle」。セルフホストの手順が docs に公開 | {{< verified run >}} | [7][8][9] |
+| [Firecrawl](#firecrawl) | Free（USD 0）。有料は Hobby USD 19/月（年払い USD 16。5,000 クレジット・同時 5）から | **月 1,000 クレジット**（月次リセット） | 同時ブラウザ 2（超えた分はキューに入り、6 並列でも 429 は出ない）。`/scrape` `/map` `/search` は 10 リクエスト/分、`/crawl` `/agent` は 2 リクエスト/分で、超過は 429。1 クレジット = 1 ページ（scrape / crawl）、map は 1 回 1、search は 10 件ごとに 2、JSON などの構造化形式はページごとに +4 | アカウントのみ。料金ページに「No cost, no card, no hassle」。セルフホストの手順が docs に公開 | {{< verified run >}} | [7][8][9] |
 | [Apify](#apify) | Free（USD 0）。有料は Starter USD 19/月（年払いで 10% 引き。USD 19 分の使用量込み）＋従量 | **月 USD 5 分**のプラットフォーム使用量（月次） | 使用量は USD 0.2 / コンピュートユニット（1 CU = 1 GB RAM × 1 時間）で、取れるページ数は Actor と RAM 設定次第。Actor RAM 16 GB、同時実行 5、データセンタープロキシ 5 IP | アカウントのみ。料金ページに「No credit card required」 | {{< verified spec >}} | [10][11] |
 | [Zyte](#zyte) | 従量。HTTP レスポンス 1,000 件あたり USD 0.13〜1.27、ブラウザ描画 USD 1.01〜16.08（対象サイトの難度 5 段階）。割引は最低コミット月 USD 100 / 200 / 500 | 初回の請求月に **USD 5 分**（30 日・一回きり） | 課金は成功レスポンスのみで、レート制限と失敗は無課金。標準プランは 3,000 リクエスト/分。単価が対象サイトごとに決まるため、事前に見積りが要る | アカウントのみ。料金ページに「No commitment or subscription」。有料側は月 USD 100 のコミットから | {{< verified spec >}} | [12][13] |
 
@@ -126,7 +126,7 @@ JS 描画を既定で有効にしたスクレイピング API で、リクエス
 
 - **料金体系**: 料金と無料枠は、表の「料金」列と「無料枠」列に載せたとおりです [5]
 - **制約**: 課金は 200・404・410・413 の応答です。既定のタイムアウトは 140 秒です [6]
-- **前提条件**: API キーはクエリ文字列 `api_key` で渡します [6]
+- **前提条件**: API キーは `Authorization: Bearer` ヘッダーで渡します。クエリ文字列 `api_key` は非推奨で、互換のために残っています [6]
 - **検証した内容**: 公式の料金ページと docs を確認したうえで、2026-09-12 に無料トライアルのアカウントで「比較の前提」の 5 手順を実行しました。
   取得先は自サイトの静的ページ 1 件です。
 
@@ -154,7 +154,7 @@ JS 描画を既定で有効にしたスクレイピング API で、リクエス
 - **制約**: docs は、同時ブラウザとレート制限のどちらの上限を超えても 429 が返ると書いています [8]。
   ただ、同時ブラウザのほうは超えた分がキューに入り、6 並列でも 429 は出ませんでした（下の検証）
 - **前提条件**: API キーは `Authorization: Bearer` ヘッダーで渡します。
-  Cloud 専用の機能（スクリーンショット、ページ操作、Agent など）はセルフホストでは使えないと docs に記載されています [9]
+  スクリーンショットとページ操作は既定のセルフホスト構成に含まれず、同梱されない Fire-engine が要ります。Agent などは Cloud を使うか、外部サービスの要件を確かめる必要があると docs に記載されています [9]
 - **検証した内容**: 公式の料金ページと docs（レート制限・セルフホスト）を確認したうえで、2026-09-12 に Free のアカウントで「比較の前提」の 5 手順を実行しました。
   取得先は自サイトの静的ページ 1 件です。
 
@@ -181,8 +181,7 @@ JS 描画を既定で有効にしたスクレイピング API で、リクエス
 {{< /fit >}}
 
 - **料金体系**: 料金と無料枠は、表の「料金」列と「無料枠」列に載せたとおりです [10]
-- **制約**: docs の limits ページは Free の同時実行を 25 と書いており、料金ページの 5 と食い違います。
-  この記事は料金ページの値を採っています [10][11]
+- **制約**: Free の同時実行は、料金ページと docs の limits ページで一致しています [10][11]
 - **前提条件**: 表の「前提条件」列のとおり、アカウントだけで始められます [10]
 - **検証した内容**: 公式の料金ページと docs の limits ページを確認しました。無料枠で何ページ取れるかは Actor 次第で、比較に使う Actor を 1 つ決める必要があるため、実行は次回の更新に回しています
 
@@ -255,17 +254,17 @@ Firecrawl は、docs では 429 が返ると書かれていますが、同時ブ
 
 ## 出典
 
-1. [ScraperAPI Pricing](https://www.scraperapi.com/pricing/) — 2026-10-03 確認
-2. [ScraperAPI Docs — Plans and Billing (FAQ)](https://docs.scraperapi.com/resources/faq/plans-and-billing) — 2026-10-03 確認
-3. [ScraperAPI Docs — Credits and Requests costs](https://docs.scraperapi.com/getting-started/quick-start/credits-and-requests-costs) — 2026-10-03 確認
-4. [ScraperAPI Docs — API Status Codes](https://docs.scraperapi.com/responses-and-formats/api-status-codes) — 2026-10-03 確認
-5. [ScrapingBee Pricing](https://www.scrapingbee.com/pricing/) — 2026-10-03 確認
-6. [ScrapingBee Documentation](https://www.scrapingbee.com/documentation/) — 2026-10-03 確認
-7. [Firecrawl Pricing](https://www.firecrawl.dev/pricing) — 2026-10-03 確認
-8. [Firecrawl Docs — Rate Limits](https://docs.firecrawl.dev/rate-limits) — 2026-10-03 確認
-9. [Firecrawl Docs — Self-hosting](https://docs.firecrawl.dev/contributing/self-host) — 2026-10-03 確認
-10. [Apify Pricing](https://apify.com/pricing) — 2026-10-03 確認
-11. [Apify Docs — Limits](https://docs.apify.com/platform/limits) — 2026-10-03 確認
-12. [Zyte Pricing](https://www.zyte.com/pricing/) — 2026-10-03 確認
-13. [Zyte API Docs — Pricing](https://docs.zyte.com/zyte-api/pricing.html) — 2026-10-03 確認
-14. [ScraperAPI Docs — Credit Usage](https://docs.scraperapi.com/account-management/credit-usage) — 2026-10-03 確認
+1. [ScraperAPI Pricing](https://www.scraperapi.com/pricing/) — 2026-11-03 確認
+2. [ScraperAPI Docs — Plans and Billing (FAQ)](https://docs.scraperapi.com/resources/faq/plans-and-billing) — 2026-11-03 確認
+3. [ScraperAPI Docs — Credits and Requests costs](https://docs.scraperapi.com/getting-started/quick-start/credits-and-requests-costs) — 2026-11-03 確認
+4. [ScraperAPI Docs — API Status Codes](https://docs.scraperapi.com/responses-and-formats/api-status-codes) — 2026-11-03 確認
+5. [ScrapingBee Pricing](https://www.scrapingbee.com/pricing/) — 2026-11-03 確認
+6. [ScrapingBee Documentation](https://www.scrapingbee.com/documentation/) — 2026-11-03 確認
+7. [Firecrawl Pricing](https://www.firecrawl.dev/pricing) — 2026-11-03 確認
+8. [Firecrawl Docs — Rate Limits](https://docs.firecrawl.dev/rate-limits) — 2026-11-03 確認
+9. [Firecrawl Docs — Self-hosting](https://docs.firecrawl.dev/contributing/self-host) — 2026-11-03 確認
+10. [Apify Pricing](https://apify.com/pricing) — 2026-11-03 確認
+11. [Apify Docs — Limits](https://docs.apify.com/platform/limits) — 2026-11-03 確認
+12. [Zyte Pricing](https://www.zyte.com/pricing/) — 2026-11-03 確認
+13. [Zyte API Docs — Pricing](https://docs.zyte.com/zyte-api/pricing.html) — 2026-11-03 確認
+14. [ScraperAPI Docs — Credit Usage](https://docs.scraperapi.com/account-management/credit-usage) — 2026-11-03 確認

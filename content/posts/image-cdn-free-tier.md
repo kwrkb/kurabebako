@@ -1,7 +1,7 @@
 +++
 title = '画像配信 CDN の無料枠比較: 画像 CDN は何の単位で数え、超えたらどうなるか'
 date = '2026-10-10T15:10:00+09:00'
-lastmod = '2026-10-10'
+lastmod = '2026-11-03'
 draft = false
 summary = '画像 CDN の無料枠を、Cloudflare Images・Cloudinary・ImageKit・bunny.net Optimizer・imgix で比較。Cloudinary の無料枠（月 25 クレジット）は変換・保存・帯域を合算し、ImageKit は帯域、Cloudflare Images は変換数で数える。超えたときも、止まる・課金なしで放置するとアカウント停止、と分かれる。3 社は API で一巡を実行して確認した。'
 categories = ['hosting']
@@ -36,7 +36,7 @@ tags = ['image-cdn', 'cloudinary', 'imagekit', 'cloudflare', 'bunny-net', 'imgix
 
 ## 比較表
 
-2026-10-10 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は月払いの月額（USD）です。Cloudflare Images は最低料金のない従量で、Cloudinary と ImageKit は個人が申し込める最小の有料プランを載せています。
 対象名を押すと、その対象の詳細に移ります。
 
@@ -224,15 +224,15 @@ Cloudinary の Free は課金されず、警告のあと放置するとアカウ
 
 ## 出典
 
-1. [Cloudflare Docs — Images pricing](https://developers.cloudflare.com/images/pricing/) — 2026-10-10 確認
-2. [Cloudflare Docs — Transform via Workers](https://developers.cloudflare.com/images/optimization/transformations/transform-via-workers/) — 2026-10-10 確認
-3. [Cloudflare Docs — Images binding](https://developers.cloudflare.com/images/optimization/transformations/bindings/) — 2026-10-10 確認
-4. [Cloudflare Docs — Images troubleshooting](https://developers.cloudflare.com/images/reference/troubleshooting/) — 2026-10-10 確認
-5. [Cloudinary — Pricing](https://cloudinary.com/pricing) — 2026-10-10 確認
-6. [Cloudinary Docs — Billing and plans](https://cloudinary.com/documentation/billing_and_plans) — 2026-10-10 確認
-7. [Cloudinary — Compare plans](https://cloudinary.com/pricing/compare-plans) — 2026-10-10 確認
-8. [ImageKit — Pricing plans](https://imagekit.io/plans) — 2026-10-10 確認
-9. [ImageKit — Forever Free plan](https://imagekit.io/lp/imagekit-forever-free-plan) — 2026-10-10 確認
-10. [bunny.net — Optimizer pricing](https://bunny.net/pricing/optimizer/) — 2026-10-10 確認
-11. [imgix — Pricing](https://imgix.com/pricing) — 2026-10-10 確認
-12. [bunny.net Docs — Optimizer Pricing](https://bunny.net/docs/optimizer/pricing) — 2026-10-10 確認
+1. [Cloudflare Docs — Images pricing](https://developers.cloudflare.com/images/pricing/) — 2026-11-03 確認
+2. [Cloudflare Docs — Transform via Workers](https://developers.cloudflare.com/images/optimization/transformations/transform-via-workers/) — 2026-11-03 確認
+3. [Cloudflare Docs — Images binding](https://developers.cloudflare.com/images/optimization/transformations/bindings/) — 2026-11-03 確認
+4. [Cloudflare Docs — Images troubleshooting](https://developers.cloudflare.com/images/reference/troubleshooting/) — 2026-11-03 確認
+5. [Cloudinary — Pricing](https://cloudinary.com/pricing) — 2026-11-03 確認
+6. [Cloudinary Docs — Billing and plans](https://cloudinary.com/documentation/billing_and_plans) — 2026-11-03 確認
+7. [Cloudinary — Compare plans](https://cloudinary.com/pricing/compare-plans) — 2026-11-03 確認
+8. [ImageKit — Pricing plans](https://imagekit.io/plans) — 2026-11-03 確認
+9. [ImageKit — Forever Free plan](https://imagekit.io/lp/imagekit-forever-free-plan) — 2026-11-03 確認
+10. [bunny.net — Optimizer pricing](https://bunny.net/pricing/optimizer/) — 2026-11-03 確認
+11. [imgix — Pricing](https://imgix.com/pricing) — 2026-11-03 確認
+12. [bunny.net Docs — Optimizer Pricing](https://bunny.net/docs/optimizer/pricing) — 2026-11-03 確認

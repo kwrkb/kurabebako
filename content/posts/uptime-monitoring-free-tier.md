@@ -1,7 +1,7 @@
 +++
 title = '死活監視の無料枠 5 つを比較: 最短間隔と API で選ぶ'
 date = '2026-09-03T14:59:52+09:00'
-lastmod = '2026-10-23'
+lastmod = '2026-11-03'
 draft = false
 summary = 'UptimeRobot・Better Stack・Checkly・Cronitor・Uptime Kuma の無料枠を、モニター数・最短間隔・通知手段・公式の自動化手段（API / CLI / Terraform）で比較。無料で 50 件まで API から作成・削除できる UptimeRobot、監視をコードで持つなら Checkly。UptimeRobot・Checkly・Uptime Kuma は実際に監視を作成して確認した結果を載せる。'
 categories = ['monitoring']
@@ -34,7 +34,7 @@ tags = ['uptime-monitoring', 'uptimerobot', 'better-stack', 'checkly', 'cronitor
 
 ## 比較表
 
-2026-10-23 時点の公式情報に基づきます。出典は末尾の番号に対応しています。対象名を押すと、その対象の詳細に移ります。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -259,35 +259,35 @@ Uptime Kuma は OSS で、かかるのはサーバー代だけです [22]。
 
 ## 出典
 
-1. [UptimeRobot Pricing](https://uptimerobot.com/pricing/) — 2026-10-03 確認
-2. [UptimeRobot Help — Who should use UptimeRobot's free plan](https://help.uptimerobot.com/en/articles/11604710-who-should-use-uptimerobot-s-free-plan) — 2026-10-03 確認
-3. [UptimeRobot Help — Integrations: basic information](https://help.uptimerobot.com/en/articles/11361285-integrations-basic-information) — 2026-10-03 確認
-4. [UptimeRobot API](https://uptimerobot.com/api/) — 2026-10-03 確認
-5. [GitHub — uptimerobot/terraform-provider-uptimerobot](https://github.com/uptimerobot/terraform-provider-uptimerobot) — 2026-10-03 確認
-6. [UptimeRobot Blog — Terraform provider release](https://uptimerobot.com/blog/uptimerobot-terraform-provider-release/) — 2026-10-03 確認
-7. [Better Stack Pricing](https://betterstack.com/pricing) — 2026-10-23 確認
-8. [Better Stack Uptime](https://betterstack.com/uptime) — 2026-10-03 確認
-9. [Better Stack Docs — Check frequency](https://betterstack.com/docs/uptime/check-frequency/) — 2026-10-03 確認
-10. [Better Stack Docs — Create a new monitor (API v2)](https://betterstack.com/docs/uptime/api/create-a-new-monitor/) — 2026-10-03 確認
-11. [Better Stack Docs — Terraform](https://betterstack.com/docs/uptime/terraform/) — 2026-10-03 確認
-12. [GitHub — BetterStackHQ/terraform-provider-better-uptime](https://github.com/BetterStackHQ/terraform-provider-better-uptime) — 2026-10-03 確認
-13. [Checkly Pricing](https://www.checklyhq.com/pricing/) — 2026-10-03 確認
-14. [Checkly Docs — CLI](https://www.checklyhq.com/docs/cli/) — 2026-10-03 確認
-15. [Checkly Docs — Terraform provider](https://www.checklyhq.com/docs/terraform-provider/) — 2026-10-03 確認
-16. [GitHub — checkly/terraform-provider-checkly resources](https://github.com/checkly/terraform-provider-checkly/tree/main/docs/resources) — 2026-10-03 確認
-17. [Cronitor Pricing](https://cronitor.io/pricing) — 2026-10-03 確認
-18. [Cronitor Docs — Uptime monitoring](https://cronitor.io/docs/uptime-monitoring) — 2026-10-03 確認
-19. [Cronitor Docs — Monitors API](https://cronitor.io/docs/monitors-api) — 2026-10-03 確認
-20. [Cronitor Docs — Using Cronitor CLI](https://cronitor.io/docs/using-cronitor-cli) — 2026-10-03 確認
-21. [GitHub — cronitorio/terraform-provider-cronitor（404。公式 provider が存在しないことの確認）](https://github.com/cronitorio/terraform-provider-cronitor) — 2026-10-03 確認
-22. [GitHub — louislam/uptime-kuma](https://github.com/louislam/uptime-kuma) — 2026-10-03 確認
-23. [Uptime Kuma Wiki — How to Install](https://github.com/louislam/uptime-kuma/wiki/%F0%9F%94%A7-How-to-Install) — 2026-10-03 確認
-24. [Uptime Kuma Wiki — Internal API](https://github.com/louislam/uptime-kuma/wiki/Internal-API) — 2026-10-03 確認
-25. [Uptime Kuma Wiki — Status Page](https://github.com/louislam/uptime-kuma/wiki/Status-Page) — 2026-10-03 確認
-26. [Uptime Kuma Wiki — Environment Variables](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables) — 2026-10-03 確認
-27. [Uptime Kuma Wiki — 3rd Party Addons / Apps](https://github.com/louislam/uptime-kuma/wiki/3rd-Party-Addons-Apps) — 2026-10-03 確認
-28. [Checkly Docs — UrlMonitor construct](https://www.checklyhq.com/docs/constructs/url-monitor/) — 2026-10-03 確認
-29. [Checkly Docs — CLI authentication](https://www.checklyhq.com/docs/cli/authentication/) — 2026-10-03 確認
-30. [GitHub — louislam/uptime-kuma 2.5.3 src/util.js（MIN_INTERVAL_SECOND）](https://github.com/louislam/uptime-kuma/blob/2.5.3/src/util.js) — 2026-10-03 確認
-31. [Cronitor — Sign up](https://cronitor.io/sign-up) — 2026-10-03 確認
-32. [Better Stack — Sign up](https://betterstack.com/users/sign-up) — 2026-10-23 確認
+1. [UptimeRobot Pricing](https://uptimerobot.com/pricing/) — 2026-11-03 確認
+2. [UptimeRobot Help — Who should use UptimeRobot's free plan](https://help.uptimerobot.com/en/articles/11604710-who-should-use-uptimerobot-s-free-plan) — 2026-11-03 確認
+3. [UptimeRobot Help — Integrations: basic information](https://help.uptimerobot.com/en/articles/11361285-integrations-basic-information) — 2026-11-03 確認
+4. [UptimeRobot API](https://uptimerobot.com/api/) — 2026-11-03 確認
+5. [GitHub — uptimerobot/terraform-provider-uptimerobot](https://github.com/uptimerobot/terraform-provider-uptimerobot) — 2026-11-03 確認
+6. [UptimeRobot Blog — Terraform provider release](https://uptimerobot.com/blog/uptimerobot-terraform-provider-release/) — 2026-11-03 確認
+7. [Better Stack Pricing](https://betterstack.com/pricing) — 2026-11-03 確認
+8. [Better Stack Uptime](https://betterstack.com/uptime) — 2026-11-03 確認
+9. [Better Stack Docs — Check frequency](https://betterstack.com/docs/uptime/check-frequency/) — 2026-11-03 確認
+10. [Better Stack Docs — Create a new monitor (API v2)](https://betterstack.com/docs/uptime/api/create-a-new-monitor/) — 2026-11-03 確認
+11. [Better Stack Docs — Terraform](https://betterstack.com/docs/uptime/terraform/) — 2026-11-03 確認
+12. [GitHub — BetterStackHQ/terraform-provider-better-uptime](https://github.com/BetterStackHQ/terraform-provider-better-uptime) — 2026-11-03 確認
+13. [Checkly Pricing](https://www.checklyhq.com/pricing/) — 2026-11-03 確認
+14. [Checkly Docs — CLI](https://www.checklyhq.com/docs/cli/) — 2026-11-03 確認
+15. [Checkly Docs — Terraform provider](https://www.checklyhq.com/docs/terraform-provider/) — 2026-11-03 確認
+16. [GitHub — checkly/terraform-provider-checkly resources](https://github.com/checkly/terraform-provider-checkly/tree/main/docs/resources) — 2026-11-03 確認
+17. [Cronitor Pricing](https://cronitor.io/pricing) — 2026-11-03 確認
+18. [Cronitor Docs — Uptime monitoring](https://cronitor.io/docs/uptime-monitoring) — 2026-11-03 確認
+19. [Cronitor Docs — Monitors API](https://cronitor.io/docs/monitors-api) — 2026-11-03 確認
+20. [Cronitor Docs — Using Cronitor CLI](https://cronitor.io/docs/using-cronitor-cli) — 2026-11-03 確認
+21. [GitHub — cronitorio/terraform-provider-cronitor（404。公式 provider が存在しないことの確認）](https://github.com/cronitorio/terraform-provider-cronitor) — 2026-11-03 確認
+22. [GitHub — louislam/uptime-kuma](https://github.com/louislam/uptime-kuma) — 2026-11-03 確認
+23. [Uptime Kuma Wiki — How to Install](https://github.com/louislam/uptime-kuma/wiki/%F0%9F%94%A7-How-to-Install) — 2026-11-03 確認
+24. [Uptime Kuma Wiki — Internal API](https://github.com/louislam/uptime-kuma/wiki/Internal-API) — 2026-11-03 確認
+25. [Uptime Kuma Wiki — Status Page](https://github.com/louislam/uptime-kuma/wiki/Status-Page) — 2026-11-03 確認
+26. [Uptime Kuma Wiki — Environment Variables](https://github.com/louislam/uptime-kuma/wiki/Environment-Variables) — 2026-11-03 確認
+27. [Uptime Kuma Wiki — 3rd Party Addons / Apps](https://github.com/louislam/uptime-kuma/wiki/3rd-Party-Addons-Apps) — 2026-11-03 確認
+28. [Checkly Docs — UrlMonitor construct](https://www.checklyhq.com/docs/constructs/url-monitor/) — 2026-11-03 確認
+29. [Checkly Docs — CLI authentication](https://www.checklyhq.com/docs/cli/authentication/) — 2026-11-03 確認
+30. [GitHub — louislam/uptime-kuma 2.5.3 src/util.js（MIN_INTERVAL_SECOND）](https://github.com/louislam/uptime-kuma/blob/2.5.3/src/util.js) — 2026-11-03 確認
+31. [Cronitor — Sign up](https://cronitor.io/sign-up) — 2026-11-03 確認
+32. [Better Stack — Sign up](https://betterstack.com/users/sign-up) — 2026-11-03 確認

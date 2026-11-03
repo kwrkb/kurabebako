@@ -1,7 +1,7 @@
 +++
 title = 'ログ管理 SaaS の無料枠 4 つを比較: 取り込み量・保持日数・超えたときの止まり方で選ぶ'
 date = '2026-11-01T09:19:24+09:00'
-lastmod = '2026-11-01'
+lastmod = '2026-11-03'
 draft = false
 summary = 'ログ管理 SaaS の無料枠を、Axiom・Better Stack・Grafana Cloud・New Relic で比較。無料で取り込める量と保持日数、無料枠を超えたときに何が止まるか、API で送れるかを並べる。Grafana Cloud のログの無料枠と保持日数、Better Stack の料金の地域差も表に載せる。Better Stack は API で受け口の作成からログの送信、削除までを実行して確認した。'
 categories = ['monitoring']
@@ -34,7 +34,7 @@ tags = ['log-management', 'axiom', 'better-stack', 'grafana-cloud', 'new-relic']
 
 ## 比較表
 
-2026-11-01 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は無料プランと、個人が申し込める最小の有料の入口を月払いの月額（USD）で載せています。
 対象名を押すと、その対象の詳細に移ります。
 
@@ -169,14 +169,14 @@ Better Stack（Free）: 3
 
 ## 出典
 
-1. [Axiom — Pricing](https://axiom.co/pricing) — 2026-11-01 確認
-2. [Axiom Docs — Limits and requirements](https://axiom.co/docs/reference/limits) — 2026-11-01 確認
-3. [Better Stack — Pricing](https://betterstack.com/pricing) — 2026-11-01 確認
-4. [Better Stack Docs — Ingesting logs via HTTP](https://betterstack.com/docs/logs/ingesting-data/http/logs/) — 2026-11-01 確認
-5. [Better Stack Docs — Create a source](https://betterstack.com/docs/logs/api/create-a-source/) — 2026-11-01 確認
-6. [Better Stack Docs — Create a connection](https://betterstack.com/docs/logs/api/connections/create/) — 2026-11-01 確認
-7. [Grafana Labs — Pricing](https://grafana.com/pricing/) — 2026-11-01 確認
-8. [Grafana Cloud Docs — Loki limits](https://grafana.com/docs/grafana-cloud/send-data/logs/loki-limits/) — 2026-11-01 確認
-9. [New Relic — Pricing](https://newrelic.com/pricing) — 2026-11-01 確認
-10. [New Relic — Free tier](https://newrelic.com/pricing/free-tier) — 2026-11-01 確認
-11. [New Relic Docs — Manage data retention](https://docs.newrelic.com/docs/data-apis/manage-data/manage-data-retention/) — 2026-11-01 確認
+1. [Axiom — Pricing](https://axiom.co/pricing) — 2026-11-03 確認
+2. [Axiom Docs — Limits and requirements](https://axiom.co/docs/reference/limits) — 2026-11-03 確認
+3. [Better Stack — Pricing](https://betterstack.com/pricing) — 2026-11-03 確認
+4. [Better Stack Docs — Ingesting logs via HTTP](https://betterstack.com/docs/logs/ingesting-data/http/logs/) — 2026-11-03 確認
+5. [Better Stack Docs — Create a source](https://betterstack.com/docs/logs/api/create-a-source/) — 2026-11-03 確認
+6. [Better Stack Docs — Create a connection](https://betterstack.com/docs/logs/api/connections/create/) — 2026-11-03 確認
+7. [Grafana Labs — Pricing](https://grafana.com/pricing/) — 2026-11-03 確認
+8. [Grafana Cloud Docs — Loki limits](https://grafana.com/docs/grafana-cloud/send-data/logs/loki-limits/) — 2026-11-03 確認
+9. [New Relic — Pricing](https://newrelic.com/pricing) — 2026-11-03 確認
+10. [New Relic — Free tier](https://newrelic.com/pricing/free-tier) — 2026-11-03 確認
+11. [New Relic Docs — Manage data retention](https://docs.newrelic.com/docs/data-apis/manage-data/manage-data-retention/) — 2026-11-03 確認

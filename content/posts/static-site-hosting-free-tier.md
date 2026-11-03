@@ -1,7 +1,7 @@
 +++
 title = '静的サイトの無料ホスティング 5 社比較: 広告を載せるならどれか'
 date = '2026-09-02T19:43:49+09:00'
-lastmod = '2026-10-28'
+lastmod = '2026-11-03'
 draft = false
 summary = 'Hugo などで生成した静的サイトを無料で公開できる5サービスを、料金・無料枠・上限・商用利用の可否・前提条件で比較。アフィリエイトや広告を載せる予定があるなら Cloudflare Workers Static Assets が条件を満たす。'
 categories = ['hosting']
@@ -35,7 +35,7 @@ Hugo などで生成した静的サイトを無料で公開できる 5 サービ
 
 ## 比較表
 
-2026-10-23 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
@@ -43,7 +43,7 @@ Hugo などで生成した静的サイトを無料で公開できる 5 サービ
 | [Cloudflare Workers Static Assets](#cloudflare-workers-static-assets) | 無料。有料は月 5 USD から（静的配信だけなら不要） | 静的ファイルへのリクエストは無料・無制限。保存容量も無料。ビルドは月 3,000 分 | 1 バージョンあたり 20,000 ファイル、1 ファイル 25 MiB。同時ビルド 1、ビルド 20 分で打ち切り | Cloudflare アカウント。独自ドメインは DNS を Cloudflare に置く必要あり。自動ビルドは GitHub・GitLab など（自己ホストの GitHub / GitLab は不可） | {{< verified run >}} | [1][2][3][4][5][17] |
 | [Cloudflare Pages](#cloudflare-pages) | 無料。有料プラン（Pro・Business・Enterprise）は上限が増える | 静的ファイルへのリクエストは無料・無制限。ビルドは月 500 回 | 20,000 ファイル、1 ファイル 25 MiB、100 プロジェクト、同時ビルド 1、ビルド 20 分で打ち切り | Cloudflare アカウント。独自ドメインは Cloudflare 外の DNS でも可 | {{< verified spec >}} | [6][7][8] |
 | [GitHub Pages](#github-pages) | 無料（GitHub Free）。非公開リポジトリから公開するには GitHub Pro 以上 | サイト容量 1 GB、転送量 月 100 GB（ソフト上限） | ビルド 1 時間に 10 回（ソフト上限、独自の Actions なら対象外）、デプロイ 10 分で打ち切り。オンラインビジネス・EC・商用 SaaS など商取引が主目的のサイトは不可 | GitHub アカウント。GitHub Free では公開リポジトリのみ | {{< verified run >}} | [9][10] |
-| [Netlify Free](#netlify-free) | 無料。有料は Personal 月 9 USD から | 月 300 クレジット（本番デプロイ 1 回 15、転送 1 GB 20、リクエスト 1 万件 2） | クレジットを使い切ると全サイトが停止し「Site not available」になる。追加購入不可 | Netlify アカウント。500 プロジェクトまで、チームオーナー 1 名 | {{< verified spec >}} | [11][12] |
+| [Netlify Free](#netlify-free) | 無料。有料は Personal 月 9 USD から | 月 300 クレジット（本番デプロイ 1 回 15、転送 1 GB 20、リクエスト 1 万件 2） | クレジットを使い切ると全サイトが停止し「Site not available」になる。追加購入不可 | Netlify アカウント。500 プロジェクトまで、チームオーナー 1 名 | {{< verified spec >}} | [11][12][18] |
 | [Vercel Hobby](#vercel-hobby) | 無料。有料は Pro 月 20 USD（デプロイ席 1 つ込み）から | 転送量 月 100 GB まで（Fair Use の目安） | 非商用・個人利用のみ。広告掲載やアフィリエイト主目的のサイトは商用扱い。1 日 100 デプロイ、200 プロジェクト、1 プロジェクト 50 ドメイン | Vercel アカウント。組織所有の Git リポジトリは接続不可 | {{< verified spec >}} | [13][14][15][16] |
 
 ## 比較の前提
@@ -115,10 +115,10 @@ Cloudflare 外の DNS で管理しているドメインも使える点が、Work
 - **料金体系**: Pages Functions を使う場合だけ Workers の実行回数として課金され、Free では Workers と 1 日 10 万回の枠を共有します [7]
 - **制約**: ファイル数は有料プランで 100,000 です。カスタムドメインは 1 プロジェクト 100 個までです [6]
 - **前提条件**: Cloudflare が公開する Workers との機能比較表では、
-  Pages が対応し Workers が非対応なのはこの「Cloudflare 外ゾーンの独自ドメイン」1 項目だけです（Custom Branch Aliases は Workers で「提供予定」の表示）。Early Hints・ブランチデプロイ制御・
+  Pages が対応し Workers が非対応なのはこの「Cloudflare 外ゾーンの独自ドメイン」1 項目だけです。Early Hints・ブランチデプロイ制御・
   ファイルベースルーティング・Pages Plugins は Workers では非対応で回避策あり、Cron Triggers・Gradual Deployments・
   Logpush などは Workers のみ対応と示されています [8]
-- **検証した内容**: 仕様区分です。上記の公式ページ [6][7][8] を 2026-10-03 に確認しました。
+- **検証した内容**: 仕様区分です。上記の公式ページ [6][7][8] を 2026-11-03 に確認しました。
   このサイトでは Workers を採用しているため、Pages への実デプロイは行っていません
 
 ### GitHub Pages
@@ -151,13 +151,13 @@ Cloudflare 外の DNS で管理しているドメインも使える点が、Work
 {{< /fit >}}
 
 - **料金体系**: Personal は 1,000 クレジット、
-  Pro は月 20 USD からで 3,000 クレジットからです [11]。クレジットの消費には、表の項目のほかにコンピュート 1 GB 時あたり 10 があり、
+  Pro は月 20 USD からで 3,000 クレジットからです [11][18]。月額は [11] から消えて料金ページだけに載り、料金ページは月額を試験的に変えて表示しているため、記事の値より高く出る場合があります [18]。クレジットの消費には、表の項目のほかにコンピュート 1 GB 時あたり 10 があり、
   Deploy Preview とブランチデプロイは 0 です [12]。ビルド時間は課金指標ではなくなりました [12]
 - **制約**: Free は「ハードリミット」で、自動リチャージもできません。使い切ったときの文言は「全サイトが停止し、訪問者には Site not available ページが表示される」です [12]。
   転送量だけで使い切る場合は月 15 GB、本番デプロイだけなら月 20 回に相当します
   （300 ÷ 20、300 ÷ 15 の計算値）
 - **前提条件**: Free の条件は、表の「前提条件」列に載せたチームオーナーとプロジェクトの数です [11]
-- **検証した内容**: 仕様区分です。上記の公式ページ [11][12] を 2026-10-03 に確認しました。
+- **検証した内容**: 仕様区分です。上記の公式ページ [11][12][18] を 2026-11-03 に確認しました。
   Netlify アカウントを持たないため実デプロイは行っていません
 
 ### Vercel Hobby
@@ -178,7 +178,7 @@ Cloudflare 外の DNS で管理しているドメインも使える点が、Work
   販売広告、制作や運用で報酬を得ること、アフィリエイトリンクが主目的のサイト、AdSense などの
   広告掲載です [14]
 - **前提条件**: 接続できないのは、Hobby チームから Git 組織（Organization）が所有するリポジトリです [15]
-- **検証した内容**: 仕様区分です。上記の公式ページ [13][14][15][16] を 2026-10-03 に確認しました。
+- **検証した内容**: 仕様区分です。上記の公式ページ [13][14][15][16] を 2026-11-03 に確認しました。
   Vercel アカウントを持たないため実デプロイは行っていません
 
 ## 用途別の選び方
@@ -189,7 +189,7 @@ Cloudflare 外の DNS で管理しているドメインも使える点が、Work
   Vercel Hobby と GitHub Pages には用途の制限があり、Netlify Free は使い切ると止まります
 - ドメインの DNS を Cloudflare に移したくない → Cloudflare Pages。決め手は「前提条件」列です
 - 新規に Cloudflare で始める → Workers Static Assets。決め手は「前提条件」列です。
-  公式の機能比較表では Workers のみ対応の項目が多く、Pages のみ対応なのは外部 DNS のドメインだけです（Custom Branch Aliases は Workers で提供予定）[8]
+  公式の機能比較表では Workers のみ対応の項目が多く、Pages のみ対応なのは外部 DNS のドメインだけです [8]
 - 非商用の個人サイトで、リポジトリが公開でよい → GitHub Pages。決め手は「無料枠」列と「前提条件」列です。追加のアカウントを作らずに済みます
 - 非公開リポジトリから非商用サイトを無料で出したい → Netlify Free か Vercel Hobby。決め手は「料金」列と「無料枠」列です。
   GitHub Pages は非公開リポジトリだと有料プランが要ります。Netlify はデプロイ回数と転送量で同じクレジットを分け合います
@@ -225,20 +225,21 @@ Cron Triggers・Gradual Deployments・Logpush などは、Workers だけが対�
 
 ## 出典
 
-1. [Cloudflare Workers — Static Assets: Billing and limitations](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/) — 2026-10-21 確認
-2. [Cloudflare Workers — Pricing](https://developers.cloudflare.com/workers/platform/pricing/) — 2026-10-21 確認
-3. [Cloudflare Workers — Limits](https://developers.cloudflare.com/workers/platform/limits/) — 2026-10-21 確認
-4. [Cloudflare Workers — Builds: Limits and pricing](https://developers.cloudflare.com/workers/ci-cd/builds/limits-and-pricing/) — 2026-10-21 確認
-5. [Cloudflare Workers — Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/) — 2026-10-21 確認
-6. [Cloudflare Pages — Limits](https://developers.cloudflare.com/pages/platform/limits/) — 2026-10-21 確認
-7. [Cloudflare Pages — Functions: Pricing](https://developers.cloudflare.com/pages/functions/pricing/) — 2026-10-21 確認
-8. [Cloudflare Workers — Migrate from Pages to Workers](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) — 2026-10-21 確認
-9. [GitHub Docs — GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) — 2026-10-28 確認
-10. [GitHub Docs — About GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages) — 2026-10-28 確認
-11. [Netlify Docs — Credit-based pricing plans](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) — 2026-10-21 確認
-12. [Netlify Docs — How credits work](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/) — 2026-10-21 確認
-13. [Vercel Docs — Hobby Plan](https://vercel.com/docs/plans/hobby) — 2026-10-21 確認
-14. [Vercel Docs — Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines) — 2026-10-21 確認
-15. [Vercel Docs — Limits](https://vercel.com/docs/limits) — 2026-10-21 確認
-16. [Vercel Docs — Pro Plan](https://vercel.com/docs/plans/pro-plan) — 2026-10-21 確認
-17. [Cloudflare Workers — Builds: Git integration](https://developers.cloudflare.com/workers/ci-cd/builds/git-integration/) — 2026-10-23 確認
+1. [Cloudflare Workers — Static Assets: Billing and limitations](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/) — 2026-11-03 確認
+2. [Cloudflare Workers — Pricing](https://developers.cloudflare.com/workers/platform/pricing/) — 2026-11-03 確認
+3. [Cloudflare Workers — Limits](https://developers.cloudflare.com/workers/platform/limits/) — 2026-11-03 確認
+4. [Cloudflare Workers — Builds: Limits and pricing](https://developers.cloudflare.com/workers/ci-cd/builds/limits-and-pricing/) — 2026-11-03 確認
+5. [Cloudflare Workers — Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/) — 2026-11-03 確認
+6. [Cloudflare Pages — Limits](https://developers.cloudflare.com/pages/platform/limits/) — 2026-11-03 確認
+7. [Cloudflare Pages — Functions: Pricing](https://developers.cloudflare.com/pages/functions/pricing/) — 2026-11-03 確認
+8. [Cloudflare Workers — Migrate from Pages to Workers](https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) — 2026-11-03 確認
+9. [GitHub Docs — GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) — 2026-11-03 確認
+10. [GitHub Docs — About GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages) — 2026-11-03 確認
+11. [Netlify Docs — Credit-based pricing plans](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) — 2026-11-03 確認
+12. [Netlify Docs — How credits work](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/) — 2026-11-03 確認
+13. [Vercel Docs — Hobby Plan](https://vercel.com/docs/plans/hobby) — 2026-11-03 確認
+14. [Vercel Docs — Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines) — 2026-11-03 確認
+15. [Vercel Docs — Limits](https://vercel.com/docs/limits) — 2026-11-03 確認
+16. [Vercel Docs — Pro Plan](https://vercel.com/docs/plans/pro-plan) — 2026-11-03 確認
+17. [Cloudflare Workers — Builds: Git integration](https://developers.cloudflare.com/workers/ci-cd/builds/git-integration/) — 2026-11-03 確認
+18. [Netlify Pricing](https://www.netlify.com/pricing/) — 2026-11-03 確認
