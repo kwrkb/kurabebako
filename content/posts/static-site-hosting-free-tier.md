@@ -216,6 +216,7 @@ Vercel Hobby は、上限を超えた機能が原則 30 日待つと再開しま
 
 5 つとも、無料枠で独自ドメインを使えます。Cloudflare Workers Static Assets はドメインの DNS ゾーンを Cloudflare に置く必要があり、Cloudflare Pages は Cloudflare 外の DNS のドメインでも使えます [5][8]。
 GitHub Pages は独自ドメインと HTTPS に対応しています [10]。
+ドメインそのものを取る窓口は、[ドメインレジストラ 6 社の比較](/posts/domain-registrar/)で取得費と更新費の差や API の有無を比べています。
 
 ### Cloudflare Workers と Cloudflare Pages の違いは？
 

@@ -1,8 +1,8 @@
 +++
 title = 'ドメインレジストラ 6 社を比較: 取得費と更新費の差・Whois 代行・API で空き確認と取得ができるかで選ぶ'
-date = '2026-11-01T21:00:00+09:00'
-lastmod = '2026-11-01'
-draft = true
+date = '2026-11-03T13:32:45+09:00'
+lastmod = '2026-11-03'
+draft = false
 summary = 'ドメインを取得する窓口（レジストラ）を、スタードメイン・Cloudflare Registrar・XServer ドメイン・ムームードメイン・お名前.com・Porkbun の 6 社で比較。.com と .jp の取得費と 2 年目以降の更新費、Whois 代行の費用、API や CLI・MCP で空き確認と取得ができるかを並べる。スタードメインは Star8 CLI で保有ドメインの参照を、Cloudflare は API で空き確認と価格の取得を実行して確認した。'
 categories = ['hosting']
 tags = ['domain', 'star-domain', 'cloudflare', 'xserver', 'muumuu-domain', 'onamae', 'porkbun']
@@ -35,7 +35,7 @@ AI にドメインの空き確認から取得、DNS の設定まで任せたい�
 
 ## 比較表
 
-2026-11-01 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-03 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は .com を基準に、取得費と 2 年目以降の更新費を税込で並べ、.jp は国内 4 社だけ併記しています。
 Cloudflare Registrar と Porkbun は USD 表示のままです。対象名を押すと、その対象の詳細に移ります。
 
@@ -46,7 +46,7 @@ Cloudflare Registrar と Porkbun は USD 表示のままです。対象名を押
 | [XServer ドメイン](#xserver-ドメイン) | .com 取得 1,721 円 → 更新 1,721 円。.jp 取得 1,980 円 → 更新 3,102 円。はじめての方は 1 個目の取得が 0 円 | はじめての方の取得 0 円（.com や .jp など対象 TLD から 1 個）。Whois 代行は標準で付く | 0 円は過去の契約や永久無料特典の利用があると対象外。検索結果に取得費と更新費が並ぶ。空き確認の API にも注文の権限が要る | XServer アカウントと契約。API キーは契約後に発行。API で 0 円を使うにはカードの登録が要る | {{< verified spec >}} | [11][12][13][14][15] |
 | [ムームードメイン](#ムームードメイン) | .com 取得 750 円 → 更新 1,728 円。.jp 取得 990 円 → 更新 3,344 円（サービス維持調整費込み） | 公式 MCP サーバーの利用は無料。対象オプションの同時契約で対象ドメインの取得・更新が無料 | 新規ユーザー登録と一部 TLD の新規申込みが停止中（再開は未定）。Web の検索結果に出るのは 1 年目の価格だけ | ムームー ID。MCP は OAuth でアカウントだけで接続でき、購入だけ登録済みのカードに課金 | {{< verified spec >}} | [16][17][18] |
 | [お名前.com](#お名前com) | .com 取得 1 円 → 更新 1,287 円〜。.jp 取得 1 円 → 更新 3,091 円〜（サービス維持調整費含む）。1 円は 1 人 1 個で、2 個目以降は 750 円 | 新規取得と同時に申し込めば Whois 情報公開代行が無料 | 後から付ける Whois 情報公開代行は年額。更新費は登録時期で変わり「〜」表記。個人向けの API は無い | お名前 ID。API は販売パートナー（リセラー）向けのみ | {{< verified spec >}} | [19][20] |
-| [Porkbun](#porkbun) | .com 取得 USD 11.81 → 更新 USD 11.81。移管も同額 | WHOIS privacy が無料 | .jp は非対応。API からの購入は前払いクレジットで、鍵ごとの購入上限が既定で USD 100/月 | アカウント。API キーは読み取り・購入・DNS など権限別。注文系はメールと電話の確認が要る | {{< verified spec >}} | [21][22] |
+| [Porkbun](#porkbun) | .com 取得 USD 11.81 → 更新 USD 11.81。移管も同額 | WHOIS privacy が無料 | .jp は非対応。API からの購入は前払いクレジットで、月の購入上限（アカウント単位）が既定で USD 100 | アカウント。API キーは読み取り・購入・DNS など権限別。注文系はメールと電話の確認が要る | {{< verified spec >}} | [21][22] |
 
 {{< bars unit="円/年" caption="『.com』の 2 年目以降の更新費（税込。国内 4 社。お名前.com は下限の値。Cloudflare Registrar と Porkbun は USD のため表のみ）" >}}
 スタードメイン: 2047
@@ -192,13 +192,13 @@ GMO インターネットのドメイン取得サービスで、国内レジス�
 - **料金体系**: 1 円の価格は 1 人 1 個までで、2 個目以降と過去に 1 円で取得した人には通常の割引価格が適用されます。更新費は「〜」付きで、登録時期により異なる旨の注記があります。
   レンタルサーバーとの同時契約では対象 TLD の更新費が無料になり、12 か月以内にサーバーを解約すると実費が請求されます [19]
 - **制約**: Whois 情報公開代行は新規取得と同時なら無料で、後から付けると年額がかかります。メール転送オプションは別料金です [20]。
-  料金一覧には「サービス維持調整費含む」の注記があり、.ai など一部の TLD には Whois 代行が付けられません [19][20]
+  料金一覧には「サービス維持調整費含む」の注記があり、Whois 代行を付けられるかは TLD ごとに料金一覧の「Whois代行」列で分かれます [19][20]
 - **前提条件**: API 連携は「販売パートナー制度」の案内にだけ載っており、個人の利用者向けの API は公開されていません [19]
 - **検証した内容**: アカウントを作らず、実行していません。2026-11-01 にブラウザで料金一覧と Whois 情報公開代行のページを確認しました
 
 ### Porkbun
 
-米国のレジストラで、取得・更新・移管を同じ価格で販売し、API の仕様を詳しく公開しています。
+米国のレジストラで、.com を取得・更新・移管とも同じ価格で販売し、API の仕様を詳しく公開しています。
 .jp は扱わないため、国内向けのサイトでは .com や .net が対象になります。
 
 {{< fit spec >}}
@@ -206,9 +206,9 @@ GMO インターネットのドメイン取得サービスで、国内レジス�
 向かない: .jp を取りたい、または USD 以外で支払いたい
 {{< /fit >}}
 
-- **料金体系**: 料金ページは「inflated first-year rates なし」と書き、取得・更新・移管が同額です。.jp は扱わず、.jp.net と .jpn.com は別の TLD として載っています [21]
-- **制約**: 空き確認の API は 1 回に送れる件数と、単体・一括それぞれの頻度に上限があります。購入の API は前払いクレジットから支払い、鍵ごとの月の購入上限と 1 注文の上限が既定で決まっています [22]
-- **前提条件**: API キーは読み取り・購入・ドメイン管理・DNS の権限別に発行します。登録・移管・連絡先の変更にはアカウントのメールと電話の確認が要ります [22]
+- **料金体系**: 料金ページは ICANN などの手数料を含んだ USD の価格で、.com は取得・更新・移管が同額です。初年度だけ安い TLD には「1st Yr Sale!」の印が付きます。.jp は扱わず、.jp.net と .jpn.com は別の TLD として載っています [21]
+- **制約**: 空き確認の API は 1 回に送れる件数と、単体・一括それぞれの頻度に上限があります。購入の API は前払いクレジットから支払い、アカウントごとの月の購入上限と 1 注文の上限が既定で決まっています [22]
+- **前提条件**: API キーは読み取り・購入・ドメイン管理・DNS の権限別に発行します。登録・更新・移管にはアカウントのメールと電話の確認が要ります [22]
 - **検証した内容**: アカウントを作らず、実行していません。2026-11-01 に公式の料金ページと API ドキュメントを確認しました
 
 ## 用途別の選び方
@@ -248,26 +248,26 @@ muumuu-domain: 公式のリモート MCP がアカウントだけで接続でき
 
 ## 出典
 
-1. [スタードメイン — 料金一覧](https://www.star-domain.jp/price/) — 2026-11-01 確認
-2. [スタードメイン — 「Star8 MCP Server」「Star8 CLI」が『スタードメイン』に対応](https://www.star-domain.jp/news/news_detail.php?view_id=14407) — 2026-11-01 確認
-3. [スタードメイン — Star8 API マニュアル](https://www.star-domain.jp/support/manual/man_tool_api.php) — 2026-11-01 確認
-4. [Star8 CLI — ドメイン管理リファレンス](https://developer.star.ne.jp/cli/domain/) — 2026-11-01 確認
-5. [スタードメイン — サービストップ](https://www.star-domain.jp/) — 2026-11-01 確認
-6. [Cloudflare Docs — Registrar FAQ](https://developers.cloudflare.com/registrar/faq/) — 2026-11-01 確認
-7. [Cloudflare — TLD Policies](https://www.cloudflare.com/tld-policies/) — 2026-11-01 確認
-8. [Cloudflare Docs — Registrar API](https://developers.cloudflare.com/registrar/registrar-api/) — 2026-11-01 確認
-9. [Cloudflare API — Registrar: Domain Check](https://developers.cloudflare.com/api/resources/registrar/methods/check/) — 2026-11-01 確認
-10. [Cloudflare — Registrar 製品ページ](https://www.cloudflare.com/products/registrar/) — 2026-11-01 確認
-11. [XServer ドメイン — 料金](https://www.xdomain.ne.jp/domain/price.php) — 2026-11-01 確認
-12. [XServer ドメイン — サービストップ](https://www.xdomain.ne.jp/) — 2026-11-01 確認
-13. [Xserver Developer — API リファレンス ドメイン管理](https://developer.xserver.ne.jp/api/domain/) — 2026-11-01 確認
-14. [XServer ドメイン — XServer MCP Server](https://www.xdomain.ne.jp/manual/man_tool_mcp.php) — 2026-11-01 確認
-15. [XServer ドメイン — XServer API](https://www.xdomain.ne.jp/manual/man_tool_api.php) — 2026-11-01 確認
-16. [ムームードメイン — ドメイン料金一覧](https://muumuu-domain.com/domain/price) — 2026-11-01 確認
-17. [GMO ペパボ — muumuu-mcp（公式リモート MCP サーバーの README）](https://github.com/pepabo/muumuu-mcp) — 2026-11-01 確認
-18. [ムームードメイン — 【重要】新規お申し込み受付の一時停止について](https://muumuu-domain.com/?mode=info&id=5944) — 2026-11-01 確認
-19. [お名前.com — ドメイン料金一覧](https://www.onamae.com/service/d-price/) — 2026-11-01 確認
-20. [お名前.com — Whois 情報公開代行](https://www.onamae.com/service/d-regist/option.html) — 2026-11-01 確認
-21. [Porkbun — Domain Pricing](https://porkbun.com/products/domains) — 2026-11-01 確認
-22. [Porkbun — Domain API（llms/domain）](https://porkbun.com/llms/domain) — 2026-11-01 確認
-23. [Cloudflare Docs — Register a domain](https://developers.cloudflare.com/registrar/get-started/register-domain/) — 2026-10-30 確認
+1. [スタードメイン — 料金一覧](https://www.star-domain.jp/price/) — 2026-11-03 確認
+2. [スタードメイン — 「Star8 MCP Server」「Star8 CLI」が『スタードメイン』に対応](https://www.star-domain.jp/news/news_detail.php?view_id=14407) — 2026-11-03 確認
+3. [スタードメイン — Star8 API マニュアル](https://www.star-domain.jp/support/manual/man_tool_api.php) — 2026-11-03 確認
+4. [Star8 CLI — ドメイン管理リファレンス](https://developer.star.ne.jp/cli/domain/) — 2026-11-03 確認
+5. [スタードメイン — サービストップ](https://www.star-domain.jp/) — 2026-11-03 確認
+6. [Cloudflare Docs — Registrar FAQ](https://developers.cloudflare.com/registrar/faq/) — 2026-11-03 確認
+7. [Cloudflare — TLD Policies](https://www.cloudflare.com/tld-policies/) — 2026-11-03 確認
+8. [Cloudflare Docs — Registrar API](https://developers.cloudflare.com/registrar/registrar-api/) — 2026-11-03 確認
+9. [Cloudflare API — Registrar: Domain Check](https://developers.cloudflare.com/api/resources/registrar/methods/check/) — 2026-11-03 確認
+10. [Cloudflare — Registrar 製品ページ](https://www.cloudflare.com/products/registrar/) — 2026-11-03 確認
+11. [XServer ドメイン — 料金](https://www.xdomain.ne.jp/domain/price.php) — 2026-11-03 確認
+12. [XServer ドメイン — サービストップ](https://www.xdomain.ne.jp/) — 2026-11-03 確認
+13. [Xserver Developer — API リファレンス ドメイン管理](https://developer.xserver.ne.jp/api/domain/) — 2026-11-03 確認
+14. [XServer ドメイン — XServer MCP Server](https://www.xdomain.ne.jp/manual/man_tool_mcp.php) — 2026-11-03 確認
+15. [XServer ドメイン — XServer API](https://www.xdomain.ne.jp/manual/man_tool_api.php) — 2026-11-03 確認
+16. [ムームードメイン — ドメイン料金一覧](https://muumuu-domain.com/domain/price) — 2026-11-03 確認
+17. [GMO ペパボ — muumuu-mcp（公式リモート MCP サーバーの README）](https://github.com/pepabo/muumuu-mcp) — 2026-11-03 確認
+18. [ムームードメイン — 【重要】新規お申し込み受付の一時停止について](https://muumuu-domain.com/?mode=info&id=5944) — 2026-11-03 確認
+19. [お名前.com — ドメイン料金一覧](https://www.onamae.com/service/d-price/) — 2026-11-03 確認
+20. [お名前.com — Whois 情報公開代行](https://www.onamae.com/service/d-regist/option.html) — 2026-11-03 確認
+21. [Porkbun — Domain Pricing](https://porkbun.com/products/domains) — 2026-11-03 確認
+22. [Porkbun — Domain API（llms/domain）](https://porkbun.com/llms/domain) — 2026-11-03 確認
+23. [Cloudflare Docs — Register a domain](https://developers.cloudflare.com/registrar/get-started/register-domain/) — 2026-11-03 確認

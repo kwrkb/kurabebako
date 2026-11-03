@@ -234,6 +234,7 @@ mixhost: 自分ですることは支払い方法の登録だけですが、AI �
 立てたサーバーの死活監視は、[死活監視の無料枠 5 つの比較](/posts/uptime-monitoring-free-tier/)で無料枠を比べています。
 root 権限が要る用途なら、[国内 VPS の最小プラン比較](/posts/vps-japan-minimum-plan/)のほうが条件に合います。
 同じ XServer アカウントで申し込める XServer ドライブのフリープランは、[クラウドストレージ 6 つの無料プラン比較](/posts/cloud-storage-free-tier/)で WebDAV から動かしています。
+サーバーの特典に頼らずドメインを単体で取る窓口は、[ドメインレジストラ 6 社の比較](/posts/domain-registrar/)で取得費と更新費の差や API の有無を比べています。
 
 ## よくある質問
 
