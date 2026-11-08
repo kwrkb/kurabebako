@@ -22,7 +22,8 @@
 //     撮影は --prepare-publish が tests/layout-check.js --shots で行い、公開時のビルドと同じ HTML であることをハッシュで確かめる
 // 書式は desk の routines/kurabebako-publish-weekly.md。段階 1 に戻すには環境変数を外すだけでよい。
 //
-// ゲート: 作業ツリー → 公開の有無（と公開の条件） → 型検査の回帰テスト → 本番共通ビルド → 内部リンク切れ →
+// ゲート: 作業ツリー → 公開の有無（と公開の条件） → 表示・ビルドに効く変更の有無（段階 1 では止める。2026-11-09） →
+//         ゲートの判定関数の単体テスト → 型検査の回帰テスト → 本番共通ビルド → 内部リンク切れ →
 //         表示の崩れ（公開の前半はここで撮影） → backlog の突き合わせ → push → Workers Builds の check-run → 本番の応答。
 //
 // `git push` を直接打たずにここを通す理由: ゲートの順番と「push 後にデプロイを確認する」を、
@@ -94,54 +95,27 @@ function step(name) {
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
-// draft でない記事として本番に出る内容かどうか。ファイルが無ければ null
+// 判定の純粋関数は tests/gate-lib.js（tests/gate-checks.js で公開ゼロのまま試す）。ここは Git / fs に触る側だけ
+const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath } = require("./gate-lib.js");
+
+// draft でない記事として本番に出る内容かどうか（front matter の draft だけを見る）。ファイルが無ければ null
 function isPublished(rev, file) {
   const r = run("git", ["show", `${rev}:${file}`]);
   if (r.code !== 0) return null;
-  return !/^draft\s*=\s*true\s*$/m.test(r.out);
-}
-
-function frontMatter(text) {
-  const m = text.match(/^\+\+\+\n([\s\S]*?)\n\+\+\+/);
-  if (!m) return null;
-  const fm = {};
-  for (const line of m[1].split("\n")) {
-    const kv = line.match(/^(\w+)\s*=\s*(.*)$/);
-    if (!kv) continue;
-    const raw = kv[2].trim();
-    if (raw.startsWith("[")) fm[kv[1]] = [...raw.matchAll(/'([^']*)'|"([^"]*)"/g)].map((x) => x[1] ?? x[2]);
-    else fm[kv[1]] = raw.replace(/^['"]|['"]$/g, "");
-  }
-  return fm;
+  return isPublishedText(r.out);
 }
 
 // desk の記録ファイルから ```<名前> の fenced block を 1 つだけ読み、key: value の表にする（`#` 以降は注釈）
 function readBlock(file, name) {
   if (!fs.existsSync(file)) stop(`${path.relative(desk, file)} がありません（desk の research/<slug>/ に今日の日付で置く）`);
-  const text = fs.readFileSync(file, "utf8");
-  const blocks = [...text.matchAll(new RegExp("^```" + name + "\\s*\\n([\\s\\S]*?)^```", "gm"))];
-  if (blocks.length !== 1) stop(`${path.relative(desk, file)} に \`\`\`${name} のブロックが ${blocks.length} 個あります（1 つだけにする）`);
-  const data = {};
-  for (const line of blocks[0][1].split("\n")) {
-    const kv = line.match(/^([a-z0-9_]+):\s*(.*?)\s*(?:#.*)?$/);
-    if (!kv) continue;
-    if (kv[1] in data) stop(`${path.relative(desk, file)} の ${name} ブロックに ${kv[1]} が 2 回あります`);
-    data[kv[1]] = kv[2];
-  }
-  return data;
+  const r = parseBlock(fs.readFileSync(file, "utf8"), name, path.relative(desk, file));
+  if (r.error) stop(r.error);
+  return r.data;
 }
 
-// data/affiliates.toml の id / name / paused だけ読む（値は '...' か "..." の 1 行）
+// data/affiliates.toml の id / name / paused だけ読む
 function affiliates() {
-  const table = {};
-  let cur = null;
-  for (const line of fs.readFileSync(path.join(root, "data", "affiliates.toml"), "utf8").split("\n")) {
-    const sec = line.match(/^\[([a-z0-9-]+)\]\s*(?:#.*)?$/);
-    if (sec) { cur = table[sec[1]] = { id: sec[1] }; continue; }
-    const kv = cur && line.match(/^(\w+)\s*=\s*(?:'([^']*)'|"([^"]*)")/);
-    if (kv) cur[kv[1]] = kv[2] ?? kv[3];
-  }
-  return table;
+  return parseAffiliates(fs.readFileSync(path.join(root, "data", "affiliates.toml"), "utf8"));
 }
 
 const norm = (s) => s.replace(/[（(][^）)]*[）)]/g, "").replace(/\s+/g, "").toLowerCase();
@@ -275,6 +249,23 @@ if (publishing.length && !target) {
 } else {
   console.log("ok  公開を伴う変更はありません");
 }
+
+step("表示・ビルドに効く変更が混ざっていないか");
+// 段階 1 で AI が自律で push してよいのは「公開を伴わず、表示にも効かない変更」だけ（CLAUDE.md「ブランチ運用」）だが、
+// 2026-11-06 の監査（F11）まではパスの制限が段階 2 の checkPublication にしかなく、CSS だけの変更でも
+// 回帰テストと横はみ出しの検査が通れば push へ進んでいた。レイアウト・CSS・テーマ・ビルド経路の変更は
+// ユーザーが preview を見てから git push origin main で出す。--dry-run はその前の検査に使うので、警告にして続ける
+const display = changedAll.filter(isDisplayPath);
+if (display.length && !target) {
+  const list = display.map((f) => `  ${f}`).join("\n");
+  if (dryRun) console.log(`warn 表示・ビルドに効く変更が未 push にあります（--dry-run なので検査は続けます。push はユーザーが preview を見てから git push origin main で）:\n${list}`);
+  else stop(`表示・ビルドに効く変更が未 push にあります。npm run push:site -- --dry-run でゲートを通した後、ユーザーが preview を見て git push origin main で出してください:\n${list}`);
+} else {
+  console.log("ok  表示・ビルドに効く変更はありません");
+}
+
+step("ゲートの判定関数の単体テスト");
+if (run("node", ["--test", "tests/gate-checks.js"], { stdio: "inherit" }).code !== 0) stop("ゲートの単体テストが落ちました");
 
 step("型検査の回帰テスト");
 if (run("node", ["tests/post-checks.js"], { stdio: "inherit" }).code !== 0) stop("回帰テストが落ちました");

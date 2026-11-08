@@ -63,6 +63,7 @@ main へ push
 | 開発サーバー | `npm run dev` |
 | ビルド | `npm run build`（= `node build.js`。本番と同じ入口。Hugo の版確認・古い出力の掃除を含む） |
 | 本番へ push | `npm run push:site`（ゲート → push → デプロイの確認。`-- --dry-run` でゲートだけ） |
+| ゲートの判定関数の単体テスト | `npm run test:gate`（`tests/gate-lib.js` を触ったら。Git にも本番にも触らない） |
 | 型検査の回帰テスト | `npm run test:checks`（`extend_post_content.html` を触ったら必ず回す） |
 | 表示の崩れの検査 | `npm run test:layout`（`npm run build` の後に。全記事を 4 つの幅でヘッドレスの Chrome / Edge に開き、横はみ出しを見る。`layouts/` と CSS を触ったら必ず回す） |
 | Workers配信の再現 | `npm run preview` |
@@ -83,10 +84,13 @@ linter は無い。テストは 2 つ。表示の崩れの検査（`tests/layout
 できず、確認手段はどのみちローカルの `npm run preview` になる。PR を挟む価値がない。
 
 - **AI が push するときは `npm run push:site` だけを使う**（`tests/push-site.js`。`git push` を直接打たない）。
-  ゲートは 作業ツリーが clean → 公開を伴うコミットが無い → 型検査の回帰テスト → 本番共通ビルド → 内部リンク切れ →
-  表示の崩れ（`tests/layout-check.js`）→ desk の `check-backlog.py` の順で、通ったら push して Workers Builds の check-run まで見る。
+  ゲートは 作業ツリーが clean → 公開を伴うコミットが無い → 表示・ビルドに効く変更が無い → ゲートの判定関数の単体テスト（`npm run test:gate`）→
+  型検査の回帰テスト → 本番共通ビルド → 内部リンク切れ → 表示の崩れ（`tests/layout-check.js`）→ desk の `check-backlog.py` の順で、
+  通ったら push して Workers Builds の check-run まで見る。
   自律で push してよいのは**公開を伴わず、表示にも効かない変更**だけ（2026-09-21 に決めた段階 1）。
-  レイアウト・CSS の変更は、ユーザーが preview を見てから `git push origin main` で出す。
+  レイアウト・CSS の変更は、ユーザーが preview を見てから `git push origin main` で出す。ゲートもこれをコードで止める:
+  `layouts/` `assets/` `static/` `hugo.toml` `go.mod` `go.sum` `build.*` `wrangler.jsonc` の変更が未 push にあると段階 1 では push しない
+  （`--dry-run` は警告にして検査を続ける。2026-11-09、監査 F11。`content/` と `data/` は段階 1 のまま）。
   **記事の公開は段階 2**（2026-10-28）: 人の preview が見ていた「数字の正しさ」と「表示の崩れ」を、
   当日の出典の取り直しと全セル照合（desk の `research/<slug>/precheck-<日付>.md`）と、`tests/layout-check.js --shots` で撮った
   画像の全枚読み（同 `visual-<日付>.md`）に置き換え、`npm run push:site -- --prepare-publish <slug>` → `--publish <slug>` のゲートが

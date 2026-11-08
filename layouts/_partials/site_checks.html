@@ -21,7 +21,11 @@
       {{- if and (not .IsDir) (ne .Name "_index.md") (strings.HasSuffix .Name ".md") -}}
         {{- $path := printf "%s/%s" $section .Name -}}
         {{- $src := replaceRE "\r" "" (os.ReadFile (printf "content/%s" $path)) -}}
-        {{- $isDraft := findRE `(?m)^draft\s*=\s*true\s*$` $src -}}
+        {{- /* draft は front matter の中だけで見る。全文に掛けると本文のコード例の `draft = true` で
+               公開記事を draft と読み違える（2026-11-06 の監査 F01。push ゲートの isPublished と同じ修正） */ -}}
+        {{- $fm := $src -}}
+        {{- with findRESubmatch `(?s)^\+\+\+\n(.*?)\n\+\+\+` $src -}}{{- $fm = index (index . 0) 1 -}}{{- end -}}
+        {{- $isDraft := findRE `(?m)^draft\s*=\s*true\s*(#.*)?$` $fm -}}
         {{- if and (not $isDraft) (not (in $built $path)) -}}
           {{- errorf "content/%s は draft ではないのにビルド対象に入っていません。date が未来か expiryDate を過ぎています。date を現在以前にしてください" $path -}}
         {{- end -}}
