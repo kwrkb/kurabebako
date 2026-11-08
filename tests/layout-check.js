@@ -87,14 +87,29 @@ function pages() {
   return list;
 }
 
+// public/ を 127.0.0.1 に配る最小のサーバー。公開範囲の判定は path.relative で行う（startsWith だと
+// public-secret のような同じ接頭辞の兄弟ディレクトリが通る）。不正な URL と読み取り失敗は例外にせず
+// 4xx / 5xx で返す（callback の中で投げると検査プロセスごと落ちる）。2026-11-06 の監査 F06 / F07
 function serve() {
   const server = http.createServer((req, res) => {
-    let file = path.join(pub, decodeURIComponent(new URL(req.url, "http://x").pathname));
-    if (!file.startsWith(pub)) return res.writeHead(403).end();
-    if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file, "index.html");
-    if (!fs.existsSync(file)) return res.writeHead(404).end();
+    let file;
+    try {
+      file = path.join(pub, decodeURIComponent(new URL(req.url, "http://x").pathname));
+    } catch {
+      return res.writeHead(400).end();
+    }
+    const rel = path.relative(pub, file);
+    if (rel.startsWith("..") || path.isAbsolute(rel)) return res.writeHead(403).end();
+    let stat;
+    try {
+      stat = fs.statSync(file);
+      if (stat.isDirectory()) { file = path.join(file, "index.html"); stat = fs.statSync(file); }
+    } catch {
+      return res.writeHead(404).end();
+    }
+    if (!stat.isFile()) return res.writeHead(404).end();
     res.writeHead(200, { "content-type": TYPES[path.extname(file)] || "application/octet-stream" });
-    fs.createReadStream(file).pipe(res);
+    fs.createReadStream(file).on("error", () => res.destroy()).pipe(res);
   });
   return new Promise((resolve) => server.listen(0, "127.0.0.1", () => resolve(server)));
 }
