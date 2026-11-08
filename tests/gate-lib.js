@@ -10,12 +10,16 @@
 
 // front matter（先頭の +++ ... +++）の中の key = value を素朴に読む。配列は ['a', "b"] の 1 行だけ。
 // TOML の完全な解析ではない（公開判定・日付・タグ・案件の突き合わせに要るキーだけ読めればよい）。
-// `#` 以降の注釈は値から落とす（`draft = true # 公開前` を true と読むため）
+// `#` 以降の注釈は値から落とす（`draft = true # 公開前` を true と読むため）。
+// 最初のテーブル見出し（`[params]` など）で読むのをやめる。その下の `draft = true` は TOML では params.draft で、
+// Hugo はトップレベルの draft 無し＝公開として生成するのに、ここが draft と読むと段階 1 の公開検出から外れていた
+// （2026-11-09 の監査 BUG-02。Hugo 側の front_matter.html と同じ規則）
 function frontMatter(text) {
   const m = text.replace(/\r/g, "").match(/^\+\+\+\n([\s\S]*?)\n\+\+\+/);
   if (!m) return null;
   const fm = {};
   for (const line of m[1].split("\n")) {
+    if (/^\s*\[/.test(line)) break;
     const kv = line.match(/^(\w+)\s*=\s*(.*)$/);
     if (!kv) continue;
     let raw = kv[2].trim();
@@ -80,4 +84,74 @@ function isDisplayPath(file) {
   return DISPLAY_PREFIXES.some((p) => file.startsWith(p)) || DISPLAY_FILES.includes(file);
 }
 
-module.exports = { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath };
+// `git diff --unified=0` の出力から、本文の追加・削除行（先頭が + / -）だけを返す。
+// ヘッダー（diff --git / index / --- a/ / +++ b/ / new file mode …）は hunk の印 @@ より前にあるので、行の位置で除く。
+// 以前は /^[+-](?![+-])/ でヘッダーを除いていたため、Markdown の箇条書きを足した・変えた行（`+- …` / `-- …`）が
+// 本文として数えられず、箇条書きにだけリンクを足した公開が誤って止まり、箇条書きの書き換えは行数の上限を
+// 素通りしていた（2026-11-09 の監査 BUG-01）
+function diffBodyLines(diffText) {
+  const body = [];
+  let inHunk = false;
+  for (const line of diffText.replace(/\r/g, "").split("\n")) {
+    if (line.startsWith("diff --git ")) { inHunk = false; continue; }
+    if (line.startsWith("@@")) { inHunk = true; continue; }
+    if (!inHunk || line.startsWith("\\ No newline")) continue;
+    if (line[0] === "+" || line[0] === "-") body.push(line);
+  }
+  return body;
+}
+
+// 撮影記録（tests/layout-check.js --shots が書く manifest.json）の形。checkVisual が例外ではなく stop の文言で
+// 止まれるように、読める JSON か・4 組の views・PNG の一覧があるかをここで見る（2026-11-09 の監査 ERR-03、前回 C03）。
+// 戻り値は null（正常）か、理由の文字列
+function manifestError(m) {
+  if (!m || typeof m !== "object") return "manifest が JSON のオブジェクトではありません";
+  if (typeof m.htmlSha256 !== "string" || !/^[0-9a-f]{64}$/.test(m.htmlSha256)) return "manifest に撮影した HTML の sha256（htmlSha256）がありません";
+  if (!Array.isArray(m.views) || m.views.length !== 4) return `manifest の views が 4 組（375 / 1280px × 明 / 暗）ではありません（${Array.isArray(m.views) ? m.views.length : "無し"}）`;
+  if (!Array.isArray(m.images) || !m.images.length) return "manifest に撮影した画像の一覧（images）がありません";
+  for (const img of m.images) {
+    if (!img || !/^[\w.-]+\.png$/.test(img.file || "")) return `manifest の images にファイル名の無い項目があります（${JSON.stringify(img)}）`;
+    if (!/^[0-9a-f]{64}$/.test(img.sha256 || "")) return `manifest の ${img.file} に sha256 がありません`;
+  }
+  return null;
+}
+
+// 生成物の内部参照の検査。pages は { "/posts/a/index.html": html, … }（pub からの相対パス。/ 区切り・先頭 /）、
+// files は pub にある全ファイルの Set（HTML 以外の CSS・画像・favicon も含む）。
+// a / link の href と img / script / source の src のうち、同一 origin のもの（絶対パスと site で始まる URL）を見る。
+// フラグメント（#id）は飛び先のページに id="…" があることを確かめる（結論の早見表と比較表のアンカーリンク。
+// CLAUDE.md は「生成後の HTML で確かめる」と人手に置いていたが、ゲートは見ていなかった。2026-11-09 の監査 TEST-02、前回 F08）。
+// 相対 URL（../x）と外部 URL・mailto・data: は見ない。戻り値は "ページ → 参照" の配列（空なら問題なし）
+function brokenInternalRefs(pages, files, site = "") {
+  const decode = (s) => { try { return decodeURIComponent(s.replace(/&amp;/g, "&")); } catch { return s; } };
+  const idsOf = new Map();
+  const ids = (file) => {
+    if (!idsOf.has(file)) idsOf.set(file, new Set([...pages[file].matchAll(/\sid=["']?([^"'\s>]+)/g)].map((m) => decode(m[1]))));
+    return idsOf.get(file);
+  };
+  const resolve = (p) => {
+    if (files.has(p)) return p;
+    const idx = (p.endsWith("/") ? p : p + "/") + "index.html";
+    return files.has(idx) ? idx : null;
+  };
+  const broken = [];
+  for (const [file, html] of Object.entries(pages)) {
+    for (const m of html.matchAll(/<(?:a|link|img|script|source)\b[^>]*?\s(?:href|src)=["']?([^"'\s>]+)/g)) {
+      let url = m[1];
+      if (site && url.startsWith(site)) url = url.slice(site.length) || "/";
+      const frag = url.indexOf("#");
+      const fragment = frag >= 0 ? decode(url.slice(frag + 1)) : null;
+      url = frag >= 0 ? url.slice(0, frag) : url;
+      url = url.split("?")[0];
+      let target;
+      if (url === "") target = file;
+      else if (url.startsWith("/") && !url.startsWith("//")) target = resolve(decode(url));
+      else continue;
+      if (!target) { broken.push(`${file} → ${m[1]}`); continue; }
+      if (fragment && pages[target] !== undefined && !ids(target).has(fragment)) broken.push(`${file} → ${m[1]}（id が無い）`);
+    }
+  }
+  return [...new Set(broken)];
+}
+
+module.exports = { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs };

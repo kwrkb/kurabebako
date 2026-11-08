@@ -71,16 +71,32 @@ if (target && stage !== "2") stop("記事の自律公開は KURABEBAKO_PUBLISH_S
 // 「今日」は日本時間。出典の確認日・lastmod・precheck の日付をこれと突き合わせる
 const today = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Tokyo" }).format(new Date());
 
+// 外部プロセスには必ず期限を置く（既定 60 秒。ビルドやテストは呼び出し側が延ばす）。期限が無いと、git / gh / Hugo /
+// ブラウザのどれか 1 つが応答しないだけで routine が無言で止まり、push 済みかどうかを人が調べることになっていた
+// （2026-11-09 の監査 ERR-01、前回 F04）。期限切れは例外にせず timedOut で返し、呼び出し側が「push の前か後か」に応じた文言で止める
 function run(cmd, args, opts = {}) {
-  const r = spawnSync(cmd, args, { cwd: root, encoding: "utf8", shell: process.platform === "win32" && cmd === "npm", ...opts });
+  const { timeout = 60_000, ...rest } = opts;
+  const r = spawnSync(cmd, args, { cwd: root, encoding: "utf8", timeout, shell: process.platform === "win32" && cmd === "npm", ...rest });
+  if (r.error && r.error.code === "ETIMEDOUT") return { code: null, out: (r.stdout || "").trim(), err: (r.stderr || "").trim(), timedOut: true, timeout };
   if (r.error) throw r.error;
-  return { code: r.status, out: (r.stdout || "").trim(), err: (r.stderr || "").trim() };
+  return { code: r.status, out: (r.stdout || "").trim(), err: (r.stderr || "").trim(), timedOut: false };
 }
 
+// 期限切れの文言。stop() は「push していません」と続けるので、push の後では使わない
+const timedOutMessage = (r, cmd, args) => `${cmd} ${args.join(" ")} が ${r.timeout / 1000} 秒以内に終わりません（ハングか通信の停止）`;
+
 function git(...args) {
-  const r = run("git", args);
+  const r = run("git", args, { timeout: 120_000 });
+  if (r.timedOut) stop(timedOutMessage(r, "git", args));
   if (r.code !== 0) stop(`git ${args.join(" ")} が失敗しました:\n${r.err}`);
   return r.out;
+}
+
+// 長い処理（テスト・ビルド・表示の検査）は出力をそのまま流し、終了コードだけ見る
+function runLong(label, cmd, args, timeout, opts = {}) {
+  const r = run(cmd, args, { stdio: "inherit", timeout, ...opts });
+  if (r.timedOut) stop(`${label}が ${timeout / 1000} 秒以内に終わりません（ハングか通信の停止）`);
+  return r.code;
 }
 
 // git show の生のバイト列（ハッシュを取るときは改行を触らない）
@@ -96,7 +112,7 @@ function step(name) {
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 // 判定の純粋関数は tests/gate-lib.js（tests/gate-checks.js で公開ゼロのまま試す）。ここは Git / fs に触る側だけ
-const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath } = require("./gate-lib.js");
+const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs } = require("./gate-lib.js");
 
 // draft でない記事として本番に出る内容かどうか（front matter の draft だけを見る）。ファイルが無ければ null
 function isPublished(rev, file) {
@@ -145,7 +161,8 @@ function checkPublication(slug, publishing, changedAll) {
   let backlinks = 0;
   for (const other of others) {
     if (isPublished("origin/main", other) !== true) stop(`${other} は公開済みの記事ではないので、ここからのリンクは内部リンクの要件を満たしません`);
-    const diff = git("diff", "--unified=0", "HEAD~1", "HEAD", "--", other).split("\n").filter((l) => /^[+-](?![+-])/.test(l));
+    // 本文の行だけを数える（ヘッダーの除き方は gate-lib の diffBodyLines。箇条書きの行を落とさない。監査 BUG-01）
+    const diff = diffBodyLines(git("diff", "--unified=0", "HEAD~1", "HEAD", "--", other));
     if (diff.length > 4) stop(`${other} の変更が内部リンクの追加にしては大きい（${diff.length} 行）。公開のコミットにはリンクの 1〜2 行だけを入れてください`);
     if (diff.some((l) => l.startsWith("+") && l.includes(`/posts/${slug}/`))) backlinks++;
     else stop(`${other} の変更に /posts/${slug}/ へのリンクが含まれていません`);
@@ -208,8 +225,17 @@ function checkVisual(slug, shots) {
   for (const s of shots) {
     const mf = path.join(root, ".cache", "layout-shots", s, "manifest.json");
     if (!fs.existsSync(mf)) stop(`${s} の撮影結果（.cache/layout-shots/${s}/manifest.json）がありません。--prepare-publish からやり直してください`);
-    const m = JSON.parse(fs.readFileSync(mf, "utf8"));
+    // 壊れた manifest（撮影の途中で落ちた・手で直した）は例外ではなく理由を言って止める。PNG の実在とハッシュも照合する
+    // （画像を差し替えて「読んだ」と記録する経路を閉じる。2026-11-09 の監査 ERR-03、前回 C03）
+    let m;
+    try { m = JSON.parse(fs.readFileSync(mf, "utf8")); } catch (e) { stop(`${s} の manifest.json が JSON として読めません（${e.message}）。--prepare-publish からやり直してください`); }
+    const bad = manifestError(m);
+    if (bad) stop(`${s} の manifest.json が壊れています: ${bad}。--prepare-publish からやり直してください`);
     if (manifests[s] !== sha256(fs.readFileSync(mf))) stop(`visual の manifests に ${s} の今の manifest のハッシュ（${sha256(fs.readFileSync(mf)).slice(0, 12)}…）がありません`);
+    for (const img of m.images) {
+      const png = path.join(path.dirname(mf), img.file);
+      if (!fs.existsSync(png) || sha256(fs.readFileSync(png)) !== img.sha256) stop(`${s} の撮影画像 ${img.file} が無いか、manifest のハッシュと違います。--prepare-publish からやり直してください`);
+    }
     const html = path.join(root, "public", "posts", s, "index.html");
     if (!fs.existsSync(html) || sha256(fs.readFileSync(html)) !== m.htmlSha256) stop(`${s} の撮影した HTML と今回ビルドした HTML が違います。記事か生成に変更があったので --prepare-publish からやり直してください`);
     images += m.images.length;
@@ -219,6 +245,31 @@ function checkVisual(slug, shots) {
 }
 
 //------------------------------------------------------------------------------
+step("前提のツール");
+// 後半で初めて要る python（desk の check-backlog.py）と gh（デプロイの確認）、ビルドの Hugo の版を最初に確かめる。
+// 以前は無ければゲートの終盤か push の後で初めて気づいた（2026-11-09 の監査 CI-02、前回 F21）。
+// Windows の `python` は Microsoft Store のスタブに解決されることがあり、引数つきで呼ぶと終了コード 9009 で戻る
+const hugoVersion = (fs.readFileSync(path.join(root, "build.sh"), "utf8").match(/^HUGO_VERSION=(\S+)/m) || [])[1];
+if (!hugoVersion) stop("build.sh の HUGO_VERSION が読めません");
+let hugo;
+try { hugo = run("hugo", ["version"]); } catch (e) { stop(`hugo が見つかりません（${e.message}）。README の導入手順で build.sh と同じ版（${hugoVersion} extended）を入れてください`); }
+if (hugo.timedOut || hugo.code !== 0 || !hugo.out.includes(`v${hugoVersion}`) || !hugo.out.includes("+extended")) {
+  stop(`ローカルの Hugo が build.sh の版（${hugoVersion} extended）と違います: ${hugo.out || hugo.err || "（応答なし）"}`);
+}
+console.log(`ok  Hugo ${hugoVersion} (extended)`);
+if (fs.existsSync(path.join(desk, "check-backlog.py"))) {
+  let py;
+  try { py = run("python", ["-c", "print(1)"], { timeout: 20_000 }); } catch (e) { py = { code: null, out: "", err: e.message }; }
+  if (py.timedOut || py.code !== 0 || py.out !== "1") stop(`python が動きません（desk の check-backlog.py に要る）: ${(py.err || py.out || "").split("\n")[0] || "（応答なし）"}。Windows では Microsoft Store のスタブでなく uv か winget の Python を PATH に`);
+  console.log("ok  python");
+}
+if (!dryRun && !prepareSlug) {
+  let gh;
+  try { gh = run("gh", ["auth", "status"]); } catch (e) { stop(`gh が見つかりません（${e.message}）。push 後のデプロイの確認に要るので入れてください`); }
+  if (gh.timedOut || gh.code !== 0) stop(`gh の認証が無いか期限切れです（push 後のデプロイの確認に要る）: ${(gh.err || gh.out).split("\n")[0]}`);
+  console.log("ok  gh の認証");
+}
+
 step("作業ツリーとブランチ");
 if (git("rev-parse", "--abbrev-ref", "HEAD") !== "main") stop("main ブランチではありません");
 if (git("status", "--porcelain")) stop("未コミットの変更があります（ビルドに混ざるので、commit するか退避してから）");
@@ -239,6 +290,11 @@ const publishing = changedAll.filter((file) => {
   // 公開済みの記事の修正（前後とも公開）と、draft のままの記事は通す
   return isPublished("HEAD", file) === true && isPublished("origin/main", file) !== true;
 });
+// posts / examples 以外の新しいページ（content/ 直下の固定ページ・新しいセクション）も公開に数える。
+// 既存の固定ページの修正とタクソノミの _index.md は通す（freshness / expiry-apply の routine が自律で push する範囲）。
+// 以前は posts / examples だけを見ていたので、固定ページの新設は段階 1 で機械に止まらなかった（2026-11-09 の監査 BUG-04）
+const newPages = changedAll.filter((f) => /^content\/.+\.md$/.test(f) && !f.endsWith("_index.md") && !/^content\/(posts|examples)\//.test(f) && isPublished("origin/main", f) === null && isPublished("HEAD", f) === true);
+if (newPages.length) stop(`新しいページの公開が含まれています: ${newPages.join(", ")}\n固定ページの新設はユーザーが preview を確認してから git push origin main で行います`);
 let shots = [];
 if (publishing.length && !target) {
   stop(`記事の公開が含まれています: ${publishing.join(", ")}\n公開はユーザーが preview を確認してから git push origin main で行います（段階 2 の routine は --prepare-publish / --publish <slug> を使う）`);
@@ -265,13 +321,13 @@ if (display.length && !target) {
 }
 
 step("ゲートの判定関数の単体テスト");
-if (run("node", ["--test", "tests/gate-checks.js"], { stdio: "inherit" }).code !== 0) stop("ゲートの単体テストが落ちました");
+if (runLong("ゲートの単体テスト", "node", ["--test", "tests/gate-checks.js"], 120_000) !== 0) stop("ゲートの単体テストが落ちました");
 
 step("型検査の回帰テスト");
-if (run("node", ["tests/post-checks.js"], { stdio: "inherit" }).code !== 0) stop("回帰テストが落ちました");
+if (runLong("回帰テスト", "node", ["tests/post-checks.js"], 15 * 60_000) !== 0) stop("回帰テストが落ちました");
 
 step("本番共通ビルド");
-if (run("node", ["build.js"], { stdio: "inherit" }).code !== 0) stop("ビルドが落ちました");
+if (runLong("ビルド", "node", ["build.js"], 10 * 60_000) !== 0) stop("ビルドが落ちました");
 if (git("status", "--porcelain")) stop("テストかビルドが追跡中のファイルを書き換えました");
 const pub = path.join(root, "public");
 if (target) {
@@ -283,41 +339,28 @@ if (target) {
 
 step("内部リンク切れ");
 // 未 push のコミットは全部まとめて出る。write-weekly が既存記事から draft の記事へ張った内部リンクが
-// 別の push に相乗りすると、本番にリンク切れが出る（draft は本番ビルドに入らない）。生成物で確かめる
-const broken = [];
-(function walk(dir) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    const full = path.join(dir, e.name);
-    if (e.isDirectory()) walk(full);
-    else if (e.name.endsWith(".html")) {
-      const html = fs.readFileSync(full, "utf8");
-      // <a> と <link> を見る。<link> はテーマが決め打ちで出す favicon 類（実物は static/ の直下。
-      // desk の images/draw-favicon.py で描く）と CSS・RSS・canonical。テーマ更新で参照先の名前が
-      // 変わると全ページで 404 になるが、ビルドは通ってしまうので、ここで止める
-      for (const m of html.matchAll(/<(?:a|link)\s[^>]*?href=["']?(?:https:\/\/kurabebako\.com)?(\/[^"'\s>#?]*)/g)) {
-        const t = path.join(pub, decodeURIComponent(m[1]));
-        const ok = fs.existsSync(t) && (fs.statSync(t).isFile() || fs.existsSync(path.join(t, "index.html")));
-        if (!ok) broken.push(`${path.relative(pub, full)} → ${m[1]}`);
-      }
-    }
-  }
-})(pub);
+// 別の push に相乗りすると、本番にリンク切れが出る（draft は本番ビルドに入らない）。生成物で確かめる。
+// 見るのは a / link の href と img / script / source の src のうち同一 origin のもので、<link> はテーマが決め打ちで出す
+// favicon 類（実物は static/ の直下。desk の images/draw-favicon.py で描く）と CSS・RSS・canonical。テーマ更新で参照先の
+// 名前が変わると全ページで 404 になるが、ビルドは通ってしまうので、ここで止める。
+// フラグメント（早見表・比較表の #id）も飛び先の id を確かめる。判定は gate-lib の brokenInternalRefs（単体テストあり）
+const { pages: builtPages, files: builtFiles } = require("./link-check.js").collect(pub);
+const broken = brokenInternalRefs(builtPages, builtFiles, SITE);
 if (broken.length) {
-  const list = [...new Set(broken)].slice(0, 20).map((b) => `  ${b}`).join("\n");
-  stop(`内部リンクの先がありません（draft の記事へのリンクが混ざっていないか）:\n${list}`);
+  const list = broken.slice(0, 20).map((b) => `  ${b}`).join("\n");
+  stop(`内部参照の先がありません（draft の記事へのリンク・無い id へのアンカーが混ざっていないか）:\n${list}`);
 }
-console.log("ok  内部リンクはすべて生成物の中にあります");
+console.log(`ok  生成物の同一 origin の内部参照（a / link / img / script / source。#id を含む）は ${Object.keys(builtPages).length} ページとも揃っています`);
 
 step("表示の崩れ（主要な幅での横はみ出し）");
 const layoutArgs = ["tests/layout-check.js", "public"];
 if (prepareSlug) for (const s of shots) layoutArgs.push("--shots", s);
-if (run("node", layoutArgs, { stdio: "inherit" }).code !== 0) stop("横にはみ出しているページがあるか、ブラウザで検査できませんでした");
+if (runLong("表示の検査", "node", layoutArgs, 15 * 60_000) !== 0) stop("横にはみ出しているページがあるか、ブラウザで検査できませんでした");
 if (publishSlug) checkVisual(publishSlug, shots);
 
 step("backlog とサイトの公開状態");
 if (fs.existsSync(path.join(desk, "check-backlog.py"))) {
-  const r = run("python", ["check-backlog.py"], { cwd: desk, stdio: "inherit" });
-  if (r.code !== 0) stop("backlog とサイトの公開状態が食い違っています（desk の backlog.md を直す）");
+  if (runLong("check-backlog.py", "python", ["check-backlog.py"], 2 * 60_000, { cwd: desk }) !== 0) stop("backlog とサイトの公開状態が食い違っています（desk の backlog.md を直す）");
 } else if (target) {
   stop("公開には desk の check-backlog.py が要ります");
 } else {
@@ -335,12 +378,15 @@ if (dryRun) {
 
 step("push");
 if (git("rev-parse", "HEAD") !== head) stop("ゲートの途中で HEAD が変わりました。最初からやり直してください");
-// 検査した SHA をそのまま送る（途中で main が進んでいても、検査していないものを送らない）
-if (run("git", ["push", "origin", `${head}:refs/heads/main`], { stdio: "inherit" }).code !== 0) {
-  const remote = run("git", ["ls-remote", "origin", "refs/heads/main"]).out.split("\t")[0];
-  if (remote === head) console.error("\ngit push はエラーを返しましたが、origin/main は検査した SHA になっています。デプロイの確認に進みます。");
+// 検査した SHA をそのまま送る（途中で main が進んでいても、検査していないものを送らない）。
+// KURABEBAKO_PUSH_SITE は tests/hooks/pre-push への合図（ゲートを通った push なので、フックの検査を重ねて回さない）
+const pushed = run("git", ["push", "origin", `${head}:refs/heads/main`], { stdio: "inherit", timeout: 5 * 60_000, env: { ...process.env, KURABEBAKO_PUSH_SITE: "1" } });
+if (pushed.timedOut || pushed.code !== 0) {
+  const probe = run("git", ["ls-remote", "origin", "refs/heads/main"], { timeout: 60_000 });
+  const remote = probe.timedOut ? "" : probe.out.split("\t")[0];
+  if (remote === head) console.error(`\ngit push は${pushed.timedOut ? "期限切れになり" : "エラーを返し"}ましたが、origin/main は検査した SHA になっています。デプロイの確認に進みます。`);
   else {
-    console.error(`\nNG  git push が失敗しました（origin/main は ${remote ? remote.slice(0, 7) : "不明"}）。push できていません。`);
+    console.error(`\nNG  git push が${pushed.timedOut ? "期限内に終わりませんでした" : "失敗しました"}（origin/main は ${remote ? remote.slice(0, 7) : "不明"}）。push できていません。`);
     process.exit(1);
   }
 }
@@ -351,8 +397,10 @@ const sleep = (ms) => spawnSync(process.execPath, ["-e", `setTimeout(()=>{}, ${m
 const deadline = Date.now() + 5 * 60 * 1000;
 let lastStatus = "check-run なし";
 for (;;) {
-  const r = run("gh", ["api", `repos/${REPO}/commits/${head}/check-runs?per_page=100`, "--jq", '[.check_runs[] | select(.app.slug == "cloudflare-workers-and-pages")] | sort_by(.id) | last | select(. != null) | [.name, .status, .conclusion, .details_url] | @tsv']);
-  if (r.code !== 0) {
+  const r = run("gh", ["api", `repos/${REPO}/commits/${head}/check-runs?per_page=100`, "--jq", '[.check_runs[] | select(.app.slug == "cloudflare-workers-and-pages")] | sort_by(.id) | last | select(. != null) | [.name, .status, .conclusion, .details_url] | @tsv'], { timeout: 60_000 });
+  if (r.timedOut) {
+    lastStatus = "gh api が 60 秒で応答しない";
+  } else if (r.code !== 0) {
     lastStatus = `gh が失敗: ${r.err.split("\n")[0]}`;
   } else if (r.out) {
     const [name, status, conclusion, url] = r.out.split("\t");

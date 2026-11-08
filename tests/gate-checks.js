@@ -10,7 +10,7 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath } = require("./gate-lib.js");
+const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs } = require("./gate-lib.js");
 
 const FM = (body) => `+++\n${body}\n+++\n`;
 const published = FM("title = 'A'\ndraft = false\nsummary = 'S'");
@@ -35,6 +35,12 @@ test("isPublishedText: 注釈付き・空白違い・CRLF の draft = true は�
 test("isPublishedText: front matter に draft が無い・front matter が無いものは公開扱い（Hugo と同じ）", () => {
   assert.equal(isPublishedText(FM("title = 'A'")), true);
   assert.equal(isPublishedText("draft = true\n本文だけ"), true);
+});
+
+test("isPublishedText: テーブル見出し（[params]）の下の draft = true はトップレベルの draft ではない（Hugo は公開する。監査 BUG-02）", () => {
+  assert.equal(isPublishedText(FM("title = 'A'\n[params]\ndraft = true")), true);
+  assert.equal(isPublishedText(FM("title = 'A'\ndraft = true\n[params]\nx = 1")), false);
+  assert.equal(frontMatter(FM("title = 'A'\n[params]\nsummary = 'S'")).summary, undefined);
 });
 
 test("frontMatter: 文字列・配列・注釈・引用符の中の #", () => {
@@ -68,4 +74,53 @@ test("isDisplayPath: レイアウト・CSS・テーマ・ビルド経路は表�
   for (const f of ["content/posts/a.md", "data/affiliates.toml", "tests/push-site.js", "package.json", "CLAUDE.md", "archetypes/posts.md"]) {
     assert.equal(isDisplayPath(f), false, f);
   }
+});
+
+test("diffBodyLines: ヘッダーを除き、箇条書きの行（+- …）と front matter の区切り（+++）を本文として数える（監査 BUG-01）", () => {
+  const diff = [
+    "diff --git a/content/posts/x.md b/content/posts/x.md",
+    "index 1111111..2222222 100644",
+    "--- a/content/posts/x.md",
+    "+++ b/content/posts/x.md",
+    "@@ -3,0 +4 @@",
+    "+- 除外したもの: [比較](/posts/domain-registrar/) で扱う。",
+    "@@ -10 +11 @@",
+    "-- 古い箇条書き",
+    "+段落で [x](/posts/domain-registrar/) を参照。",
+    "@@ -1 +1 @@",
+    "-+++",
+    "++++",
+    "\ No newline at end of file",
+  ].join("\n");
+  const lines = diffBodyLines(diff);
+  assert.deepEqual(lines, ["+- 除外したもの: [比較](/posts/domain-registrar/) で扱う。", "-- 古い箇条書き", "+段落で [x](/posts/domain-registrar/) を参照。", "-+++", "++++"]);
+  assert.equal(lines.filter((l) => l.startsWith("+") && l.includes("/posts/domain-registrar/")).length, 2);
+  assert.deepEqual(diffBodyLines(""), []);
+  assert.deepEqual(diffBodyLines(diff.replace(/\n/g, "\r\n")).length, 5);
+});
+
+test("manifestError: 形の崩れた撮影記録を理由つきで止める（監査 ERR-03）", () => {
+  const ok = { htmlSha256: "a".repeat(64), views: [{}, {}, {}, {}], images: [{ file: "375-light-tile-00.png", sha256: "b".repeat(64) }] };
+  assert.equal(manifestError(ok), null);
+  assert.match(manifestError(null), /オブジェクト/);
+  assert.match(manifestError({ ...ok, htmlSha256: "x" }), /htmlSha256/);
+  assert.match(manifestError({ ...ok, views: [{}] }), /views が 4 組/);
+  assert.match(manifestError({ ...ok, images: [] }), /images/);
+  assert.match(manifestError({ ...ok, images: [{ file: "../x.png", sha256: "b".repeat(64) }] }), /ファイル名/);
+  assert.match(manifestError({ ...ok, images: [{ file: "a.png" }] }), /sha256/);
+});
+
+test("brokenInternalRefs: パスの欠落・フラグメントの欠落・img の欠落を拾い、外部と相対は見ない（監査 TEST-02）", () => {
+  const pages = {
+    "/index.html": '<a href="/posts/a/">a</a> <a href="https://kurabebako.com/posts/a/#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB-a">anchor</a> <link rel="stylesheet" href="/css/x.css?v=1"> <a href="https://example.com/">ext</a> <a href="mailto:x@y">m</a> <a href="../rel/">rel</a>',
+    "/posts/a/index.html": '<h3 id="サンプル-a">A</h3> <a href="#サンプル-a">self</a> <a href="#missing">x</a> <a href="/posts/none/">none</a> <img src="/images/og/a.jpg"> <img src="/images/og/none.jpg"> <a href="/posts/a/#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB-b">b</a> <a href="/about">about</a> <a href="/">top</a>',
+  };
+  const files = new Set([...Object.keys(pages), "/css/x.css", "/images/og/a.jpg", "/about/index.html"]);
+  const broken = brokenInternalRefs(pages, files, "https://kurabebako.com");
+  assert.deepEqual(broken, [
+    "/posts/a/index.html → #missing（id が無い）",
+    "/posts/a/index.html → /posts/none/",
+    "/posts/a/index.html → /images/og/none.jpg",
+    "/posts/a/index.html → /posts/a/#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB-b（id が無い）",
+  ]);
 });
