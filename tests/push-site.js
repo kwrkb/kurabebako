@@ -290,10 +290,11 @@ const publishing = changedAll.filter((file) => {
   // 公開済みの記事の修正（前後とも公開）と、draft のままの記事は通す
   return isPublished("HEAD", file) === true && isPublished("origin/main", file) !== true;
 });
-// posts / examples 以外の新しいページ（content/ 直下の固定ページ・新しいセクション）も公開に数える。
-// 既存の固定ページの修正とタクソノミの _index.md は通す（freshness / expiry-apply の routine が自律で push する範囲）。
+// posts / examples 以外のページ（content/ 直下の固定ページ・新しいセクション）の公開も数える。条件は上と同じ
+// 「HEAD で公開、origin/main では無いか draft」（新設だけでなく draft を倒す公開も含む）。既存の公開ページの修正と
+// タクソノミの _index.md は通す（freshness / expiry-apply の routine が自律で push する範囲）。
 // 以前は posts / examples だけを見ていたので、固定ページの新設は段階 1 で機械に止まらなかった（2026-11-09 の監査 BUG-04）
-const newPages = changedAll.filter((f) => /^content\/.+\.md$/.test(f) && !f.endsWith("_index.md") && !/^content\/(posts|examples)\//.test(f) && isPublished("origin/main", f) === null && isPublished("HEAD", f) === true);
+const newPages = changedAll.filter((f) => /^content\/.+\.(md|html)$/.test(f) && !/\/_index\.(md|html)$/.test(f) && !/^content\/(posts|examples)\//.test(f) && isPublished("HEAD", f) === true && isPublished("origin/main", f) !== true);
 if (newPages.length) stop(`新しいページの公開が含まれています: ${newPages.join(", ")}\n固定ページの新設はユーザーが preview を確認してから git push origin main で行います`);
 let shots = [];
 if (publishing.length && !target) {
