@@ -3,10 +3,20 @@
     "allow": [
       "Bash(node tests/push-site.js --dry-run:*)",
       "Bash(npm run build:*)",
+      "Bash(npm run check:*)",
+      "Bash(npm run test:gate:*)",
       "Bash(npm run test:checks:*)",
       "Bash(npm run test:layout:*)",
       "Bash(node build.js:*)",
+      "Bash(node tests/link-check.js:*)",
       "Bash(hugo version)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(git -C * push:*)",
+      "Bash(npm run deploy:*)",
+      "Bash(npx wrangler deploy:*)",
+      "Bash(wrangler deploy:*)"
     ]
   }
 }

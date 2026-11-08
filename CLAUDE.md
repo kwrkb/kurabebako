@@ -64,16 +64,20 @@ main へ push
 | ビルド | `npm run build`（= `node build.js`。本番と同じ入口。Hugo の版確認・古い出力の掃除を含む） |
 | 本番へ push | `npm run push:site`（ゲート → push → デプロイの確認。`-- --dry-run` でゲートだけ） |
 | ゲートの判定関数の単体テスト | `npm run test:gate`（`tests/gate-lib.js` を触ったら。Git にも本番にも触らない） |
-| 型検査の回帰テスト | `npm run test:checks`（`extend_post_content.html` を触ったら必ず回す） |
+| 型検査の回帰テスト | `npm run test:checks`（`layouts/_partials/` の検査（`extend_post_content.html` / `example_checks.html` / `source_checks.html` / `front_matter.html` / `site_checks.html`）か shortcode を触ったら必ず回す） |
+| 内部参照の検査 | `npm run test:links`（`npm run build` の後に。生成物の同一 origin の a / link / img / script / source と `#id` の先があるか） |
 | 表示の崩れの検査 | `npm run test:layout`（`npm run build` の後に。全記事を 4 つの幅でヘッドレスの Chrome / Edge に開き、横はみ出しを見る。`layouts/` と CSS を触ったら必ず回す） |
+| 公開の副作用が無い検査を全部 | `npm run check`（上の 4 つとビルドを順に。人が `git push origin main` で出す前に回す。`git config core.hooksPath tests/hooks` で pre-push フックにもできる） |
 | Workers配信の再現 | `npm run preview` |
 | デプロイ | `npm run deploy` |
 | モジュール更新 | `npm run mod:update` |
 | 記事の新規作成 | `hugo new content posts/<slug>.md`（`archetypes/posts.md` の骨組みで生成） |
 
-linter は無い。テストは 2 つ。表示の崩れの検査（`tests/layout-check.js`。見るのはページ全体の横はみ出しだけで、
-色・余白・図の見た目は分からない）と、型検査の回帰テスト（`tests/post-checks.js`。`tests/fixtures/valid.md` を 1 か所ずつ壊した記事を
-`content/posts/` に一時的に置いてビルドし、通る / 止まるを確かめる）だけ。動作確認は `npm run build` が通ることと、
+linter は無い。テストは上の表の 4 つ（ゲートの単体テスト・型検査の回帰テスト・内部参照・表示の崩れ）で、一覧はこの表だけを正にする
+（`AGENTS.md` と `README.md` はここを参照する）。表示の崩れの検査（`tests/layout-check.js`）が見るのはページ全体の横はみ出しだけで、
+色・余白・図の見た目は分からない。型検査の回帰テスト（`tests/post-checks.js`）は `tests/fixtures/valid.md`（比較記事）と
+`tests/fixtures/valid-example.md`（作例）を 1 か所ずつ壊した記事を `content/posts/` か `content/examples/` に一時的に置いてビルドし、
+通る / 止まるを確かめる（広告リンクのケースは生成 HTML も読む）。動作確認は `npm run build` が通ることと、
 `npm run preview` で該当ページが表示されることで行う。
 
 ## ブランチ運用
@@ -158,7 +162,9 @@ linter は無い。テストは 2 つ。表示の崩れの検査（`tests/layout
 
 ## バージョン整合
 
-`build.sh` の `HUGO_VERSION` とローカルの `hugo version` は常に一致させる。
+`build.sh` の `HUGO_VERSION` とローカルの `hugo version` は常に一致させる。版を上げるときは `HUGO_SHA256`
+（Linux 用 extended tarball の SHA-256。GitHub Releases の `hugo_<版>_checksums.txt` の値を、取得した tarball の `sha256sum` でも
+確かめてから書く）も対で更新する。合わないと Cloudflare のビルドが展開前に止まる。
 `go.mod` の `go` ディレクティブは Cloudflare のイメージ既定 Go（1.24.3）以下に保つ。
 `hugo mod get` がローカルの Go 版に書き戻すことがあるため、モジュール更新後は `go.mod` を確認する。
 

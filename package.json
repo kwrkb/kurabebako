@@ -7,7 +7,9 @@
     "build": "node build.js",
     "test:gate": "node --test tests/gate-checks.js",
     "test:checks": "node tests/post-checks.js",
+    "test:links": "node tests/link-check.js",
     "test:layout": "node tests/layout-check.js",
+    "check": "node --test tests/gate-checks.js && node tests/post-checks.js && node build.js && node tests/link-check.js && node tests/layout-check.js",
     "push:site": "node tests/push-site.js",
     "preview": "wrangler dev",
     "deploy": "wrangler deploy",
@@ -16,6 +18,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kwrkb/kurabebako.git"
+  },
+  "engines": {
+    "node": ">=22"
   },
   "devDependencies": {
     "wrangler": "^4.158.0"

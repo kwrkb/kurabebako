@@ -56,11 +56,11 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 | `build.js` / `build.sh` | OS 別の Bash 選択 / Hugo の版固定・出力掃除・ビルド |
 | `wrangler.jsonc` | 静的配信・404・公開ドメイン・ビルド設定 |
 | `hugo.toml` / `go.mod` / `go.sum` | サイト設定・テーマ導入 / モジュールの版 |
-| `content/posts/<slug>.md` / `archetypes/posts.md` | 比較記事 / 新規記事の骨組み。全体検査は posts 直下の Markdown を対象にする |
+| `content/posts/<slug>.md` / `archetypes/posts.md` | 比較記事 / 新規記事の骨組み。全体検査（`site_checks.html`）は posts と examples 直下の Markdown を対象にする |
 | `content/{about,privacy,contact}.md` | 固定ページ。比較記事の6節構成は適用しない |
-| `layouts/_partials/extend_post_content.html` | front matter・見出し・比較表・出典日・PR の整合検査 |
+| `layouts/_partials/extend_post_content.html` | 比較記事の front matter・見出し・比較表・出典・PR の整合検査。作例は `example_checks.html`。front matter の読み方（`front_matter.html`）と出典の節（`source_checks.html`）は両方で共有 |
 | `layouts/_partials/site_checks.html` | 非 draft 記事が未来日付・期限切れ等で生成対象から落ちた場合に停止 |
-| `layouts/_shortcodes/` | `pr` / `cta` / `ranking` / `verified` / `bars` / `svg` |
+| `layouts/_shortcodes/` | `pr` / `cta` / `ranking` / `verified` / `bars` / `svg` / `fit` |
 | `data/affiliates.toml` | 公開リンク用の案件 ID、URL、固定文言、計測画像 |
 | `assets/css/extended/` / `assets/figures/` / `static/images/og/` | 拡張 CSS / インライン SVG / 採用済み OGP 画像 |
 | `static/favicon*` / `static/apple-touch-icon.png` / `static/safari-pinned-tab.svg` | テーマの head が決め打ちで参照する favicon 一式。手で編集せず desk の `images/draw-favicon.py` で描き直す |
@@ -103,12 +103,15 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 | 編集中の表示 | `npm run dev`（draft・未来日付を含むため公開判定には使わない） |
 | 本番と共通のビルド | `npm run build`（= `node build.js`。版確認と `public/` の掃除を含む。作業ディレクトリと出力先を確認して使う） |
 | 表示の崩れの検査 | `npm run test:layout`（ビルドの後に。`layouts/` と CSS を変えたら回す。見るのは横はみ出しだけ） |
-| 型検査の回帰テスト | `npm run test:checks`（`content/posts/` に一時ファイルを置いてビルドする。`extend_post_content.html` を変えたら回す） |
+| 型検査の回帰テスト | `npm run test:checks`（`content/posts/` と `content/examples/` に一時ファイルを置いてビルドする。`layouts/_partials/` の検査か shortcode を変えたら回す） |
+| ゲートの判定関数の単体テスト | `npm run test:gate`（`tests/gate-lib.js` を変えたら回す。Git にも本番にも触らない） |
+| 内部参照の検査 | `npm run test:links`（ビルドの後に。a / link / img / script / source と `#id` の先があるか） |
+| 公開の副作用が無い検査を全部 | `npm run check`（単体テスト → 回帰テスト → ビルド → 内部参照 → 表示の崩れ） |
 | Workers 配信の再現 | `npm run preview`（共通ビルドも走る。localhost で確認） |
-| 完成した draft の検査 | `hugo --buildDrafts --gc --minify --destination .cache/draft-check`（空の雛形は型検査に失敗する） |
+| 完成した draft の検査 | `hugo --buildDrafts --gc --minify --destination .cache/draft-check`（空の雛形は型検査に失敗する。`build.sh` と同じく `TZ=Asia/Tokyo` と `HUGO_CACHEDIR=.cache/hugo` を環境変数で渡す） |
 | draft の表示検査 | `npm run test:layout -- .cache/draft-check`（上の draft ビルドの後に。通常の `public/` では draft を検査できない） |
 
-独立した lint / 型チェックのスクリプトは無い。テストは型検査の回帰テストと表示の横はみ出し検査の2つ。実施した検証と未確認事項を区別する。
+独立した lint / 型チェックのスクリプトは無い。テストの一覧は `CLAUDE.md`「コマンド」の表が正（上の表はその写し）。実施した検証と未確認事項を区別する。
 
 - 記事・テンプレート・設定変更は本番条件のビルドを通す。dev だけの成功で終えない。
 - 描画変更はスマホ幅・明暗テーマで該当ページ・比較表・図・PR を確認する。配信変更は記事・404・末尾スラッシュも確認する。
@@ -119,7 +122,7 @@ Hugo + PaperMod（Hugo Modules）で HTML を生成し、Cloudflare Workers Stat
 ### 1Password CLI のサービスアカウント
 
 - `$env:OP_SERVICE_ACCOUNT_TOKEN` が空なら、`$env:OP_SERVICE_ACCOUNT_TOKEN = [Environment]::GetEnvironmentVariable('OP_SERVICE_ACCOUNT_TOKEN', 'User')` で既存トークンを読み込む。読み込みと `op run` は同じツール呼び出し内で行う。
-- OS の環境変数のトークンは旧 `Dev` 用のサービスアカウントで、kurabebako の item（`kurabebako` / `kurabebako-cloud` vault。2026-10-18 に `Dev` から分離）は読めない。続けて `$env:OP_SERVICE_ACCOUNT_TOKEN = op read "op://Dev/2f3ckgx4ok2sq2447yaanhdp7i/credential"` で `kurabebako` 用サービスアカウントのトークンに入れ替えてから `op run` する（Bash なら `export OP_SERVICE_ACCOUNT_TOKEN=$(op read "op://Dev/2f3ckgx4ok2sq2447yaanhdp7i/credential")`）。vault と item の対応は desk の `accounts.md`。
+- OS の環境変数のトークンは旧 `Dev` 用のサービスアカウントで、kurabebako の item（`kurabebako` / `kurabebako-cloud` vault。2026-10-18 に `Dev` から分離）は読めない。続けて `$env:OP_SERVICE_ACCOUNT_TOKEN = op read "<kurabebako 用サービスアカウントのトークンの secret reference>"` で入れ替えてから `op run` する（Bash なら `export OP_SERVICE_ACCOUNT_TOKEN=$(op read "<同>")`）。secret reference（vault と item の対応）は desk の `accounts.md` の 1Password の行にあり、このファイルには書かない（public のため。2026-11-09 の監査 SEC-02）。
 - 値を表示・保存せず、永続設定は変更しない。対象の lab / metrics 手順にある `.env.tpl` を `op run` で使う。
 - 再ログイン・トークン再発行を依頼する前に、環境変数の継承と sandbox の通信拒否を確認する。`op whoami --format=json > $null` の終了コードで認証を確認する。
 

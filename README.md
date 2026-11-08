@@ -65,6 +65,8 @@ Git for Windows（`build.js` が同梱の bash で `build.sh` を動かす）が
 
 winget は `--version` で版を固定できるので、`build.sh` の `HUGO_VERSION` と同じ版を明示して入れる。
 `winget upgrade --all` で上がってしまったら、`build.sh` の版を上げるか、同じコマンドで入れ直す。
+`build.sh` の版を上げるときは、Cloudflare が取得する Linux 用 tarball の SHA-256（`HUGO_SHA256`）も GitHub Releases の
+`hugo_<版>_checksums.txt` から取って対で更新する（合わないとビルドが展開前に止まる）。
 
 ```powershell
 winget install --id Hugo.Hugo.Extended --version 0.168.0 --exact
@@ -113,6 +115,9 @@ CRLF になると `build.sh` は bash が行末の `\r` を構文エラーにし
 | `npm run test:layout` | 表示の崩れの検査。ビルド済みの `public/` をヘッドレスの Chrome / Edge で開き、全記事を 4 つの幅で横はみ出しが無いか見る |
 | `npm run push:site` | 本番へ push する入口。ゲート（公開の有無・回帰テスト・ビルド・内部リンク切れ・表示の崩れ・backlog）を通ったら push し、デプロイの成否と本番の応答まで確認する。記事の公開を含むと止まる。公開は `KURABEBAKO_PUBLISH_STAGE=2` で `-- --prepare-publish <slug>`（条件の検査と撮影）→ `-- --publish <slug>`（画像の確認記録を確かめて push）の 2 段 |
 | `npm run test:checks` | 記事の型検査の回帰テスト（壊した記事を一時的に置いてビルドし、止まることを確かめる） |
+| `npm run test:gate` | push ゲートの判定関数の単体テスト（Git にも本番にも触らない） |
+| `npm run test:links` | ビルド済みの `public/` の内部参照（a / link / img / script / source と `#id`）の先があるか |
+| `npm run check` | 上のテストとビルド・表示の崩れの検査を順に全部。人が `git push origin main` で出す前に回す（`git config core.hooksPath tests/hooks` で pre-push フックにできる） |
 | `npm run preview` | `wrangler dev` で Workers 配信を再現（`node build.js` が自動実行される） |
 | `npm run deploy` | `wrangler deploy` で本番反映（`node build.js` が自動実行される） |
 | `npm run mod:update` | テーマ等の Hugo Modules を更新 |

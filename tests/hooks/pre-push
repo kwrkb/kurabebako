@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+#------------------------------------------------------------------------------
+# 人が `git push origin main` で出すとき（レイアウト・CSS の変更と、人が公開する回）に、push:site のゲートと同じ
+# 「公開の副作用が無い検査」を通す pre-push フック。本番のビルド経路（Workers Builds → build.sh）は Hugo の
+# テンプレート内の型検査しか走らせないので、--dry-run を忘れた push は回帰テスト・内部参照・横はみ出しの検査を
+# 通らずに本番に出ていた（2026-11-09 の監査 CI-01、前回 F17）。
+#
+# 有効化（リポジトリごと。git は hooks を追跡しないので、clone した機で 1 回だけ）:
+#   git config core.hooksPath tests/hooks
+# 外すとき:
+#   git config --unset core.hooksPath
+#
+# push:site（tests/push-site.js）からの push はゲートを通った後なので、同じ検査を重ねない（KURABEBAKO_PUSH_SITE=1 で合図）。
+# main 以外への push は検査しない（非本番ブランチはビルドされない運用。CLAUDE.md「ブランチ運用」）。
+#------------------------------------------------------------------------------
+set -euo pipefail
+
+if [[ "${KURABEBAKO_PUSH_SITE:-}" == "1" ]]; then
+  exit 0
+fi
+
+pushing_main=0
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  if [[ "${remote_ref}" == "refs/heads/main" ]]; then
+    pushing_main=1
+  fi
+done
+
+if [[ "${pushing_main}" -eq 0 ]]; then
+  exit 0
+fi
+
+cd "$(git rev-parse --show-toplevel)"
+echo "pre-push: main への push なので npm run check（ゲートの単体テスト → 型検査の回帰テスト → ビルド → 内部参照 → 表示の崩れ）を回します。飛ばすなら git push --no-verify"
+npm run check
