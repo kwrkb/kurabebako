@@ -14,15 +14,22 @@
   {{- errorf "本文に HTML コメントが残っています。archetype の指示コメントを消してください: %s" .File.Path -}}
 {{- end -}}
 
+{{- /* 検査の入口は配置セクション（.Section）で決める。.Type は front matter の type で上書きできるので、
+       content/posts/ の記事に type = "page" を書くだけで下の検査が丸ごと掛からなくなっていた（2026-11-06 の監査 F12）。
+       posts / examples では type の上書きそのものを止める */ -}}
+{{- if and (eq .Kind "page") (in (slice "posts" "examples") .Section) (ne .Type .Section) -}}
+  {{- errorf "front matter の type を上書きしています（type = %q、セクションは %q）。記事の型の検査を外すことになるので消してください: %s" .Type .Section .File.Path -}}
+{{- end -}}
+
 {{- /* 作例（content/examples/ の単ページ）は比較記事と別の型なので、検査も example_checks.html に分けてある */ -}}
-{{- if and (eq .Kind "page") (eq .Type "examples") -}}
+{{- if and (eq .Kind "page") (eq .Section "examples") -}}
   {{- partial "example_checks.html" . -}}
 {{- end -}}
 
 {{- /* ここから下は比較記事（content/posts/ の単ページ）だけに掛ける「記事の型」の検査。
        型の正典は CLAUDE.md の「記事の型」と archetypes/posts.md。about / privacy / contact は対象外。
        Windows で書いた記事は CRLF になり得るので、行末の \r を先に落としてから正規表現を掛ける */ -}}
-{{- if and (eq .Kind "page") (eq .Type "posts") -}}
+{{- if and (eq .Kind "page") (eq .Section "posts") -}}
   {{- $path := .File.Path -}}
   {{- $raw := replaceRE "\r" "" .RawContent -}}
   {{- /* 行末の半角スペースとタブも先に落とす。Markdown は見出しの行末の空白を無視するので、
@@ -46,7 +53,7 @@
       {{- errorf "front matter に %s がありません（title / date / lastmod / draft / summary は必須）: %s" $key $path -}}
     {{- end -}}
   {{- end -}}
-  {{- if findRE `(?m)^summary\s*=\s*(''|"")\s*$` $fm -}}
+  {{- if findRE `(?m)^summary\s*=\s*(''|"")\s*(#.*)?$` $fm -}}
     {{- errorf "summary が空です。一覧と OGP に出る要約を書いてください: %s" $path -}}
   {{- end -}}
 
@@ -106,14 +113,27 @@
       {{- if ne (index $rows 0) $header -}}
         {{- errorf "比較表の列が型と違います。期待: %s / 実際: %s: %s" $header (index $rows 0) $path -}}
       {{- end -}}
-      {{- /* 検証区分は対象ごとに必ず書く。文字ではなく verified shortcode で（表記ゆれを防ぐ） */ -}}
+      {{- /* 検証区分は対象ごとに必ず書く。文字ではなく verified shortcode で（表記ゆれを防ぐ）。
+             行を | で割って 7 列（両端の空セルを含めて 9 片）であることと、「検証区分」列（7 番目）にバッジがあることを見る。
+             以前は行全体と節全体で findRE していたので、全行 spec でも表の外に verified run を 1 つ置けば通っていた
+             （2026-11-06 の監査 F03）。実行区分の数は検証区分セルだけで数える */ -}}
+      {{- $runs := 0 -}}
       {{- range $i, $row := $rows -}}
-        {{- if and (ge $i 2) (not (findRE `\{\{< verified (run|spec) >\}\}` $row)) -}}
-          {{- errorf "比較表の行に検証区分（{{< verified run >}} / {{< verified spec >}}）がありません: %s / 行: %s" $path (substr $row 0 40) -}}
+        {{- if ge $i 2 -}}
+          {{- $cells := split $row "|" -}}
+          {{- if ne (len $cells) 9 -}}
+            {{- errorf "比較表の行が 7 列になっていません（%d 列）。セルの中に | を書かず、列を足さないでください: %s / 行: %s" (sub (len $cells) 2) $path (substr $row 0 40) -}}
+          {{- else -}}
+            {{- $kind := index $cells 6 -}}
+            {{- if not (findRE `\{\{< verified (run|spec) >\}\}` $kind) -}}
+              {{- errorf "比較表の「検証区分」列に {{< verified run >}} / {{< verified spec >}} がありません: %s / 行: %s" $path (substr $row 0 40) -}}
+            {{- end -}}
+            {{- if findRE `\{\{< verified run >\}\}` $kind -}}{{- $runs = add $runs 1 -}}{{- end -}}
+          {{- end -}}
         {{- end -}}
       {{- end -}}
       {{- /* 「AI が実際に動かした対象」がいない記事は、このサイトの差別化を満たさない（CLAUDE.md「扱う対象の線引き」） */ -}}
-      {{- if not (findRE `\{\{< verified run >\}\}` $seg) -}}
+      {{- if eq $runs 0 -}}
         {{- errorf "比較表に {{< verified run >}} の対象が 1 つもありません。実行区分の主役を置いてください: %s" $path -}}
       {{- end -}}
     {{- end -}}
@@ -156,14 +176,35 @@
     {{- if not $items -}}
       {{- errorf "「出典」節に番号付きの出典がありません（`1. [ページ名](URL) — YYYY-MM-DD 確認` の形式）: %s" $path -}}
     {{- end -}}
+    {{- /* 各行の構造（2026-11-06 の監査 F14）: 番号は 1 から連番、URL（Markdown リンク）があり、確認日は実在する日付。
+           以前は番号付きの行と行末の日付文字列しか見ていなかったので、URL の無い行・2026-02-31・表の [999] が通っていた。
+           URL の到達性と公式性は見ない（公開時の出典の取り直しで確かめる） */ -}}
     {{- $latest := "" -}}
-    {{- range $item := $items -}}
+    {{- range $i, $item := $items -}}
+      {{- $n := int (index (index (findRESubmatch `^(\d+)\.` $item) 0) 1) -}}
+      {{- if ne $n (add $i 1) -}}
+        {{- errorf "出典の番号が連番になっていません（%d 番目が %d.）。1 から順に振り直し、表の [n] も揃えてください: %s" (add $i 1) $n $path -}}
+      {{- end -}}
+      {{- if not (findRE `\]\(https?://[^)\s]+\)` $item) -}}
+        {{- errorf "出典の行に URL がありません（`[ページ名](URL)` の形式）: %s / 行: %s" $path (substr $item 0 40) -}}
+      {{- end -}}
       {{- $m := findRESubmatch `— (\d{4}-\d{2}-\d{2}) 確認$` $item -}}
       {{- if not $m -}}
         {{- errorf "出典の行末は `— YYYY-MM-DD 確認` で終えてください: %s / 行: %s" $path (substr $item 0 40) -}}
       {{- else -}}
         {{- $d := index (index $m 0) 1 -}}
+        {{- with (try (time.AsTime $d)).Err -}}
+          {{- errorf "出典の確認日 %s は実在しない日付です: %s / 行: %s" $d $path (substr $item 0 40) -}}
+        {{- end -}}
         {{- if gt $d $latest -}}{{- $latest = $d -}}{{- end -}}
+      {{- end -}}
+    {{- end -}}
+    {{- /* 本文（出典節より前）の [n] は、出典の番号の範囲に収まること。[名前](#id) のようなリンクは先に落とす */ -}}
+    {{- $body := replaceRE `\[\d+\]\([^)]*\)` "" (index (split $raw "\n## 出典\n") 0) -}}
+    {{- range findRESubmatch `\[(\d+)\]` $body -}}
+      {{- $ref := int (index . 1) -}}
+      {{- if or (lt $ref 1) (gt $ref (len $items)) -}}
+        {{- errorf "本文の出典番号 [%d] に対応する出典がありません（出典は %d 件）: %s" $ref (len $items) $path -}}
       {{- end -}}
     {{- end -}}
     {{- /* ISO 形式の日付文字列は辞書順が時系列順なので、文字列のまま比べる */ -}}
@@ -192,6 +233,6 @@
 {{- end -}}
 
 {{- /* 型の検査を通った比較記事だけ、本文の下に関連記事のカードを出す（related_posts.html） */ -}}
-{{- if and (eq .Kind "page") (eq .Type "posts") -}}
+{{- if and (eq .Kind "page") (eq .Section "posts") -}}
   {{- partial "related_posts.html" . -}}
 {{- end -}}

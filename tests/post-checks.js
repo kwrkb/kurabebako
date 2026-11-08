@@ -10,8 +10,9 @@
 // content/ を決め打ちで読み直しており（front matter の検査と site_checks.html）、
 // 本番と同じ経路を通さないと試したことにならないため。
 //
-// 一時ファイルは finally で消す。途中で強制終了して残っても、.gitignore に入れてあるので
-// コミットにもデプロイにも混ざらない。出力は一時ディレクトリに向け、public/ には触れない。
+// 一時ファイルは finally で消す。途中で強制終了して残っても、.gitignore に入れてあるのでコミットには混ざらない。
+// ただし Hugo はファイルがあれば読むので、本番の入口（build.sh）は残骸があるとビルドを止める（2026-11-06 の監査 F02）。
+// 出力は一時ディレクトリに向け、public/ には触れない。
 //------------------------------------------------------------------------------
 "use strict";
 
@@ -46,7 +47,7 @@ const noBadge = (s) => swap(s, `| ${SPEC} |`, "| 仕様 |");
 const noRun = (s) => swap(s, RUN, SPEC);
 const noTable = (s) => s.split("\n").filter((line) => !line.startsWith("|")).join("\n");
 
-const E_BADGE = "比較表の行に検証区分";
+const E_BADGE = "比較表の「検証区分」列に";
 const E_RUN = "の対象が 1 つもありません";
 const E_TABLE = "「比較表」節に表がありません";
 const E_H2 = "H2 の構成が型と違います";
@@ -152,6 +153,31 @@ const cases = [
     make: (s) => swap(s, "## 比較表\n", "| 条件 | 対象 |\n| --- | --- |\n| 無料で試したい | [サンプル A](#サンプル-a) |\n\n## 比較表\n"),
     expect: [E_QUICK_COLS],
   },
+
+  // 2026-11-06 の監査で見つかった検査の穴（F01 / F03 / F12 / F13 / F14 / F15）。修正前はいずれも黙って通っていた
+  {
+    name: "本文のコード例に draft = true があっても公開記事（site_checks の draft 判定は front matter だけ）",
+    make: (s) => swap(s, "- **料金体系**: 無料です。", "- **料金体系**: 無料です。\n\n```toml\ndraft = true\n```"),
+    expect: null,
+  },
+  { name: "summary が空（注釈付き）", make: (s) => s.replace(/^summary = .*$/m, "summary = '' # あとで書く"), expect: ["summary が空です"] },
+  {
+    name: "type を上書きして型検査を外す",
+    make: (s) => swap(swap(s, "draft = false\n", "draft = false\ntype = 'page'\n"), "## 比較表\n", "## Invalid\n"),
+    expect: ["front matter の type を上書きしています"],
+  },
+  {
+    name: "全行 spec で、表の外に verified run がある",
+    make: (s) => swap(noRun(s), "2026-09-01 時点の公式情報に基づく。", "2026-09-01 時点の公式情報に基づく。凡例: {{< verified run >}} は実行。"),
+    expect: [E_RUN],
+  },
+  { name: "比較表の行が 7 列でない", make: (s) => swap(s, "| {{< verified run >}} | [1] |", "| {{< verified run >}} | [1] | 備考 |"), expect: ["7 列になっていません"] },
+  { name: "検証区分が別の列にある", make: (s) => swap(s, "| アカウント | {{< verified run >}} | [1] |", "| {{< verified run >}} | アカウント | [1] |"), expect: ["「検証区分」列に"] },
+  { name: "出典の行に URL が無い", make: (s) => swap(s, "[Example Domain](https://example.com/)", "Example Domain"), expect: ["出典の行に URL がありません"] },
+  { name: "出典の確認日が実在しない", make: (s) => swap(s, "— 2026-09-01 確認", "— 2026-02-31 確認"), expect: ["実在しない日付"] },
+  { name: "本文の出典番号に対応する出典が無い", make: (s) => swap(s, "| {{< verified spec >}} | [1] |", "| {{< verified spec >}} | [999] |"), expect: ["出典番号 [999] に対応する出典がありません"] },
+  { name: "出典の番号が 1 から始まらない", make: (s) => swap(s, "1. [Example Domain]", "2. [Example Domain]"), expect: ["連番になっていません"] },
+  { name: "bars の数値がすべて 0 でも通る", make: (s) => swap(s, "## 比較の前提\n", "{{< bars unit=\"円\" >}}\nサンプル A: 0\nサンプル B: 0\n{{< /bars >}}\n\n## 比較の前提\n"), expect: null },
 
   // 作例（content/examples/）。比較記事の検査は掛からず、作例の検査だけが掛かる
   ex({ name: "作例: 正常", make: (s) => s, expect: null }),

@@ -72,6 +72,14 @@ main() {
   # ホスティング側はビルド出力をキャッシュから復元するため、前回の public/ が残る。
   # Hugo は自分が生成しないファイルを消さないので、削除した記事の HTML が
   # そのまま再アップロードされ、消したはずのURLが生き続ける。
+  # 型検査の回帰テスト（tests/post-checks.js）が content/ に一時的に置く記事が残っていたら止める。
+  # .gitignore に入れてあるので commit には混ざらないが、Hugo はファイルがあれば読むので、強制終了で残った
+  # fixture（draft = false）が wrangler deploy / preview のビルドにそのまま入り得た（2026-11-06 の監査 F02）
+  if compgen -G "content/posts/zz-fixture-*.md" >/dev/null || compgen -G "content/examples/zz-fixture-*.md" >/dev/null; then
+    echo "テストの一時ファイル（content/*/zz-fixture-*.md）が残っています。消してからビルドしてください" >&2
+    exit 1
+  fi
+
   echo "Cleaning output directory..."
   rm -rf public
 

@@ -15,7 +15,7 @@
 {{- $curCats := .Params.categories | default slice -}}
 {{- $raw := .RawContent -}}
 {{- $scored := slice -}}
-{{- range where site.RegularPages "Type" "posts" -}}
+{{- range where site.RegularPages "Section" "posts" -}}
   {{- if ne .RelPermalink $cur.RelPermalink -}}
     {{- $score := 0 -}}
     {{- $score = add $score (strings.Count (printf "](%s" .RelPermalink) $raw) -}}

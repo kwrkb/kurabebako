@@ -20,7 +20,7 @@
     {{- errorf "front matter に %s がありません（title / date / lastmod / draft / summary は必須）: %s" $key $path -}}
   {{- end -}}
 {{- end -}}
-{{- if findRE `(?m)^summary\s*=\s*(''|"")\s*$` $fm -}}
+{{- if findRE `(?m)^summary\s*=\s*(''|"")\s*(#.*)?$` $fm -}}
   {{- errorf "summary が空です。一覧と OGP に出る要約を書いてください: %s" $path -}}
 {{- end -}}
 
