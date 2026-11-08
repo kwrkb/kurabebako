@@ -57,6 +57,11 @@ name = 'ロリポップ!'
 url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+6JRPVM+348+6OWUA'
 pixel = 'https://www18.a8.net/0.gif?a8mat=4BC9F6+6JRPVM+348+6OWUA'
 program = 'A8.net s00000000404001（自由テキスト）'
+# 2026-10-24 14:08 から新規申込み（無料お試しを含む）の受付を一時停止（公式のお知らせ。再開未定。ムームードメインと同じ GMO ペパボの停止）。
+# 記事 shared-hosting-japan の cta / ranking は停止中は注意書きになる。再開を確認したら paused と paused_url を消し、記事の「主な制約」セルと詳細も直す
+# （2026-11-09 に再確認。11-06 の監査 F09 で記事は停止と書くのに台帳に paused が無く、広告リンクと計測画像が出ていた）
+paused = '2026-10-24 14:08 から新規申込み（無料お試しを含む）の受付を一時停止しています（再開は未定）'
+paused_url = 'https://lolipop.jp/info/news/8246/'
 
 [mixhost]
 name = 'mixhost'
