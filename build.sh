@@ -14,6 +14,11 @@
 set -euo pipefail
 
 HUGO_VERSION=0.168.0
+# 上の版の hugo_extended_<版>_linux-amd64.tar.gz の SHA-256。値は GitHub Releases の hugo_<版>_checksums.txt から取り、
+# 取得した tarball を自分でも sha256sum して一致を確かめてから書く。版を上げるときは必ず対で更新する（README「バージョン整合」）。
+# Cloudflare のビルドは毎回この tarball を取得して実行するので、npm の integrity と go.sum の外にある唯一の実行物だった
+# （2026-11-09 の監査 SEC-01、前回 F20）。配布元や経路が変わっていればここで止まる
+HUGO_SHA256=787f100057328824f38c6ad7c87ff10d6451ae0a7bc39cedaad0dd2bcde17e53
 
 # ビルド時のタイムゾーン（日付の表示揺れを防ぐ）
 export TZ=Asia/Tokyo
@@ -57,10 +62,16 @@ main() {
     exit 1
   else
     echo "Installing Hugo ${HUGO_VERSION} (extended)..."
-    curl -sfL --output-dir "${build_temp_dir}" -O \
-      "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+    tarball="hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+    # 期限と再試行を置く（無いと GitHub が応答しないときビルド時間の上限まで待つ。2026-11-09 の監査 ERR-01）
+    curl -sfL --max-time 120 --retry 2 --output-dir "${build_temp_dir}" -O \
+      "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/${tarball}"
+    echo "${HUGO_SHA256}  ${build_temp_dir}/${tarball}" | sha256sum -c - || {
+      echo "Hugo の tarball の SHA-256 が build.sh の HUGO_SHA256 と一致しません。展開せずに止めます" >&2
+      exit 1
+    }
     mkdir -p "${HOME}/.local/hugo"
-    tar -C "${HOME}/.local/hugo" -xf "${build_temp_dir}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+    tar -C "${HOME}/.local/hugo" -xf "${build_temp_dir}/${tarball}"
     export PATH="${HOME}/.local/hugo:${PATH}"
   fi
 
