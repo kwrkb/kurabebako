@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "hugo server --buildDrafts --buildFuture",
     "build": "node build.js",
+    "test:gate": "node --test tests/gate-checks.js",
     "test:checks": "node tests/post-checks.js",
     "test:layout": "node tests/layout-check.js",
     "push:site": "node tests/push-site.js",
@@ -17,7 +18,7 @@
     "url": "git+https://github.com/kwrkb/kurabebako.git"
   },
   "devDependencies": {
-    "wrangler": "^4.128.0"
+    "wrangler": "^4.158.0"
   },
   "private": true
 }
