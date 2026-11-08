@@ -4,11 +4,14 @@
 //
 //   npm run test:checks
 //
-// 検査は Hugo のテンプレートの中にあり、単体では呼べない。そこで fixtures/valid.md を
-// 1 か所ずつ壊した記事を content/posts/ に一時的に置き、サイトごとビルドして
-// 「通る / この文言で止まる」を確かめる。contentDir を差し替えないのは、検査が
+// 検査は Hugo のテンプレートの中にあり、単体では呼べない。そこで fixtures/valid.md（比較記事）と
+// fixtures/valid-example.md（作例）を 1 か所ずつ壊した記事を content/posts/ か content/examples/ に一時的に置き、
+// サイトごとビルドして「通る / この文言で止まる」を確かめる。contentDir を差し替えないのは、検査が
 // content/ を決め打ちで読み直しており（front matter の検査と site_checks.html）、
-// 本番と同じ経路を通さないと試したことにならないため。
+// 本番と同じ経路を通さないと試したことにならないため。同じ理由で Hugo は build.sh と同じ環境
+// （TZ=Asia/Tokyo と HUGO_CACHEDIR=.cache/hugo）で起動する（2026-11-09 の監査 CI-03）。
+// 通るケースのうち広告リンク（pr / cta / ranking）のものは、終了コードだけでなく生成 HTML に
+// rel="sponsored" のリンク・計測画像・PR 表記が出る / 出ないも読む（同 TEST-01）。
 //
 // 一時ファイルは finally で消す。途中で強制終了して残っても、.gitignore に入れてあるのでコミットには混ざらない。
 // ただし Hugo はファイルがあれば読むので、本番の入口（build.sh）は残骸があるとビルドを止める（2026-11-06 の監査 F02）。
@@ -20,6 +23,7 @@ const { spawnSync } = require("node:child_process");
 const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
+const { parseAffiliates } = require("./gate-lib.js");
 
 const root = path.resolve(__dirname, "..");
 // セクションごとの正常なフィクスチャと一時ファイルの置き場。作例（content/examples/）は比較記事と別の型で、
@@ -70,6 +74,19 @@ const E_EX_MODEL = "モデルの版が書かれています";
 const E_EX_SRC = "出典の行末は";
 const ex = (c) => ({ section: "examples", ...c });
 
+// 広告リンク。台帳（data/affiliates.toml）の実際の案件から、paused の無いものと有るものを 1 つずつ選ぶ。
+// テスト用の id を台帳に置かないのは、台帳が privacy.md の一覧と checkPublication の突き合わせの対象でもあるため
+// （台帳の変更でここが壊れる結合は受け入れる。paused の案件が無いときは paused のケースを skip する）
+const ledger = parseAffiliates(fs.readFileSync(path.join(root, "data", "affiliates.toml"), "utf8"));
+const ACTIVE_ID = Object.values(ledger).find((a) => a.name && !a.paused)?.id;
+const PAUSED_ID = Object.values(ledger).find((a) => a.name && a.paused)?.id;
+if (!ACTIVE_ID) throw new Error("data/affiliates.toml に paused の無い案件が 1 つも無いので、広告リンクのケースを組めません");
+const PR = "{{< pr >}}\n\n";
+const withPr = (s) => swap(s, "## 結論\n", PR + "## 結論\n");
+const withCta = (s, id) => swap(s, "- **料金体系**: 無料です。\n", `- **料金体系**: 無料です。\n\n{{< cta "${id}" >}}\n`);
+const withRanking = (s, lines) => swap(s, "- **料金体系**: 無料です。\n", `- **料金体系**: 無料です。\n\n{{< ranking >}}\n${lines}\n{{< /ranking >}}\n`);
+const paused = (c) => ({ ...c, skip: PAUSED_ID ? "" : "台帳に paused の案件が無い" });
+
 // 結論の早見表。valid.md には入れず、「## 比較表」の直前に差し込む
 const quick = (target) => `| こういう条件なら | 対象 | 決め手 |\n| --- | --- | --- |\n| 無料で試したい | ${target} | 「無料枠」列 |\n\n`;
 
@@ -79,6 +96,7 @@ const fit = (kind, body) => `{{< fit ${kind} >}}\n${body}\n{{< /fit >}}\n\n`;
 const FIT_BODY = "向く: 試すだけの用途\n向かない: 上限を超える用途";
 
 // expect: null = ビルドが通る / 配列 = ビルドが止まり、どの文言もログに出る
+// html: 通るケースで生成 HTML に含まれる文字列（has）・含まれない文字列（not）・出現回数（count）
 const cases = [
   { name: "正常な記事", make: (s) => s, expect: null },
   { name: "CRLF の正常な記事", make: (s) => s.replace(/\n/g, "\r\n"), expect: null },
@@ -179,6 +197,44 @@ const cases = [
   { name: "出典の番号が 1 から始まらない", make: (s) => swap(s, "1. [Example Domain]", "2. [Example Domain]"), expect: ["連番になっていません"] },
   { name: "bars の数値がすべて 0 でも通る", make: (s) => swap(s, "## 比較の前提\n", "{{< bars unit=\"円\" >}}\nサンプル A: 0\nサンプル B: 0\n{{< /bars >}}\n\n## 比較の前提\n"), expect: null },
 
+  // 2026-11-09 の監査（BUG-02 / TEST-01 / TEST-03）。front matter の読み方・site_checks・広告リンクの約束を壊して確かめる
+  {
+    name: "[params] の下の draft = true はトップレベルの draft ではない（Hugo は公開する。必須キーの検査で止める）",
+    make: (s) => swap(swap(s, "draft = false\n", ""), "tags = []\n", "tags = []\n[params]\ndraft = true\n"),
+    expect: ["front matter に draft がありません"],
+  },
+  { name: "date が未来（Hugo が黙って外す記事を site_checks が止める）", make: (s) => swap(s, "date = '2026-09-01T00:00:00+09:00'", "date = '2099-01-01T00:00:00+09:00'"), expect: ["draft ではないのにビルド対象に入っていません"] },
+  { name: "expiryDate を過ぎている", make: (s) => swap(s, "draft = false\n", "draft = false\nexpiryDate = '2020-01-01'\n"), expect: ["draft ではないのにビルド対象に入っていません"] },
+  {
+    name: "pr の後に cta（PR 表記と rel=sponsored のリンクが出る）",
+    make: (s) => withCta(withPr(s), ACTIVE_ID),
+    expect: null,
+    html: { has: ['class="pr-notice"'], count: { 'rel="sponsored': 1 } },
+  },
+  { name: "cta が pr より前", make: (s) => swap(withCta(s, ACTIVE_ID), "## 出典\n", PR + "## 出典\n"), expect: ["cta より前に"] },
+  { name: "pr だけあって広告リンクが無い", make: withPr, expect: ["があるのに cta / ranking がありません"] },
+  { name: "未登録の案件 id", make: (s) => withCta(withPr(s), "zz-not-registered"), expect: ["登録されていません"] },
+  paused({
+    name: "paused の cta は pr なしで通り、リンク・計測画像・PR 表記を出さない",
+    make: (s) => withCta(s, PAUSED_ID),
+    expect: null,
+    html: { has: ["cta-paused"], not: ['rel="sponsored', "cta-pixel", "pr-notice"] },
+  }),
+  paused({
+    name: "ranking に有効と paused が混ざる（有効の分だけリンク、paused は注意書き）",
+    make: (s) => withRanking(withPr(s), `${ACTIVE_ID}: 理由 A\n${PAUSED_ID}: 理由 B`),
+    expect: null,
+    html: { has: ["cta-paused", 'class="ranking"', 'class="pr-notice"'], count: { 'rel="sponsored': 1 } },
+  }),
+  paused({
+    name: "ranking が全部 paused なら pr なしで通り、リンクを出さない",
+    make: (s) => withRanking(s, `${PAUSED_ID}: 理由 B`),
+    expect: null,
+    html: { has: ["cta-paused"], not: ['rel="sponsored', "pr-notice"] },
+  }),
+  { name: "ranking が pr より前", make: (s) => withRanking(s, `${ACTIVE_ID}: 理由 A`), expect: ["ranking より前に"] },
+  { name: "ranking の行が「案件id: 理由」でない", make: (s) => withRanking(withPr(s), "理由だけの行"), expect: ["ranking の各行は"] },
+
   // 作例（content/examples/）。比較記事の検査は掛からず、作例の検査だけが掛かる
   ex({ name: "作例: 正常", make: (s) => s, expect: null }),
   ex({ name: "作例: CRLF の正常な記事", make: (s) => s.replace(/\n/g, "\r\n"), expect: null }),
@@ -203,6 +259,11 @@ const cases = [
     expect: [E_EX_MODEL],
   }),
   ex({ name: "作例: 出典に確認日が無い", make: (s) => swap(s, " — 2026-10-23 確認", ""), expect: [E_EX_SRC] }),
+  // 出典の構造の検査は比較記事と共通（source_checks.html）。作例側に写っていなかった 4 つ（2026-11-09 の監査 BUG-03）
+  ex({ name: "作例: 出典の行に URL が無い", make: (s) => swap(s, "[サンプル A の料金](https://example.com/pricing)", "サンプル A の料金"), expect: ["出典の行に URL がありません"] }),
+  ex({ name: "作例: 出典の確認日が実在しない", make: (s) => swap(s, "— 2026-10-23 確認", "— 2026-02-31 確認"), expect: ["実在しない日付"] }),
+  ex({ name: "作例: 出典の番号が 1 から始まらない", make: (s) => swap(s, "1. [サンプル A の料金]", "3. [サンプル A の料金]"), expect: ["連番になっていません"] }),
+  ex({ name: "作例: 本文の出典番号に対応する出典が無い", make: (s) => swap(s, "無料です [1]", "無料です [9]"), expect: ["出典番号 [9] に対応する出典がありません"] }),
   ex({
     name: "作例: 扱わない領域の語",
     make: (s) => swap(s, "サンプル A で公開したページです。", "サンプル A で公開したページです。転職にも向きます。"),
@@ -215,11 +276,25 @@ function build(dest) {
   const r = spawnSync("hugo", ["--destination", dest, "--logLevel", "error"], {
     cwd: root,
     encoding: "utf8",
+    timeout: 5 * 60_000,
+    // build.sh と同じ環境。TZ は日付の判定、HUGO_CACHEDIR はモジュールの取得先（既定のユーザーの一時領域に取り直させない）
+    env: { ...process.env, TZ: "Asia/Tokyo", HUGO_CACHEDIR: path.join(root, ".cache", "hugo") },
   });
   if (r.error) {
     throw r.error;
   }
   return { ok: r.status === 0, log: `${r.stdout}\n${r.stderr}` };
+}
+
+// 通るケースの生成 HTML を読む（has / not / count）。文言が合わなければ理由を返す
+function checkHtml(html, spec) {
+  for (const h of spec.has || []) if (!html.includes(h)) return `生成 HTML に ${h} が無い`;
+  for (const h of spec.not || []) if (html.includes(h)) return `生成 HTML に ${h} がある`;
+  for (const [h, n] of Object.entries(spec.count || {})) {
+    const k = html.split(h).length - 1;
+    if (k !== n) return `生成 HTML の ${h} が ${k} 個（期待 ${n}）`;
+  }
+  return "";
 }
 
 for (const target of Object.values(targets)) {
@@ -231,10 +306,19 @@ for (const target of Object.values(targets)) {
 
 const dest = fs.mkdtempSync(path.join(os.tmpdir(), "kurabebako-post-checks-"));
 let failed = 0;
+let skipped = 0;
 try {
   for (const c of cases) {
+    if (c.skip) {
+      skipped += 1;
+      console.log(`skip  ${c.name} — ${c.skip}`);
+      continue;
+    }
     const section = c.section || "posts";
     const target = targets[section];
+    // 前のケースの生成 HTML を読まないよう、同じ slug の出力を先に消す（Hugo は出力先を掃除しない）
+    const htmlFile = path.join(dest, section, "zz-fixture-post-checks", "index.html");
+    fs.rmSync(htmlFile, { force: true });
     fs.writeFileSync(target, c.make(fixtures[section]));
     const { ok, log } = build(dest);
     // 壊した記事を次のケース（別セクション）に持ち越さない
@@ -242,6 +326,7 @@ try {
     let reason = "";
     if (c.expect === null) {
       if (!ok) reason = "通るはずのビルドが止まった";
+      else if (c.html) reason = checkHtml(fs.existsSync(htmlFile) ? fs.readFileSync(htmlFile, "utf8") : "", c.html);
     } else if (ok) {
       reason = "止まるはずのビルドが通った";
     } else {
@@ -261,5 +346,5 @@ try {
   fs.rmSync(dest, { recursive: true, force: true });
 }
 
-console.log(`\n${cases.length - failed} / ${cases.length} passed`);
+console.log(`\n${cases.length - failed - skipped} / ${cases.length - skipped} passed${skipped ? `（${skipped} skip）` : ""}`);
 process.exit(failed ? 1 : 0);

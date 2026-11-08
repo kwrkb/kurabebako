@@ -40,12 +40,9 @@
   {{- $raw = replaceRE `(?m)[ \t]+$` "" $raw -}}
 
   {{- /* 1. front matter の必須 5 キー。Hugo は date や summary を補ってしまうので .Params では
-         「書いてあるか」を判定できない。ファイルを読み直して TOML の行そのものを見る */ -}}
-  {{- $src := replaceRE "\r" "" (os.ReadFile (printf "content/%s" $path)) -}}
-  {{- $fm := "" -}}
-  {{- with findRESubmatch `(?s)^\+\+\+\n(.*?)\n\+\+\+` $src -}}
-    {{- $fm = index (index . 0) 1 -}}
-  {{- else -}}
+         「書いてあるか」を判定できない。ファイルを読み直して TOML のトップレベルの行を見る（front_matter.html） */ -}}
+  {{- $fm := partial "front_matter.html" $path -}}
+  {{- if not $fm -}}
     {{- errorf "front matter が +++ で囲まれた TOML になっていません: %s" $path -}}
   {{- end -}}
   {{- range $key := slice "title" "date" "lastmod" "draft" "summary" -}}
@@ -167,54 +164,8 @@
     {{- end -}}
   {{- end -}}
 
-  {{- /* 5. 出典の各行に確認日があり、lastmod がその最新日より古くないこと。
-         lastmod は「記事の内容を最後に確認した日」で、出典を確認し直したのに lastmod を
-         上げ忘れると、ヘッダーの「最終確認」が本文より古い日付を読者に見せることになる */ -}}
-  {{- with findRESubmatch `(?s)\n## 出典\n(.*)\z` $raw -}}
-    {{- $seg := index (index . 0) 1 -}}
-    {{- $items := apply (findRE `(?m)^\d+\.\s.*$` $seg) "strings.TrimSpace" "." -}}
-    {{- if not $items -}}
-      {{- errorf "「出典」節に番号付きの出典がありません（`1. [ページ名](URL) — YYYY-MM-DD 確認` の形式）: %s" $path -}}
-    {{- end -}}
-    {{- /* 各行の構造（2026-11-06 の監査 F14）: 番号は 1 から連番、URL（Markdown リンク）があり、確認日は実在する日付。
-           以前は番号付きの行と行末の日付文字列しか見ていなかったので、URL の無い行・2026-02-31・表の [999] が通っていた。
-           URL の到達性と公式性は見ない（公開時の出典の取り直しで確かめる） */ -}}
-    {{- $latest := "" -}}
-    {{- range $i, $item := $items -}}
-      {{- $n := int (index (index (findRESubmatch `^(\d+)\.` $item) 0) 1) -}}
-      {{- if ne $n (add $i 1) -}}
-        {{- errorf "出典の番号が連番になっていません（%d 番目が %d.）。1 から順に振り直し、表の [n] も揃えてください: %s" (add $i 1) $n $path -}}
-      {{- end -}}
-      {{- if not (findRE `\]\(https?://[^)\s]+\)` $item) -}}
-        {{- errorf "出典の行に URL がありません（`[ページ名](URL)` の形式）: %s / 行: %s" $path (substr $item 0 40) -}}
-      {{- end -}}
-      {{- $m := findRESubmatch `— (\d{4}-\d{2}-\d{2}) 確認$` $item -}}
-      {{- if not $m -}}
-        {{- errorf "出典の行末は `— YYYY-MM-DD 確認` で終えてください: %s / 行: %s" $path (substr $item 0 40) -}}
-      {{- else -}}
-        {{- $d := index (index $m 0) 1 -}}
-        {{- with (try (time.AsTime $d)).Err -}}
-          {{- errorf "出典の確認日 %s は実在しない日付です: %s / 行: %s" $d $path (substr $item 0 40) -}}
-        {{- end -}}
-        {{- if gt $d $latest -}}{{- $latest = $d -}}{{- end -}}
-      {{- end -}}
-    {{- end -}}
-    {{- /* 本文（出典節より前）の [n] は、出典の番号の範囲に収まること。[名前](#id) のようなリンクは先に落とす */ -}}
-    {{- $body := replaceRE `\[\d+\]\([^)]*\)` "" (index (split $raw "\n## 出典\n") 0) -}}
-    {{- range findRESubmatch `\[(\d+)\]` $body -}}
-      {{- $ref := int (index . 1) -}}
-      {{- if or (lt $ref 1) (gt $ref (len $items)) -}}
-        {{- errorf "本文の出典番号 [%d] に対応する出典がありません（出典は %d 件）: %s" $ref (len $items) $path -}}
-      {{- end -}}
-    {{- end -}}
-    {{- /* ISO 形式の日付文字列は辞書順が時系列順なので、文字列のまま比べる */ -}}
-    {{- $lastmod := $.Lastmod | time.Format "2006-01-02" -}}
-    {{- if and $latest (lt $lastmod $latest) -}}
-      {{- errorf "lastmod（%s）が出典の最新の確認日（%s）より古いです。再確認した日に揃えてください: %s" $lastmod $latest $path -}}
-    {{- end -}}
-  {{- else -}}
-    {{- errorf "「出典」節が本文の末尾にありません: %s" $path -}}
-  {{- end -}}
+  {{- /* 5. 出典の節（連番・URL・実在する確認日・本文の [n] の範囲・lastmod との前後）。作例と共通の source_checks.html */ -}}
+  {{- partial "source_checks.html" (dict "raw" $raw "path" $path "lastmod" .Lastmod) -}}
 
   {{- /* 6. 書かない表現と、扱わない領域の語。本文に加えて title / summary も見る。
          ここは「人の preview でしか確かめていなかったもの」を機械に移す検査で、公開まで AI に任せる条件の 1 つ

@@ -1,0 +1,56 @@
+{{- /* 「出典」節の検査。比較記事（extend_post_content.html）と作例（example_checks.html）の両方から呼ぶ。
+       引数は dict "raw" <CR と行末の空白を落とした本文> "path" <.File.Path> "lastmod" <.Lastmod>。
+
+       検査するのは
+       - 「## 出典」節が本文の末尾にあり、番号付きの出典が 1 行以上あること
+       - 各行の構造（2026-11-06 の監査 F14）: 番号は 1 から連番、URL（Markdown リンク）があり、行末が `— YYYY-MM-DD 確認` で、
+         確認日は実在する日付。URL の到達性と公式性は見ない（公開時の出典の取り直しで確かめる）
+       - 本文（出典節より前）の [n] が出典の番号の範囲に収まること
+       - lastmod がその最新の確認日より古くないこと（lastmod は「記事の内容を最後に確認した日」で、出典を確認し直したのに
+         上げ忘れると、ヘッダーの「最終確認」が本文より古い日付を読者に見せる）
+       比較記事に F14 の 4 つを足したとき作例側に写していなかったので、`3.` 番・URL なし・2026-02-31 の出典でも作例はビルドが
+       通っていた（2026-11-09 の監査 BUG-03）。1 つの partial にして両方から呼ぶ（同 DEBT-01） */ -}}
+{{- $raw := .raw -}}
+{{- $path := .path -}}
+{{- with findRESubmatch `(?s)\n## 出典\n(.*)\z` $raw -}}
+  {{- $seg := index (index . 0) 1 -}}
+  {{- $items := apply (findRE `(?m)^\d+\.\s.*$` $seg) "strings.TrimSpace" "." -}}
+  {{- if not $items -}}
+    {{- errorf "「出典」節に番号付きの出典がありません（`1. [ページ名](URL) — YYYY-MM-DD 確認` の形式）: %s" $path -}}
+  {{- end -}}
+  {{- $latest := "" -}}
+  {{- range $i, $item := $items -}}
+    {{- $n := int (index (index (findRESubmatch `^(\d+)\.` $item) 0) 1) -}}
+    {{- if ne $n (add $i 1) -}}
+      {{- errorf "出典の番号が連番になっていません（%d 番目が %d.）。1 から順に振り直し、表の [n] も揃えてください: %s" (add $i 1) $n $path -}}
+    {{- end -}}
+    {{- if not (findRE `\]\(https?://[^)\s]+\)` $item) -}}
+      {{- errorf "出典の行に URL がありません（`[ページ名](URL)` の形式）: %s / 行: %s" $path (substr $item 0 40) -}}
+    {{- end -}}
+    {{- $m := findRESubmatch `— (\d{4}-\d{2}-\d{2}) 確認$` $item -}}
+    {{- if not $m -}}
+      {{- errorf "出典の行末は `— YYYY-MM-DD 確認` で終えてください: %s / 行: %s" $path (substr $item 0 40) -}}
+    {{- else -}}
+      {{- $d := index (index $m 0) 1 -}}
+      {{- with (try (time.AsTime $d)).Err -}}
+        {{- errorf "出典の確認日 %s は実在しない日付です: %s / 行: %s" $d $path (substr $item 0 40) -}}
+      {{- end -}}
+      {{- if gt $d $latest -}}{{- $latest = $d -}}{{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- /* 本文（出典節より前）の [n] は、出典の番号の範囲に収まること。[名前](#id) のようなリンクは先に落とす */ -}}
+  {{- $body := replaceRE `\[\d+\]\([^)]*\)` "" (index (split $raw "\n## 出典\n") 0) -}}
+  {{- range findRESubmatch `\[(\d+)\]` $body -}}
+    {{- $ref := int (index . 1) -}}
+    {{- if or (lt $ref 1) (gt $ref (len $items)) -}}
+      {{- errorf "本文の出典番号 [%d] に対応する出典がありません（出典は %d 件）: %s" $ref (len $items) $path -}}
+    {{- end -}}
+  {{- end -}}
+  {{- /* ISO 形式の日付文字列は辞書順が時系列順なので、文字列のまま比べる */ -}}
+  {{- $lastmod := $.lastmod | time.Format "2006-01-02" -}}
+  {{- if and $latest (lt $lastmod $latest) -}}
+    {{- errorf "lastmod（%s）が出典の最新の確認日（%s）より古いです。再確認した日に揃えてください: %s" $lastmod $latest $path -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "「出典」節が本文の末尾にありません: %s" $path -}}
+{{- end -}}

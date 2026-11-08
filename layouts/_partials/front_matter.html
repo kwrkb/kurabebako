@@ -1,0 +1,14 @@
+{{- /* 記事のファイル（content/<path>）を読み直し、front matter（先頭の +++ … +++ の TOML）のうちトップレベルの行だけを返す。
+       引数は .File.Path か "posts/<slug>.md" の形のパス。front matter が無ければ "" を返し、呼び出し側が止める。
+
+       ファイルを読み直す理由: Hugo は date や summary を補ってしまうので .Params では「書いてあるか」を判定できない。
+       Hugo と同じく front matter だけを見る（全文に掛けると本文のコード例の `draft = true` で公開記事を draft と読み違える。
+       2026-11-06 の監査 F01）。最初のテーブル見出し（`[params]` など）以降は切り落とす。その下の `draft = true` は TOML では
+       params.draft で、Hugo はトップレベルの draft 無し＝公開として生成するのに、site_checks と必須キーの検査はこれを draft と
+       読んでいた（2026-11-09 の監査 BUG-02）。push ゲートの tests/gate-lib.js の frontMatter と同じ規則にしてある。
+       比較記事・作例・サイト全体の検査が別々の正規表現で読んでいた状態（同 DEBT-01）をここ 1 か所に寄せる */ -}}
+{{- $src := replaceRE "\r" "" (os.ReadFile (printf "content/%s" .)) -}}
+{{- $fm := "" -}}
+{{- with findRESubmatch `(?s)^\+\+\+\n(.*?)\n\+\+\+` $src -}}{{- $fm = index (index . 0) 1 -}}{{- end -}}
+{{- $fm = replaceRE `(?s)(?:^|\n)[ \t]*\[.*\z` "" $fm -}}
+{{- return $fm -}}

@@ -1,18 +1,17 @@
-{{- /* 作例（content/examples/ の単ページ）の型の検査。extend_post_content.html から .Type == "examples" のときだけ呼ばれる。
+{{- /* 作例（content/examples/ の単ページ）の型の検査。extend_post_content.html から .Section が "examples" のときだけ呼ばれる
+       （.Type は front matter で上書きできるので使わない。2026-11-06 の監査 F12）。
        型の正典は CLAUDE.md の「作例の型」と archetypes/examples.md、書き方は desk の reviews/2026-10-18-examples-style.md。
        比較記事の検査（extend_post_content.html の posts の節）とは意図的に分けてある。作例は判断の理由に主観を入れてよく、
        見出しの構成も違う。共通化すると比較記事側の検査を触ることになり、回帰の範囲が広がる（2026-10-23）。
-       比較記事と同じく、Windows の CRLF と行末の空白を先に落としてから正規表現を掛ける */ -}}
+       ただし「型に依らない」部分（front matter の読み方・出典の節）は partial を共有する。片側だけ直して食い違った経緯が
+       2026-11-09 の監査 BUG-03 / DEBT-01。比較記事と同じく、Windows の CRLF と行末の空白を先に落としてから正規表現を掛ける */ -}}
 {{- $path := .File.Path -}}
 {{- $raw := replaceRE "\r" "" .RawContent -}}
 {{- $raw = replaceRE `(?m)[ \t]+$` "" $raw -}}
 
-{{- /* 1. front matter の必須 5 キー。比較記事と同じ理由でファイルを読み直して TOML の行を見る */ -}}
-{{- $src := replaceRE "\r" "" (os.ReadFile (printf "content/%s" $path)) -}}
-{{- $fm := "" -}}
-{{- with findRESubmatch `(?s)^\+\+\+\n(.*?)\n\+\+\+` $src -}}
-  {{- $fm = index (index . 0) 1 -}}
-{{- else -}}
+{{- /* 1. front matter の必須 5 キー。比較記事と同じ理由でファイルを読み直して TOML のトップレベルの行を見る（front_matter.html） */ -}}
+{{- $fm := partial "front_matter.html" $path -}}
+{{- if not $fm -}}
   {{- errorf "front matter が +++ で囲まれた TOML になっていません: %s" $path -}}
 {{- end -}}
 {{- range $key := slice "title" "date" "lastmod" "draft" "summary" -}}
@@ -75,30 +74,8 @@
   {{- errorf "モデルの版が書かれています（%s）。作例では製品名（Claude / Codex）までにし、版は書きません: %s" (delimit . " / ") $path -}}
 {{- end -}}
 
-{{- /* 6. 出典の各行に確認日があり、lastmod がその最新日より古くないこと（比較記事と同じ） */ -}}
-{{- with findRESubmatch `(?s)\n## 出典\n(.*)\z` $raw -}}
-  {{- $seg := index (index . 0) 1 -}}
-  {{- $items := apply (findRE `(?m)^\d+\.\s.*$` $seg) "strings.TrimSpace" "." -}}
-  {{- if not $items -}}
-    {{- errorf "「出典」節に番号付きの出典がありません（`1. [ページ名](URL) — YYYY-MM-DD 確認` の形式）: %s" $path -}}
-  {{- end -}}
-  {{- $latest := "" -}}
-  {{- range $item := $items -}}
-    {{- $m := findRESubmatch `— (\d{4}-\d{2}-\d{2}) 確認$` $item -}}
-    {{- if not $m -}}
-      {{- errorf "出典の行末は `— YYYY-MM-DD 確認` で終えてください: %s / 行: %s" $path (substr $item 0 40) -}}
-    {{- else -}}
-      {{- $d := index (index $m 0) 1 -}}
-      {{- if gt $d $latest -}}{{- $latest = $d -}}{{- end -}}
-    {{- end -}}
-  {{- end -}}
-  {{- $lastmod := $.Lastmod | time.Format "2006-01-02" -}}
-  {{- if and $latest (lt $lastmod $latest) -}}
-    {{- errorf "lastmod（%s）が出典の最新の確認日（%s）より古いです。再確認した日に揃えてください: %s" $lastmod $latest $path -}}
-  {{- end -}}
-{{- else -}}
-  {{- errorf "「出典」節が本文の末尾にありません: %s" $path -}}
-{{- end -}}
+{{- /* 6. 出典の節（連番・URL・実在する確認日・本文の [n] の範囲・lastmod との前後）。比較記事と共通の source_checks.html */ -}}
+{{- partial "source_checks.html" (dict "raw" $raw "path" $path "lastmod" .Lastmod) -}}
 
 {{- /* 7. 扱わない領域の語（VISION.md「やらないこと」。辞書は比較記事の検査と同じ）。
        体験・主観の表現の検査は掛けない: 作例は判断の理由に限って「私」「Claude」を主語にした主観を入れてよい（10-18 決定） */ -}}
