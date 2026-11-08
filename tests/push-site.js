@@ -296,10 +296,11 @@ const publishing = changedAll.filter((file) => {
 });
 // posts / examples 以外のページ（content/ 直下の固定ページ・新しいセクション）の公開も数える。条件は上と同じ
 // 「HEAD で公開、origin/main では無いか draft」（新設だけでなく draft を倒す公開も含む）。既存の公開ページの修正と、
-// タクソノミ（tags / categories）の _index、origin/main に既にある _index は通す（freshness / expiry-apply の routine が
-// 自律で push する範囲）。新しいセクションの _index は一覧ページの新設なので止める。
+// タクソノミ（tags / categories）の _index は通す（表示名を与えるだけのページで、段階 2 の公開コミットに同梱する）。
+// それ以外の _index（新しいセクションの一覧ページ）は他のページと同じ条件で見る。既存の公開ページの修正は
+// 「前後とも公開」なので条件に当たらず通る。
 // 以前は posts / examples だけを見ていたので、固定ページの新設は段階 1 で機械に止まらなかった（2026-11-09 の監査 BUG-04）
-const exemptIndex = (f) => isIndex(f) && (/^content\/(tags|categories)\//.test(f) || isPublished("origin/main", f) !== null);
+const exemptIndex = (f) => isIndex(f) && /^content\/(tags|categories)\//.test(f);
 const newPages = changedAll.filter((f) => /^content\//.test(f) && CONTENT_EXT.test(f) && !/^content\/(posts|examples)\//.test(f) && !exemptIndex(f) && isPublished("HEAD", f) === true && isPublished("origin/main", f) !== true);
 if (newPages.length) stop(`新しいページの公開が含まれています: ${newPages.join(", ")}\n固定ページの新設はユーザーが preview を確認してから git push origin main で行います`);
 let shots = [];
