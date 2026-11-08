@@ -114,10 +114,14 @@ function serve() {
   return new Promise((resolve) => server.listen(0, "127.0.0.1", () => resolve(server)));
 }
 
+// ブラウザを起動し、DevTools のポートが出るまで待つ。起動に失敗したときは子プロセスを自分で止める。
+// 以前は期限切れで reject するだけだったので、呼び出し側の finally（child を受け取る前）に届かず、ヘッドレスの Chrome と
+// プロファイルが残っていた（2026-11-09 の監査 ERR-02、前回 F19）
 function launch(exe, profile) {
   const child = spawn(exe, ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "--disable-gpu", "--hide-scrollbars", "about:blank"], { stdio: ["ignore", "ignore", "pipe"] });
   return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => reject(new Error("ブラウザが 20 秒以内に起動しませんでした")), 20000);
+    const fail = (message) => { clearTimeout(timer); try { child.kill(); } catch {} reject(new Error(message)); };
+    const timer = setTimeout(() => fail("ブラウザが 20 秒以内に起動しませんでした（止めました）"), 20000);
     let buf = "";
     child.stderr.on("data", (d) => {
       buf += d;
@@ -127,7 +131,8 @@ function launch(exe, profile) {
         resolve({ child, port: new URL(m[1]).port });
       }
     });
-    child.on("exit", () => reject(new Error(`ブラウザが起動直後に終了しました:\n${buf}`)));
+    child.on("error", (e) => fail(`ブラウザを起動できません: ${e.message}`));
+    child.on("exit", () => fail(`ブラウザが起動直後に終了しました:\n${buf}`));
   });
 }
 
@@ -176,9 +181,11 @@ function connect(wsUrl, allowedOrigin) {
     for (const p of pending.values()) { clearTimeout(p.timer); p.reject(new Error("DevTools との接続が切れました")); }
     pending.clear();
   };
+  // 接続の確立にも期限を置く（応答待ちの 30 秒と同じ理由。2026-11-09 の監査 ERR-01）
   return new Promise((resolve, reject) => {
-    ws.onopen = () => resolve({ send, once, close: () => ws.close() });
-    ws.onerror = () => reject(new Error("DevTools に接続できません"));
+    const timer = setTimeout(() => { try { ws.close(); } catch {} reject(new Error("DevTools に 10 秒以内に接続できません")); }, 10000);
+    ws.onopen = () => { clearTimeout(timer); resolve({ send, once, close: () => ws.close() }); };
+    ws.onerror = () => { clearTimeout(timer); reject(new Error("DevTools に接続できません")); };
   });
 }
 
@@ -270,7 +277,11 @@ async function captureArticle(cdp, origin, slug) {
       }
     }
   }
-  fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
+  // 一時ファイルに書いてから rename する。途中で落ちて中途半端な manifest が残ると、公開ゲート（checkVisual）が
+  // 壊れた記録を読むことになる（2026-11-09 の監査 ERR-03）
+  const tmp = path.join(dir, "manifest.json.tmp");
+  fs.writeFileSync(tmp, JSON.stringify(manifest, null, 2) + "\n");
+  fs.renameSync(tmp, path.join(dir, "manifest.json"));
   console.log(`ok  撮影 ${page} → ${path.relative(root, dir)}/（${manifest.images.length} 枚。読んで判定するのは呼び出し側）`);
 }
 
@@ -287,7 +298,7 @@ async function main() {
   try {
     const launched = await launch(exe, profile);
     child = launched.child;
-    const target = await (await fetch(`http://127.0.0.1:${launched.port}/json/new?about:blank`, { method: "PUT" })).json();
+    const target = await (await fetch(`http://127.0.0.1:${launched.port}/json/new?about:blank`, { method: "PUT", signal: AbortSignal.timeout(10000) })).json();
     const cdp = await connect(target.webSocketDebuggerUrl, origin);
     await cdp.send("Page.enable");
     await cdp.send("Network.enable");
