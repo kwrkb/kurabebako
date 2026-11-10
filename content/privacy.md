@@ -16,6 +16,8 @@ ShowBreadCrumbs = false
 
 変更日: 2026-10-19（「アフィリエイトプログラム」の一覧に Icedrive を追加しました）
 
+変更日: 2026-11-11（「アクセス解析」の項に、URL に `?ga=off` を付けて Google Analytics 4 への送信を止める方法を追記しました）
+
 ## 運営者
 
 kwrkb（[kwrkb.com](https://kwrkb.com/)）。連絡先は [お問い合わせ](/contact/) に記載しています。
@@ -45,6 +47,7 @@ Cloudflare は、この計測に Cookie や localStorage を使わず、IP ア�
 Google Analytics 4 は訪問者を区別するためにファーストパーティ Cookie（`_ga` など）を使います（[Google Analytics の Cookie の使用](https://support.google.com/analytics/answer/11397207?hl=ja)）。
 収集されたデータは Google のプライバシーポリシーに基づいて管理されます。データの扱いは [Google のサービスを使用するサイトやアプリから収集した情報の Google による使用](https://policies.google.com/technologies/partner-sites?hl=ja) で確認できます。
 計測を止めたい場合は、Google が提供する [Google アナリティクス オプトアウト アドオン](https://tools.google.com/dlpage/gaoptout?hl=ja) を使うか、ブラウザの設定で Cookie を無効にしてください。
+当サイトの URL の末尾に `?ga=off` を付けて開くと、そのブラウザからは以後 Google Analytics 4 にデータを送りません。この設定はブラウザの localStorage に保存され、`?ga=on` を付けて開くと元に戻ります。
 
 ほかの解析ツールを導入した場合は、ツール名と取得する情報をこのページに追記します。
 

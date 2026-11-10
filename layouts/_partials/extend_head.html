@@ -10,7 +10,22 @@
        params.env = 'production' のためタグはどの環境でも出るが、テーマはこの partial を GA の
        snippet より前に呼ぶ（head.html の末尾）ので、gtag が読む opt-out フラグをここで立てれば
        送信だけが止まる。GA4 側の内部トラフィック除外は IP でしか定義できず、ホスト名では除けない。
-       測定 ID は hugo.toml の services.googleAnalytics.id から取り、2 か所に書かない */ -}}
+       測定 ID は hugo.toml の services.googleAnalytics.id から取り、2 か所に書かない。
+
+       本番ドメインでも、運営者と AI のブラウザからは送らない（2026-11-11）。案件リンクのクリックは月に数件の桁で、
+       公開後の確認で開いた分が混ざると判定が変わるため。IP での除外は回線が変わると漏れ、有効にしたフィルタで
+       落ちたデータは戻せないので、ブラウザごとの印にした: `?ga=off` を付けて 1 回開くと localStorage に残り、
+       以後そのブラウザでは止まる（`?ga=on` で戻る）。`?ga=off` の回は保存に失敗しても止める（localStorage を
+       拒むブラウザで例外にしない）。読者にも同じ手段を privacy.md で案内している */ -}}
 {{- with site.Config.Services.GoogleAnalytics.ID -}}
-<script>if (location.hostname !== 'kurabebako.com') { window['ga-disable-{{ . }}'] = true; }</script>
+<script>(function () {
+  var off = false;
+  try {
+    var q = new URLSearchParams(location.search).get('ga');
+    if (q === 'off') { off = true; localStorage.setItem('kb-ga-off', '1'); }
+    if (q === 'on') { localStorage.removeItem('kb-ga-off'); }
+    if (localStorage.getItem('kb-ga-off') === '1') { off = true; }
+  } catch (e) {}
+  if (off || location.hostname !== 'kurabebako.com') { window['ga-disable-{{ . }}'] = true; }
+})();</script>
 {{- end -}}
