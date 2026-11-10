@@ -238,7 +238,6 @@ url = 'https://px.a8.net/svt/ejp?a8mat=4BGAV1+GI6O1U+348+1BNBJM'
 pixel = 'https://www10.a8.net/0.gif?a8mat=4BGAV1+GI6O1U+348+1BNBJM'
 text = 'ムームードメイン'
 program = 'A8.net s00000000404008（素材 003 テキスト。文言固定）'
-# 2026-10-24 14:09 から新規ユーザー登録と一部 TLD の新規申込みが停止（公式のお知らせ、再開未定。ロリポップと同じ GMO ペパボの停止）。
-# 記事 domain-registrar の cta は停止中は注意書きになる。再開を確認したら paused と paused_url を消し、記事の「主な制約」セルと詳細も直す
-paused = '2026-10-24 14:09 から新規ユーザー登録と一部ドメインの新規申込みの受付を一時停止しています（再開は未定）'
-paused_url = 'https://muumuu-domain.com/?mode=info&id=5944'
+# 2026-10-24 14:09 から止まっていた新規ユーザー登録と一部 TLD の新規取得は 2026-11-05 に再開した（公式のお知らせ
+# https://muumuu-domain.com/information/news/5944 を 2026-11-10 に確認）。paused は外してある。ムームーメール・ムームーサーバーの
+# 新規申込みは停止が続くが、この案件のリンク先はドメインの取得なので注意書きにしない。また止まったら paused / paused_url を戻す
