@@ -10,7 +10,7 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs } = require("./gate-lib.js");
+const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs, indexingProblems } = require("./gate-lib.js");
 
 const FM = (body) => `+++\n${body}\n+++\n`;
 const published = FM("title = 'A'\ndraft = false\nsummary = 'S'");
@@ -122,5 +122,40 @@ test("brokenInternalRefs: パスの欠落・フラグメントの欠落・img �
     "/posts/a/index.html → /posts/none/",
     "/posts/a/index.html → /images/og/none.jpg",
     "/posts/a/index.html → /posts/a/#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB-b（id が無い）",
+  ]);
+});
+
+test("indexingProblems: noindex は 1 本だけのタグ・カテゴリに限り、sitemap と食い違わない", () => {
+  const site = "https://kurabebako.com";
+  const index = '<meta name=robots content="index, follow">';
+  const thin = index + '<meta name=robots content="noindex, follow">';
+  const loc = (...urls) => urls.map((u) => `<url><loc>${site}${u}</loc></url>`).join("");
+  const pages = {
+    "/index.html": index,
+    "/posts/a/index.html": index,
+    "/tags/index.html": index,
+    "/tags/multi/index.html": index,
+    "/tags/thin/index.html": thin,
+    "/categories/thin/index.html": '<meta name="robots" content="noindex, follow">',
+    "/tags/thin/page/1/index.html": "<meta http-equiv=refresh>",
+    "/page/2/index.html": index,
+    "/404.html": index,
+  };
+  assert.deepEqual(indexingProblems(pages, loc("/", "/posts/a/", "/tags/", "/tags/multi/"), site), []);
+  // 記事に noindex が付いた（sitemap には残っている）
+  assert.deepEqual(indexingProblems({ ...pages, "/posts/a/index.html": thin }, loc("/", "/posts/a/", "/tags/", "/tags/multi/"), site), [
+    "/posts/a/index.html: noindex が付いています（付けてよいのは記事が 1 本だけのタグ・カテゴリのページだけ）",
+    "/posts/a/: noindex のページが sitemap.xml にあります",
+  ]);
+  // noindex のタグが sitemap に残った・記事が sitemap から落ちた
+  assert.deepEqual(indexingProblems(pages, loc("/", "/tags/", "/tags/multi/", "/tags/thin/"), site), [
+    "/posts/a/: sitemap.xml にありません",
+    "/tags/thin/: noindex のページが sitemap.xml にあります",
+  ]);
+  // タグの一覧・ページ送り・404 に noindex が付いたら止める（sitemap との突き合わせは index.html の形だけ）
+  assert.deepEqual(indexingProblems({ "/tags/index.html": thin, "/404.html": thin, "/tags/thin/page/1/index.html": thin }, "", site), [
+    "/tags/index.html: noindex が付いています（付けてよいのは記事が 1 本だけのタグ・カテゴリのページだけ）",
+    "/404.html: noindex が付いています（付けてよいのは記事が 1 本だけのタグ・カテゴリのページだけ）",
+    "/tags/thin/page/1/index.html: noindex が付いています（付けてよいのは記事が 1 本だけのタグ・カテゴリのページだけ）",
   ]);
 });

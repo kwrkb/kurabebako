@@ -154,4 +154,26 @@ function brokenInternalRefs(pages, files, site = "") {
   return [...new Set(broken)];
 }
 
-module.exports = { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs };
+// noindex と sitemap の食い違いの検査。pages は brokenInternalRefs と同じ形、sitemapXml は public/sitemap.xml の中身。
+// 記事が 1 本だけのタグ・カテゴリのページは noindex にして sitemap から外している（layouts/_partials/thin_term.html、2026-11-11）。
+// 判定の書き損じやテーマ更新で noindex が記事に付いても、sitemap から記事が落ちても、ビルドは通り、検索から消えるまで気づけない。
+// 止めるのは 3 つ: noindex がタグ・カテゴリの個別ページ以外に付いている ／ noindex のページが sitemap にある ／
+// noindex でないページが sitemap に無い。sitemap と突き合わせるのは index.html の形のページだけで、404.html と
+// ページ送り（/page/N/。1 ページ目は転送だけの HTML）は Hugo が sitemap に載せないので見ない。戻り値は問題の配列（空なら問題なし）
+function indexingProblems(pages, sitemapXml, site = "") {
+  const locs = new Set([...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => (site && m[1].startsWith(site) ? m[1].slice(site.length) || "/" : m[1])));
+  const problems = [];
+  for (const [file, html] of Object.entries(pages)) {
+    const noindex = /<meta\s+name=["']?robots["']?\s+content=["']?[^"'>]*noindex/i.test(html);
+    if (noindex && !/^\/(tags|categories)\/[^/]+\/index\.html$/.test(file)) {
+      problems.push(`${file}: noindex が付いています（付けてよいのは記事が 1 本だけのタグ・カテゴリのページだけ）`);
+    }
+    if (!file.endsWith("/index.html") || /\/page\/\d+\/index\.html$/.test(file)) continue;
+    const url = file.slice(0, -"index.html".length);
+    if (noindex && locs.has(url)) problems.push(`${url}: noindex のページが sitemap.xml にあります`);
+    if (!noindex && !locs.has(url)) problems.push(`${url}: sitemap.xml にありません`);
+  }
+  return problems;
+}
+
+module.exports = { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs, indexingProblems };

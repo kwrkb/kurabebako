@@ -65,7 +65,7 @@ main へ push
 | 本番へ push | `npm run push:site`（ゲート → push → デプロイの確認。`-- --dry-run` でゲートだけ） |
 | ゲートの判定関数の単体テスト | `npm run test:gate`（`tests/gate-lib.js` を触ったら。Git にも本番にも触らない） |
 | 型検査の回帰テスト | `npm run test:checks`（`layouts/_partials/` の検査（`extend_post_content.html` / `example_checks.html` / `source_checks.html` / `front_matter.html` / `site_checks.html`）か shortcode を触ったら必ず回す） |
-| 内部参照の検査 | `npm run test:links`（`npm run build` の後に。生成物の同一 origin の a / link / img / script / source と `#id` の先があるか） |
+| 内部参照の検査 | `npm run test:links`（`npm run build` の後に。生成物の同一 origin の a / link / img / script / source と `#id` の先があるか。あわせて、noindex が記事が 1 本だけのタグ・カテゴリ以外に付いていないか・それ以外のページが sitemap にあるか） |
 | 表示の崩れの検査 | `npm run test:layout`（`npm run build` の後に。全記事を 4 つの幅でヘッドレスの Chrome / Edge に開き、横はみ出しを見る。`layouts/` と CSS を触ったら必ず回す） |
 | 公開の副作用が無い検査を全部 | `npm run check`（上の 4 つとビルドを順に。人が `git push origin main` で出す前に回す。`git config core.hooksPath tests/hooks` で pre-push フックにもできる） |
 | Workers配信の再現 | `npm run preview` |
@@ -155,6 +155,9 @@ linter は無い。テストは上の表の 4 つ（ゲートの単体テスト�
 
   これで URL は `/tags/ai-tools/`、リンクの表示は「AIツール」になる。
   記事側の front matter には英語のスラッグ（`tags = ['ai-tools']`）を書く
+- **記事が 1 本だけのタグ・カテゴリのページは noindex になり、sitemap に出ない**（2026-11-11。中身が記事 1 件へのリンクだけのため）。
+  ビルド時に本数で決まり（`layouts/_partials/thin_term.html`）、2 本目の記事が付くと自動で戻る。front matter には何も書かない。
+  タグは「同じ対象を扱う記事がほかにもある・これから書く」ものを優先し、記事ごとに新しいタグを増やすことを目的にしない
 - **`date` を未来日時にしない。** Hugo は既定で未来日付の記事をビルド対象から外すため、
   エラーも警告も出ないまま記事がサイトから消える。draft でない記事が未来日付でビルド対象から
   外れていると、本番ビルドが止まる（`layouts/_partials/site_checks.html`）。予約投稿はこの構成では
@@ -165,6 +168,8 @@ linter は無い。テストは上の表の 4 つ（ゲートの単体テスト�
 `build.sh` の `HUGO_VERSION` とローカルの `hugo version` は常に一致させる。版を上げるときは `HUGO_SHA256`
 （Linux 用 extended tarball の SHA-256。GitHub Releases の `hugo_<版>_checksums.txt` の値を、取得した tarball の `sha256sum` でも
 確かめてから書く）も対で更新する。合わないと Cloudflare のビルドが展開前に止まる。
+`layouts/sitemap.xml` は Hugo の組み込みテンプレートの写しに条件を 1 つ足したものなので、版を上げるときは
+組み込み側（`tpl/tplimpl/embedded/templates/sitemap.xml`）の変更を写す。
 `go.mod` の `go` ディレクティブは Cloudflare のイメージ既定 Go（1.24.3）以下に保つ。
 `hugo mod get` がローカルの Go 版に書き戻すことがあるため、モジュール更新後は `go.mod` を確認する。
 

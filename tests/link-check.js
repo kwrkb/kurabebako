@@ -7,12 +7,15 @@
 // 見るのは a / link の href と img / script / source の src のうち同一 origin のもので、パスの先が無い・
 // アンカー（#id）の先に id が無いものを止める。判定は tests/gate-lib.js の brokenInternalRefs（単体テストあり）。
 // push:site も collect() を require して同じ一覧を渡す（2026-11-09 の監査 TEST-02 / CI-01）。
+//
+// あわせて noindex と sitemap の食い違いを見る（2026-11-11。記事が 1 本だけのタグ・カテゴリを noindex にしたので、
+// それが記事に付いていないこと・記事が sitemap から落ちていないことを確かめる。判定は gate-lib の indexingProblems）。
 //------------------------------------------------------------------------------
 "use strict";
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { brokenInternalRefs } = require("./gate-lib.js");
+const { brokenInternalRefs, indexingProblems } = require("./gate-lib.js");
 
 const SITE = "https://kurabebako.com";
 
@@ -46,6 +49,14 @@ if (require.main === module) {
     process.exit(1);
   }
   console.log(`ok  ${Object.keys(pages).length} ページの同一 origin の内部参照（a / link / img / script / source。#id を含む）は揃っています`);
+
+  // noindex と sitemap の食い違い（記事に noindex が付く・記事が sitemap から落ちる）。判定は gate-lib の indexingProblems
+  const indexing = indexingProblems(pages, fs.readFileSync(path.join(pub, "sitemap.xml"), "utf8"), SITE);
+  if (indexing.length) {
+    console.error(`NG  noindex と sitemap が食い違っています（${indexing.length} 件）:\n  ${indexing.slice(0, 50).join("\n  ")}`);
+    process.exit(1);
+  }
+  console.log("ok  noindex は記事が 1 本だけのタグ・カテゴリのページだけで、それ以外のページは sitemap にあります");
 }
 
 module.exports = { collect };

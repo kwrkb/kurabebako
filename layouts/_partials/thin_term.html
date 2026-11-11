@@ -1,0 +1,10 @@
+{{- /* 記事が 1 本だけのタグ・カテゴリのページか（true / false を返す）。
+
+       そういうページは中身が記事 1 件へのリンクだけで、検索の着地先としては記事そのものに劣る。
+       noindex にし（extend_head.html）、sitemap からも外す（layouts/sitemap.xml）。判定をここ 1 か所に置くのは、
+       2 つの出力が食い違うと「sitemap に載せた URL が noindex」になるため。
+
+       front matter に印を手で付けず、ビルド時に本数で決める。記事が 2 本になったタグは次のビルドで自動的に戻る。
+       本番ビルドは draft を数えないので、公開済みの記事の本数で決まる。
+       一覧の /tags/ と /categories/（kind は taxonomy）は対象にしない */ -}}
+{{- return (and (eq .Kind "term") (lt (len .Pages) 2)) -}}

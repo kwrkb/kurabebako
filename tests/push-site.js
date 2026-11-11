@@ -112,7 +112,7 @@ function step(name) {
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 
 // 判定の純粋関数は tests/gate-lib.js（tests/gate-checks.js で公開ゼロのまま試す）。ここは Git / fs に触る側だけ
-const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs } = require("./gate-lib.js");
+const { frontMatter, isPublishedText, parseBlock, parseAffiliates, isDisplayPath, diffBodyLines, manifestError, brokenInternalRefs, indexingProblems } = require("./gate-lib.js");
 
 // draft でない記事として本番に出る内容かどうか（front matter の draft だけを見る）。ファイルが無ければ null
 function isPublished(rev, file) {
@@ -359,6 +359,10 @@ if (broken.length) {
   stop(`内部参照の先がありません（draft の記事へのリンク・無い id へのアンカーが混ざっていないか）:\n${list}`);
 }
 console.log(`ok  生成物の同一 origin の内部参照（a / link / img / script / source。#id を含む）は ${Object.keys(builtPages).length} ページとも揃っています`);
+// noindex は記事が 1 本だけのタグ・カテゴリだけ（layouts/_partials/thin_term.html）。記事に付く・記事が sitemap から落ちる、を止める
+const indexing = indexingProblems(builtPages, fs.readFileSync(path.join(pub, "sitemap.xml"), "utf8"), SITE);
+if (indexing.length) stop(`noindex と sitemap が食い違っています:\n${indexing.slice(0, 20).map((b) => `  ${b}`).join("\n")}`);
+console.log("ok  noindex は記事が 1 本だけのタグ・カテゴリのページだけで、それ以外のページは sitemap にあります");
 
 step("表示の崩れ（主要な幅での横はみ出し）");
 const layoutArgs = ["tests/layout-check.js", "public"];

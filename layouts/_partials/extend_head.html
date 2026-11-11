@@ -6,6 +6,16 @@
 {{- if .IsHome -}}
   {{- partial "site_checks.html" . -}}
 {{- end -}}
+{{- /* 記事が 1 本だけのタグ・カテゴリのページを検索に載せない（2026-11-11。判定は thin_term.html、sitemap からも外す）。
+       テーマの head.html は先頭で `index, follow` を出していて、止めるには 190 行の head.html を丸ごと上書きするか、
+       ページごとの front matter（robotsNoIndex）に手で書くしかない。ここで 2 つ目の meta を足す。
+       食い違う robots の指定が並んだとき、Google は厳しい方を採る（Robots meta tag の仕様の「Conflicting robots rules」。
+       https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag 、2026-11-11 確認）。
+       Bing の公式（Robots meta tags and attributes that Bing supports）には食い違いの扱いが書かれておらず、未確認。
+       follow のままにするのは、このページから記事へのリンクを辿れるようにするため */ -}}
+{{- if partial "thin_term.html" . }}
+<meta name="robots" content="noindex, follow">
+{{- end -}}
 {{- /* GA4 を本番ドメイン以外（`npm run dev` / `npm run preview` の localhost）から送らない。
        params.env = 'production' のためタグはどの環境でも出るが、テーマはこの partial を GA の
        snippet より前に呼ぶ（head.html の末尾）ので、gtag が読む opt-out フラグをここで立てれば
