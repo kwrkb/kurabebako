@@ -60,6 +60,6 @@
     <text x="580" y="436" font-weight="600">Semrush / Ahrefs</text>
     <text x="580" y="458" font-size="12">MCP と API は有料プランの機能</text>
     <text x="380" y="551" font-weight="600">Google 広告のアカウントと支払い情報が既にあるなら Google キーワードプランナー</text>
-    <text x="380" y="571" font-size="12">API で本番のデータを取るには、Google Ads API の Basic 以上のアクセスレベルが要る</text>
+    <text x="380" y="571" font-size="12">API でキーワードの計画のサービスを使うには、Google Ads API の Basic 以上が要る</text>
   </g>
 </svg>

@@ -37,7 +37,7 @@ tags = ['keyword-research', 'dataforseo', 'seodata-dev', 'rakko-keyword', 'semru
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
-| [seodata.dev](#seodatadev) | 無料。Unlimited は USD 4.99/月（回数の上限なし） | アカウントなしで 1 日 20 回。無料アカウントは 1 日 50 回・月 500 回 | 1 回 = 1 か国の 1 語（一括は 25 語まで）。返すのは検索数・CPC・競合性・類似語。運営元の会社名が規約に無い | アカウントなしで REST とリモート MCP が動く。無料アカウントはメールと 6 桁のコードで、カード不要 | {{< verified run >}} | [8][9][10][11] |
+| [seodata.dev](#seodatadev) | 無料。Unlimited は USD 4.99/月（回数の上限なし。DB に無い語の取得は 1 日の上限あり） | アカウントなしで 1 日 20 回。無料アカウントは 1 日 50 回・月 500 回 | 1 回 = 1 か国の 1 語（一括は 25 語まで）。返すのは検索数・CPC・競合性・類似語。運営元の会社名が規約に無い | アカウントなしで REST とリモート MCP が動く。無料アカウントはメールと 6 桁のコードで、カード不要 | {{< verified run >}} | [8][9][10][11] |
 | [DataForSEO](#dataforseo) | 従量。Google Ads の検索数は 1 task（1,000 語まで）あたり Live USD 0.09 / Standard USD 0.06。最低入金 USD 50 | 登録時に USD 1 の試用クレジット（一回きり・期限なし） | 課金は語数ではなく task 単位。Live は 12 リクエスト/分。MCP の既定の応答には消費額が出ない | アカウントと電話番号（SMS）の確認。カード不要。MCP はリモートとローカル（npx）の 2 経路 | {{< verified run >}} | [1][2][3][4][5][6][7] |
 | [ラッコキーワード](#ラッコキーワード) | 月払いでエントリー 1,320 円 / ライト 1,980 円 / スタンダード 4,950 円 | フリーは週 50 クレジット（月曜 0 時に戻る） | フリーは月間検索数が見えない。MCP はエントリー以上で、AI 経由の消費は 10 倍 / 5 倍 / 1.5 倍。API はスタンダードのみ | アカウントのみ。おためし期間は無く、途中解約の返金も無い | {{< verified run >}} | [12][13] |
 | [Semrush](#semrush) | SEO USD 139/月から | Free は 1 日 10 レポート（カード不要） | MCP は有料の対象プランだけで、Free では使えない。API は Advanced の API units package | アカウントのみ。有料プランには 7 日間のトライアル | {{< verified spec >}} | [14][15] |
@@ -67,7 +67,7 @@ Ahrefs Lite: 19900
 - この記事はサービスの仕様と料金の比較です。検索順位や流入が増えるかどうかは扱いません
 - 検証の手順: 2026-11-10 に、seodata.dev・DataForSEO・ラッコキーワードの 3 つで行いました。
   (1) API の認証情報を非対話で渡し、残高や残り回数を記録する (2) 日本・日本語の指定で、同じ 10 語の月間検索数を取る (3) 公式の MCP サーバーにつなぎ、同じ語を MCP 経由で取る (4) 残高や残り回数を再確認する、の 4 つです。
-  10 語は、この記事を配信しているサイトが扱う分野の語（`vps`・`レンタルサーバー` など）に限りました。ラッコキーワードは、ログイン済みのフリーの画面で (2) だけを行っています
+  10 語は、この記事を配信しているサイトが扱う分野の語（`vps`・`レンタルサーバー` など）に限りました。ラッコキーワードは (1)〜(4) の対象外で、ログイン済みのフリーの画面でサジェストの語の一覧を取るところまでを行いました（フリーでは月間検索数が見えません）
 - 検索結果のページそのものを取得する手段は、[スクレイピング API 5 つの無料枠比較](/posts/scraping-api-free-tier/)で比べています。
   API の認証情報を AI エージェントに渡す手段は、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で比べていて、この記事の検証でもそこで扱った `op run` を使いました
 
@@ -134,7 +134,7 @@ AI エージェントから呼ぶ前提で作られた、月間検索数のデ�
   `api_request` は既定で AI 向けの経路（`.ai`）を呼び、通常の経路に戻すには `noAiMode` を指定します [7]。検証では、既定の応答に `cost` と残高が含まれませんでした
 - **前提条件**: 登録画面は Personal email と Business email の 2 択で、Personal は電話番号の確認が入ります。認証は API 用の login と password による Basic 認証です。
   MCP は、リモートの `https://mcp.dataforseo.com/v3/mcp`（既定は OAuth 2.0 で、Basic 認証のヘッダーも使える）と、`npx dataforseo-mcp-server` をローカルで起動する方式（環境変数 `DATAFORSEO_LOGIN` と `DATAFORSEO_PASSWORD`）の 2 経路です [6][7]。
-  ローカル起動に要る Node.js の版は、README が 20 以上、MCP のページが 18 以上と書いていて、揃っていません [6][7]。
+  ローカル起動に要る Node.js の版は、MCP のページが 18 以上と書いています [6]。README の 20 以上はリポジトリを開発するときの要件で、起動の手順には版の記載がありません [7]。
   入金はクレジットカードか PayPal です
 - **検証した内容**: 公式の料金ページ・ドキュメント・MCP サーバーの README を確認したうえで、2026-11-10 に試用クレジットだけで実行しました。入金はしていません。地域と言語は `location_code: 2392`（Japan）と `language_code: "ja"` です。
 
@@ -280,5 +280,5 @@ Google キーワードプランナーは支払い情報の登録が要ります 
 15. [Semrush MCP](https://www.semrush.com/mcp/) — 2026-11-14 確認
 16. [Ahrefs — Plans & Pricing](https://ahrefs.com/pricing) — 2026-11-14 確認
 17. [Google 広告 ヘルプ — キーワード プランナーを使う](https://support.google.com/google-ads/answer/7337243?hl=ja) — 2026-11-14 確認
-18. [Google Ads API — Access levels](https://developers.google.com/google-ads/api/docs/access-levels) — 2026-11-14 確認
+18. [Google Ads API — Access levels](https://developers.google.com/google-ads/api/docs/api-policy/access-levels) — 2026-11-14 確認
 19. [seodata.dev — Privacy policy](https://www.seodata.dev/privacy) — 2026-11-14 確認
