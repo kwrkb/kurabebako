@@ -28,10 +28,12 @@
 # ConoHa は 2026-10-24 13:40 から緊急メンテナンスのため全サービスの新規申込みの受付を一時停止（終了日時は未定。
 # 公式のお知らせ 2026-10-24、A8.net からの通知 2026-10-25）。VPS / WING / AI Canvas の 3 案件に paused を置き、
 # 再開を確認したら 3 案件とも paused と paused_url を消す。記事側の「主な制約」セルと詳細の記述もそのとき直す
-# 2026-11-13 16:00 に受付再開（公式のお知らせ https://www.conoha.jp/news/?ap=2015055009 を 2026-11-14 に確認）。
-# WING は記事 shared-hosting-japan の修正と一緒に paused を外した。VPS / AI Canvas は記事（vps-japan-minimum-plan /
-# comfyui-local-cloud。後者は {{< pr >}} も戻す）を直すときに外す。A8.net の管理画面では 2026-11-14 に、WING の案件が「提携中」（終了日は未定）で、
-# 台帳と同じ素材が広告リンク作成に出ることを確認した（リンクの遷移先は踏んでいない）
+# 2026-11-13 16:00 に受付再開（公式のお知らせ https://www.conoha.jp/news/?ap=2015055009 ）、2026-11-14 16:55 から再び全サービスの
+# 新規申込みの受付を一時停止（終了日時は未定。https://www.conoha.jp/news/?ap=2015055013 と WING の申込みページの停止の案内を 2026-11-15 に確認）。
+# WING は 11-14 の午後に paused を外し、11-15 に戻した（記事 shared-hosting-japan も同じ日に直した）。VPS / AI Canvas は paused のままで、
+# 文面の日付（10-24）と記事（vps-japan-minimum-plan / comfyui-local-cloud）は 11-13 の再開と 11-14 の再停止を反映していない。
+# 次に再開を確認したら、記事と一緒に paused / paused_url を消す（comfyui-local-cloud は {{< pr >}} も戻す）。
+# A8.net の管理画面では 2026-11-14 に、WING の案件が「提携中」（終了日は未定）であることを確認した
 
 [conoha-vps]
 name = 'ConoHa VPS'
@@ -46,6 +48,8 @@ name = 'ConoHa WING'
 url = 'https://px.a8.net/svt/ejp?a8mat=4BC9F6+4785Z6+50+5SKSCY'
 pixel = 'https://www12.a8.net/0.gif?a8mat=4BC9F6+4785Z6+50+5SKSCY'
 program = 'A8.net s00000000018035（自由テキスト）'
+paused = '2026-11-14 16:55 から新規申込みの受付を一時停止しています（再開は未定）'
+paused_url = 'https://www.conoha.jp/news/?ap=2015055013'
 
 [xserver]
 name = 'エックスサーバー'
