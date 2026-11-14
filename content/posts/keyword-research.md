@@ -1,11 +1,15 @@
 +++
 title = 'キーワード調査ツール 6 つの比較: AI が月間検索数に届く API・MCP と無料枠'
 date = '2026-11-10T19:20:00+09:00'
-lastmod = '2026-11-10'
+lastmod = '2026-11-14'
 draft = true
 summary = 'seodata.dev・DataForSEO・ラッコキーワード・Semrush・Ahrefs・Google キーワードプランナーを、AI が API や MCP で月間検索数を取れるか、無料でどこまで見えるか、最小の有料額はいくらかで比較。アカウントなしで REST と MCP が動くのは seodata.dev、カード登録なしの試用クレジットで関連語まで取れるのは DataForSEO で、ラッコキーワードのフリーは月間検索数が見えない。'
 categories = ['developer-tools']
 tags = ['keyword-research', 'dataforseo', 'seodata-dev', 'rakko-keyword', 'semrush', 'ahrefs', 'google-keyword-planner']
+[cover]
+  image = '/images/og/keyword-research.jpg'
+  alt = 'キーワード調査ツール 6 つの比較'
+  hidden = true
 +++
 
 ## 結論
@@ -28,19 +32,19 @@ tags = ['keyword-research', 'dataforseo', 'seodata-dev', 'rakko-keyword', 'semru
 
 ## 比較表
 
-2026-11-10 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
+2026-11-14 時点の公式情報に基づきます。出典は末尾の番号に対応しています。
 料金は個人が申し込める最小のプランを月払いで揃え、通貨は各社の料金ページの表示のままです。対象名を押すと、その対象の詳細に移ります。
 
 | 対象 | 料金 | 無料枠 | 主な制約 | 前提条件 | 検証区分 | 出典 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [seodata.dev](#seodatadev) | 無料。Unlimited は USD 4.99/月（回数の上限なし） | アカウントなしで 1 日 20 回。無料アカウントは 1 日 50 回・月 500 回 | 1 回 = 1 か国の 1 語（一括は 25 語まで）。返すのは検索数・CPC・競合性・類似語。運営元の会社名が規約に無い | アカウントなしで REST とリモート MCP が動く。無料アカウントはメールと 6 桁のコードで、カード不要 | {{< verified run >}} | [8][9][10][11] |
-| [DataForSEO](#dataforseo) | 従量。Google Ads の検索数は 1 task（1,000 語まで）あたり Live USD 0.09 / Standard USD 0.06。最低入金 USD 50 | 登録時に USD 1 の試用クレジット（一回きり・期限なし） | 課金は語数ではなく task 単位。Live は 12 リクエスト/分。MCP の既定の応答には消費額が出ない | アカウントと電話番号（SMS）の確認。カード不要。MCP はリモート（OAuth）とローカル（npx）の 2 経路 | {{< verified run >}} | [1][2][3][4][5][6][7] |
+| [DataForSEO](#dataforseo) | 従量。Google Ads の検索数は 1 task（1,000 語まで）あたり Live USD 0.09 / Standard USD 0.06。最低入金 USD 50 | 登録時に USD 1 の試用クレジット（一回きり・期限なし） | 課金は語数ではなく task 単位。Live は 12 リクエスト/分。MCP の既定の応答には消費額が出ない | アカウントと電話番号（SMS）の確認。カード不要。MCP はリモートとローカル（npx）の 2 経路 | {{< verified run >}} | [1][2][3][4][5][6][7] |
 | [ラッコキーワード](#ラッコキーワード) | 月払いでエントリー 1,320 円 / ライト 1,980 円 / スタンダード 4,950 円 | フリーは週 50 クレジット（月曜 0 時に戻る） | フリーは月間検索数が見えない。MCP はエントリー以上で、AI 経由の消費は 10 倍 / 5 倍 / 1.5 倍。API はスタンダードのみ | アカウントのみ。おためし期間は無く、途中解約の返金も無い | {{< verified run >}} | [12][13] |
 | [Semrush](#semrush) | SEO USD 139/月から | Free は 1 日 10 レポート（カード不要） | MCP は有料の対象プランだけで、Free では使えない。API は Advanced の API units package | アカウントのみ。有料プランには 7 日間のトライアル | {{< verified spec >}} | [14][15] |
-| [Ahrefs](#ahrefs) | Starter 4,460 円/月、Lite 19,900 円/月から（日本からの表示） | Ahrefs Free は自分のサイトの調査向け。無料トライアルは無い | API と MCP は Lite 以上。1 リクエストの最大行数は Lite で 100 | アカウントとカード（Visa・Mastercard・American Express・UnionPay） | {{< verified spec >}} | [16] |
-| [Google キーワードプランナー](#google-キーワードプランナー) | Google 広告のアカウントの機能 | — | API（Google Ads API）で検索数の本番データを取るには、Basic 以上のアクセスレベル（ブランド確認が前提）が要る | Google 広告のアカウントと支払い情報の登録 | {{< verified spec >}} | [17][18] |
+| [Ahrefs](#ahrefs) | Starter 4,460 円/月、Lite 19,900 円/月から（日本からの表示、税別） | Ahrefs Free は自分のサイトの調査向け。無料トライアルは無い | API と MCP は Lite 以上。1 リクエストの最大行数は Lite で 100 | アカウントとカード（Visa・Mastercard・American Express・UnionPay） | {{< verified spec >}} | [16] |
+| [Google キーワードプランナー](#google-キーワードプランナー) | Google 広告のアカウントの機能 | — | API（Google Ads API）でキーワードの計画のサービスを使うには、Basic 以上のアクセスレベル（ブランド確認が前提）が要る | Google 広告のアカウントと支払い情報の登録 | {{< verified spec >}} | [17][18] |
 
-{{< bars unit="円/月" caption="MCP が使える最小プランの月額（月払い）。料金ページが円建ての 2 社だけを載せた。USD 建ての 3 社は為替で動くので同じ軸に置いていない" >}}
+{{< bars unit="円/月" caption="MCP が使える最小プランの月額（月払い）。料金ページが円建ての 2 社だけを載せた。USD 建ての 3 社は為替で動くので同じ軸に置いていない。ラッコキーワードは税込、Ahrefs は税別の表示" >}}
 ラッコキーワード エントリー: 1320
 Ahrefs Lite: 19900
 {{< /bars >}}
@@ -53,7 +57,7 @@ Ahrefs Lite: 19900
   Ubersuggest は公式の料金ページを取得できなかったため外しました
 - 検証区分の意味: {{< verified run >}} = AI が実際に動かして確認した / {{< verified spec >}} = 公式ドキュメントで確認したのみ。
   ラッコキーワードで実行したのはフリーの Web 画面だけで、有料プランの MCP と API は公式の記載の確認にとどめています。DataForSEO のリモート MCP（OAuth）も実行していません
-- 料金表記の注意: 通貨は各社の料金ページの表示のままで、USD と円が混ざります。Ahrefs は日本から開いたときの円建ての表示です。
+- 料金表記の注意: 通貨は各社の料金ページの表示のままで、USD と円が混ざります。Ahrefs は日本から開いたときの円建ての表示で、消費税は別です。ラッコキーワードの表示は税込です。
   ラッコキーワードの料金ページは年払いを月で割った額を既定で表示するので、表では月払いに切り替えた額で揃えました。DataForSEO は月額ではなくリクエストごとの従量です
 - 月間検索数はどのツールでも推定値です。seodata.dev の規約は、数字が第三者のデータ元から集めた推定で、ほかのツールの表示と違うことがあると書いています [11]。
   同じ日に同じ語を 2 つのサービスで引いた結果は、「各対象の詳細」の seodata.dev に載せています
@@ -127,9 +131,10 @@ AI エージェントから呼ぶ前提で作られた、月間検索数のデ�
   同社の Keywords Data API の一覧ページには別の単価が載っていますが、実行時に引かれた額は Google Ads の料金ページの単価と同じでした
 - **制約**: 登録直後は、残高の照会だけが通ります。データの endpoint は、無料のもの（対応言語の一覧）でも 403 と `40104 Please verify your account before using the API` が返り、電話番号の確認が済むと通りました。
   公式の MCP サーバーのツールは 4 つで、API のドキュメントを引く `docs_index`・`docs_list_sections`・`docs_search` と、任意の endpoint を呼ぶ `api_request` です。endpoint ごとのツールは無く、AI がドキュメントを引いてからリクエストを組み立てます [7]。
-  `api_request` は既定で AI 向けに絞った応答を返し、`cost` と残高が含まれません。通常の応答に戻すには `noAiMode` を指定します [7]
+  `api_request` は既定で AI 向けの経路（`.ai`）を呼び、通常の経路に戻すには `noAiMode` を指定します [7]。検証では、既定の応答に `cost` と残高が含まれませんでした
 - **前提条件**: 登録画面は Personal email と Business email の 2 択で、Personal は電話番号の確認が入ります。認証は API 用の login と password による Basic 認証です。
-  MCP は、リモートの `https://mcp.dataforseo.com/v3/mcp`（OAuth 2.0）と、`npx dataforseo-mcp-server` をローカルで起動する方式（環境変数 `DATAFORSEO_LOGIN` と `DATAFORSEO_PASSWORD`、Node.js 20 以上）の 2 経路です [6][7]。
+  MCP は、リモートの `https://mcp.dataforseo.com/v3/mcp`（既定は OAuth 2.0 で、Basic 認証のヘッダーも使える）と、`npx dataforseo-mcp-server` をローカルで起動する方式（環境変数 `DATAFORSEO_LOGIN` と `DATAFORSEO_PASSWORD`）の 2 経路です [6][7]。
+  ローカル起動に要る Node.js の版は、README が 20 以上、MCP のページが 18 以上と書いていて、揃っていません [6][7]。
   入金はクレジットカードか PayPal です
 - **検証した内容**: 公式の料金ページ・ドキュメント・MCP サーバーの README を確認したうえで、2026-11-10 に試用クレジットだけで実行しました。入金はしていません。地域と言語は `location_code: 2392`（Japan）と `language_code: "ja"` です。
 
@@ -182,7 +187,7 @@ MCP は有料プランの機能で、料金ページと AI 連携ガイドが、
 {{< /fit >}}
 
 - **料金体系**: 有料プランは SEO・Starter・Pro+ の 3 段と、個別見積りの Advanced です。年払いの月換算は月払いより低くなります [14]
-- **制約**: MCP の FAQ は、対象を有料の Semrush One・SEO Classic・Trends API の契約とし、無料では使えないと書いています。料金ページの最小の「SEO」が、この FAQ の対象プランのどれに当たるかは、ページからは読み取れません [14][15]
+- **制約**: MCP の FAQ は、対象を有料の Semrush One・SEO Classic・Trends API の契約とし、無料では使えないと書いています。料金ページのプランの一覧で「MCP access」があるのは Starter からで、最小の SEO の一覧にはありません [14][15]
 - **前提条件**: 表の「前提条件」列のとおりです [14]
 - **検証した内容**: 公式の料金ページと MCP のページの FAQ を確認しました。アカウントは作っておらず、Free の画面も実行していません
 
@@ -212,7 +217,7 @@ DataForSEO の Google Ads の endpoint が返すのは、このキーワード�
 {{< /fit >}}
 
 - **料金体系**: ヘルプは、「新しいキーワードの候補を取得する」などの基本機能を使うには、支払い情報を入力してアカウント設定を完了する必要があると書いています [17]
-- **制約**: Google Ads API のアクセスレベルは Test・Explorer・Basic・Standard の 4 段です。キーワードの計画に使うサービスは Explorer の制限に含まれ、本番のアカウントのデータを取れるのは Basic 以上です [18]
+- **制約**: Google Ads API のアクセスレベルは Test・Explorer・Basic・Standard の 4 段です。キーワードの計画に使うサービスは Explorer では制限され、使うには Basic 以上の申請が要ります [18]
 - **前提条件**: 表の「前提条件」列のとおりです [17][18]
 - **検証した内容**: 公式のヘルプと Google Ads API のドキュメントを確認しました。支払い情報の登録が要るため、実行はしていません
 
@@ -243,7 +248,7 @@ seodata.dev は、アカウントなしで 1 日 20 回まで月間検索数を�
 ### Claude などの AI から月間検索数を取るには何が要りますか？
 
 seodata.dev はリモート MCP の URL を登録するだけで、サインインなしで動きます [10]。
-DataForSEO は公式の MCP サーバーがあり、リモートは OAuth、ローカルは API の login と password で認証します [6][7]。
+DataForSEO は公式の MCP サーバーがあり、リモートは OAuth か Basic 認証、ローカルは API の login と password で認証します [6][7]。
 ラッコキーワードの MCP はエントリー以上、Ahrefs の MCP は Lite 以上の有料プランが要ります [13][16]。
 
 ### ツールによって月間検索数が違うことはありますか？
@@ -258,22 +263,22 @@ Google キーワードプランナーは支払い情報の登録が要ります 
 
 ## 出典
 
-1. [DataForSEO — Google Ads API Pricing](https://dataforseo.com/pricing/keywords-data/google-ads) — 2026-11-10 確認
-2. [DataForSEO — Keyword Planner API](https://dataforseo.com/keyword-planner-api) — 2026-11-03 確認
-3. [DataForSEO Help Center — How does your free unlimited trial work?](https://dataforseo.com/help-center/how-does-your-free-unlimited-trial-work) — 2026-11-09 確認
-4. [DataForSEO Help Center — Minimum payment](https://dataforseo.com/help-center/minimum-payment) — 2026-11-09 確認
-5. [DataForSEO Docs — Google Ads Search Volume (Live)](https://docs.dataforseo.com/v3/keywords_data/google_ads/search_volume/live/) — 2026-11-09 確認
-6. [DataForSEO — Model Context Protocol](https://dataforseo.com/model-context-protocol) — 2026-11-10 確認
-7. [DataForSEO MCP Server（GitHub の README）](https://github.com/dataforseo/mcp-server-typescript) — 2026-11-10 確認
-8. [seodata.dev Pricing](https://www.seodata.dev/pricing) — 2026-11-10 確認
-9. [seodata.dev — llms.txt（API の説明）](https://www.seodata.dev/llms.txt) — 2026-11-10 確認
-10. [seodata.dev — MCP](https://www.seodata.dev/mcp) — 2026-11-10 確認
-11. [seodata.dev — Terms of service](https://www.seodata.dev/terms) — 2026-11-10 確認
-12. [ラッコキーワード — 料金プラン](https://rakkokeyword.com/pricing) — 2026-11-10 確認
-13. [ラッコキーワード — AI 連携ガイド](https://rakkokeyword.com/knowledge/9777/) — 2026-11-10 確認
-14. [Semrush Pricing](https://www.semrush.com/pricing/seo-ai-search/) — 2026-11-09 確認
-15. [Semrush MCP](https://www.semrush.com/mcp/) — 2026-11-10 確認
-16. [Ahrefs — Plans & Pricing](https://ahrefs.com/pricing) — 2026-11-10 確認
-17. [Google 広告 ヘルプ — キーワード プランナーを使う](https://support.google.com/google-ads/answer/7337243?hl=ja) — 2026-11-10 確認
-18. [Google Ads API — Access levels](https://developers.google.com/google-ads/api/docs/access-levels) — 2026-11-09 確認
-19. [seodata.dev — Privacy policy](https://www.seodata.dev/privacy) — 2026-11-10 確認
+1. [DataForSEO — Google Ads API Pricing](https://dataforseo.com/pricing/keywords-data/google-ads) — 2026-11-14 確認
+2. [DataForSEO — Keyword Planner API](https://dataforseo.com/keyword-planner-api) — 2026-11-14 確認
+3. [DataForSEO Help Center — How does your free unlimited trial work?](https://dataforseo.com/help-center/how-does-your-free-unlimited-trial-work) — 2026-11-14 確認
+4. [DataForSEO Help Center — Minimum payment](https://dataforseo.com/help-center/minimum-payment) — 2026-11-14 確認
+5. [DataForSEO Docs — Google Ads Search Volume (Live)](https://docs.dataforseo.com/v3/keywords_data/google_ads/search_volume/live/) — 2026-11-14 確認
+6. [DataForSEO — Model Context Protocol](https://dataforseo.com/model-context-protocol) — 2026-11-14 確認
+7. [DataForSEO MCP Server（GitHub の README）](https://github.com/dataforseo/mcp-server-typescript) — 2026-11-14 確認
+8. [seodata.dev Pricing](https://www.seodata.dev/pricing) — 2026-11-14 確認
+9. [seodata.dev — llms.txt（API の説明）](https://www.seodata.dev/llms.txt) — 2026-11-14 確認
+10. [seodata.dev — MCP](https://www.seodata.dev/mcp) — 2026-11-14 確認
+11. [seodata.dev — Terms of service](https://www.seodata.dev/terms) — 2026-11-14 確認
+12. [ラッコキーワード — 料金プラン](https://rakkokeyword.com/pricing) — 2026-11-14 確認
+13. [ラッコキーワード — AI 連携ガイド](https://rakkokeyword.com/knowledge/9777/) — 2026-11-14 確認
+14. [Semrush Pricing](https://www.semrush.com/pricing/seo-ai-search/) — 2026-11-14 確認
+15. [Semrush MCP](https://www.semrush.com/mcp/) — 2026-11-14 確認
+16. [Ahrefs — Plans & Pricing](https://ahrefs.com/pricing) — 2026-11-14 確認
+17. [Google 広告 ヘルプ — キーワード プランナーを使う](https://support.google.com/google-ads/answer/7337243?hl=ja) — 2026-11-14 確認
+18. [Google Ads API — Access levels](https://developers.google.com/google-ads/api/docs/access-levels) — 2026-11-14 確認
+19. [seodata.dev — Privacy policy](https://www.seodata.dev/privacy) — 2026-11-14 確認
