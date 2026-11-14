@@ -1,8 +1,8 @@
 +++
 title = 'キーワード調査ツール 6 つの比較: AI が月間検索数に届く API・MCP と無料枠'
-date = '2026-11-10T19:20:00+09:00'
+date = '2026-11-14T15:21:00+09:00'
 lastmod = '2026-11-14'
-draft = true
+draft = false
 summary = 'seodata.dev・DataForSEO・ラッコキーワード・Semrush・Ahrefs・Google キーワードプランナーを、AI が API や MCP で月間検索数を取れるか、無料でどこまで見えるか、最小の有料額はいくらかで比較。アカウントなしで REST と MCP が動くのは seodata.dev、カード登録なしの試用クレジットで関連語まで取れるのは DataForSEO で、ラッコキーワードのフリーは月間検索数が見えない。'
 categories = ['developer-tools']
 tags = ['keyword-research', 'dataforseo', 'seodata-dev', 'rakko-keyword', 'semrush', 'ahrefs', 'google-keyword-planner']

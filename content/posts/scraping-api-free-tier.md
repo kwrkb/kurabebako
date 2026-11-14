@@ -229,6 +229,7 @@ firecrawl: LLM に渡す Markdown をブラウザ描画込みでも 1 ページ 
 
 取得した HTML を保存して配信する先は、[静的サイトの無料ホスティング比較](/posts/static-site-hosting-free-tier/)で扱ったホスティングの無料枠に収まります。
 API キーを CI や AI エージェントに渡す場面では、[シークレット管理 CLI 6 つの比較](/posts/secret-management-cli/)で比べた注入の手段が要ります。
+取得するページのテーマを月間検索数で選ぶ下調べは、[キーワード調査ツール 6 つの比較](/posts/keyword-research/)で比べています。
 
 ## よくある質問
 
