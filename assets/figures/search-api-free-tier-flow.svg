@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 600" font-family="system-ui, -apple-system, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif" font-size="14" fill="currentColor">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g stroke="currentColor" stroke-width="1.5" fill="none">
+    <!-- 質問（左列） -->
+    <rect x="20" y="20" width="300" height="64" rx="8"/>
+    <rect x="20" y="150" width="300" height="64" rx="8"/>
+    <rect x="20" y="280" width="300" height="64" rx="8"/>
+    <rect x="20" y="410" width="300" height="64" rx="8"/>
+    <!-- 答え（右列） -->
+    <rect x="420" y="20" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="150" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="280" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="420" y="410" width="320" height="64" rx="8" opacity="0.9"/>
+    <rect x="20" y="530" width="720" height="50" rx="8" opacity="0.9"/>
+    <!-- 矢印: はい（右へ） -->
+    <line x1="320" y1="52" x2="418" y2="52" marker-end="url(#arrow)"/>
+    <line x1="320" y1="182" x2="418" y2="182" marker-end="url(#arrow)"/>
+    <line x1="320" y1="312" x2="418" y2="312" marker-end="url(#arrow)"/>
+    <line x1="320" y1="442" x2="418" y2="442" marker-end="url(#arrow)"/>
+    <!-- 矢印: いいえ（下へ） -->
+    <line x1="170" y1="84" x2="170" y2="148" marker-end="url(#arrow)"/>
+    <line x1="170" y1="214" x2="170" y2="278" marker-end="url(#arrow)"/>
+    <line x1="170" y1="344" x2="170" y2="408" marker-end="url(#arrow)"/>
+    <line x1="170" y1="474" x2="170" y2="528" marker-end="url(#arrow)"/>
+  </g>
+  <!-- 矢印のラベル -->
+  <g font-size="12" opacity="0.75">
+    <text x="360" y="46" text-anchor="middle">はい</text>
+    <text x="360" y="176" text-anchor="middle">はい</text>
+    <text x="360" y="306" text-anchor="middle">はい</text>
+    <text x="360" y="436" text-anchor="middle">はい</text>
+    <text x="182" y="120">いいえ</text>
+    <text x="182" y="250">いいえ</text>
+    <text x="182" y="380">いいえ</text>
+    <text x="182" y="506">いいえ</text>
+  </g>
+  <!-- 質問の文言 -->
+  <g text-anchor="middle">
+    <text x="170" y="46">カード登録なしで、毎月戻る無料枠で</text>
+    <text x="170" y="68">検索結果の抜粋を LLM に渡したい</text>
+    <text x="170" y="176">Google の検索結果ページを、</text>
+    <text x="170" y="198">そのままの構成で JSON にしたい</text>
+    <text x="170" y="306">月額プランを持たず、</text>
+    <text x="170" y="328">使った分だけ払いたい</text>
+    <text x="170" y="436">Google や Bing に依存しない索引を使う。</text>
+    <text x="170" y="458">カードの登録は構わない</text>
+  </g>
+  <!-- 答えの文言 -->
+  <g text-anchor="middle">
+    <text x="580" y="46" font-weight="600">Tavily</text>
+    <text x="580" y="68" font-size="12">無料枠は毎月戻る。検索の深さで消費が決まる</text>
+    <text x="580" y="176" font-weight="600">SerpApi</text>
+    <text x="580" y="198" font-size="12">無料枠は毎月戻る。キャッシュされた検索は数えない</text>
+    <text x="580" y="306" font-weight="600">Exa</text>
+    <text x="580" y="328" font-size="12">従量だけ。無料のクレジットが毎月付く</text>
+    <text x="580" y="436" font-weight="600">Brave Search API</text>
+    <text x="580" y="458" font-size="12">無料のクレジットが毎月付く。カードの登録が必須</text>
+    <text x="380" y="551" font-weight="600">Google の検索結果をまとまった回数取るなら、月額の SearchApi か前払いの Serper</text>
+    <text x="380" y="571" font-size="12">どちらも無料枠は一回きりで、月次では戻らない</text>
+  </g>
+</svg>
